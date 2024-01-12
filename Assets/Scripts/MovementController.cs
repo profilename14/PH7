@@ -130,7 +130,7 @@ public class MovementController : MonoBehaviour
         }
 
 
-        gameObject.transform.position = position;
+        rigidbody.velocity = (position - transform.position) * 50;
 
         // Floats are often error ridden and slightly off, so this code ensure's the player is always properly stopped when required.
         if (horizontal < 0.01 && horizontal > -0.01)

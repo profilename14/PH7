@@ -1,3 +1,4 @@
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -10,11 +11,10 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
     public GameObject player;
+    public GameObject target;
     public GameObject ModelRoot;
-    public Transform target;
     public Collider SightSphere;
     public State CurrentState = State.Idle;
-    public int MoveSpeed;
     public float DetectionDelay;
 
     private Coroutine PlayerDetector;
@@ -25,6 +25,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
+        
         switch (CurrentState)
         {
 
@@ -39,32 +40,22 @@ public class EnemyBehavior : MonoBehaviour
             case State.Follow:
                 Debug.Log("Following!");
                 
+                //player.GetComponent<AIDestinationSetter>().target = LastSeen;
+                break;
+
+            case State.Seek:
+                Debug.Log("Seeking...");
                 // Set the last known location of the player, then go there. If the player is not seen, return to idle.
+
                 // Approach player to within a certain distance, but don't go all the way into a player
-                
-                // Rotate to face player
-                Vector3 relativePos = target.position - transform.position;
-                Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-                ModelRoot.transform.rotation = rotation;
 
-                // Move to player
-                // To be replaced by A* pathfinding courtesy of Nick (and Aron Granberg)
-                Vector3 direction = (target.position - transform.position).normalized;
-                transform.Translate((direction * MoveSpeed) * Time.deltaTime);
 
-                if ( Vector3.Distance(transform.position, target.position) <= 3f )
-                {
-                    CurrentState = State.Attack;
-                }
+
 
                 break;
 
             case State.Attack:
                 Debug.Log("Attacking!");
-                if (Vector3.Distance(transform.position, target.position) > 3f)
-                {
-                    CurrentState = State.Follow;
-                }
 
                 break;
         }    
@@ -77,6 +68,7 @@ public class EnemyBehavior : MonoBehaviour
         if (SightSphere.gameObject.tag == "Player")
         {
             Debug.Log("Player Entered");
+
             // Line of Sight handling inspired by William Coyne's article: https://unityscripting.com/line-of-sight-detection/ 
             PlayerDetector = StartCoroutine(DetectPlayer());
         }
@@ -88,7 +80,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("Player Left");
             StopCoroutine(PlayerDetector);
-            CurrentState = State.Idle;
+            //CurrentState = State.Idle;
         }
     }
 
@@ -98,18 +90,15 @@ public class EnemyBehavior : MonoBehaviour
         {
             yield return new WaitForSeconds(DetectionDelay);
 
-            Ray ray = new Ray(transform.position, target.position - transform.position);
+            Ray ray = new Ray(transform.position, player.transform.position - transform.position);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
-            Debug.DrawRay(ray.origin, ray.direction * 15, Color.red, DetectionDelay);
-
+            
             if (hit.collider.tag == "Player")
             {
-                CurrentState = State.Follow;
-            }
-            else
-            {
-                CurrentState = State.Idle;   
+                //CurrentState = State.Follow;
+                Debug.DrawRay(ray.origin, ray.direction * 15, Color.red, DetectionDelay);
+                target.transform.position = hit.collider.transform.position;
             }
         }
     }
@@ -117,4 +106,4 @@ public class EnemyBehavior : MonoBehaviour
 }
 
 // States
-public enum State { Inactive, Idle, Follow, Attack }
+public enum State { Inactive, Idle, Seek, Follow, Attack }

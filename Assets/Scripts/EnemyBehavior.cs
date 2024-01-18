@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Pathfinding;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.UIElements;
 
 // Thomas Watson
 // Enemy Behavior code
@@ -12,38 +13,43 @@ using UnityEditor.Experimental.GraphView;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    [Header("STATS")]
+    public float health;
+    public float ph;
+
+    [Header("DETECTION")]
     public Collider SightSphere;
-    public State CurrentState = State.Idle;
     public float DetectionDelay;
     public float ThrustDelay;
-    
-    public float thrust = 160f;
+
+    [Header("MOVEMENT")]
+    // Reminder: Add an option for what movement mode the enemy should use
+    // i.e. Impulse, regular walking, etc.
+    public Transform TargetPosition;
+    public float thrust = 20f;
     public float NextWaypointDistance = 3;
-    private int CurrentWaypoint = 0;
     public bool ReachedPathEnd;
+    public Path path;
+    private int CurrentWaypoint = 0;
+    
+    private State CurrentState = State.Idle;
 
     private Coroutine PlayerDetector;
     private Coroutine PlayerPersuit;
 
     private Seeker seeker;
 
-    public Transform TargetPosition;
-    public Path path;
-
-
-    public void Start()
-    {
-        
-    }
-
     public void OnPathComplete(Path p)
     {
-        Debug.Log("Path complete" + p.error);
 
         if (!p.error)
         {
             path = p;
             CurrentWaypoint = 0;
+        }
+        else
+        {
+            Debug.Log("Error in Pathing:" + p.error);
         }
     }
 
@@ -52,9 +58,6 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-
-
-
         switch (CurrentState)
         {
 
@@ -69,22 +72,23 @@ public class EnemyBehavior : MonoBehaviour
             case State.Follow:
                 //Debug.Log("Following!");
 
-                //player.GetComponent<AIDestinationSetter>().target = LastSeen;
+                ThrustDelay = .5f;
+                thrust = 10f;
+
+
                 break;
 
             case State.Seek:
                 //Debug.Log("Seeking...");
                 // Set the last known location of the player, then go there. If the player is not seen, return to idle.
 
-                // Approach player to within a certain distance, but don't go all the way into a player
-
-
-
-
                 break;
 
             case State.Attack:
                 //Debug.Log("Attacking!");
+
+                ThrustDelay = 2f;
+                thrust = 30f;
 
                 break;
         }    
@@ -94,12 +98,16 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider SightSphere)
     {
+        // This code activates when the player enters the "Enemy Sight Sphere" object;
+        // Is this the way we want to approach this? It could lead to some potential problems
+
         if (SightSphere.gameObject.tag == "Player")
         {
             Debug.Log("Player Entered");
 
             // Line of Sight handling inspired by William Coyne's article: https://unityscripting.com/line-of-sight-detection/ 
             PlayerDetector = StartCoroutine(DetectPlayer());
+
             PlayerPersuit = StartCoroutine(PersuePlayer());
         }
     }
@@ -110,8 +118,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             Debug.Log("Player Left");
             StopCoroutine(PlayerDetector);
+
             StopCoroutine(PlayerPersuit);
-            //CurrentState = State.Idle;
         }
     }
 
@@ -128,10 +136,7 @@ public class EnemyBehavior : MonoBehaviour
             if (hit.collider.tag == "Player")
             {
                 seeker = GetComponent<Seeker>();
-
                 seeker.StartPath(transform.position, TargetPosition.position, OnPathComplete);
-
-                Debug.DrawRay(ray.origin, ray.direction * 15, Color.red, DetectionDelay);
             }
         }
     }
@@ -145,7 +150,6 @@ public class EnemyBehavior : MonoBehaviour
 
             ReachedPathEnd = false;
 
-            // Random stuff
             float DistanceToWaypoint;
 
             while (true)
@@ -172,7 +176,7 @@ public class EnemyBehavior : MonoBehaviour
             Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
             Vector3 velocity = dir * thrust;
 
-            GetComponent<Rigidbody>().AddForce(velocity);
+            GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
         }
     }
 

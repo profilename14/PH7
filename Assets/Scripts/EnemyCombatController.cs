@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EnemyCombatController : MonoBehaviour
 {
-    EnemyStats stats;
+    EnemyBehavior stats;
     Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        stats = GetComponent<EnemyStats>();
+        stats = GetComponent<EnemyBehavior>();
         rb = GetComponent<Rigidbody>();
     }
 

@@ -6,9 +6,11 @@ public class PlayerAttackController : MonoBehaviour
 {
     Animator playerAnim;
 
-    [SerializeField]
-    bool inAnimation;
+    [Header("STATS")]
+    public float health;
+    public int ph;
 
+    [Header("ATTACKS")]
     public WeaponStats[] weaponScriptableObjects;
 
     public WeaponStats equippedWeapon;
@@ -20,6 +22,9 @@ public class PlayerAttackController : MonoBehaviour
 
     [SerializeField]
     int equippedWeaponIndex;
+
+    [SerializeField]
+    bool inAnimation;
 
     bool updateWeapon;
 

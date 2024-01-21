@@ -24,7 +24,7 @@ public class PlayerAttackHitbox : MonoBehaviour
         {
             Debug.Log("Hit " + other.gameObject.name);
             Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
-            other.gameObject.GetComponent<EnemyCombatController>().TakeDamage(controllerScript.equippedWeapon.damage, controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback, controllerScript.gameObject.transform.position);
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback, controllerScript.gameObject.transform.position);
         }
     }
 }

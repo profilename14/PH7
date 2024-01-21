@@ -58,19 +58,64 @@ public class MovementController : MonoBehaviour
     private Phase CurrentPhaseVertical;
     private Phase CurrentPhaseHorizontal;
 
+    private RotationController rotationController;
+
+    // Dashing Logic
+    public bool isDashing = false;
+    public float dashSpeed = 0.025f;
+
+    [SerializeField] private float dashDuration = 0.45f;
+    private float DashTimer = 0.0f;
+    [SerializeField] private float DashCooldown = 2.45f;
+    private float dashCooldownTimer = 0.0f;
+    private Vector3 dashDirection;
+
+    [SerializeField] private AnimationCurve Dash;
+
+    // This % through, the player will no longer deal pH damage but will be able to move,
+    // still be invulnerable, and still have momentum.
+    // At this point the dash animation starts to end and the player is soon also able to attack.
+    [SerializeField] private float DashAftermathPercent = 0.80f;
+    private bool dashEnding = false;
+
+
+    // All velocities in fixedUpdate are stored before they're all applied at once.
+    private Vector3 moveVelocity;
+    private Vector3 dashVelocity;
+
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+
+        rotationController = gameObject.GetComponentInChildren<RotationController>();
+
+        moveVelocity = new Vector3(0, 0, 0);
+        dashVelocity = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame.
     void Update()
     {
-        DecrementTimers();
+        DecrementTimers(); // Does not move the player, but prepares fixed update to
 
         // This gargantuan function accurately get's the player's direction respecting stages for FixedUpdate's translations.
         GetMovementDirection();
+
+
+        // DASH LOGIC:
+
+        if (dashCooldownTimer >= 0) { // Decrease cooldown
+          dashCooldownTimer -= Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && !isDashing && dashCooldownTimer <= 0) { // Start dash
+          isDashing = true;
+          // set flag in animator
+          dashDirection = rotationController.directionVec;
+          dashVelocity = new Vector3(0, 0, 0);
+          DashTimer = 0;
+        }
 
 
 
@@ -82,6 +127,28 @@ public class MovementController : MonoBehaviour
     {
         // Set the player's velocity to zero. This is to prevent continuous knockback when an enemy runs into the player.
         //rigidbody.velocity = new Vector3(0, 0, 0);
+
+        if (isDashing) { // Main logic:
+
+          if (DashTimer >= dashDuration * (DashAftermathPercent) && dashEnding == false) {
+            dashEnding = true;
+            // Set animator to wrap up dash animation
+          }
+          if (DashTimer >= dashDuration) {
+            DashTimer = 0;
+            isDashing = false;
+            dashCooldownTimer = DashCooldown;
+            dashEnding = false;
+            dashVelocity = new Vector3(0, 0, 0);
+
+          } else {
+            // Set the velocity according the the graph curve
+            float curDashVelocity = Dash.Evaluate(DashTimer / dashDuration);
+            dashVelocity = dashDirection * curDashVelocity * dashSpeed;
+
+            DashTimer += Time.deltaTime;
+          }
+        }
 
         if (GameManager.isControllerUsed) {
 
@@ -95,6 +162,7 @@ public class MovementController : MonoBehaviour
 
           Vector3 movement = new Vector3(input.x * speed * Time.deltaTime * 1.1f, 0, input.z * speed * Time.deltaTime * 1.1f);
 
+          // We can polish this later
           transform.position += movement;
 
           return;
@@ -130,7 +198,7 @@ public class MovementController : MonoBehaviour
         }
 
 
-        rigidbody.velocity = (position - transform.position) * 50;
+        moveVelocity = (position - transform.position) * 50;
 
         // Floats are often error ridden and slightly off, so this code ensure's the player is always properly stopped when required.
         if (horizontal < 0.01 && horizontal > -0.01)
@@ -141,6 +209,15 @@ public class MovementController : MonoBehaviour
         {
             vertical = 0;
         }
+
+
+        // !!This part is responsible for all actual movement!!
+        if (isDashing && !dashEnding) {
+          rigidbody.velocity = dashVelocity;
+        } else {
+          rigidbody.velocity = moveVelocity + dashVelocity;
+        }
+
 
     }
 

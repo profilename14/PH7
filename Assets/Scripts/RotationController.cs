@@ -10,7 +10,8 @@ using UnityEngine;
 public class RotationController : MonoBehaviour
 {
   // Used to store what angle clockwise the player's mouse is relative to the player.
-  float angle;
+  public float angle;
+  public Vector3 directionVec;
   Vector3 mousePosition;
 
   private float distanceMouseIs = 0.0f;
@@ -56,7 +57,9 @@ public class RotationController : MonoBehaviour
     if (GameManager.isControllerUsed)
     {
       Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-      float angle = Mathf.Atan2(input.x,input.y) * Mathf.Rad2Deg;
+      angle = Mathf.Atan2(input.x,input.y) * Mathf.Rad2Deg;
+      directionVec = new Vector3(input.x, 0, input.y);
+      directionVec.Normalize();
 
       if ( Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2) {
         transform.rotation = Quaternion.Euler (0, angle, 0);
@@ -66,6 +69,9 @@ public class RotationController : MonoBehaviour
     else {
       float h = Input.mousePosition.x - Screen.width / 2;
       float v = Input.mousePosition.y - Screen.height / 2;
+      directionVec = new Vector3(h, 0, v);
+      directionVec.Normalize();
+
       float angle = -Mathf.Atan2(v,h) * Mathf.Rad2Deg;
 
       transform.rotation = Quaternion.Euler (0, angle, 0);

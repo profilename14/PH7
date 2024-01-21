@@ -109,7 +109,7 @@ public class MovementController : MonoBehaviour
           dashCooldownTimer -= Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isDashing && dashCooldownTimer <= 0) { // Start dash
+        if (Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0) { // Start dash
           isDashing = true;
           // set flag in animator
           dashDirection = rotationController.directionVec;

@@ -34,9 +34,15 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField]
     int weaponSwingCombo;
 
-    //Amount of time after the player initiates an attack when they can start the next swing in the combo. Going to the idle state resets your combo.
+    //Amount of time after the player initiates an attack when they can start the next swing in the combo.
     [SerializeField]
     float timeToCombo;
+
+    //Amount of time after the player initiates an attack where a new swing will not result in a combo.
+    [SerializeField]
+    float timeToResetCombo;
+
+    public static bool playerIsIdle;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +50,7 @@ public class PlayerCombatController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
 
         //Get all weapons that are children of the weapon container.
-        int i = 0;
+        //int i = 0;
         /*foreach(Transform child in weaponContainer.transform)
         {
             weaponObjects[i] = child.gameObject;
@@ -59,14 +65,17 @@ public class PlayerCombatController : MonoBehaviour
     {
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            canCombo = false;
-            weaponSwingCombo = 0;
+            playerIsIdle = true;
 
             if (Input.GetMouseButtonDown(0))
             {
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
                 StartCoroutine(WaitForCombo());
+                StopCoroutine(WaitForResetCombo());
+                StartCoroutine(WaitForResetCombo());
             }
+
+            //For now, weapon switching is disabled until we implement the other weapons.
 
             /*if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -99,10 +108,17 @@ public class PlayerCombatController : MonoBehaviour
         }
         else
         {
-            if(Input.GetMouseButtonDown(0) && weaponSwingCombo == 1 && canCombo)
+            playerIsIdle = false;
+        }
+
+        if(canCombo && Input.GetMouseButtonDown(0))
+        {
+            if (weaponSwingCombo == 1)
             {
                 playerAnim.SetTrigger("Combo");
-                weaponSwingCombo = 2;
+                canCombo = false;
+                weaponSwingCombo = 0;
+                StopAllCoroutines();
             }
         }
     }
@@ -112,5 +128,12 @@ public class PlayerCombatController : MonoBehaviour
         yield return new WaitForSeconds(timeToCombo);
         canCombo = true;
         weaponSwingCombo++;
+    }
+
+    public IEnumerator WaitForResetCombo()
+    {
+        yield return new WaitForSeconds(timeToResetCombo);
+        canCombo = false;
+        weaponSwingCombo = 0;
     }
 }

@@ -48,34 +48,40 @@ public class RotationController : MonoBehaviour
 
 
   void FixedUpdate() {
-    /*mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    Vector2 direction = mousePosition - transform.position;
-    // This is used to detect where the player should be facing.
-    angle = Vector2.SignedAngle(Vector2.down, direction) + 270;
+        /*mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mousePosition - transform.position;
+        // This is used to detect where the player should be facing.
+        angle = Vector2.SignedAngle(Vector2.down, direction) + 270;
 
-    transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
-    if (GameManager.isControllerUsed)
-    {
-      Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-      angle = Mathf.Atan2(input.x,input.y) * Mathf.Rad2Deg;
-      directionVec = new Vector3(input.x, 0, input.y);
-      directionVec.Normalize();
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
+        if (PlayerCombatController.playerIsIdle)
+        {
 
-      if ( Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2) {
-        transform.rotation = Quaternion.Euler (0, angle, 0);
-      }
+            if (GameManager.isControllerUsed)
+            {
+                Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+                angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+                directionVec = new Vector3(input.x, 0, input.y);
+                directionVec.Normalize();
 
-    }
-    else {
-      float h = Input.mousePosition.x - Screen.width / 2;
-      float v = Input.mousePosition.y - Screen.height / 2;
-      directionVec = new Vector3(h, 0, v);
-      directionVec.Normalize();
+                if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
+                {
+                    transform.rotation = Quaternion.Euler(0, angle, 0);
+                }
 
-      float angle = -Mathf.Atan2(v,h) * Mathf.Rad2Deg;
+            }
+            else
+            {
+                float h = Input.mousePosition.x - Screen.width / 2;
+                float v = Input.mousePosition.y - Screen.height / 2;
+                directionVec = new Vector3(h, 0, v);
+                directionVec.Normalize();
 
-      transform.rotation = Quaternion.Euler (0, angle, 0);
-    }
+                float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+
+                transform.rotation = Quaternion.Euler(0, angle, 0);
+            }
+        }
 
 
   }

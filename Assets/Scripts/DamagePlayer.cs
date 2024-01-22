@@ -12,7 +12,7 @@ public class DamagePlayer : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerAttackController>().health -= damage;
+            other.gameObject.GetComponent<PlayerCombatController>().health -= damage;
          
         }
     }

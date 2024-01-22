@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerAttackHitbox : MonoBehaviour
 {
-    PlayerAttackController controllerScript;
+    PlayerCombatController controllerScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        controllerScript = GetComponentInParent<PlayerAttackController>();
+        controllerScript = GetComponentInParent<PlayerCombatController>();
     }
 
     // Update is called once per frame

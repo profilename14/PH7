@@ -33,7 +33,8 @@ public class EnemyBehavior : MonoBehaviour
     // i.e. Impulse, regular walking, etc.
     public Transform target;
 
-    public MoveType MovementType = MoveType.Walk;
+    public MoveMode MovementMode = MoveMode.Walk;
+    public float TurnRate = 360f;
     
     // Walk Move Type
     public float WalkSpeed = 0.005f;
@@ -44,6 +45,7 @@ public class EnemyBehavior : MonoBehaviour
     
     // Pathfinding
     private float NextWaypointDistance = 3;
+    private bool FacingPlayer;
     private bool ReachedPathEnd;
     private Path path;
     private int CurrentWaypoint = 0;
@@ -51,10 +53,11 @@ public class EnemyBehavior : MonoBehaviour
     private State CurrentState = State.Idle;
     private Vector3 LastKnownPos;
     private Seeker seeker;
+    private bool ImpulseActive;
 
     [Header("ATTACKS")]
     private Coroutine PlayerDetector;
-    private Coroutine PlayerPursuit;
+    private Coroutine PursueImpulse;
 
 
     public void OnPathComplete(Path p)
@@ -75,8 +78,8 @@ public class EnemyBehavior : MonoBehaviour
     {
         CurrentHealth = StartHealth;
         CurrentPH = StartPH;
+        ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
-        //PlayerPursuit = StartCoroutine(PursuePlayer());
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -84,12 +87,8 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        //Rotation();
+        Rotation();
         Movement();
-        if (!PlayerDetected && ReachedPathEnd)
-        {
-           // StopCoroutine(PursuePlayer());
-        }
 
         switch (CurrentState)
         {
@@ -128,9 +127,10 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Rotation()
     {
-        Vector3 relativePos = target.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-        transform.rotation = rotation;
+        var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
+        toTarget.y = 0f;
+
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), Time.deltaTime * TurnRate);
     }
     private void Movement()
     {
@@ -159,22 +159,27 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
 
-        switch (MovementType)
+        switch (MovementMode)
         {
-            case MoveType.Walk:
-                transform.position = Vector3.MoveTowards(transform.position, path.vectorPath[CurrentWaypoint], WalkSpeed);
+            case MoveMode.Walk:
+                if (ImpulseActive)
+                {
+                    StopCoroutine(PursueImpulse);
+                }
+
+                GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                
+                //GetComponent<Rigidbody>.AddForce();
                 break;
 
-            case MoveType.Impulse:
-                if (!ReachedPathEnd)
+            case MoveMode.Impulse:
+                if (!ImpulseActive)
                 {
-                    Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
-                    Vector3 velocity = dir * thrust;
-
-                    GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
+                    PursueImpulse = StartCoroutine(ImpulsePursuit());
                 }
                 break;
         }
+        
     }
 
     public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
@@ -217,52 +222,42 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator PursuePlayer()
+    IEnumerator ImpulsePursuit()
     {
+        ImpulseActive = true;
+
+        
+
+
+
         while (true)
         {
-            Debug.Log("Moving to player");
             yield return new WaitForSeconds(ThrustDelay);
-
-            ReachedPathEnd = false;
-
-            float DistanceToWaypoint;
-
-            while (true)
+            float angle = 10;
+            if (Vector3.Angle(transform.forward, (path.vectorPath[CurrentWaypoint] - transform.position)) < angle)
             {
-                DistanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[CurrentWaypoint]);
-                if (DistanceToWaypoint < NextWaypointDistance)
+                if (!ReachedPathEnd)
                 {
-                    if (CurrentWaypoint + 1 < path.vectorPath.Count)
-                    {
-                        CurrentWaypoint++;
-                    }
-                    else
-                    {
-                        ReachedPathEnd = true;
-                        break;
-                    }
+                    Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
+                    Vector3 velocity = dir * thrust;
+
+                    GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
                 }
                 else
                 {
-                    break;
+                    // Code to inch closer to the final waypoint
                 }
             }
 
-            if (!ReachedPathEnd)
-            {
-                Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
-                Vector3 velocity = dir * thrust;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 20f, Color.yellow, 1f);
+            Debug.Log("Moving to player");
 
-                GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
-            }
 
 
         }
     }
-
 }
 
 // States
 public enum State { Inactive, Idle, Seek, Follow, Attack }
-public enum MoveType { Impulse, Walk }
+public enum MoveMode { Impulse, Walk }

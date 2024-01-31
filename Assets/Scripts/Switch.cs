@@ -22,6 +22,6 @@ public class Switch : MonoBehaviour
         }
         objectToActivate.Activate();
 
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Debug.Log("Activated object!");
     }
 }

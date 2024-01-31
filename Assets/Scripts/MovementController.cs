@@ -523,4 +523,24 @@ public class MovementController : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+
+        if (other.CompareTag("PhaseableWallController"))
+        {
+            if (isDashing) { // Phase through gates, but only if dashing.
+              //Debug.Log("DISABLINGCOLLISION");
+              Physics.IgnoreCollision(
+                other.gameObject.GetComponent<PhaseableWallController>().linkedCollider,
+                GetComponent<Collider>(), true);
+            } else {
+              //Debug.Log("ENABLINGCOLLISION");
+              Physics.IgnoreCollision(
+                other.gameObject.GetComponent<PhaseableWallController>().linkedCollider,
+                GetComponent<Collider>(), false);
+            }
+
+        }
+    }
+
 }

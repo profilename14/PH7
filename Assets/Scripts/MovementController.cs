@@ -62,11 +62,11 @@ public class MovementController : MonoBehaviour
 
     // Dashing Logic
     public bool isDashing = false;
-    public float dashSpeed = 0.025f;
+    public float dashSpeed = 60;
 
-    [SerializeField] private float dashDuration = 0.45f;
+    [SerializeField] private float dashDuration = 0.6f;
     private float DashTimer = 0.0f;
-    [SerializeField] private float DashCooldown = 2.45f;
+    [SerializeField] private float DashCooldown = 0.6f;
     private float dashCooldownTimer = 0.0f;
     private Vector3 dashDirection;
 

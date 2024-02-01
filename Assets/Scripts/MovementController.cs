@@ -79,9 +79,18 @@ public class MovementController : MonoBehaviour
     private bool dashEnding = false;
 
 
+    private float knockbackDuration = 0.6f; // Yes I'm actually programming knockback with dash code
+    private float knockbackTimer = 0.0f;    // Kinda forced to deal with hand coding this do to ADSR movement
+    private float knockbackPower = 0.0f;    // Oof
+    private Vector3 knockbackSource;
+    public bool isBeingKnockedBack = false;
+    [SerializeField] private AnimationCurve Knockback;
+
+
     // All velocities in fixedUpdate are stored before they're all applied at once.
     private Vector3 moveVelocity;
     private Vector3 dashVelocity;
+    private Vector3 knockbackVelocity;
 
 
     void Start()
@@ -92,6 +101,7 @@ public class MovementController : MonoBehaviour
 
         moveVelocity = new Vector3(0, 0, 0);
         dashVelocity = new Vector3(0, 0, 0);
+        knockbackVelocity = new Vector3(0, 0, 0);
     }
 
     // Update is called once per frame.
@@ -118,6 +128,7 @@ public class MovementController : MonoBehaviour
           dashVelocity = new Vector3(0, 0, 0);
           DashTimer = 0;
         }
+
 
 
 
@@ -150,6 +161,21 @@ public class MovementController : MonoBehaviour
 
             DashTimer += Time.deltaTime;
           }
+        }
+
+        if (isBeingKnockedBack) {
+          if (knockbackTimer >= knockbackDuration) {
+            knockbackTimer = 0;
+            isBeingKnockedBack = false;
+            knockbackVelocity = new Vector3(0, 0, 0);
+          } else {
+            float curKnockbackVelocity = Knockback.Evaluate(knockbackTimer / knockbackDuration);
+            Vector3 direction = -((knockbackSource - transform.position).normalized);
+            knockbackVelocity = direction * curKnockbackVelocity * knockbackPower;
+
+            knockbackTimer += Time.deltaTime;
+          }
+
         }
 
         if (GameManager.isControllerUsed) {
@@ -214,11 +240,9 @@ public class MovementController : MonoBehaviour
 
 
         // !!This part is responsible for all actual movement!!
-        if (isDashing && !dashEnding) {
-          rigidbody.velocity = dashVelocity;
-        } else {
-          rigidbody.velocity = moveVelocity + dashVelocity;
-        }
+
+        rigidbody.velocity = moveVelocity + dashVelocity + knockbackVelocity;
+
 
 
     }
@@ -557,6 +581,25 @@ public class MovementController : MonoBehaviour
             }
 
         }
+    }
+
+    // Call this with an origin transform.position to push Typhis around
+    // a power of 4 is probably strong enough for an explosion, 0.5 perhaps a scuttler.
+    public void applyKnockback(Vector3 source, float power) {
+      // Big limitation: only one knockback source at once. Should we reset?
+      // if we JUST got exploded and then immediately snipped by a crab, then no
+      if (isBeingKnockedBack) {
+        float curKnockbackVelocity = Knockback.Evaluate(knockbackTimer / knockbackDuration);
+        if (knockbackPower * curKnockbackVelocity > power) { // if old x 0-100% > new
+          Debug.Log(knockbackPower * curKnockbackVelocity +" vs " + power + "w/" + curKnockbackVelocity);
+          return;
+        }
+      }
+      knockbackSource = source;
+      isBeingKnockedBack = true;
+      knockbackPower = power * 10;
+      knockbackVelocity = new Vector3(0, 0, 0);
+      knockbackTimer = 0;
     }
 
 }

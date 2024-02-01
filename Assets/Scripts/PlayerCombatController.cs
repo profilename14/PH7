@@ -41,6 +41,12 @@ public class PlayerCombatController : MonoBehaviour
     //Amount of time after the player initiates an attack where a new swing will not result in a combo.
     [SerializeField]
     float timeToResetCombo;
+    
+    // Spell Stuff
+    [SerializeField] private GameObject waveSpellAnchor;
+    [SerializeField] private GameObject waveSpellPrefab;
+    [SerializeField] private float waveSpellSpreadDegrees;
+    [SerializeField] private float waveDuration;
 
     public static bool playerIsIdle;
 
@@ -66,6 +72,25 @@ public class PlayerCombatController : MonoBehaviour
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
+            
+            // Spell
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Vector3 normalAxis = Vector3.up; // maybe replace with "right" or "left" vector
+                Vector3 spawnPos = this.waveSpellAnchor.transform.position;
+                float degreeOffset = waveSpellSpreadDegrees / 2;
+                var waveSpellCenter = Instantiate(waveSpellPrefab, spawnPos, 
+                    Quaternion.identity);
+                Destroy(waveSpellCenter, waveDuration);
+                var waveSpellOff1 = Instantiate(waveSpellPrefab, spawnPos, 
+                    Quaternion.AngleAxis(-degreeOffset, normalAxis));
+                Destroy(waveSpellCenter, waveDuration);
+                var waveSpellOff2 = Instantiate(waveSpellPrefab, spawnPos, 
+                    Quaternion.AngleAxis(degreeOffset, normalAxis));
+                Destroy(waveSpellCenter, waveDuration);
+                
+                return;
+            }
 
             if (Input.GetMouseButtonDown(0))
             {

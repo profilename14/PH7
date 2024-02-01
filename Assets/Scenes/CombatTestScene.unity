@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1000,6 +1000,7 @@ MonoBehaviour:
   WalkSpeed: 1
   thrust: 30
   ThrustDelay: 0.75
+  NextWaypointDistance: 3
 --- !u!136 &380468891
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1565,6 +1566,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   DashAftermathPercent: 0.8
+  isBeingKnockedBack: 0
+  Knockback:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &575780030
 Transform:
   m_ObjectHideFlags: 0
@@ -4308,6 +4316,10 @@ MonoBehaviour:
   weaponSwingCombo: 0
   timeToCombo: 0.2
   timeToResetCombo: 0.7
+  waveSpellAnchor: {fileID: 0}
+  waveSpellPrefab: {fileID: 1201354880074791885, guid: 7e22d4cb684cb45539c9d50897da7a16, type: 3}
+  waveSpellSpreadDegrees: 0
+  waveDuration: 0
 --- !u!1 &4131970235876166410
 GameObject:
   m_ObjectHideFlags: 0

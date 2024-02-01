@@ -105,6 +105,8 @@ public class MovementController : MonoBehaviour
 
         // DASH LOGIC:
 
+        // Dash should probably be disabled during attacks.
+
         if (dashCooldownTimer >= 0) { // Decrease cooldown
           dashCooldownTimer -= Time.deltaTime;
         }
@@ -528,15 +530,29 @@ public class MovementController : MonoBehaviour
 
         if (other.CompareTag("PhaseableWallController"))
         {
-            if (isDashing) { // Phase through gates, but only if dashing.
+            bool dashable = other.GetComponent<ColliderLink>().isDashable;
+            bool phBased = other.GetComponent<ColliderLink>().usesPH;
+            float minPH = other.GetComponent<ColliderLink>().minPH;
+            float maxPH = other.GetComponent<ColliderLink>().maxPH;
+            float playerPH = gameObject.GetComponent<PlayerStats>().ph;
+            Debug.Log(playerPH);
+
+            if (isDashing && dashable) { // Phase through gates, but only if dashing.
               //Debug.Log("DISABLINGCOLLISION");
               Physics.IgnoreCollision(
-                other.gameObject.GetComponent<PhaseableWallController>().linkedCollider,
+                other.gameObject.GetComponent<ColliderLink>().linkedCollider,
                 GetComponent<Collider>(), true);
-            } else {
+            } else if (phBased
+                       && playerPH < maxPH
+                       && playerPH > minPH) {
+                   //Debug.Log("DISABLINGCOLLISION");
+               Physics.IgnoreCollision(
+                 other.gameObject.GetComponent<ColliderLink>().linkedCollider,
+                 GetComponent<Collider>(), true);
+            } else { // Can't bypass
               //Debug.Log("ENABLINGCOLLISION");
               Physics.IgnoreCollision(
-                other.gameObject.GetComponent<PhaseableWallController>().linkedCollider,
+                other.gameObject.GetComponent<ColliderLink>().linkedCollider,
                 GetComponent<Collider>(), false);
             }
 

@@ -28,8 +28,11 @@ public class PlayerAttackHitbox : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Switch"))
         {
-            Debug.Log("SWITCH");
             other.gameObject.GetComponent<Switch>().Toggle();
+        }
+        else if (other.gameObject.CompareTag("BreakablePrefabContainer"))
+        {
+            other.gameObject.GetComponent<BreakablePrefabContainer>().Break();
         }
     }
 }

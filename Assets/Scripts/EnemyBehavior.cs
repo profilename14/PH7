@@ -44,7 +44,7 @@ public class EnemyBehavior : MonoBehaviour
     public float ThrustDelay = .75f;
 
     // Pathfinding
-    private float NextWaypointDistance = 3;
+    public float NextWaypointDistance = 3;
     private bool FacingPlayer;
     private bool ReachedPathEnd;
     private Path path;
@@ -130,10 +130,11 @@ public class EnemyBehavior : MonoBehaviour
         if (path == null) { // spam preventer
           return;
         }
+        
         var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
         toTarget.y = 0f;
 
-        // If statement (which is likely to be a little slow) required to prevent a different "zero" spam error.
+        //If statement (which is likely to be a little slow) required to prevent a different "zero" spam error.
         if (toTarget != new Vector3(0,0,0)) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), Time.deltaTime * TurnRate);
         }
@@ -172,6 +173,8 @@ public class EnemyBehavior : MonoBehaviour
         switch (MovementMode)
         {
             case MoveMode.Walk:
+                NextWaypointDistance = 1;
+                
                 if (ImpulseActive)
                 {
                     StopCoroutine(PursueImpulse);
@@ -184,6 +187,8 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case MoveMode.Impulse:
+                NextWaypointDistance = 3;
+
                 if (!ImpulseActive)
                 {
                     PursueImpulse = StartCoroutine(ImpulsePursuit());
@@ -212,23 +217,23 @@ public class EnemyBehavior : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(DetectionDelay);
+            
+            seeker = GetComponent<Seeker>();
 
             Ray ray = new Ray(transform.position, target.transform.position - transform.position);
             RaycastHit hit;
-            Physics.Raycast(ray, out hit);
+            Physics.Raycast(ray, out hit, 50f, 1 << LayerMask.NameToLayer("BlocksVision"));
 
-            if (hit.collider.tag == "Player")
+            if (hit.collider)
             {
-                seeker = GetComponent<Seeker>();
-                seeker.StartPath(transform.position, target.position, OnPathComplete);
-                LastKnownPos = target.position;
-                PlayerDetected = true;
+                seeker.StartPath(transform.position, LastKnownPos, OnPathComplete);
+                PlayerDetected = false;
             }
             else
             {
-                seeker = GetComponent<Seeker>();
-                seeker.StartPath(transform.position, LastKnownPos, OnPathComplete);
-                PlayerDetected = false;
+                seeker.StartPath(transform.position, target.position, OnPathComplete);
+                LastKnownPos = target.position;
+                PlayerDetected = true;
             }
         }
     }

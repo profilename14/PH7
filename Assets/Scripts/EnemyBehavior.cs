@@ -35,14 +35,14 @@ public class EnemyBehavior : MonoBehaviour
 
     public MoveMode MovementMode = MoveMode.Walk;
     public float TurnRate = 360f;
-    
+
     // Walk Move Type
     public float WalkSpeed = 0.005f;
 
     // Impulse Move Type
     public float thrust = 30f;
     public float ThrustDelay = .75f;
-    
+
     // Pathfinding
     private float NextWaypointDistance = 3;
     private bool FacingPlayer;
@@ -127,10 +127,17 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Rotation()
     {
+        if (path == null) { // spam preventer
+          return;
+        }
         var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
         toTarget.y = 0f;
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), Time.deltaTime * TurnRate);
+        // If statement (which is likely to be a little slow) required to prevent a different "zero" spam error.
+        if (toTarget != new Vector3(0,0,0)) {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), Time.deltaTime * TurnRate);
+        }
+
     }
     private void Movement()
     {
@@ -140,6 +147,9 @@ public class EnemyBehavior : MonoBehaviour
 
         while (true)
         {
+            if (path == null) { // spam prevention
+              break;
+            }
             DistanceToWaypoint = Vector3.Distance(transform.position, path.vectorPath[CurrentWaypoint]);
             if (DistanceToWaypoint < NextWaypointDistance)
             {
@@ -166,9 +176,10 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     StopCoroutine(PursueImpulse);
                 }
+                if (path != null) { // preventing spam
+                  GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                }
 
-                GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
-                
                 //GetComponent<Rigidbody>.AddForce();
                 break;
 
@@ -179,7 +190,7 @@ public class EnemyBehavior : MonoBehaviour
                 }
                 break;
         }
-        
+
     }
 
     public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
@@ -205,8 +216,8 @@ public class EnemyBehavior : MonoBehaviour
             Ray ray = new Ray(transform.position, target.transform.position - transform.position);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
-            
-            if (hit.collider.tag == "Player") 
+
+            if (hit.collider.tag == "Player")
             {
                 seeker = GetComponent<Seeker>();
                 seeker.StartPath(transform.position, target.position, OnPathComplete);
@@ -226,7 +237,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         ImpulseActive = true;
 
-        
+
 
 
 
@@ -234,7 +245,10 @@ public class EnemyBehavior : MonoBehaviour
         {
             yield return new WaitForSeconds(ThrustDelay);
             float angle = 10;
-            if (Vector3.Angle(transform.forward, (path.vectorPath[CurrentWaypoint] - transform.position)) < angle)
+            if (path == null) {
+              // Lets just wait for now.to avoid spam
+            }
+            else if (Vector3.Angle(transform.forward, (path.vectorPath[CurrentWaypoint] - transform.position)) < angle)
             {
                 if (!ReachedPathEnd)
                 {

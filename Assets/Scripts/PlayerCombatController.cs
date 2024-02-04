@@ -43,13 +43,10 @@ public class PlayerCombatController : MonoBehaviour
 
     public static bool playerIsIdle;
 
-<<<<<<< Updated upstream
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
-=======
     [SerializeField]
     private bool comboResetCoroutineRunning;
->>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()

@@ -1110,16 +1110,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 100
+  StartHealth: 50
   StartPH: 7
   PlayerDetected: 0
   DetectionRadius: 0
   target: {fileID: 575780030}
-  MovementMode: 1
+  MovementMode: 0
   TurnRate: 360
   WalkSpeed: 20
   thrust: 30
   ThrustDelay: 0.75
+  NextWaypointDistance: 1
 --- !u!136 &380468891
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4969,6 +4970,8 @@ MonoBehaviour:
   weaponSwingCombo: 0
   timeToCombo: 0.2
   timeToResetCombo: 0.7
+  waveSpellSpreadDegrees: 60
+  waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
 --- !u!1 &4131970235876166410
 GameObject:
   m_ObjectHideFlags: 0
@@ -6671,6 +6674,46 @@ PrefabInstance:
     - target: {fileID: 3594616225410643312, guid: bade28a7e668ba847a698d75997ad104, type: 3}
       propertyPath: m_Name
       value: Fountain
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[0].value
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[0].inSlope
+      value: 0.01999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[1].inSlope
+      value: 0.01999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[0].outSlope
+      value: 0.01999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[1].outSlope
+      value: 0.01999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987405101435884096, guid: bade28a7e668ba847a698d75997ad104, type: 3}
+      propertyPath: PowerFromDistance.m_Curve.Array.data[1].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 7883856539229147852, guid: bade28a7e668ba847a698d75997ad104, type: 3}
       propertyPath: m_LocalPosition.x

@@ -44,10 +44,15 @@ public class PlayerCombatController : MonoBehaviour
 
     public static bool playerIsIdle;
 
+    [SerializeField] private float waveSpellSpreadDegrees;
+    [SerializeField] private GameObject waveSpellPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
         playerAnim = GetComponent<Animator>();
+
+
 
         //Get all weapons that are children of the weapon container.
         //int i = 0;
@@ -73,6 +78,11 @@ public class PlayerCombatController : MonoBehaviour
                 StartCoroutine(WaitForCombo());
                 StopCoroutine(WaitForResetCombo());
                 StartCoroutine(WaitForResetCombo());
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                FireTripleBlast();
             }
 
             //For now, weapon switching is disabled until we implement the other weapons.
@@ -135,5 +145,20 @@ public class PlayerCombatController : MonoBehaviour
         yield return new WaitForSeconds(timeToResetCombo);
         canCombo = false;
         weaponSwingCombo = 0;
+    }
+
+    private void FireTripleBlast() {
+
+
+        RotationController rotationController = transform.parent.gameObject.GetComponent<RotationController>();
+        Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
+        Vector3 curRotation = rotationController.GetRotationDirection();
+        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+
+        Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
+        Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
+        Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees/2, 0) );
+
+
     }
 }

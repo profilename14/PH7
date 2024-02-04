@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleProjectile : MonoBehaviour
 {
-    [SerializeField] private float lifespan = 2f;
+    [SerializeField] private float lifespan = 1.5f;
     [SerializeField] private float lifespanTimer = 0f;
     [SerializeField] private float speed = 10f;
 
@@ -12,7 +12,7 @@ public class BubbleProjectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+      lifespanTimer = 0f;
     }
 
     // Update is called once per frame
@@ -31,18 +31,29 @@ public class BubbleProjectile : MonoBehaviour
         {
             other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.5f, 0.75f, transform.position);
             Destroy(gameObject);
-        } else {
+        } else if (other.gameObject.CompareTag("Switch")) {
+            other.gameObject.GetComponent<Switch>().Toggle();
+            Destroy(gameObject);
+        } else if (other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Player")) {
             //
+        } else {
+          Destroy(gameObject);
         }
 
     }
-
-    void OnCollisionEnter(Collision other)
+    void OnColliderEnter(Collider other)
     {
-        //if(other.gameObject.CompareTag("Enemy"))
-        //{
+        if(other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.5f, 0.75f, transform.position);
+            Destroy(gameObject);
+        } else if (other.gameObject.CompareTag("Switch")) {
+            other.gameObject.GetComponent<Switch>().Toggle();
+        } else if (other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Player")) {
             //
-        //}
-        //Destroy(gameObject);
+        } else {
+          Destroy(gameObject);
+        }
+
     }
 }

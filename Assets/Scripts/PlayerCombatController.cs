@@ -34,18 +34,22 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField]
     int weaponSwingCombo;
 
-    //Amount of time after the player initiates an attack when they can start the next swing in the combo.
-    [SerializeField]
-    float timeToCombo;
+    //Is the player in interruptible recovery frames of an attack animation?
+    bool inRecovery;
 
-    //Amount of time after the player initiates an attack where a new swing will not result in a combo.
+    //Amount of time after the player enters idle where a new swing will not result in a combo.
     [SerializeField]
     float timeToResetCombo;
 
     public static bool playerIsIdle;
 
+<<<<<<< Updated upstream
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
+=======
+    [SerializeField]
+    private bool comboResetCoroutineRunning;
+>>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -71,13 +75,23 @@ public class PlayerCombatController : MonoBehaviour
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
+            inRecovery = false;
 
-            if (Input.GetMouseButtonDown(0))
+            if(!comboResetCoroutineRunning && canCombo)
             {
-                playerAnim.SetTrigger(equippedWeapon.weaponName);
-                StartCoroutine(WaitForCombo());
-                StopCoroutine(WaitForResetCombo());
                 StartCoroutine(WaitForResetCombo());
+                Debug.Log("Wait for reset combo");
+                comboResetCoroutineRunning = true;
+            }
+
+            if (Input.GetMouseButtonDown(0) && !canCombo)
+            {
+                weaponSwingCombo = 0;
+                canCombo = false;
+                playerAnim.SetTrigger(equippedWeapon.weaponName);
+                comboResetCoroutineRunning = false;
+                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
+                StopCoroutine(WaitForResetCombo());
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -121,30 +135,55 @@ public class PlayerCombatController : MonoBehaviour
             playerIsIdle = false;
         }
 
-        if(canCombo && Input.GetMouseButtonDown(0))
+        if((inRecovery || canCombo) && Input.GetMouseButtonDown(0))
         {
-            if (weaponSwingCombo == 1)
+            canCombo = false;
+            inRecovery = false;
+            StopCoroutine(WaitForResetCombo());
+            comboResetCoroutineRunning = false;
+
+            if (weaponSwingCombo == 0)
             {
                 playerAnim.SetTrigger("Combo");
-                canCombo = false;
+                weaponSwingCombo = 1;
+                playerAnim.SetInteger("Combo Number", 1);
+                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo1));
+            }
+            else if (weaponSwingCombo == 1)
+            {
+                playerAnim.SetTrigger("Combo");
+                weaponSwingCombo = 2;
+                playerAnim.SetInteger("Combo Number", 2);
+                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo2));
+            }
+            else if(weaponSwingCombo == 2)
+            {
                 weaponSwingCombo = 0;
-                StopAllCoroutines();
+                playerAnim.SetTrigger(equippedWeapon.weaponName);
+                comboResetCoroutineRunning = false;
+                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
             }
         }
-    }
-
-    public IEnumerator WaitForCombo()
-    {
-        yield return new WaitForSeconds(timeToCombo);
-        canCombo = true;
-        weaponSwingCombo++;
     }
 
     public IEnumerator WaitForResetCombo()
     {
         yield return new WaitForSeconds(timeToResetCombo);
         canCombo = false;
+        playerAnim.SetInteger("Combo Number", 0);
         weaponSwingCombo = 0;
+        comboResetCoroutineRunning = false;
+    }
+
+    public IEnumerator WaitForRecoveryFrames(float framesToRecovery)
+    {
+        for (int i = 0; i < framesToRecovery; i++)
+        {
+            yield return null;
+        }
+        inRecovery = true;
+        if(weaponSwingCombo != 2) canCombo = true;
+        Debug.Log("Recovery frames");
     }
 
     private void FireTripleBlast() {

@@ -559,7 +559,6 @@ public class MovementController : MonoBehaviour
             float minPH = other.GetComponent<ColliderLink>().minPH;
             float maxPH = other.GetComponent<ColliderLink>().maxPH;
             float playerPH = gameObject.GetComponent<PlayerStats>().ph;
-            Debug.Log(playerPH);
 
             if (isDashing && dashable) { // Phase through gates, but only if dashing.
               //Debug.Log("DISABLINGCOLLISION");

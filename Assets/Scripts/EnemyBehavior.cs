@@ -21,6 +21,9 @@ public class EnemyBehavior : MonoBehaviour
     [Range(0f, 14f)]
     public float StartPH;
     private float CurrentPH;
+    public float RegenPH = 0.33f; // This much H regened toward default per second.
+    private float RegenPHTimer = 0.0f;
+    private float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
 
 
     [Header("DETECTION")]
@@ -90,6 +93,17 @@ public class EnemyBehavior : MonoBehaviour
         Rotation();
         Movement();
 
+        if (RegenPHTimer > 0) {
+          RegenPHTimer -= Time.deltaTime;
+        } else {
+          if (CurrentPH < StartPH) {
+            CurrentPH += RegenPH * Time.deltaTime;
+          } else if (CurrentPH > StartPH) {
+            CurrentPH -= RegenPH * Time.deltaTime;
+          }
+        }
+
+
         switch (CurrentState)
         {
 
@@ -130,7 +144,7 @@ public class EnemyBehavior : MonoBehaviour
         if (path == null) { // spam preventer
           return;
         }
-        
+
         var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
         toTarget.y = 0f;
 
@@ -174,7 +188,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             case MoveMode.Walk:
                 NextWaypointDistance = 1;
-                
+
                 if (ImpulseActive)
                 {
                     StopCoroutine(PursueImpulse);
@@ -200,8 +214,30 @@ public class EnemyBehavior : MonoBehaviour
 
     public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
-        CurrentHealth -= damage;
+
         CurrentPH += ph;
+
+        if (CurrentPH > 14) {
+          CurrentPH = 14;
+        } else if (CurrentPH < 0) {
+          CurrentPH = 0;
+        }
+
+        // pH formula: (1 + 0.057 * x^1.496) times damage
+        float pHDifference = Mathf.Abs(StartPH - CurrentPH);
+        float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+        CurrentHealth -= damage * multiplier;
+        float displayedMultiplier = Mathf.Round(multiplier * 10.0f) * 0.1f; // Rounded to 1 decimal
+
+        if (ph != 0) {
+          RegenPHTimer = RegenPHCooldown;
+        }
+
+        if (damage > 0) {
+          Debug.Log("Damage: " + damage + " w/ multiplier " + displayedMultiplier  + " to pH of " + pHDifference + "Dif");
+
+        }
+
 
         Vector3 dir = -((sourcePos - transform.position).normalized);
         Vector3 velocity = dir * knockback;
@@ -217,7 +253,7 @@ public class EnemyBehavior : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(DetectionDelay);
-            
+
             seeker = GetComponent<Seeker>();
 
             Ray ray = new Ray(transform.position, target.transform.position - transform.position);

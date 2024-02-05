@@ -98,8 +98,14 @@ public class EnemyBehavior : MonoBehaviour
         } else {
           if (CurrentPH < StartPH) {
             CurrentPH += RegenPH * Time.deltaTime;
+            if (CurrentPH > StartPH) {
+              CurrentPH = StartPH;
+            }
           } else if (CurrentPH > StartPH) {
             CurrentPH -= RegenPH * Time.deltaTime;
+            if (CurrentPH < StartPH) {
+              CurrentPH = StartPH;
+            }
           }
         }
 

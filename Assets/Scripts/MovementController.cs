@@ -76,7 +76,7 @@ public class MovementController : MonoBehaviour
     // still be invulnerable, and still have momentum.
     // At this point the dash animation starts to end and the player is soon also able to attack.
     [SerializeField] private float DashAftermathPercent = 0.80f;
-    private bool dashEnding = false;
+    public bool dashEnding = false;
 
 
     private float knockbackDuration = 0.6f; // Yes I'm actually programming knockback with dash code

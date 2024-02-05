@@ -326,6 +326,27 @@ public class EnemyBehavior : MonoBehaviour
     public float getCurPH() {
       return CurrentPH;
     }
+
+    // For dash pH increase/damage
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            // detect if the player is dashing. The aftermath does less damage.
+            // Primarily increases pH and has high knockback.
+            if (other.gameObject.GetComponent<MovementController>().isDashing) {
+              if (!other.gameObject.GetComponent<MovementController>().dashEnding)
+              {
+                TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
+              }
+              else
+              {
+                TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
+              }
+            }
+
+        }
+    }
 }
 
 // States

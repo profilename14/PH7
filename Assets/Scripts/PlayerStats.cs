@@ -46,6 +46,11 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
+      bool isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
+      if (isPlayerDashing) {
+        return;
+      }
+
       ph -= phChange;
 
       if (ph > PH_DEFAULT) {

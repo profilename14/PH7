@@ -45,6 +45,9 @@ public class PlayerCombatController : MonoBehaviour
 
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
+    [SerializeField] private float waveSpellCooldown = 0.42f;
+    private float castTimer = 0f;
+
     [SerializeField]
     private bool comboResetCoroutineRunning;
 
@@ -69,6 +72,7 @@ public class PlayerCombatController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
@@ -94,6 +98,10 @@ public class PlayerCombatController : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 FireTripleBlast();
+            }
+            if (castTimer > 0)
+            {
+              castTimer -= Time.deltaTime;
             }
 
             //For now, weapon switching is disabled until we implement the other weapons.
@@ -184,7 +192,11 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void FireTripleBlast() {
-
+        if (castTimer > 0) {
+          return;
+        } else {
+          castTimer = waveSpellCooldown;
+        }
 
         RotationController rotationController = transform.parent.gameObject.GetComponent<RotationController>();
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();

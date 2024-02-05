@@ -44,4 +44,25 @@ public class PlayerStats : MonoBehaviour
       healthBar.value= health;
       PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
     }
+
+    public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
+      ph -= phChange;
+
+      if (ph > PH_DEFAULT) {
+        ph = PH_DEFAULT;
+      } else if (ph < 0) {
+        ph = 0;
+      }
+
+      float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
+      float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+      health -= damage * multiplier;
+
+      if (health < 0) {
+        Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
+      }
+
+      gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
+
+    }
 }

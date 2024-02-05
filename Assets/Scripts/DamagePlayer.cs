@@ -12,8 +12,7 @@ public class DamagePlayer : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerStats>().health -= damage; // Seems stats are in combat controller and this?
-        
+            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, 0, gameObject.transform.position, 2.5f);
         }
     }
 }

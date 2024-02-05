@@ -9,4 +9,9 @@ public class WeaponStats : ScriptableObject
     public float damage;
     public float phDamage;
     public float knockback;
+
+    [Header("Frames Until Recovery Frames")]
+    public float t_combo0;
+    public float t_combo1;
+    public float t_combo2;
 }

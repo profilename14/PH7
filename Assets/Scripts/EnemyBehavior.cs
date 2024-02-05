@@ -70,7 +70,7 @@ public class EnemyBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("Error in Pathing:" + p.error);
+            //Debug.Log("Error in Pathing:" + p.error);
         }
     }
 
@@ -269,7 +269,7 @@ public class EnemyBehavior : MonoBehaviour
             }
 
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 20f, Color.yellow, 1f);
-            Debug.Log("Moving to player");
+            //Debug.Log("Moving to player");
 
 
 

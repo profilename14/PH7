@@ -311,6 +311,15 @@ public class EnemyBehavior : MonoBehaviour
 
         }
     }
+
+    public float getHealth() {
+      return CurrentHealth;
+    }
+
+
+    public float getCurPH() {
+      return CurrentPH;
+    }
 }
 
 // States

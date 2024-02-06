@@ -39,6 +39,10 @@ public class EnemyBehavior : MonoBehaviour
     public MoveMode MovementMode = MoveMode.Walk;
     public float TurnRate = 360f;
 
+    // Used by war striders. Might turn into a special behavior id later.
+    public bool doubleDash = false;
+    private bool dashCombo = false; // Used to tell if the second dash should happen sooner.
+
     // Walk Move Type
     public float WalkSpeed = 0.005f;
 
@@ -90,8 +94,10 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        Rotation();
-        Movement();
+        if (CurrentState != State.Idle) { // If the enemy hasnt seen the player
+          Rotation();
+          Movement();
+        }
 
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
@@ -303,6 +309,18 @@ public class EnemyBehavior : MonoBehaviour
                     Vector3 velocity = dir * thrust;
 
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
+
+                    if (doubleDash) { // If we're a war strider
+                      if (dashCombo == false) { // If we did an initial dash
+                        ThrustDelay = ThrustDelay / 1.5f;
+                        TurnRate = TurnRate * 2.5f;
+                        dashCombo = true;
+                      } else { // If we're wrapping up our second dash.
+                        ThrustDelay = ThrustDelay * 1.5f;
+                        TurnRate = TurnRate / 2.5f;
+                        dashCombo = false;
+                      }
+                    }
                 }
                 else
                 {
@@ -332,6 +350,9 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            // For debug: Running into an enemy wakes it up if has no door to guard.
+            AlertEnemy();
+
             // detect if the player is dashing. The aftermath does less damage.
             // Primarily increases pH and has high knockback.
             if (other.gameObject.GetComponent<MovementController>().isDashing) {
@@ -346,6 +367,10 @@ public class EnemyBehavior : MonoBehaviour
             }
 
         }
+    }
+
+    public void AlertEnemy() { // To be called by any trigger for a door the enemy is guarding.
+        CurrentState = State.Follow;
     }
 }
 

@@ -28,7 +28,7 @@ public class EnemyBehavior : MonoBehaviour
 
     [Header("DETECTION")]
     public bool PlayerDetected = false;
-    public float DetectionRadius;
+    //public float DetectionRadius;
     private float DetectionDelay = .25f;
 
     [Header("MOVEMENT")]
@@ -52,11 +52,9 @@ public class EnemyBehavior : MonoBehaviour
 
     // Pathfinding
     public float NextWaypointDistance = 3;
-    private bool FacingPlayer;
     private bool ReachedPathEnd;
     private Path path;
     private int CurrentWaypoint = 0;
-    private float TimeSinceTargetSeen = 0f;
     private State CurrentState = State.Idle;
     private Vector3 LastKnownPos;
     private Seeker seeker;
@@ -94,7 +92,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if (CurrentState != State.Idle) { // If the enemy hasnt seen the player
+        if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
           Rotation();
           Movement();
         }
@@ -290,10 +288,6 @@ public class EnemyBehavior : MonoBehaviour
     {
         ImpulseActive = true;
 
-
-
-
-
         while (true)
         {
             yield return new WaitForSeconds(ThrustDelay);
@@ -329,17 +323,12 @@ public class EnemyBehavior : MonoBehaviour
             }
 
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 20f, Color.yellow, 1f);
-            //Debug.Log("Moving to player");
-
-
-
         }
     }
 
     public float getHealth() {
       return CurrentHealth;
     }
-
 
     public float getCurPH() {
       return CurrentPH;

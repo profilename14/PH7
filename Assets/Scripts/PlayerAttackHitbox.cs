@@ -29,6 +29,7 @@ public class PlayerAttackHitbox : MonoBehaviour
         else if (other.gameObject.CompareTag("Switch"))
         {
             other.gameObject.GetComponent<Switch>().Toggle();
+            //Debug.Log(controllerScript.weaponSwingCombo);
         }
         else if (other.gameObject.CompareTag("BreakablePrefabContainer"))
         {

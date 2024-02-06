@@ -32,9 +32,10 @@ public class PlayerCombatController : MonoBehaviour
     bool updateWeapon;
 
     [SerializeField]
-    int weaponSwingCombo;
+    public int weaponSwingCombo;
 
     //Is the player in interruptible recovery frames of an attack animation?
+    [SerializeField]
     bool inRecovery;
 
     //Amount of time after the player enters idle where a new swing will not result in a combo.
@@ -50,6 +51,11 @@ public class PlayerCombatController : MonoBehaviour
 
     [SerializeField]
     private bool comboResetCoroutineRunning;
+
+    [SerializeField]
+    private bool recoveryCoroutineRunning;
+
+    private float comboResetTimer = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -76,23 +82,41 @@ public class PlayerCombatController : MonoBehaviour
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
-            inRecovery = false;
+            if (!canCombo) {
+              inRecovery = false;
+            }
+             if (canCombo && comboResetTimer <= 0) {
+               comboResetTimer = timeToResetCombo;
+             }
 
-            if(!comboResetCoroutineRunning && canCombo)
+            if (comboResetTimer > 0) {
+              comboResetTimer -= Time.deltaTime;
+              if (comboResetTimer <= 0) {
+                canCombo = false;
+              }
+            }
+
+
+            if(!comboResetCoroutineRunning && canCombo && inRecovery)
             {
-                StartCoroutine(WaitForResetCombo());
-                Debug.Log("Wait for reset combo");
+                //StartCoroutine(WaitForResetCombo());
+                //Debug.Log("Wait for reset combo");
                 comboResetCoroutineRunning = true;
             }
 
             if (Input.GetMouseButtonDown(0) && !canCombo)
             {
+                if (recoveryCoroutineRunning == true) {
+                  // Not doing this right here was what was causing bugs.
+                  return;
+                }
                 weaponSwingCombo = 0;
                 canCombo = false;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
                 comboResetCoroutineRunning = false;
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
                 StopCoroutine(WaitForResetCombo());
+                comboResetTimer = 0;
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -140,19 +164,26 @@ public class PlayerCombatController : MonoBehaviour
             playerIsIdle = false;
         }
 
-        if((inRecovery || canCombo) && Input.GetMouseButtonDown(0))
+        if((inRecovery && canCombo) && Input.GetMouseButtonDown(0))
         {
+            if (recoveryCoroutineRunning == true) {
+              Debug.Log("WARNING: recovery Coroutine running yet inRecovery");
+              return;
+            }
             canCombo = false;
             inRecovery = false;
             StopCoroutine(WaitForResetCombo());
             comboResetCoroutineRunning = false;
+            comboResetTimer = 0;
 
             if (weaponSwingCombo == 0)
             {
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 1;
                 playerAnim.SetInteger("Combo Number", 1);
+
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo1));
+                recoveryCoroutineRunning = true;
             }
             else if (weaponSwingCombo == 1)
             {
@@ -160,35 +191,56 @@ public class PlayerCombatController : MonoBehaviour
                 weaponSwingCombo = 2;
                 playerAnim.SetInteger("Combo Number", 2);
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo2));
+                recoveryCoroutineRunning = true;
             }
             else if(weaponSwingCombo == 2)
             {
                 weaponSwingCombo = 0;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
+                playerAnim.SetInteger("Combo Number", 0);
                 comboResetCoroutineRunning = false;
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
+                recoveryCoroutineRunning = true;
             }
         }
     }
 
     public IEnumerator WaitForResetCombo()
     {
+        /*
         yield return new WaitForSeconds(timeToResetCombo);
-        canCombo = false;
-        playerAnim.SetInteger("Combo Number", 0);
-        weaponSwingCombo = 0;
-        comboResetCoroutineRunning = false;
+        while (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+          yield return new WaitForSeconds(0.1f);
+          Debug.Log("Stuck waiting for idle to combo reset");
+        }
+
+          canCombo = false;
+          playerAnim.SetInteger("Combo Number", 0);
+          weaponSwingCombo = 0;
+          comboResetCoroutineRunning = false;
+
+        */
+        // We can use this later, but its 2am so I'm just gonna make a timer at this point.
+        yield return new WaitForSeconds(0.1f);
     }
 
     public IEnumerator WaitForRecoveryFrames(float framesToRecovery)
     {
+        inRecovery = false;
+        recoveryCoroutineRunning = true;
         for (int i = 0; i < framesToRecovery; i++)
         {
             yield return null;
         }
+
+        recoveryCoroutineRunning = false;
         inRecovery = true;
         if(weaponSwingCombo != 2) canCombo = true;
-        Debug.Log("Recovery frames");
+        //Debug.Log("Recovery frames");
+
+        StartCoroutine(WaitForResetCombo());
+        comboResetCoroutineRunning = true;
     }
 
     private void FireTripleBlast() {
@@ -207,6 +259,16 @@ public class PlayerCombatController : MonoBehaviour
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees/2, 0) );
 
+
+    }
+
+    public bool isAttacking() {
+      if (comboResetTimer > timeToResetCombo * 0.75 || recoveryCoroutineRunning) {
+        return true;
+      }
+      else {
+        return false;
+      }
 
     }
 }

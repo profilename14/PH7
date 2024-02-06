@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -1.75}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.91, z: 1.53}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2332982525933250809}
@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.4377236, y: 1, z: 1}
+  m_Center: {x: 0.6057709, y: 0, z: -0.00000009439673}
 --- !u!114 &6712392256178504615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -952,11 +952,13 @@ MonoBehaviour:
   inAnimation: 0
   canCombo: 0
   weaponSwingCombo: 0
-  timeToResetCombo: 0.7
+  inRecovery: 0
+  timeToResetCombo: 0.5
   waveSpellSpreadDegrees: 17.5
   waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
   waveSpellCooldown: 0.42
   comboResetCoroutineRunning: 0
+  recoveryCoroutineRunning: 0
 --- !u!1 &5026466953158404687 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2149541580070738595, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}

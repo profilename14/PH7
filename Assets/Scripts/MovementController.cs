@@ -59,6 +59,7 @@ public class MovementController : MonoBehaviour
     private Phase CurrentPhaseHorizontal;
 
     private RotationController rotationController;
+    private PlayerCombatController combatController;
 
     // Dashing Logic
     public bool isDashing = false;
@@ -86,6 +87,7 @@ public class MovementController : MonoBehaviour
     private Vector3 knockbackSource;
     public bool isBeingKnockedBack = false;
     [SerializeField] private AnimationCurve Knockback;
+    public float slowdownWhileAttacking = 2;
 
 
     // All velocities in fixedUpdate are stored before they're all applied at once.
@@ -99,6 +101,8 @@ public class MovementController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
 
         rotationController = gameObject.GetComponentInChildren<RotationController>();
+
+        combatController = gameObject.GetComponentInChildren<PlayerCombatController>();
 
         moveVelocity = new Vector3(0, 0, 0);
         dashVelocity = new Vector3(0, 0, 0);
@@ -179,6 +183,12 @@ public class MovementController : MonoBehaviour
             knockbackTimer += Time.deltaTime;
           }
 
+        }
+
+        if (combatController.isAttacking()) {
+          speed = DEFAULT_SPEED / slowdownWhileAttacking;
+        } else {
+          speed = DEFAULT_SPEED;
         }
 
         if (GameManager.isControllerUsed) {

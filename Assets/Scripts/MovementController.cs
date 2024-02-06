@@ -77,6 +77,7 @@ public class MovementController : MonoBehaviour
     // At this point the dash animation starts to end and the player is soon also able to attack.
     [SerializeField] private float DashAftermathPercent = 0.80f;
     public bool dashEnding = false;
+    private bool canMove = true;
 
 
     private float knockbackDuration = 0.6f; // Yes I'm actually programming knockback with dash code
@@ -127,6 +128,7 @@ public class MovementController : MonoBehaviour
           dashDirection = rotationController.directionVec;
           dashVelocity = new Vector3(0, 0, 0);
           DashTimer = 0;
+          canMove = false;
         }
 
 
@@ -145,6 +147,7 @@ public class MovementController : MonoBehaviour
 
           if (DashTimer >= dashDuration * (DashAftermathPercent) && dashEnding == false) {
             dashEnding = true;
+            canMove = true;
             // Set animator to wrap up dash animation
           }
           if (DashTimer >= dashDuration) {
@@ -240,8 +243,12 @@ public class MovementController : MonoBehaviour
 
 
         // !!This part is responsible for all actual movement!!
+        if (canMove) {
+          rigidbody.velocity = moveVelocity + dashVelocity + knockbackVelocity;
+        } else {
+          rigidbody.velocity = dashVelocity + knockbackVelocity;
+        }
 
-        rigidbody.velocity = moveVelocity + dashVelocity + knockbackVelocity;
 
 
 

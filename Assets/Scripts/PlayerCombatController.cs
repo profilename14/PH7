@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
+    RotationController rotationController;
 
     [Header("STATS")]
     public float health;
@@ -61,6 +62,7 @@ public class PlayerCombatController : MonoBehaviour
     void Start()
     {
         playerAnim = GetComponent<Animator>();
+        rotationController = transform.parent.gameObject.GetComponent<RotationController>();
 
 
 
@@ -97,12 +99,12 @@ public class PlayerCombatController : MonoBehaviour
             }
 
 
-            if(!comboResetCoroutineRunning && canCombo && inRecovery)
+            /*if(!comboResetCoroutineRunning && canCombo && inRecovery)
             {
                 //StartCoroutine(WaitForResetCombo());
                 //Debug.Log("Wait for reset combo");
                 comboResetCoroutineRunning = true;
-            }
+            }*/
 
             if (Input.GetMouseButtonDown(0) && !canCombo)
             {
@@ -110,12 +112,13 @@ public class PlayerCombatController : MonoBehaviour
                   // Not doing this right here was what was causing bugs.
                   return;
                 }
+                rotationController.snapToCurrentAngle();
                 weaponSwingCombo = 0;
                 canCombo = false;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
-                comboResetCoroutineRunning = false;
+                //comboResetCoroutineRunning = false;
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
-                StopCoroutine(WaitForResetCombo());
+                //StopCoroutine(WaitForResetCombo());
                 comboResetTimer = 0;
             }
 
@@ -172,9 +175,11 @@ public class PlayerCombatController : MonoBehaviour
             }
             canCombo = false;
             inRecovery = false;
-            StopCoroutine(WaitForResetCombo());
+            //StopCoroutine(WaitForResetCombo());
             comboResetCoroutineRunning = false;
             comboResetTimer = 0;
+
+
 
             if (weaponSwingCombo == 0)
             {
@@ -183,6 +188,7 @@ public class PlayerCombatController : MonoBehaviour
                 playerAnim.SetInteger("Combo Number", 1);
 
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo1));
+                //Debug.Log(equippedWeapon.t_combo1);
                 recoveryCoroutineRunning = true;
             }
             else if (weaponSwingCombo == 1)
@@ -191,6 +197,7 @@ public class PlayerCombatController : MonoBehaviour
                 weaponSwingCombo = 2;
                 playerAnim.SetInteger("Combo Number", 2);
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo2));
+                //Debug.Log(equippedWeapon.t_combo2);
                 recoveryCoroutineRunning = true;
             }
             else if(weaponSwingCombo == 2)
@@ -200,8 +207,10 @@ public class PlayerCombatController : MonoBehaviour
                 playerAnim.SetInteger("Combo Number", 0);
                 comboResetCoroutineRunning = false;
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
+                //Debug.Log(equippedWeapon.t_combo0);
                 recoveryCoroutineRunning = true;
             }
+            rotationController.snapToCurrentAngle();
         }
     }
 
@@ -229,18 +238,23 @@ public class PlayerCombatController : MonoBehaviour
     {
         inRecovery = false;
         recoveryCoroutineRunning = true;
-        for (int i = 0; i < framesToRecovery; i++)
+        float timeToWait = framesToRecovery / 60.0f;
+        while (timeToWait > 0)
         {
+            timeToWait -= Time.deltaTime;
+            //Debug.Log(timeToWait);
             yield return null;
         }
+        // Don't think attacks should be fps dependent: Causes attacks to become sluggish randomly
 
         recoveryCoroutineRunning = false;
         inRecovery = true;
+
         if(weaponSwingCombo != 2) canCombo = true;
         //Debug.Log("Recovery frames");
 
-        StartCoroutine(WaitForResetCombo());
-        comboResetCoroutineRunning = true;
+        //StartCoroutine(WaitForResetCombo());
+        //comboResetCoroutineRunning = true;
     }
 
     private void FireTripleBlast() {
@@ -250,7 +264,7 @@ public class PlayerCombatController : MonoBehaviour
           castTimer = waveSpellCooldown;
         }
 
-        RotationController rotationController = transform.parent.gameObject.GetComponent<RotationController>();
+
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
         Vector3 curRotation = rotationController.GetRotationDirection();
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;

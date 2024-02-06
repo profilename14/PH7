@@ -29,7 +29,7 @@ using UnityEngine;
             targetPosition.z += targetOffsetZ;
             var cameraPosition = this.managedCamera.transform.position;
 
-            var speed = this.target.GetComponent<RotationController>().GetRotationDirection();
+            var speed = this.target.GetComponent<RotationController>().GetRotationDirection() * leadMaxDistance;
 
             //if ( (speed.x < 0.1 || speed.x > -0.1) && (speed.z < 0.1 || speed.z > -0.1) ) {
 

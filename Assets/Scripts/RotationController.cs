@@ -46,6 +46,33 @@ public class RotationController : MonoBehaviour
     return dir;
   }
 
+  public void snapToCurrentAngle() { // calls fixed update code, to be called between attacks and frames
+      if (GameManager.isControllerUsed)
+      {
+          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+          angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+          directionVec = new Vector3(input.x, 0, input.y);
+          directionVec.Normalize();
+
+          if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
+          {
+              transform.rotation = Quaternion.Euler(0, angle, 0);
+          }
+
+      }
+      else
+      {
+          float h = Input.mousePosition.x - Screen.width / 2;
+          float v = Input.mousePosition.y - Screen.height / 2;
+          directionVec = new Vector3(h, 0, v);
+          directionVec.Normalize();
+
+          float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+
+          transform.rotation = Quaternion.Euler(0, angle, 0);
+      }
+  }
+
 
   void FixedUpdate() {
         /*mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -56,31 +83,7 @@ public class RotationController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
         if (PlayerCombatController.playerIsIdle)
         {
-
-            if (GameManager.isControllerUsed)
-            {
-                Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-                angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
-                directionVec = new Vector3(input.x, 0, input.y);
-                directionVec.Normalize();
-
-                if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
-                {
-                    transform.rotation = Quaternion.Euler(0, angle, 0);
-                }
-
-            }
-            else
-            {
-                float h = Input.mousePosition.x - Screen.width / 2;
-                float v = Input.mousePosition.y - Screen.height / 2;
-                directionVec = new Vector3(h, 0, v);
-                directionVec.Normalize();
-
-                float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
-
-                transform.rotation = Quaternion.Euler(0, angle, 0);
-            }
+            snapToCurrentAngle();
         }
 
 

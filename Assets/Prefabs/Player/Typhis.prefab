@@ -452,6 +452,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  slowdownWhileAttacking: 2
 --- !u!54 &5701857661918338420
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -627,8 +628,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleDuration: 2
-  leadSpeed: 1.5
-  leadMaxDistance: 0.5
+  leadSpeed: 2.25
+  leadMaxDistance: 5
   constMove: 0
   targetOffsetX: 0
   targetOffsetZ: -6
@@ -953,7 +954,7 @@ MonoBehaviour:
   canCombo: 0
   weaponSwingCombo: 0
   inRecovery: 0
-  timeToResetCombo: 0.5
+  timeToResetCombo: 0.2
   waveSpellSpreadDegrees: 17.5
   waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
   waveSpellCooldown: 0.42

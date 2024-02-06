@@ -24,7 +24,18 @@ public class PlayerAttackHitbox : MonoBehaviour
         {
             Debug.Log("Hit " + other.gameObject.name);
             Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback, controllerScript.gameObject.transform.position);
+
+            int curAttackState = controllerScript.weaponSwingCombo;
+            if (curAttackState == 0 || curAttackState == 1) {
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage,
+                controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback,
+                controllerScript.gameObject.transform.position);
+            } else if (curAttackState == 2) {
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
+                controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 2.5f,
+                controllerScript.gameObject.transform.position);
+            }
+
         }
         else if (other.gameObject.CompareTag("Switch"))
         {

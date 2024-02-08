@@ -5,7 +5,6 @@ using UnityEngine;
 // Made by Jasper Fadden
 // REsponsible for hving Typhis look at the mouse.
 
-// Credits to Josh McCoy for much of the code implementing Attack-Decay-Sustain-Release movement.
 
 public class RotationController : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public class RotationController : MonoBehaviour
   private Vector3 Direction3D;
 
   bool isControllerUsed = false;
+  public bool canTurn = true;
+
 
   void Update() {
   if (Input.GetKeyDown(KeyCode.C))
@@ -84,7 +85,10 @@ public class RotationController : MonoBehaviour
         if (PlayerCombatController.playerIsIdle)
         {
             snapToCurrentAngle();
-        }
+            canTurn = true;
+         } else {
+            canTurn = false;
+         }
 
 
   }

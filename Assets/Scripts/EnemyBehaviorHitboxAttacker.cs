@@ -18,22 +18,31 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     public float attackRange = 3;
     public float attackTime = 2f;
     protected float attackTimer = 0.0f;
-    protected float speedMultDuringAttack = 0.5f;
+    public float speedMultDuringAttack = 0.5f;
     protected bool canMoveDuringAttack = true;
+    public float rotationMultDuringAttack = 0.5f;
+    protected bool canRotateDuringAttack = true;
 
-    public bool canJump = false;
+    public bool canJump = false;  // ONLY for Vitriclaws
     public float jumpSpeed = 45f;
     public float jumpMaxTime = 1f;
     protected float jumpTimer = 0f;
     public float jumpCooldown = 7.5f;
     public float jumpDistRequirement = 10f;
     protected float jumpCooldownTimer = 0f;
+    public Collider hitbox;
+    public float timeUntilHitbox = 0.3f;
+    public float timeAfterHitbox = 0.8f;
+    private float originalRotation;
+    private float originalSpeed;
 
 
 
     // awake and update can be redefined.
     private void Awake()
     {
+        originalSpeed = WalkSpeed;
+        originalRotation = TurnRate;
         CurrentHealth = StartHealth;
         CurrentPH = StartPH;
         ImpulseActive = false;
@@ -42,6 +51,9 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         if (PlayerDetected) {
           CurrentState = State.Follow;
         }
+
+        isExtendedClass = true;
+        hitbox.enabled = false;
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -56,14 +68,26 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         jumpCooldownTimer -= Time.deltaTime;
       }
 
-      if (CurrentState == State.Follow) { // If the enemy hasn't seen the player
+      if (CurrentState == State.Follow) { // If the enemy has seen the player
         Rotation();
         Movement();
+
+        if(canJump == false)
+        {
+            anim.SetBool("Swim Fast", true);
+        }
+        if(canJump == true)
+        {
+            anim.SetBool("Walking", true);
+        }
+
       } else if (CurrentState == State.Attack) {
         if (canMoveDuringAttack) {
           Movement();
         }
-
+        if (canRotateDuringAttack) {
+          Rotation();
+        }
       }
     }
 
@@ -71,16 +95,37 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     void Update()
     {
 
+      if(canJump == false && CurrentState == State.Idle)
+      {
+          anim.SetBool("Swim Fast", false);
+      }
+      if(canJump == true && CurrentState == State.Idle)
+      {
+          anim.SetBool("Walking", false);
+      }
 
 
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
+          if (attackTimer > attackTime - timeUntilHitbox) {
+            hitbox.enabled = false;
+          }
+          else if (attackTimer < timeAfterHitbox) {
+            hitbox.enabled = false;
+          }
+          else {
+            hitbox.enabled = true;
+          }
         } else if (attackTimer <= 0.0f && CurrentState == State.Attack) {
             CurrentState = State.Follow;
             if (canMoveDuringAttack) {
-              WalkSpeed /= speedMultDuringAttack;
+              WalkSpeed = originalSpeed;
+            }
+            if (canRotateDuringAttack) {
+              TurnRate =originalRotation;
             }
             movesInRotationDir = false;
+            hitbox.enabled = false;
 
         }
 
@@ -178,10 +223,12 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       if (canJump && jumpCooldownTimer <= 0 && distance > jumpDistRequirement) {
 
         if (distanceToTarget != new Vector3(0,0,0)) { // Immediately look to target
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(distanceToTarget), 180f); // Almost can 180
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(distanceToTarget), 360f); // Almost can 180
         }
 
         Debug.Log("Jumping!");
+
+        //anim.SetTrigger("Jump"); Takes like 2 seconds for the animation to actually jump, it can wait.
 
         jumpCooldownTimer = jumpCooldown;
         jumpTimer = jumpMaxTime;
@@ -206,7 +253,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       toTarget.y = 0f;
 
       if (toTarget != new Vector3(0,0,0)) { // Immediately look to target
-          transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), 155f); // Almost can 180
+          //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), 360f); // Almost can 180
       }
 
       movesInRotationDir = true;
@@ -215,9 +262,21 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       if (canMoveDuringAttack) {
         WalkSpeed *= speedMultDuringAttack;
       }
+      if (canRotateDuringAttack) {
+        TurnRate *= rotationMultDuringAttack;
+      }
 
       Debug.Log("Attacking!");
 
+
+      if(canJump == false)
+      {
+          anim.SetTrigger("Attack");
+      }
+      if(canJump == true)
+      {
+          anim.SetTrigger("Attack");
+      }
 
 
     }

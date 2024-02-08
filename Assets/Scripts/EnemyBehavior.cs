@@ -24,6 +24,7 @@ public class EnemyBehavior : MonoBehaviour
     public float RegenPH = 0.33f; // This much H regened toward default per second.
     protected float RegenPHTimer = 0.0f;
     protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
+    protected bool isExtendedClass = false; // Used by anything inheriting EnemyBehavior.
 
 
     [Header("DETECTION")]
@@ -109,7 +110,7 @@ public class EnemyBehavior : MonoBehaviour
           Rotation();
           Movement();
         }
-        
+
         if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
         {
             anim.SetBool("Walking", false);
@@ -216,7 +217,9 @@ public class EnemyBehavior : MonoBehaviour
         {
             case MoveMode.Walk:
                 NextWaypointDistance = 1;
-                anim.SetBool("Walking", true);
+                if (!isExtendedClass) {
+                  anim.SetBool("Walking", true);
+                }
                 if (ImpulseActive)
                 {
                     StopCoroutine(PursueImpulse);

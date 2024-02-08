@@ -6,6 +6,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
     RotationController rotationController;
+    [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
     public float health;
@@ -37,13 +38,14 @@ public class PlayerCombatController : MonoBehaviour
 
     //Is the player in interruptible recovery frames of an attack animation?
     [SerializeField]
-    bool inRecovery;
+    public bool inRecovery;
 
     //Amount of time after the player enters idle where a new swing will not result in a combo.
     [SerializeField]
     float timeToResetCombo;
 
     public static bool playerIsIdle;
+    public static bool inRecoveryPublic;
 
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
@@ -80,7 +82,7 @@ public class PlayerCombatController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        inRecoveryPublic = inRecovery;
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
@@ -124,6 +126,7 @@ public class PlayerCombatController : MonoBehaviour
                 StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
                 //StopCoroutine(WaitForResetCombo());
                 comboResetTimer = 0;
+                playAttackSound();
             }
 
             if (Input.GetMouseButtonDown(1))
@@ -187,6 +190,7 @@ public class PlayerCombatController : MonoBehaviour
 
             if (weaponSwingCombo == 0)
             {
+                playAttackSound();
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 1;
                 playerAnim.SetInteger("Combo Number", 1);
@@ -197,6 +201,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (weaponSwingCombo == 1)
             {
+                playAttackSound();
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 2;
                 playerAnim.SetInteger("Combo Number", 2);
@@ -206,6 +211,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if(weaponSwingCombo == 2)
             {
+                playAttackSound();
                 weaponSwingCombo = 0;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
                 playerAnim.SetInteger("Combo Number", 0);
@@ -288,5 +294,14 @@ public class PlayerCombatController : MonoBehaviour
         return false;
       }
 
+    }
+
+    private void playAttackSound() {
+      if(soundEffects != null)
+        {
+            float pitchMod = Random.Range(-0.25f, 0.25f);
+            soundEffects.pitch = 1 + pitchMod;
+            soundEffects.Play();
+        }
     }
 }

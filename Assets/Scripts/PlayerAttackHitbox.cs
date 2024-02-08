@@ -32,7 +32,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                 controllerScript.gameObject.transform.position);
             } else if (curAttackState == 2) {
               other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
-                controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 2.5f,
+                controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 1.75f,
                 controllerScript.gameObject.transform.position);
             }
 

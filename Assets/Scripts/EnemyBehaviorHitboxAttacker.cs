@@ -21,6 +21,15 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     protected float speedMultDuringAttack = 0.5f;
     protected bool canMoveDuringAttack = true;
 
+    public bool canJump = false;
+    public float jumpSpeed = 45f;
+    public float jumpMaxTime = 1f;
+    protected float jumpTimer = 0f;
+    public float jumpCooldown = 7.5f;
+    public float jumpDistRequirement = 10f;
+    protected float jumpCooldownTimer = 0f;
+
+
 
     // awake and update can be redefined.
     private void Awake()
@@ -39,6 +48,14 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     // That, or they just return to a default idle where they choose a random nearby location and patrol around it.
     void FixedUpdate()
     {
+      if (jumpTimer > 0) {
+        jumpTimer -= Time.deltaTime;
+        return;
+      }
+      if (jumpCooldownTimer > 0) {
+        jumpCooldownTimer -= Time.deltaTime;
+      }
+
       if (CurrentState == State.Follow) { // If the enemy hasn't seen the player
         Rotation();
         Movement();
@@ -55,6 +72,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     {
 
 
+
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
         } else if (attackTimer <= 0.0f && CurrentState == State.Attack) {
@@ -65,6 +83,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
             movesInRotationDir = false;
 
         }
+
+
 
 
         if (CurrentState != State.Idle && CurrentState != State.Attack) {
@@ -151,8 +171,23 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       Vector3 distanceToTarget = target.position - transform.position;
       float distance = distanceToTarget.magnitude;
 
-      if (attackTimer <= 0 && distance < attackRange) {
+      if (attackTimer <= 0 && distance < attackRange && jumpTimer <= 0) {
         makeAttack();
+      }
+
+      if (canJump && jumpCooldownTimer <= 0 && distance > jumpDistRequirement) {
+
+        if (distanceToTarget != new Vector3(0,0,0)) { // Immediately look to target
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(distanceToTarget), 180f); // Almost can 180
+        }
+
+        Debug.Log("Jumping!");
+
+        jumpCooldownTimer = jumpCooldown;
+        jumpTimer = jumpMaxTime;
+        GetComponent<Rigidbody>().AddForce((transform.forward).normalized * jumpSpeed, ForceMode.Impulse);
+
+
       }
 
 
@@ -160,6 +195,10 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     }
 
     private void makeAttack() {
+
+      if (attackTimer > 0 || jumpTimer > 0) {
+        return;
+      }
 
       CurrentState = State.Attack; // lock rotation and movement
 
@@ -170,10 +209,6 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), 155f); // Almost can 180
       }
 
-      if (attackTimer > 0) {
-        return;
-      }
-
       movesInRotationDir = true;
 
       attackTimer = attackTime;
@@ -181,8 +216,9 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         WalkSpeed *= speedMultDuringAttack;
       }
 
-
       Debug.Log("Attacking!");
+
+
 
     }
 }

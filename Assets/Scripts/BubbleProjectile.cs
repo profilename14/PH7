@@ -29,7 +29,7 @@ public class BubbleProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.5f, 0.75f, transform.position);
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 1.5f, 17.5f, transform.position - this.transform.forward);
             Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             other.gameObject.GetComponent<Switch>().Toggle();
@@ -45,7 +45,7 @@ public class BubbleProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 1.5f, 5f, transform.position);
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 1.5f, 17.5f, transform.position - this.transform.forward);
             Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             other.gameObject.GetComponent<Switch>().Toggle();

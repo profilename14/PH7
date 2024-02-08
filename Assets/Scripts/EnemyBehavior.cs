@@ -105,6 +105,15 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
+        if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
+          Rotation();
+          Movement();
+        }
+        
+        if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
+        {
+            anim.SetBool("Walking", false);
+        }
 
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
@@ -207,7 +216,7 @@ public class EnemyBehavior : MonoBehaviour
         {
             case MoveMode.Walk:
                 NextWaypointDistance = 1;
-
+                anim.SetBool("Walking", true);
                 if (ImpulseActive)
                 {
                     StopCoroutine(PursueImpulse);

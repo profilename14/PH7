@@ -84,7 +84,11 @@ public class PlayerCombatController : MonoBehaviour
         if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
             playerIsIdle = true;
-            if (!canCombo) {
+
+            canCombo = false;
+            inRecovery = false;
+
+            /*if (!canCombo) {
               inRecovery = false;
             }
              if (canCombo && comboResetTimer <= 0) {
@@ -96,7 +100,7 @@ public class PlayerCombatController : MonoBehaviour
               if (comboResetTimer <= 0) {
                 canCombo = false;
               }
-            }
+            }/*
 
 
             /*if(!comboResetCoroutineRunning && canCombo && inRecovery)

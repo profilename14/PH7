@@ -49,6 +49,11 @@ public class EnemyBehavior : MonoBehaviour
     // Impulse Move Type
     public float thrust = 30f;
     public float ThrustDelay = .75f;
+    public float randomFactorRange = 0.1f;
+
+    //Animation-related
+    public float animDelay;
+    public Animator anim;
 
     // Pathfinding
     public float NextWaypointDistance = 3;
@@ -290,7 +295,7 @@ public class EnemyBehavior : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(ThrustDelay);
+            yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
             float angle = 10;
             if (path == null) {
               // Lets just wait for now.to avoid spam
@@ -302,6 +307,8 @@ public class EnemyBehavior : MonoBehaviour
                     Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
                     Vector3 velocity = dir * thrust;
 
+                    anim.SetTrigger("Charge");
+                    yield return new WaitForSeconds(animDelay);
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
 
                     if (doubleDash) { // If we're a war strider

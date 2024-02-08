@@ -17,19 +17,19 @@ public class EnemyBehavior : MonoBehaviour
     [Header("STATS")]
     [Min(1f)]
     public float StartHealth;
-    private float CurrentHealth;
+    protected float CurrentHealth;
     [Range(0f, 14f)]
     public float StartPH;
-    private float CurrentPH;
+    protected float CurrentPH;
     public float RegenPH = 0.33f; // This much H regened toward default per second.
-    private float RegenPHTimer = 0.0f;
-    private float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
+    protected float RegenPHTimer = 0.0f;
+    protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
 
 
     [Header("DETECTION")]
     public bool PlayerDetected = false;
     //public float DetectionRadius;
-    private float DetectionDelay = .25f;
+    protected float DetectionDelay = .25f;
 
     [Header("MOVEMENT")]
     // Reminder: Add an option for what movement mode the enemy should use
@@ -42,6 +42,7 @@ public class EnemyBehavior : MonoBehaviour
     // Used by war striders. Might turn into a special behavior id later.
     public bool doubleDash = false;
     private bool dashCombo = false; // Used to tell if the second dash should happen sooner.
+    protected bool movesInRotationDir = false; // used by hitbox attackers to move with attacks.
 
     // Walk Move Type
     public float WalkSpeed = 0.005f;
@@ -57,17 +58,17 @@ public class EnemyBehavior : MonoBehaviour
 
     // Pathfinding
     public float NextWaypointDistance = 3;
-    private bool ReachedPathEnd;
-    private Path path;
-    private int CurrentWaypoint = 0;
-    private State CurrentState = State.Idle;
-    private Vector3 LastKnownPos;
-    private Seeker seeker;
-    private bool ImpulseActive;
+    protected bool ReachedPathEnd;
+    protected Path path;
+    protected int CurrentWaypoint = 0;
+    protected State CurrentState = State.Idle;
+    protected Vector3 LastKnownPos;
+    protected Seeker seeker;
+    protected bool ImpulseActive;
 
     [Header("ATTACKS")]
-    private Coroutine PlayerDetector;
-    private Coroutine PursueImpulse;
+    protected Coroutine PlayerDetector;
+    protected Coroutine PursueImpulse;
 
 
     public void OnPathComplete(Path p)
@@ -95,12 +96,15 @@ public class EnemyBehavior : MonoBehaviour
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
     // That, or they just return to a default idle where they choose a random nearby location and patrol around it.
 
+    void FixedUpdate() {
+      if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
+        Movement();
+        Rotation();
+      }
+    }
+
     void Update()
     {
-        if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
-          Rotation();
-          Movement();
-        }
 
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
@@ -154,7 +158,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private void Rotation()
+    protected void Rotation()
     {
         if (path == null) { // spam preventer
           return;
@@ -169,7 +173,7 @@ public class EnemyBehavior : MonoBehaviour
         }
 
     }
-    private void Movement()
+    protected void Movement()
     {
         ReachedPathEnd = false;
 
@@ -209,7 +213,11 @@ public class EnemyBehavior : MonoBehaviour
                     StopCoroutine(PursueImpulse);
                 }
                 if (path != null) { // preventing spam
-                  GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                  if (movesInRotationDir) {
+                    GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+                  } else {
+                    GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                  }
                 }
 
                 //GetComponent<Rigidbody>.AddForce();
@@ -262,7 +270,7 @@ public class EnemyBehavior : MonoBehaviour
     }
 
 
-    IEnumerator DetectPlayer()
+    protected IEnumerator DetectPlayer()
     {
         // Detects the player's last known location
         while (true)
@@ -289,7 +297,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator ImpulsePursuit()
+    protected IEnumerator ImpulsePursuit()
     {
         ImpulseActive = true;
 

@@ -62,6 +62,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
             if (canMoveDuringAttack) {
               WalkSpeed /= speedMultDuringAttack;
             }
+            movesInRotationDir = false;
 
         }
 
@@ -172,6 +173,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       if (attackTimer > 0) {
         return;
       }
+
+      movesInRotationDir = true;
 
       attackTimer = attackTime;
       if (canMoveDuringAttack) {

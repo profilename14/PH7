@@ -106,11 +106,6 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
-          Rotation();
-          Movement();
-        }
-
         if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
         {
             anim.SetBool("Walking", false);

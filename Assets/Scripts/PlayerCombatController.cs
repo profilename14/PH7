@@ -6,6 +6,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
     RotationController rotationController;
+    PlayerStats playerStats;
     [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
@@ -49,8 +50,18 @@ public class PlayerCombatController : MonoBehaviour
 
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
-    [SerializeField] private float waveSpellCooldown = 0.42f;
-    private float castTimer = 0f;
+    [SerializeField] private float waveSpellCooldown = 0.75f;
+    [SerializeField] private float waveSpellCost = 2f;
+    private float waveCastTimer = 0f;
+
+    [SerializeField] private GameObject rainSpellPrefab;
+    [SerializeField] private float rainSpellCooldown = 10f;
+    private float rainCastTimer = 0f;
+
+    [SerializeField] private GameObject hydroxideSpellPrefab;
+    [SerializeField] private float hydroxideSpellCooldown = 5f;
+    private float hydroxideCastTimer = 0f;
+
 
     [SerializeField]
     private bool comboResetCoroutineRunning;
@@ -65,6 +76,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
+        playerStats = transform.parent.parent.gameObject.GetComponent<PlayerStats>();
 
 
 
@@ -133,9 +145,34 @@ public class PlayerCombatController : MonoBehaviour
             {
                 FireTripleBlast();
             }
-            if (castTimer > 0)
+            if (Input.GetKeyDown(KeyCode.R))
             {
-              castTimer -= Time.deltaTime;
+                SummonRain();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                HydroxideDrain();
+            }
+            if (waveCastTimer > -waveSpellCooldown) // waveCastTimer goes negative for healing phase
+            {
+              waveCastTimer -= Time.deltaTime;
+              playerStats.ph += Time.deltaTime * waveSpellCost * 0.5f;
+              // Fully recover your PH, but only if you fire at half speed
+              // Optionally lower your pH each step for dramatically better fire rate
+            }
+            if (rainCastTimer > 0)
+            {
+              rainCastTimer -= Time.deltaTime;
+              if (playerStats.strongBaseMode) { // lower cooldowns in strong base mode
+                rainCastTimer -= Time.deltaTime / 2;
+              }
+            }
+            if (hydroxideCastTimer > 0)
+            {
+              hydroxideCastTimer -= Time.deltaTime;
+              if (playerStats.strongBaseMode) { // Chain hydroxides especially to keep SBM going
+                hydroxideCastTimer -= Time.deltaTime;
+              }
             }
 
             //For now, weapon switching is disabled until we implement the other weapons.
@@ -249,6 +286,19 @@ public class PlayerCombatController : MonoBehaviour
         inRecovery = false;
         recoveryCoroutineRunning = true;
         float timeToWait = framesToRecovery / 60.0f;
+        float attackSpeedTimeMult = 1;
+        if (playerStats.strongBaseMode) { // Prob a better way to do this
+          attackSpeedTimeMult *= 0.8f;
+        }
+        if (playerStats.rainPower) {
+          if (5.5f < playerStats.ph && playerStats.ph < 8.5f) {
+            attackSpeedTimeMult *= 0.8f; // 0.64 combined
+          } else {
+            attackSpeedTimeMult *= 0.9f;
+          }
+        }
+        timeToWait *= attackSpeedTimeMult;
+
         while (timeToWait > 0)
         {
             timeToWait -= Time.deltaTime;
@@ -268,12 +318,13 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void FireTripleBlast() {
-        if (castTimer > 0) {
+        if (waveCastTimer > 0 || recoveryCoroutineRunning) {
           return;
         } else {
-          castTimer = waveSpellCooldown;
+          waveCastTimer = waveSpellCooldown;
         }
 
+        playerStats.ph -= waveSpellCost;
 
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
         Vector3 curRotation = rotationController.GetRotationDirection();
@@ -282,8 +333,42 @@ public class PlayerCombatController : MonoBehaviour
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees/2, 0) );
+        if (playerStats.strongBaseMode) {
+          Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees, 0) );
+          Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees, 0) );
+        }
 
+    }
 
+    private void SummonRain() {
+      if (rainCastTimer > 0 || recoveryCoroutineRunning) {
+        return;
+      } else {
+        rainCastTimer = rainSpellCooldown;
+      }
+
+      Vector3 rainSpellAnchor = transform.position + rotationController.GetRotationDirection() * 7.5f;
+
+      GameObject rain = Instantiate(rainSpellPrefab, rainSpellAnchor, Quaternion.Euler(0, 0, 0) );
+
+      // Has to be linked to change attack speed and its damage at different pHs
+      rain.GetComponent<RainSpell>().playerStats = playerStats;
+    }
+
+    private void HydroxideDrain() {
+      if (hydroxideCastTimer > 0 || recoveryCoroutineRunning) {
+        return;
+      } else {
+        hydroxideCastTimer = hydroxideSpellCooldown;
+      }
+
+      Vector3 hydroxideSpellAnchor = transform.position + rotationController.GetRotationDirection() * 2f;
+
+      Vector3 curRotation = rotationController.GetRotationDirection();
+      float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+
+      GameObject hydroxide = Instantiate(hydroxideSpellPrefab, this.transform,  worldPositionStays:false );
+      hydroxide.GetComponent<HydroxideSpell>().playerStats = playerStats;
     }
 
     public bool isAttacking() {

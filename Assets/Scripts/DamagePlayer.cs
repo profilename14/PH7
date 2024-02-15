@@ -14,7 +14,7 @@ public class DamagePlayer : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, phDamage, gameObject.transform.position, knockback);
+            other.gameObject.GetComponent<PlayerStats>().playerDamage(0, phDamage, gameObject.transform.position, knockback);
         }
     }
 }

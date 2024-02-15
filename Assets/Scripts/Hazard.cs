@@ -6,7 +6,7 @@ using UnityEngine;
 public class Hazard : MonoBehaviour
 {
     [SerializeField] private float changeInPH;
-    [SerializeField] private float changeInHP;
+    [SerializeField] private float changeInHP; // UNUSED
     [SerializeField] private float maxLifespan = 5;
     private float curLifespan;
     [SerializeField] private bool permanent;
@@ -27,7 +27,7 @@ public class Hazard : MonoBehaviour
               return; // hazard immunity when dashing (you jump over it)
             }
             other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * deltaPhysics;
-            other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
+            //other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
             if (!permanent) {
               curLifespan -= deltaPhysics;
               if (curLifespan < 0) {

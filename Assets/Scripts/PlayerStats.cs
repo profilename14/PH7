@@ -12,10 +12,21 @@ public class PlayerStats : MonoBehaviour
     const float PH_DEFAULT = 14;
 
     public float healthRegen = 3;
-    public float phRegen = 0.33f;
+    public float phRegen = 0.1f;
 
     public Slider healthBar;
     public Slider PHBar;
+
+    private bool dyingState = false;
+    private float deathRate = 25f;
+    [HideInInspector] public bool rainPower = false; // If the player has a rain attack speed boost
+    [HideInInspector] public bool hydroxidePower = false; // If the player just went over 14 with hydroxide drain
+    [HideInInspector] public bool strongBaseMode = false; // If the playe is in their super mode from the above ^
+    private float baseModeNeutralizeSpeed = 1.0f; // Lose 1 ph per second, can be extended with hydroxide drains
+
+    Material NormalSigilMaterial;
+    [SerializeField] Material StrongBaseSigilMaterial; // Mask glows in strong base mode
+    [SerializeField] SkinnedMeshRenderer Mask;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +35,10 @@ public class PlayerStats : MonoBehaviour
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
 
       healthBar.maxValue= HEALTH_MAX;
+
+      Material[] NumMat;
+      NumMat = Mask.materials;
+      NormalSigilMaterial = NumMat[1];
     }
 
     // Update is called once per frame
@@ -35,11 +50,51 @@ public class PlayerStats : MonoBehaviour
         ph = PH_DEFAULT;
       }
 
-      if (health < HEALTH_MAX) {
+      if (health < HEALTH_MAX && !dyingState) {
         health += healthRegen * Time.deltaTime;
       } else if (health > HEALTH_MAX) {
         health = HEALTH_MAX;
       }
+
+      if (hydroxidePower && ! strongBaseMode) {
+        strongBaseMode = true;
+        hydroxidePower = false;
+        // Other stuff to buff attack speed
+        Material[] NumMat;
+        NumMat = Mask.materials;
+        NumMat[1] = StrongBaseSigilMaterial;
+        Mask.materials = NumMat;
+
+      }
+      if (strongBaseMode) {
+        ph -= Time.deltaTime * baseModeNeutralizeSpeed;
+        if (ph <= 7) {
+          strongBaseMode = false;
+          // disable strong base mode
+          Material[] NumMat;
+          NumMat = Mask.materials;
+          NumMat[1] = NormalSigilMaterial;
+          Mask.materials = NumMat;
+        }
+      }
+
+      if (ph <= 0 && ! dyingState) {
+        dyingState = true;
+        ph = -2; // Player has to ph drain or find an alkaline puddle to get back to zero.
+        healthBar.gameObject.transform.localScale = new Vector3(1, 1, 1);
+      }
+
+      if (dyingState) {
+        health -= Time.deltaTime * deathRate;
+        if (health <= 0) {
+          Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
+        }
+        else if (ph > 0) {
+          dyingState = false;
+          healthBar.gameObject.transform.localScale = new Vector3(0, 0, 0);
+        }
+      }
+
 
       healthBar.value= health;
       PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
@@ -56,15 +111,19 @@ public class PlayerStats : MonoBehaviour
       if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
       } else if (ph < 0) {
-        ph = 0;
+        //ph = 0;
       }
 
-      float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
-      float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
-      health -= damage * multiplier;
+      // Health got turned into a timer lol
 
-      if (health < 0) {
-        Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
+      //float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
+      //float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+      //health -= damage * multiplier;
+
+      if (ph <= 0) {
+        dyingState = true;
+        ph = -2; // Player has to ph drain or find an alkaline puddle to get back to zero.
+        healthBar.gameObject.transform.localScale = new Vector3(1, 1, 1);
       }
 
       gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);

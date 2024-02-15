@@ -250,7 +250,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 0
+  knockback: 3
+  phDamage: 1
 --- !u!1 &6652104385415750006
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,9 +363,9 @@ MonoBehaviour:
   TurnRate: 720
   doubleDash: 0
   WalkSpeed: 20
-  thrust: 65
-  ThrustDelay: 0.75
-  randomFactorRange: 0.1
+  thrust: 45
+  ThrustDelay: 1.2
+  randomFactorRange: 0.05
   animDelay: 0.6
   anim: {fileID: 7119561676194265964}
   NextWaypointDistance: 1

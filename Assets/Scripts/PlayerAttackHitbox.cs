@@ -36,6 +36,13 @@ public class PlayerAttackHitbox : MonoBehaviour
                 controllerScript.gameObject.transform.position);
             }
 
+            if (other.gameObject.GetComponent<OnHitVFX>() != null)
+            {
+                OnHitVFX vfx = other.gameObject.GetComponent<OnHitVFX>();
+                vfx.HitVFX();
+            }
+            
+
         }
         else if (other.gameObject.CompareTag("Switch"))
         {

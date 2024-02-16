@@ -1,3 +1,5 @@
+using MoreMountains.Feedbacks;
+using PixelCrushers.DialogueSystem.UnityGUI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +66,7 @@ public class MovementController : MonoBehaviour
     // Dashing Logic
     public bool isDashing = false;
     public float dashSpeed = 60;
+    public bool MouseDash = true;
 
     [SerializeField] private float dashDuration = 0.6f;
     private float DashTimer = 0.0f;
@@ -95,6 +98,8 @@ public class MovementController : MonoBehaviour
     private Vector3 dashVelocity;
     private Vector3 knockbackVelocity;
 
+    public ParticleSystem DashEffect;
+
 
     void Start()
     {
@@ -117,7 +122,6 @@ public class MovementController : MonoBehaviour
         // This gargantuan function accurately get's the player's direction respecting stages for FixedUpdate's translations.
         GetMovementDirection();
 
-
         // DASH LOGIC:
 
         // Dash should probably be disabled during attacks.
@@ -129,11 +133,30 @@ public class MovementController : MonoBehaviour
         if ( Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0
             && rotationController.canTurn ) { // Start dash
           isDashing = true;
-          // set flag in animator
-          dashDirection = rotationController.directionVec;
+            // set flag in animator
+            if (!MouseDash)
+            {
+                var _hDashIntent = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
+                var _vDashIntent = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
+
+                if (_hDashIntent + _vDashIntent == 0f)
+                {
+                    dashDirection = rotationController.directionVec;
+                }
+                else
+                {
+                    dashDirection = new Vector3(_hDashIntent, 0f, _vDashIntent).normalized;
+                }
+            }
+            else
+            {
+                dashDirection = rotationController.directionVec;
+            }
+
           dashVelocity = new Vector3(0, 0, 0);
           DashTimer = 0;
           canMove = false;
+            
         }
 
 
@@ -388,6 +411,8 @@ public class MovementController : MonoBehaviour
         // These are the 4 GetKeyDown Statements for the attack phase.
         // Note that directions and phases aren't updated every frame, only on keydown or keyup mostly.
         // This is to allow time based progression of states in case we decide to use the middle two stages.
+
+
         if (Input.GetKeyDown(KeyCode.D))
         {
             horizontal = 1.0f;
@@ -412,6 +437,10 @@ public class MovementController : MonoBehaviour
             this.ResetTimersVertical();
             this.CurrentPhaseVertical = Phase.Attack;
         }
+
+        // Potential simplification:
+        //horizontal = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
+        //vertical = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
 
         // These are a set of four, complex release statements for each key. The first is described in detail.
         // This first loop only works if it has been enough time since the other horizontal key was pressed,

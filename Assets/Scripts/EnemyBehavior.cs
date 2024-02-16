@@ -71,6 +71,8 @@ public class EnemyBehavior : MonoBehaviour
     protected Coroutine PlayerDetector;
     protected Coroutine PursueImpulse;
 
+    [SerializeField] private Transform PopupPrefab;
+
 
     public void OnPathComplete(Path p)
     {
@@ -178,6 +180,7 @@ public class EnemyBehavior : MonoBehaviour
         }
 
     }
+
     protected void Movement()
     {
         ReachedPathEnd = false;
@@ -265,17 +268,21 @@ public class EnemyBehavior : MonoBehaviour
 
         if (damage > 0) {
           Debug.Log("Damage: " + damage + " w/ multiplier " + displayedMultiplier  + " to pH of " + pHDifference + "Dif");
-
         }
 
+        // Damage Text Popup
+        Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
+        DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
+        popup.Setup(damage);
+        
 
+        // Knockback
         Vector3 dir = -((sourcePos - transform.position).normalized);
         Vector3 velocity = dir * knockback;
         GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
 
         if (CurrentHealth <= 0) Destroy(this.gameObject);
     }
-
 
     protected IEnumerator DetectPlayer()
     {

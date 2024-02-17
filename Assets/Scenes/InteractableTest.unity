@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -922,6 +922,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
+  knockback: 2.5
+  damagePh: 0
+  damageVol: 0
 --- !u!65 &323301349
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1112,14 +1115,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartHealth: 50
   StartPH: 7
+  RegenPH: 0.33
   PlayerDetected: 0
-  DetectionRadius: 0
   target: {fileID: 575780030}
   MovementMode: 0
   TurnRate: 360
+  doubleDash: 0
   WalkSpeed: 20
   thrust: 30
   ThrustDelay: 0.75
+  randomFactorRange: 0.1
+  animDelay: 0
+  anim: {fileID: 0}
   NextWaypointDistance: 1
 --- !u!136 &380468891
 CapsuleCollider:
@@ -1855,6 +1862,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   DashAftermathPercent: 0.8
+  dashEnding: 0
   isBeingKnockedBack: 0
   Knockback:
     serializedVersion: 2
@@ -1916,6 +1924,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  slowdownWhileAttacking: 2
 --- !u!4 &575780030
 Transform:
   m_ObjectHideFlags: 0
@@ -1946,9 +1955,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  ph: 14
+  phSubstance:
+    pH: 7
+    naturalizationVol: 100
   healthRegen: 3
-  phRegen: 0.33
   healthBar: {fileID: 496765467}
   PHBar: {fileID: 2039031121}
 --- !u!1 &746787485
@@ -3177,6 +3187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   directionVec: {x: 0, y: 0, z: 0}
+  canTurn: 1
 --- !u!114 &2011412703 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1189858421679298780, guid: 05525d55e1b8e20498506fbea726875f, type: 3}
@@ -4956,6 +4967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4bbb5e333e8ef43808405ac1bc1eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundEffects: {fileID: 0}
   health: 100
   ph: 7
   weaponScriptableObjects:
@@ -4968,10 +4980,13 @@ MonoBehaviour:
   inAnimation: 0
   canCombo: 0
   weaponSwingCombo: 0
-  timeToCombo: 0.2
+  inRecovery: 0
   timeToResetCombo: 0.7
   waveSpellSpreadDegrees: 60
   waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
+  waveSpellCooldown: 0.42
+  comboResetCoroutineRunning: 0
+  recoveryCoroutineRunning: 0
 --- !u!1 &4131970235876166410
 GameObject:
   m_ObjectHideFlags: 0

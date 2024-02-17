@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // Used by spikes, acid puddles, and alkaline puddles.
 public class Hazard : MonoBehaviour
 {
-    [SerializeField] private float changeInPH;
+    [SerializeField] private float pH;
+    [SerializeField] private float pHVolume;
     [SerializeField] private float changeInHP;
     [SerializeField] private float maxLifespan = 5;
     private float curLifespan;
@@ -26,7 +28,7 @@ public class Hazard : MonoBehaviour
             if (other.gameObject.GetComponent<MovementController>().isDashing) {
               return; // hazard immunity when dashing (you jump over it)
             }
-            other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * deltaPhysics;
+            other.gameObject.GetComponent<PlayerStats>().phSubstance.MixWith(pH * deltaPhysics, pH * deltaPhysics);
             other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
             if (!permanent) {
               curLifespan -= deltaPhysics;
@@ -40,7 +42,7 @@ public class Hazard : MonoBehaviour
         else if (other.gameObject.tag == "Enemy") {
           // Ensure this doesn't cause I frames later
           other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
-           -changeInHP * deltaPhysics, changeInPH * deltaPhysics, 0f, new Vector3(0,0,0));
+           -changeInHP * deltaPhysics, pH * deltaPhysics, 0f, new Vector3(0,0,0));
           if (!permanent) {
             curLifespan -= deltaPhysics;
             if (curLifespan < 0) {

@@ -6,13 +6,12 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     public float health = 100;
-    public float ph = 14;
 
     const float HEALTH_MAX = 100;
-    const float PH_DEFAULT = 14;
+    
+    [SerializeField] public PHSubstance phSubstance;
 
     public float healthRegen = 3;
-    public float phRegen = 0.33f;
 
     public Slider healthBar;
     public Slider PHBar;
@@ -29,11 +28,7 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if (ph < PH_DEFAULT) {
-        ph += phRegen * Time.deltaTime;
-      } else if (ph > PH_DEFAULT) {
-        ph = PH_DEFAULT;
-      }
+      phSubstance.Naturalize(Time.deltaTime);
 
       if (health < HEALTH_MAX) {
         health += healthRegen * Time.deltaTime;
@@ -42,32 +37,27 @@ public class PlayerStats : MonoBehaviour
       }
 
       healthBar.value= health;
-      PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
+      PHBar.value = phSubstance.pHBarValue();
     }
 
-    public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
+    public void playerDamage(float damage, float attackPH, float attackVol, Vector3 position, float knockback) {
       bool isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
       if (isPlayerDashing) {
         return;
       }
+      
+      // Take damage first, then change pH
 
-      ph -= phChange;
-
-      if (ph > PH_DEFAULT) {
-        ph = PH_DEFAULT;
-      } else if (ph < 0) {
-        ph = 0;
-      }
-
-      float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
+      float pHDifference = Mathf.Abs(phSubstance.naturalPH - phSubstance.GetPh());
       float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
       health -= damage * multiplier;
 
+      phSubstance.MixWith(attackPH, attackVol);
+      
       if (health < 0) {
         Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
       }
-
+      
       gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
-
     }
 }

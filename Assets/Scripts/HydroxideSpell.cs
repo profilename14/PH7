@@ -35,10 +35,23 @@ public class HydroxideSpell : MonoBehaviour
           float opponentPH = other.gameObject.GetComponent<EnemyBehavior>().getCurPH();
           float pHDifference = opponentPH - playerStats.ph;
           float multiplier = 1;
+
+          if (opponentPH > 7) {
+            opponentPH = 14; // To make healing feal less random
+          }
+
           if (pHDifference >= 0) {
             multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
           } else {
             multiplier = 1 * Mathf.Pow( (-pHDifference + 1), -0.5f); // 1-15 ^ -0.5 = 1x to 0.25x
+          }
+
+          if (other.gameObject.GetComponent<EnemyBehavior>().stunTimer <= 0
+           && other.gameObject.GetComponent<EnemyBehavior>().stunRecoveryTimer > 0 ) {
+
+            multiplier = 0; // When other is recovering from stun, you can't hydroxide drain for PH
+            // I'll leave it allowed for now when they are stunned, so you can ph drain a neutralized
+            // acidic foe (while you only get half as much anyway for neutralize alkaline foes).
           }
 
           other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(

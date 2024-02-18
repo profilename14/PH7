@@ -77,6 +77,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         Debug.Log(CurrentState);
         if (CurrentState == State.Stunned) {
           Debug.Log("Stunned Enemy (Hitbox attacker)!");
+          Debug.Log(stunTimer);
+          Debug.Log(stunRecoveryTimer);
         }
       }
       if (jumpTimer > 0) {
@@ -115,7 +117,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
     void Update()
     {
-      /*if (CurrentState == State.Stunned && attackTimer > 0) {
+      if (CurrentState == State.Stunned && attackTimer > 0) {
         attackTimer = 0;
         hitbox.enabled = false;
         anim.ResetTrigger("Attack");
@@ -126,7 +128,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           TurnRate = originalRotation;
         }
         movesInRotationDir = false;
-      }*/
+      }
 
       if(canJump == false && CurrentState == State.Idle)
       {

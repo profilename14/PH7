@@ -356,19 +356,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartHealth: 48
   StartPH: 10
-  RegenPH: 0.33
+  CurrentPH: 0
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 0
   TurnRate: 720
   doubleDash: 0
   WalkSpeed: 20
-  thrust: 45
+  thrust: 35
   ThrustDelay: 1.2
   randomFactorRange: 0.05
   animDelay: 0.6
   anim: {fileID: 7119561676194265964}
   NextWaypointDistance: 1
+  naturalPH: 0
+  stunRecoveryTimer: 0
+  stunRecoveryTime: 9
+  stunTimer: 0
+  stunTime: 2
 --- !u!114 &1445281374763124501
 MonoBehaviour:
   m_ObjectHideFlags: 0

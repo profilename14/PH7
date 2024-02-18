@@ -73,6 +73,12 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     // That, or they just return to a default idle where they choose a random nearby location and patrol around it.
     void FixedUpdate()
     {
+      if (CurrentState != State.Idle) {
+        Debug.Log(CurrentState);
+        if (CurrentState == State.Stunned) {
+          Debug.Log("Stunned Enemy (Hitbox attacker)!");
+        }
+      }
       if (jumpTimer > 0) {
         jumpTimer -= Time.deltaTime;
         return;
@@ -109,7 +115,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
     void Update()
     {
-      if (CurrentState == State.Stunned && attackTimer > 0) {
+      /*if (CurrentState == State.Stunned && attackTimer > 0) {
         attackTimer = 0;
         hitbox.enabled = false;
         anim.ResetTrigger("Attack");
@@ -120,7 +126,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           TurnRate = originalRotation;
         }
         movesInRotationDir = false;
-      }
+      }*/
 
       if(canJump == false && CurrentState == State.Idle)
       {

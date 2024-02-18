@@ -45,7 +45,7 @@ public class BubbleProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.66f, 17.5f, transform.position - this.transform.forward);
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 1.0f, 17.5f, transform.position - this.transform.forward);
             Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             other.gameObject.GetComponent<Switch>().Toggle();

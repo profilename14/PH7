@@ -19,10 +19,10 @@ public class EnemyBehavior : MonoBehaviour
     public float StartHealth;
     protected float CurrentHealth;
     [Range(0f, 14f)]
-    public float StartPH;
-    protected float CurrentPH;
-    public float RegenPH = 0.33f; // This much H regened toward default per second.
-    protected float RegenPHTimer = 0.0f;
+    [HideInInspector] public float StartPH; // Set in code. Enemies are 0, 7, or 14 to keep things simple
+    [HideInInspector] public float CurrentPH;
+    protected float RegenPH = 0.0f; // Set in code
+    //protected float RegenPHTimer = 0.0f;
     protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
     protected bool isExtendedClass = false; // Used by anything inheriting EnemyBehavior.
 
@@ -71,6 +71,16 @@ public class EnemyBehavior : MonoBehaviour
     protected Coroutine PlayerDetector;
     protected Coroutine PursueImpulse;
 
+    public TypesPH naturalPH;
+
+    [HideInInspector] public float stunRecoveryTimer = 0; // Was stunned earlier OR is currently stunned, cannot change pH. Is stunTime + recoveryTime
+    [SerializeField]  protected float stunRecoveryTime = 4.0f; // Time after stun when pH can't be changed. High for alkaline
+    [HideInInspector] public float stunTimer = 0; // Is currently stunned, taking bonus damage and incapacited
+    [SerializeField]  protected float stunTime = 2.0f;
+    protected float bonusDamageInRecovery = 2.0f; // Should be kept the same between enemies
+    protected float bonusDamageInStun = 4.0f;
+
+
 
     public void OnPathComplete(Path p)
     {
@@ -89,16 +99,29 @@ public class EnemyBehavior : MonoBehaviour
     private void Awake()
     {
         CurrentHealth = StartHealth;
-        CurrentPH = StartPH;
         ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
+
+        if (StartPH > 7) {
+          naturalPH = TypesPH.Alkaline;
+          StartPH = 14;
+        } else if (StartPH < 7) {
+          naturalPH = TypesPH.Acidic;
+          StartPH = 0;
+        } else {
+          naturalPH = TypesPH.Neutral;
+        }
+
+        CurrentPH = StartPH;
+
+        RegenPH = 7.0f / stunRecoveryTime; // takes exactly recovery time to regen 7
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
     // That, or they just return to a default idle where they choose a random nearby location and patrol around it.
 
     void FixedUpdate() {
-      if (CurrentState != State.Idle) { // If the enemy hasn't seen the player
+      if (CurrentState != State.Idle && CurrentState != State.Stunned) { // If the enemy hasn't seen the player
         Movement();
         Rotation();
       }
@@ -106,14 +129,24 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
+        if(MovementMode == MoveMode.Walk && (CurrentState == State.Idle || CurrentState == State.Stunned))
         {
             anim.SetBool("Walking", false);
         }
 
-        if (RegenPHTimer > 0) {
-          RegenPHTimer -= Time.deltaTime;
-        } else {
+        if (stunTimer > 0) {
+          stunTimer -= Time.deltaTime;
+          if (stunTimer <= 0) {
+            CurrentState = State.Follow;
+          }
+        }
+        if (stunRecoveryTimer > 0) {
+          stunRecoveryTimer -= Time.deltaTime;
+        }
+
+        if (CurrentState == State.Stunned) {
+          // Nothing happens
+        } else if (stunRecoveryTimer > 0) {
           if (CurrentPH < StartPH) {
             CurrentPH += RegenPH * Time.deltaTime;
             if (CurrentPH > StartPH) {
@@ -125,6 +158,10 @@ public class EnemyBehavior : MonoBehaviour
               CurrentPH = StartPH;
             }
           }
+
+
+
+
         }
 
 
@@ -158,6 +195,11 @@ public class EnemyBehavior : MonoBehaviour
 
                 //ThrustDelay = 2f;
                 //thrust = 30f;
+
+                break;
+
+            case State.Stunned:
+                //Debug.Log("Stunned!");
 
                 break;
         }
@@ -245,7 +287,27 @@ public class EnemyBehavior : MonoBehaviour
     public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
 
-        CurrentPH += ph;
+        if (stunRecoveryTimer > 0) {
+          ph = 0;
+        }
+
+        if (naturalPH == TypesPH.Alkaline) {
+          CurrentPH += ph;
+          if (CurrentPH <= 7) {
+            StunEnemy();
+          }
+
+        } else if (naturalPH == TypesPH.Acidic) {
+          CurrentPH += ph;
+          if (7 <= CurrentPH) {
+            StunEnemy();
+          }
+
+        } else {
+          // Neutral enemies take a little damage so spells aren't useless against them.
+          // They have projectiles so its not like you can spam them down or anything.
+          damage += Mathf.Abs(ph) * 2;
+        }
 
         if (CurrentPH > 14) {
           CurrentPH = 14;
@@ -254,17 +316,24 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         // pH formula: (1 + 0.057 * x^1.496) times damage
-        float pHDifference = Mathf.Abs(StartPH - CurrentPH);
-        float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
-        CurrentHealth -= damage * multiplier;
-        float displayedMultiplier = Mathf.Round(multiplier * 10.0f) * 0.1f; // Rounded to 1 decimal
+        //float pHDifference = Mathf.Abs(StartPH - CurrentPH);
+        //float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+        if (CurrentState == State.Stunned) {
+          damage = damage * 4;
+        } else if (stunRecoveryTimer > 0) {
+          damage = damage * 2;
+        }
+
+        CurrentHealth -= damage;
+
+        float displayedDamage = Mathf.Round(damage * 10.0f) * 0.1f; // Rounded to 1 decimal
 
         if (ph != 0) {
-          RegenPHTimer = RegenPHCooldown;
+          //RegenPHTimer = RegenPHCooldown;
         }
 
         if (damage > 0) {
-          Debug.Log("Damage: " + damage + " w/ multiplier " + displayedMultiplier  + " to pH of " + pHDifference + "Dif");
+          Debug.Log("Damage: " + displayedDamage);
 
         }
 
@@ -381,10 +450,22 @@ public class EnemyBehavior : MonoBehaviour
     }
 
     public void AlertEnemy() { // To be called by any trigger for a door the enemy is guarding.
-        CurrentState = State.Follow;
+        if (CurrentState != State.Stunned) {
+          CurrentState = State.Follow;
+        }
+    }
+
+    void StunEnemy() {
+      CurrentPH = 7;
+      CurrentState = State.Stunned;
+      stunRecoveryTimer = stunRecoveryTime + stunTime;
+      stunTimer = stunTime;
+
+
     }
 }
 
 // States
-public enum State { Inactive, Idle, Seek, Follow, Attack }
+public enum State { Inactive, Idle, Seek, Follow, Attack, Stunned }
 public enum MoveMode { Impulse, Walk }
+public enum TypesPH { Alkaline, Neutral, Acidic }

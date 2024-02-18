@@ -44,7 +44,6 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         originalSpeed = WalkSpeed;
         originalRotation = TurnRate;
         CurrentHealth = StartHealth;
-        CurrentPH = StartPH;
         ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
 
@@ -54,6 +53,20 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
         isExtendedClass = true;
         hitbox.enabled = false;
+
+        if (StartPH > 7) {
+          naturalPH = TypesPH.Alkaline;
+          StartPH = 14;
+        } else if (StartPH < 7) {
+          naturalPH = TypesPH.Acidic;
+          StartPH = 0;
+        } else {
+          naturalPH = TypesPH.Neutral;
+        }
+
+        CurrentPH = StartPH;
+
+        RegenPH = 7.0f / stunRecoveryTime; // takes exactly recovery time to regen 7
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -88,12 +101,26 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         if (canRotateDuringAttack) {
           Rotation();
         }
+      } else if (CurrentState == State.Stunned) {
+        //
       }
     }
 
 
     void Update()
     {
+      if (CurrentState == State.Stunned && attackTimer > 0) {
+        attackTimer = 0;
+        hitbox.enabled = false;
+        anim.ResetTrigger("Attack");
+        if (canMoveDuringAttack) {
+          WalkSpeed = originalSpeed;
+        }
+        if (canRotateDuringAttack) {
+          TurnRate = originalRotation;
+        }
+        movesInRotationDir = false;
+      }
 
       if(canJump == false && CurrentState == State.Idle)
       {
@@ -122,7 +149,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
               WalkSpeed = originalSpeed;
             }
             if (canRotateDuringAttack) {
-              TurnRate =originalRotation;
+              TurnRate = originalRotation;
             }
             movesInRotationDir = false;
             hitbox.enabled = false;
@@ -132,14 +159,24 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
 
 
-        if (CurrentState != State.Idle && CurrentState != State.Attack) {
+        if (CurrentState != State.Idle && CurrentState != State.Attack && CurrentState != State.Stunned) {
           checkForAttack();
         }
 
 
-        if (RegenPHTimer > 0) {
-          RegenPHTimer -= Time.deltaTime;
-        } else {
+        if (stunTimer > 0) {
+          stunTimer -= Time.deltaTime;
+          if (stunTimer <= 0) {
+            CurrentState = State.Follow;
+          }
+        }
+        if (stunRecoveryTimer > 0) {
+          stunRecoveryTimer -= Time.deltaTime;
+        }
+
+        if (CurrentState == State.Stunned) {
+          // Nothing happens
+        } else if (stunRecoveryTimer > 0) {
           if (CurrentPH < StartPH) {
             CurrentPH += RegenPH * Time.deltaTime;
             if (CurrentPH > StartPH) {
@@ -186,10 +223,15 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
                 //thrust = 30f;
 
                 break;
+
+            case State.Stunned:
+                //Debug.Log("Stunned!");
+
+                break;
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
@@ -212,7 +254,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         }
     }
 
-    private void checkForAttack() {
+    void checkForAttack() {
       Vector3 distanceToTarget = target.position - transform.position;
       float distance = distanceToTarget.magnitude;
 

@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 3896103430511743561}
   - component: {fileID: 5779878395216687929}
   - component: {fileID: 4907027460689954474}
+  - component: {fileID: -6904235409550674936}
   m_Layer: 9
   m_Name: Scuttler
   m_TagString: Enemy
@@ -286,6 +287,7 @@ MonoBehaviour:
   animDelay: 0
   anim: {fileID: 8691365260090520371}
   NextWaypointDistance: 1
+  PopupPrefab: {fileID: 0}
 --- !u!114 &5779878395216687929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +339,19 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   useGraphRaycasting: 1
   quality: 0
+--- !u!114 &-6904235409550674936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725256848443516062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e29fc7f7d259e7429742727ea9b129c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitVFX: {fileID: 4082180685921526761, guid: dd65697d77870754583a81d7c82198c3, type: 3}
 --- !u!1001 &436314325428635902
 PrefabInstance:
   m_ObjectHideFlags: 0

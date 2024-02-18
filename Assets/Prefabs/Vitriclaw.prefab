@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 6979119148596400993}
   - component: {fileID: 4889046259301199664}
   - component: {fileID: 6776457321701670076}
+  - component: {fileID: 5070069568279742733}
   m_Layer: 9
   m_Name: Vitriclaw
   m_TagString: Enemy
@@ -434,6 +435,7 @@ MonoBehaviour:
   animDelay: 0.6
   anim: {fileID: 3260272899287883542}
   NextWaypointDistance: 1
+  PopupPrefab: {fileID: 0}
   attackRange: 7.5
   attackTime: 1.67
   speedMultDuringAttack: 0.75
@@ -446,6 +448,19 @@ MonoBehaviour:
   hitbox: {fileID: 722519610253677768}
   timeUntilHitbox: 0.6
   timeAfterHitbox: 0.45
+--- !u!114 &5070069568279742733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2276678318342156223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e29fc7f7d259e7429742727ea9b129c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitVFX: {fileID: 4082180685921526761, guid: dd65697d77870754583a81d7c82198c3, type: 3}
 --- !u!1 &3154259909109343282
 GameObject:
   m_ObjectHideFlags: 0

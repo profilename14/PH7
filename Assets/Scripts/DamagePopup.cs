@@ -22,7 +22,7 @@ public class DamagePopup : MonoBehaviour
             Destroy(gameObject);
         }
 
-        float ySpeed = 0.3f;
+        float ySpeed = 0.05f;
         transform.position += new Vector3(0, ySpeed, 0);
         transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
     }

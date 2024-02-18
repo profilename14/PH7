@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 7943202687800208349}
   - component: {fileID: 4560513576031755393}
   - component: {fileID: 9031041239211979996}
+  - component: {fileID: -7079560360086087660}
   m_Layer: 9
   m_Name: YoungScuttler
   m_TagString: Enemy
@@ -217,6 +218,7 @@ MonoBehaviour:
   animDelay: 0
   anim: {fileID: 6847561889305436206}
   NextWaypointDistance: 1
+  PopupPrefab: {fileID: 0}
 --- !u!114 &4560513576031755393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +270,19 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   useGraphRaycasting: 1
   quality: 0
+--- !u!114 &-7079560360086087660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3641273607722931413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e29fc7f7d259e7429742727ea9b129c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitVFX: {fileID: 4082180685921526761, guid: dd65697d77870754583a81d7c82198c3, type: 3}
 --- !u!1 &7287489937435611973
 GameObject:
   m_ObjectHideFlags: 0

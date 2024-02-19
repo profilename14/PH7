@@ -8,13 +8,19 @@ public class DamagePlayer : MonoBehaviour
     // This script is temporary and should be integrated into the enemy behavior script and player combat script at some point
     public float damage;
     public float knockback = 2.5f;
-    public float phDamage = 0f;
+    public float phChange = 0f;
+    private float pH;
+
+    private void Awake()
+    {
+        pH = GetComponentInParent<EnemyBehavior>().StartPH;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, phDamage, gameObject.transform.position, knockback);
+            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, pH, phChange, gameObject.transform.position, knockback);
         }
     }
 }

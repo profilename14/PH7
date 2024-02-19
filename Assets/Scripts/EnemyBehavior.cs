@@ -20,12 +20,16 @@ public class EnemyBehavior : MonoBehaviour
     protected float CurrentHealth;
     [Range(0f, 14f)]
     public float StartPH;
-    protected float CurrentPH;
+    public float CurrentPH;
     public float RegenPH = 0.33f; // This much H regened toward default per second.
     protected float RegenPHTimer = 0.0f;
     protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
     protected bool isExtendedClass = false; // Used by anything inheriting EnemyBehavior.
 
+    [SerializeField]
+    private PHDefaultType phDefaultType;
+    private float pHMin;
+    private float pHMax;
 
     [Header("DETECTION")]
     public bool PlayerDetected = false;
@@ -62,7 +66,7 @@ public class EnemyBehavior : MonoBehaviour
     protected bool ReachedPathEnd;
     protected Path path;
     protected int CurrentWaypoint = 0;
-    protected State CurrentState = State.Idle;
+    public State CurrentState = State.Idle;
     protected Vector3 LastKnownPos;
     protected Seeker seeker;
     protected bool ImpulseActive;
@@ -94,6 +98,25 @@ public class EnemyBehavior : MonoBehaviour
         CurrentPH = StartPH;
         ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
+
+        if (StartPH < 7)
+        {
+            phDefaultType = PHDefaultType.Acidic;
+            pHMax = 7;
+            pHMin = 0;
+        }
+        else if (StartPH == 7)
+        {
+            phDefaultType = PHDefaultType.Neutral;
+            pHMax = 7;
+            pHMin = 7;
+        }
+        else if (StartPH > 7)
+        {
+            phDefaultType = PHDefaultType.Alkaline;
+            pHMax = 14;
+            pHMin = 7;
+        }
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -245,10 +268,10 @@ public class EnemyBehavior : MonoBehaviour
 
     }
 
-    public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
+    public void TakeDamage(float damage, float attackPh, float ph, float knockback, Vector3 sourcePos)
     {
 
-        CurrentPH += ph;
+        CurrentPH = Mathf.Clamp(CurrentPH += ph, pHMin, pHMax);
 
         if (CurrentPH > 14) {
           CurrentPH = 14;
@@ -257,23 +280,42 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         // pH formula: (1 + 0.057 * x^1.496) times damage
-        float pHDifference = Mathf.Abs(StartPH - CurrentPH);
+        /*float pHDifference = Mathf.Abs(StartPH - CurrentPH);
         float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
         CurrentHealth -= damage * multiplier;
-        float displayedMultiplier = Mathf.Round(multiplier * 10.0f) * 0.1f; // Rounded to 1 decimal
+        float displayedMultiplier = Mathf.Round(multiplier * 10.0f) * 0.1f; // Rounded to 1 decimal*/
+
+        float armorFactor = 1;
+
+        if(phDefaultType == PHDefaultType.Alkaline) armorFactor = Mathf.Pow(1.2f, CurrentPH - StartPH);
+
+        float phMultiplier = 1;
+
+        if(phDefaultType == PHDefaultType.Alkaline && attackPh < 7)
+        {
+            phMultiplier = Mathf.Pow(1.1f, StartPH - attackPh);
+        }
+        else if (phDefaultType == PHDefaultType.Acidic && attackPh > 7)
+        {
+            phMultiplier = Mathf.Pow(1.1f, StartPH - attackPh);
+        }
+
+        float totalDamage = (damage * phMultiplier) / armorFactor;
+
+        CurrentHealth -= totalDamage;
 
         if (ph != 0) {
           RegenPHTimer = RegenPHCooldown;
         }
 
         if (damage > 0) {
-          Debug.Log("Damage: " + damage + " w/ multiplier " + displayedMultiplier  + " to pH of " + pHDifference + "Dif");
+            Debug.Log(this.gameObject.name + " took damage: " + totalDamage + " with armor factor: " + armorFactor + " and pH multiplier: " + phMultiplier);
         }
 
         // Damage Text Popup
-        Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
+        /*Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
         DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
-        popup.Setup(damage);
+        popup.Setup(damage);*/
         
 
         // Knockback
@@ -282,6 +324,19 @@ public class EnemyBehavior : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
 
         if (CurrentHealth <= 0) Destroy(this.gameObject);
+    }
+
+    public void Neutralize(float amount)
+    {
+        //Debug.Log("Neutralize spell");
+        if(phDefaultType == PHDefaultType.Acidic)
+        {
+            CurrentPH = Mathf.Clamp(CurrentPH += amount, pHMin, pHMax);
+        }
+        else if (phDefaultType == PHDefaultType.Alkaline)
+        {
+            CurrentPH = Mathf.Clamp(CurrentPH -= amount, pHMin, pHMax);
+        }
     }
 
     protected IEnumerator DetectPlayer()
@@ -332,6 +387,7 @@ public class EnemyBehavior : MonoBehaviour
                     anim.SetTrigger("Charge");
                     yield return new WaitForSeconds(animDelay);
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
+                    //Debug.Log("Strider added force: " + velocity);
 
                     if (doubleDash) { // If we're a war strider
                       if (dashCombo == false) { // If we did an initial dash
@@ -373,7 +429,7 @@ public class EnemyBehavior : MonoBehaviour
 
             // detect if the player is dashing. The aftermath does less damage.
             // Primarily increases pH and has high knockback.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
+            /*if (other.gameObject.GetComponent<MovementController>().isDashing) {
               if (!other.gameObject.GetComponent<MovementController>().dashEnding)
               {
                 TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
@@ -382,7 +438,7 @@ public class EnemyBehavior : MonoBehaviour
               {
                 TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
               }
-            }
+            }*/
 
         }
     }
@@ -395,3 +451,5 @@ public class EnemyBehavior : MonoBehaviour
 // States
 public enum State { Inactive, Idle, Seek, Follow, Attack }
 public enum MoveMode { Impulse, Walk }
+
+public enum PHDefaultType {Acidic, Neutral, Alkaline}

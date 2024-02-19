@@ -40,7 +40,7 @@ public class Hazard : MonoBehaviour
         else if (other.gameObject.tag == "Enemy") {
           // Ensure this doesn't cause I frames later
           other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
-           -changeInHP * deltaPhysics, changeInPH * deltaPhysics, 0f, new Vector3(0,0,0));
+           -changeInHP * deltaPhysics, 7, changeInPH * deltaPhysics, 0f, new Vector3(0,0,0));
           if (!permanent) {
             curLifespan -= deltaPhysics;
             if (curLifespan < 0) {

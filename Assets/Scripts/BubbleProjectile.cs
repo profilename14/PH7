@@ -8,6 +8,7 @@ public class BubbleProjectile : MonoBehaviour
     [SerializeField] private float lifespanTimer = 0f;
     [SerializeField] private float speed = 10f;
 
+    [SerializeField] private float strength;
 
     // Start is called before the first frame update
     void Start()
@@ -29,15 +30,16 @@ public class BubbleProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.66f, 17.5f, transform.position - this.transform.forward);
-            Destroy(gameObject);
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0, 0, 0, transform.position - this.transform.forward);
+            other.gameObject.GetComponent<EnemyBehavior>().Neutralize(strength);
+            //Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             other.gameObject.GetComponent<Switch>().Toggle();
-            Destroy(gameObject);
+            //Destroy(gameObject);
         } else if (other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Player")) {
             //
         } else {
-          Destroy(gameObject);
+          //Destroy(gameObject);
         }
 
     }
@@ -45,14 +47,14 @@ public class BubbleProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.66f, 17.5f, transform.position - this.transform.forward);
-            Destroy(gameObject);
+            //other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, 0.66f, 17.5f, transform.position - this.transform.forward);
+            //Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             other.gameObject.GetComponent<Switch>().Toggle();
         } else if (other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Player")) {
             //
         } else {
-          Destroy(gameObject);
+          //Destroy(gameObject);
         }
 
     }

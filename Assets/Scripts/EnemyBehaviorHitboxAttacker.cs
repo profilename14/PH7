@@ -198,7 +198,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
             // detect if the player is dashing. The aftermath does less damage.
             // Primarily increases pH and has high knockback.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
+            /*if (other.gameObject.GetComponent<MovementController>().isDashing) {
               if (!other.gameObject.GetComponent<MovementController>().dashEnding)
               {
                 TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
@@ -207,7 +207,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
               {
                 TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
               }
-            }
+            }*/
 
         }
     }

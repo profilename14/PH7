@@ -66,9 +66,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
-  knockback: 2.5
-  phDamage: 1.5
+  damage: 25
+  knockback: 5
+  phChange: -2
 --- !u!1 &4776160627763532898
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 3896103430511743561}
   - component: {fileID: 5779878395216687929}
   - component: {fileID: 4907027460689954474}
+  - component: {fileID: 2147396685144399526}
   m_Layer: 9
   m_Name: Scuttler
   m_TagString: Enemy
@@ -200,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 8725256848443516062}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.030000001, y: -14.86616, z: 31.96}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -255,7 +256,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -271,21 +272,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 38
-  StartPH: 5
-  RegenPH: 0.33
+  StartHealth: 80
+  StartPH: 2
+  CurrentPH: 2
+  RegenPH: 0.2
+  phDefaultType: 0
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
   doubleDash: 0
-  WalkSpeed: 30
+  WalkSpeed: 50
   thrust: 30
   ThrustDelay: 0.75
   randomFactorRange: 0.1
   animDelay: 0
   anim: {fileID: 8691365260090520371}
   NextWaypointDistance: 1
+  CurrentState: 1
+  PopupPrefab: {fileID: 0}
 --- !u!114 &5779878395216687929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +342,21 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   useGraphRaycasting: 1
   quality: 0
+--- !u!114 &2147396685144399526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725256848443516062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef1fd4a4370b64b91fbbd0f40e066f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phGradients: {fileID: 11400000, guid: 83385aeb01a55d143922ac20d64be43b, type: 2}
+  mainColorObject: {fileID: 9140172094221437166}
+  mainMaterial: {fileID: -6478536213147159724, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
 --- !u!1001 &436314325428635902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -443,6 +463,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &9140172094221437166 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -516098083770646512, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
+  m_PrefabInstance: {fileID: 436314325428635902}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6326835196342637876
 PrefabInstance:
   m_ObjectHideFlags: 0

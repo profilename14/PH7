@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerAttackHitbox : MonoBehaviour
 {
     PlayerCombatController controllerScript;
+    PlayerStats stats;
 
     // Start is called before the first frame update
     void Start()
     {
         controllerScript = GetComponentInParent<PlayerCombatController>();
+        stats = GetComponentInParent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -22,17 +24,17 @@ public class PlayerAttackHitbox : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Hit " + other.gameObject.name);
-            Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
+            //Debug.Log("Hit " + other.gameObject.name);
+            //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
 
             int curAttackState = controllerScript.weaponSwingCombo;
             if (curAttackState == 0 || curAttackState == 1) {
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage,
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, stats.ph,
                 controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback,
                 controllerScript.gameObject.transform.position);
             } else if (curAttackState == 2) {
               other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
-                controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 1.75f,
+                stats.ph, controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 1.75f,
                 controllerScript.gameObject.transform.position);
             }
 

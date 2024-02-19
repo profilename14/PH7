@@ -32,7 +32,7 @@ public class Fountain : MonoBehaviour
 
             float curForce = PowerFromDistance.Evaluate(curDistance / maxDistance) * pushPower;
 
-            Enemy.TakeDamage(0, 0, curForce, transform.position); // deal slight knockback every frame.
+            Enemy.TakeDamage(0, 0, 0, curForce, transform.position); // deal slight knockback every frame.
           }
 
         }

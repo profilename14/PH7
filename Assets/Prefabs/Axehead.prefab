@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 6716467226491507079}
   - component: {fileID: 5991122561065978301}
   - component: {fileID: 7644212568898391672}
+  - component: {fileID: -7527256798831654721}
   m_Layer: 9
   m_Name: Axehead
   m_TagString: Enemy
@@ -180,7 +181,7 @@ Transform:
   m_GameObject: {fileID: 1186863411663986525}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.7532468, y: 0.16064978, z: -43.476067}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -303,8 +304,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 231
-  StartPH: 7
-  RegenPH: 0.33
+  StartPH: 12
+  CurrentPH: 12
+  RegenPH: 0.2
+  phDefaultType: 2
   PlayerDetected: 1
   target: {fileID: 0}
   MovementMode: 1
@@ -317,6 +320,8 @@ MonoBehaviour:
   animDelay: 0.6
   anim: {fileID: 6088869960003858551}
   NextWaypointDistance: 1
+  CurrentState: 1
+  PopupPrefab: {fileID: 0}
   attackRange: 6.5
   attackTime: 2.6
   speedMultDuringAttack: 0.8
@@ -329,6 +334,21 @@ MonoBehaviour:
   hitbox: {fileID: 8115479191103798033}
   timeUntilHitbox: 1.2
   timeAfterHitbox: 0.45
+--- !u!114 &-7527256798831654721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186863411663986525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef1fd4a4370b64b91fbbd0f40e066f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phGradients: {fileID: 11400000, guid: 83385aeb01a55d143922ac20d64be43b, type: 2}
+  mainColorObject: {fileID: 1127286139542719357}
+  mainMaterial: {fileID: 2100000, guid: 0b1e5782396214f478920720f02bd584, type: 2}
 --- !u!1 &2874031987007303108
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,6 +856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 35
   knockback: 5.25
+  phDamage: 0
 --- !u!1 &5935851737218383140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,6 +1182,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1127286139542719357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 635547659545568360, guid: b4f9d3f87bd2e0441b297d7ff24a3893, type: 3}
+  m_PrefabInstance: {fileID: 537344525939584789}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1943609810144911993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7094276428899299988, guid: b4f9d3f87bd2e0441b297d7ff24a3893, type: 3}

@@ -53,7 +53,26 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         }
 
         isExtendedClass = true;
-        hitbox.enabled = false;
+        //hitbox.enabled = false;
+
+        if (StartPH < 7)
+        {
+            phDefaultType = PHDefaultType.Acidic;
+            pHMax = 7;
+            pHMin = 0;
+        }
+        else if (StartPH == 7)
+        {
+            phDefaultType = PHDefaultType.Neutral;
+            pHMax = 7;
+            pHMin = 7;
+        }
+        else if (StartPH > 7)
+        {
+            phDefaultType = PHDefaultType.Alkaline;
+            pHMax = 14;
+            pHMin = 7;
+        }
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -108,13 +127,13 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
           if (attackTimer > attackTime - timeUntilHitbox) {
-            hitbox.enabled = false;
+            //hitbox.enabled = false;
           }
           else if (attackTimer < timeAfterHitbox) {
-            hitbox.enabled = false;
+            //hitbox.enabled = false;
           }
           else {
-            hitbox.enabled = true;
+            //hitbox.enabled = true;
           }
         } else if (attackTimer <= 0.0f && CurrentState == State.Attack) {
             CurrentState = State.Follow;
@@ -125,7 +144,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
               TurnRate =originalRotation;
             }
             movesInRotationDir = false;
-            hitbox.enabled = false;
+            //hitbox.enabled = false;
 
         }
 

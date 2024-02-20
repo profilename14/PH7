@@ -26,7 +26,7 @@ public class Hazard : MonoBehaviour
             if (other.gameObject.GetComponent<MovementController>().isDashing) {
               return; // hazard immunity when dashing (you jump over it)
             }
-            other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * deltaPhysics;
+            other.gameObject.GetComponent<PlayerStats>().ph = Mathf.Clamp(other.gameObject.GetComponent<PlayerStats>().ph + changeInPH * deltaPhysics, 0, 14);
             other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
             if (!permanent) {
               curLifespan -= deltaPhysics;

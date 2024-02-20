@@ -66,9 +66,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
-  knockback: 5
-  phChange: -2
+  damage: 10
+  knockback: 6
+  phChange: -1
+  attackPH: 0
 --- !u!1 &4776160627763532898
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +220,7 @@ Rigidbody:
   m_GameObject: {fileID: 8725256848443516062}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 5
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -272,17 +273,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 80
-  StartPH: 2
+  StartHealth: 70
+  StartPH: 4
   CurrentPH: 2
   RegenPH: 0.2
   phDefaultType: 0
+  pHMin: 0
+  pHMax: 0
+  pHResistFactor: 1
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
   doubleDash: 0
-  WalkSpeed: 50
+  WalkSpeed: 30
+  walkingTime: 3
+  randomFactor: 0.5
+  pauseTime: 3
   thrust: 30
   ThrustDelay: 0.75
   randomFactorRange: 0.1
@@ -480,13 +487,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: CanvasForEnemyUI
       objectReference: {fileID: 0}
-    - target: {fileID: 2121220073883372933, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
-      propertyPath: m_AnchorMax.x
+    - target: {fileID: 360605593536171949, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2121220073883372933, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121220073883372933, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3144514733173325165, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
       propertyPath: m_Pivot.x

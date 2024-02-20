@@ -36,11 +36,16 @@ public class EnemyArenaManager : MonoBehaviour
 
     public GameObject player;
 
+    public GameObject[] wallsToEnable;
+
+    private bool activated = false;
+
     // Start is called before the first frame update
     void Start()
     {
         if(spawnOnStart)
         {
+            activated = true;
             spawningEnemies = true;
             StartCoroutine(SpawnEnemyWave(0, 0));
         }
@@ -57,10 +62,22 @@ public class EnemyArenaManager : MonoBehaviour
             }
         }
 
-        if(aliveEnemies.Count == 0 && !spawningEnemies && currentWave < waves)
+        if(aliveEnemies.Count == 0 && !spawningEnemies && activated)
         {
-            spawningEnemies = true;
-            StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
+            if (currentWave < waves)
+            {
+                //Debug.Log("Spawned from next wave");
+                spawningEnemies = true;
+                StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
+            }
+            else
+            {
+                activated = false;
+                foreach (GameObject g in wallsToEnable)
+                {
+                    g.SetActive(false);
+                }
+            }
         }
     }
 
@@ -78,5 +95,21 @@ public class EnemyArenaManager : MonoBehaviour
         }
         spawningEnemies = false;
         currentWave++;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Player") && other.GetComponent<MovementController>() != null && spawnOnPlayerEnter)
+        {
+            //Debug.Log("Spawned from enter");
+            activated = true;
+            GetComponent<BoxCollider>().enabled = false;
+            spawningEnemies = true;
+            StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
+            foreach(GameObject g in wallsToEnable)
+            {
+                g.SetActive(true);
+            }
+        }
     }
 }

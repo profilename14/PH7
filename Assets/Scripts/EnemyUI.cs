@@ -53,14 +53,14 @@ public class EnemyUI : MonoBehaviour
             transform.localScale = originalScale;
           }
         }
-        if (prevPH != enemy.getCurPH()) {
+        /*if (prevPH != enemy.getCurPH()) {
           enemyPHBar.value = enemy.getCurPH();
           prevPH = enemy.getCurPH();
           if (isInvisible == true) {
             isInvisible = false;
             transform.localScale = originalScale;
           }
-        }
+        }*/
 
     }
 }

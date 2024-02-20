@@ -27,9 +27,10 @@ public class EnemyBehavior : MonoBehaviour
     protected bool isExtendedClass = false; // Used by anything inheriting EnemyBehavior.
 
     [SerializeField]
-    private PHDefaultType phDefaultType;
-    private float pHMin;
-    private float pHMax;
+    public PHDefaultType phDefaultType;
+    public float pHMin;
+    public float pHMax;
+    public float pHResistFactor = 1;
 
     [Header("DETECTION")]
     public bool PlayerDetected = false;
@@ -51,6 +52,12 @@ public class EnemyBehavior : MonoBehaviour
 
     // Walk Move Type
     public float WalkSpeed = 0.005f;
+    public float walkingTime = 5;
+    public float randomFactor = 0.5f;
+    public float pauseTime = 2;
+    private float timer;
+    private bool isPaused = false;
+    private float randomNum;
 
     // Impulse Move Type
     public float thrust = 30f;
@@ -94,6 +101,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Awake()
     {
+        randomNum = Random.Range(-randomFactor, randomFactor);
         CurrentHealth = StartHealth;
         CurrentPH = StartPH;
         ImpulseActive = false;
@@ -131,7 +139,9 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
+        if(MovementMode == MoveMode.Walk) timer += Time.deltaTime;
+
+        if (MovementMode == MoveMode.Walk && CurrentState == State.Idle)
         {
             anim.SetBool("Walking", false);
         }
@@ -237,20 +247,40 @@ public class EnemyBehavior : MonoBehaviour
         switch (MovementMode)
         {
             case MoveMode.Walk:
+                if(isPaused && timer > pauseTime + randomNum)
+                {
+                    randomNum = Random.Range(-randomFactor, randomFactor);
+                    isPaused = false;
+                    timer = 0;
+                }
+                else if(!isPaused && timer > walkingTime + randomNum)
+                {
+                    randomNum = Random.Range(-randomFactor, randomFactor);
+                    isPaused = true;
+                    timer = 0;
+                }
+
                 NextWaypointDistance = 1;
                 if (!isExtendedClass) {
-                  anim.SetBool("Walking", true);
+                    if (!isPaused) anim.SetBool("Walking", true);
+                    else anim.SetBool("Walking", false);
                 }
                 if (ImpulseActive)
                 {
                     StopCoroutine(PursueImpulse);
                 }
                 if (path != null) { // preventing spam
-                  if (movesInRotationDir) {
-                    GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
-                  } else {
-                    GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
-                  }
+                    if (!isPaused)
+                    {
+                        if (movesInRotationDir)
+                        {
+                            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+                        }
+                        else
+                        {
+                            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                        }
+                    }
                 }
 
                 //GetComponent<Rigidbody>.AddForce();
@@ -271,7 +301,7 @@ public class EnemyBehavior : MonoBehaviour
     public void TakeDamage(float damage, float attackPh, float ph, float knockback, Vector3 sourcePos)
     {
 
-        CurrentPH = Mathf.Clamp(CurrentPH += ph, pHMin, pHMax);
+        ChangePH(ph);
 
         if (CurrentPH > 14) {
           CurrentPH = 14;
@@ -288,6 +318,7 @@ public class EnemyBehavior : MonoBehaviour
         float armorFactor = 1;
 
         if(phDefaultType == PHDefaultType.Alkaline) armorFactor = Mathf.Pow(1.2f, CurrentPH - StartPH);
+        else if (phDefaultType == PHDefaultType.Acidic) armorFactor = Mathf.Pow(1.2f, StartPH - CurrentPH);
 
         float phMultiplier = 1;
 
@@ -331,12 +362,17 @@ public class EnemyBehavior : MonoBehaviour
         //Debug.Log("Neutralize spell");
         if(phDefaultType == PHDefaultType.Acidic)
         {
-            CurrentPH = Mathf.Clamp(CurrentPH += amount, pHMin, pHMax);
+            ChangePH(amount);
         }
         else if (phDefaultType == PHDefaultType.Alkaline)
         {
-            CurrentPH = Mathf.Clamp(CurrentPH -= amount, pHMin, pHMax);
+            ChangePH(-amount);
         }
+    }
+
+    public void ChangePH(float amount)
+    {
+        CurrentPH = Mathf.Clamp(CurrentPH + (amount / pHResistFactor), pHMin, pHMax);
     }
 
     protected IEnumerator DetectPlayer()
@@ -386,6 +422,7 @@ public class EnemyBehavior : MonoBehaviour
 
                     anim.SetTrigger("Charge");
                     yield return new WaitForSeconds(animDelay);
+                    GetComponent<Rigidbody>().velocity = new Vector2(0, 0);
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
                     //Debug.Log("Strider added force: " + velocity);
 

@@ -13,8 +13,8 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     // Movement speed for the player.
-    const float DEFAULT_SPEED = 11.0f;
-    float speed = DEFAULT_SPEED;
+    public float DEFAULT_SPEED = 11.0f;
+    float speed;
 
     bool isControllerUsed = false;
 
@@ -103,6 +103,7 @@ public class MovementController : MonoBehaviour
 
     void Start()
     {
+        speed = DEFAULT_SPEED;
         rigidbody = GetComponent<Rigidbody>();
 
         rotationController = gameObject.GetComponentInChildren<RotationController>();
@@ -637,8 +638,8 @@ public class MovementController : MonoBehaviour
       if (isBeingKnockedBack) {
         float curKnockbackVelocity = Knockback.Evaluate(knockbackTimer / knockbackDuration);
         if (knockbackPower * curKnockbackVelocity > power) { // if old x 0-100% > new
-          Debug.Log(knockbackPower * curKnockbackVelocity +" vs " + power + "w/" + curKnockbackVelocity);
-          return;
+          //Debug.Log(knockbackPower * curKnockbackVelocity +" vs " + power + "w/" + curKnockbackVelocity);
+          //return;
         }
       }
       knockbackSource = source;

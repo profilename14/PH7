@@ -8,6 +8,8 @@ public class PHColorChanger : MonoBehaviour
 
     private EnemyBehavior enemyStats;
 
+    private EnemyBehaviorHitboxAttacker enemyStats2;
+
     private bool isPlayer;
 
     [SerializeField]
@@ -23,6 +25,8 @@ public class PHColorChanger : MonoBehaviour
 
     private int mainMaterialIndex;
 
+    private bool hitboxAttacker;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -36,6 +40,9 @@ public class PHColorChanger : MonoBehaviour
         else if(this.gameObject.CompareTag("Enemy"))
         {
             enemyStats = GetComponent<EnemyBehavior>();
+            enemyStats2 = GetComponent<EnemyBehaviorHitboxAttacker>();
+
+            if (enemyStats2 != null) hitboxAttacker = true;
             isPlayer = false;
         }
 
@@ -61,7 +68,8 @@ public class PHColorChanger : MonoBehaviour
         else
         {
             //Debug.Log(this.gameObject.name + " ph on gradient is " + enemyStats.CurrentPH / 14);
-            mainRenderer.materials[mainMaterialIndex].color = phGradients.mainPHGradient.Evaluate(enemyStats.CurrentPH / 14);
+            if(!hitboxAttacker) mainRenderer.materials[mainMaterialIndex].color = phGradients.mainPHGradient.Evaluate(enemyStats.CurrentPH / 14);
+            else mainRenderer.materials[mainMaterialIndex].color = phGradients.mainPHGradient.Evaluate(enemyStats2.CurrentPH / 14);
         }
     }
 }

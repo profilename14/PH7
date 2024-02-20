@@ -204,7 +204,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (weaponSwingCombo == 1)
             {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -2.5f);
+                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -3f);
                 playAttackSound();
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 2;

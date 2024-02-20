@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
@@ -39,6 +40,9 @@ public class PlayerStats : MonoBehaviour
             if (ph < PH_DEFAULT) ph = PH_DEFAULT;
         }
 
+        Mathf.Clamp(ph, 0, 14);
+
+
         if (health < HEALTH_MAX) {
             health += healthRegen * Time.deltaTime;
         } else if (health > HEALTH_MAX) {
@@ -55,6 +59,18 @@ public class PlayerStats : MonoBehaviour
             return;
         }
 
+        //Defensive damage multiplier. Maximum of ~3.5x.
+        float multiplier = 1;
+
+        if (attackPH < 7 && ph < 7)
+        {
+            multiplier = Mathf.Pow(1.2f, (7 - ph));
+        }
+        else if (attackPH > 7 && ph > 7)
+        {
+            multiplier = Mathf.Pow(1.2f, (ph - 7));
+        }
+
         ph += phChange;
 
         if (ph > 14) {
@@ -67,24 +83,13 @@ public class PlayerStats : MonoBehaviour
         float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
         health -= damage * multiplier;*/
         
-        //Defensive damage multiplier. Maximum of ~3.5x.
-        float multiplier = 1;
-
-        if(attackPH < 7 && ph < 7)
-        {
-            multiplier = Mathf.Pow(1.3f, (ph - 7));
-        }
-        else if(attackPH > 7 && ph > 7)
-        {
-            multiplier = Mathf.Pow(1.3f, (7 - ph));
-        }
-
         Debug.Log("Player took damage: " + damage * multiplier + " with a multiplier of " + multiplier);
 
         health -= damage * multiplier;
 
         if (health < 0) {
-            Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
 
         gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);

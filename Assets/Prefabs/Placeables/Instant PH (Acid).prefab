@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pHChange: -4
-  lifetime: 2
+  lifetime: 0.5
 --- !u!1001 &5405388362307430765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,23 +83,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: lengthInSec
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: simulationSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.type
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: ShapeModule.angle
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.arc.spread
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.m_Position.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.m_Rotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.randomPositionAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.randomDirectionAmount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 250
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -116,6 +160,10 @@ PrefabInstance:
     - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3327928071597183934, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
+      propertyPath: ShapeModule.sphericalDirectionAmount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5785804045456593802, guid: 013b87ce0e7fa1c4796b7a8811d747f4, type: 3}
       propertyPath: m_Name

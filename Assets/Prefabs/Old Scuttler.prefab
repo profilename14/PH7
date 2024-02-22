@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   knockback: 3.5
-  phDamage: 3.5
+  phDamage: 2
 --- !u!1 &8750878690511873620
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.0430987, y: 0, z: 32.06913}
-  m_LocalScale: {x: 2, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5592400270539711462}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 100
+  StartHealth: 150
   StartPH: 4
   CurrentPH: 0
   PlayerDetected: 0
@@ -265,10 +265,10 @@ MonoBehaviour:
   NextWaypointDistance: 1
   naturalPH: 2
   stunRecoveryTimer: 0
-  stunRecoveryTime: 4
+  stunRecoveryTime: 8
   stunTimer: 0
-  stunTime: 2
-  damageMultToPH: 2
+  stunTime: 8
+  damageMultToPH: 2.5
 --- !u!114 &247601794568419630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -339,8 +339,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.6081767, y: 0.65000004, z: 0.6802002}
-  m_Center: {x: -0.23428726, y: 0.5, z: 0.0017349244}
+  m_Size: {x: 4.395112, y: 1.7987711, z: 0.6802002}
+  m_Center: {x: -0.62704384, y: 1.0743856, z: 0.0017349124}
 --- !u!1001 &4645898473373689216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -423,11 +423,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3144514733173325165, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.4569013
       objectReference: {fileID: 0}
     - target: {fileID: 3144514733173325165, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3144514733173325165, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -469,15 +469,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b2236e5c3d386ed45a979dc7c9099ad8, type: 3}
       propertyPath: m_LocalPosition.x

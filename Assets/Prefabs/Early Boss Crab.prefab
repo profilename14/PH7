@@ -468,7 +468,7 @@ GameObject:
   - component: {fileID: 4086566310225948219}
   - component: {fileID: 6483012840127634936}
   m_Layer: 9
-  m_Name: Giant Enemy Crab
+  m_Name: Early Boss Crab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,7 +482,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3827884586384633898}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.8287887, z: -0, w: -0.5595618}
+  m_LocalRotation: {x: 0, y: 0.8287887, z: -0, w: -0.5595618}
   m_LocalPosition: {x: -15.012232, y: 0.3187065, z: 8.186207}
   m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
   m_ConstrainProportionsScale: 0
@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5151717131dc5c4286a58c2ecb05d02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 1000
+  StartHealth: 300
   StartPH: 4
   CurrentPH: 0
   PlayerDetected: 0
@@ -622,10 +622,10 @@ MonoBehaviour:
   NextWaypointDistance: 1
   naturalPH: 2
   stunRecoveryTimer: 0
-  stunRecoveryTime: 10
+  stunRecoveryTime: 8
   stunTimer: 0
-  stunTime: 6.5
-  damageMultToPH: 1
+  stunTime: 8.5
+  damageMultToPH: 1.9
   attackRange: 7.5
   attackTime: 1.67
   speedMultDuringAttack: 0.75
@@ -1182,7 +1182,7 @@ PrefabInstance:
     - target: {fileID: 8417361359673230750, guid: 62b7070f332313c4f9094c4a93b48093, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 389f82b4005e0114ca7d3c14869686f3, type: 2}
+      objectReference: {fileID: 2100000, guid: fa5b0128db40ae740843e52fde6f0cd6, type: 2}
     - target: {fileID: 8417361359673230750, guid: 62b7070f332313c4f9094c4a93b48093, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

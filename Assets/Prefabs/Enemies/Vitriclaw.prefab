@@ -315,7 +315,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2276678318342156223}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 2
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -356,7 +356,7 @@ CapsuleCollider:
   m_Radius: 1.3
   m_Height: 2.7978942
   m_Direction: 1
-  m_Center: {x: 0.15, y: 1.6, z: 1.5}
+  m_Center: {x: 0.15, y: 1.5, z: 1.5}
 --- !u!114 &6979119148596400993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,7 +423,7 @@ MonoBehaviour:
   StartHealth: 400
   StartPH: 1
   CurrentPH: 0
-  RegenPH: 1
+  RegenPH: 2
   phDefaultType: 0
   pHMin: 0
   pHMax: 0
@@ -433,7 +433,7 @@ MonoBehaviour:
   MovementMode: 1
   TurnRate: 720
   doubleDash: 0
-  WalkSpeed: 50
+  WalkSpeed: 60
   currentWalkSpeed: 0
   walkingTime: 5
   currentWalkingTime: 0
@@ -480,7 +480,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phGradients: {fileID: 11400000, guid: 83385aeb01a55d143922ac20d64be43b, type: 2}
   mainColorObject: {fileID: 311762706903129315}
+  secondColorObject: {fileID: 0}
+  thirdColorObject: {fileID: 0}
+  fourthColorObject: {fileID: 0}
   mainMaterial: {fileID: -6478536213147159724, guid: 62b7070f332313c4f9094c4a93b48093, type: 3}
+  secondMaterial: {fileID: 0}
+  thirdMaterial: {fileID: 0}
+  fourthMaterial: {fileID: 0}
 --- !u!1 &3154259909109343282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,7 +1053,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.1640196, y: 1.5694765, z: 1.2433112}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0.08381905, y: -0.011342797, z: -0.04607327}
 --- !u!114 &533527311672630228
 MonoBehaviour:
@@ -1061,9 +1067,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 35
   knockback: 3
-  phChange: -3
+  phChange: -4
   attackPH: 1
 --- !u!23 &6859686730928526662
 MeshRenderer:

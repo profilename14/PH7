@@ -29,12 +29,14 @@ public class PlayerAttackHitbox : MonoBehaviour
 
             int curAttackState = controllerScript.weaponSwingCombo;
             if (curAttackState == 0 || curAttackState == 1) {
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, stats.ph,
+                other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, stats.ph,
                 controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback,
                 controllerScript.gameObject.transform.position);
             } else if (curAttackState == 2) {
+                other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
               other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
-                stats.ph, controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 3,
+                stats.ph, controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 4,
                 controllerScript.gameObject.transform.position);
             }
 

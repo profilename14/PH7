@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.8, y: 1.8, z: 1.8}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.4, y: 1.5, z: 1.4}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &5795434444355284090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ Rigidbody:
   m_GameObject: {fileID: 490973162714506038}
   serializedVersion: 4
   m_Mass: 2
-  m_Drag: 2
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 100
+  StartHealth: 90
   StartPH: 12
   CurrentPH: 0
   RegenPH: 0.5
@@ -192,7 +192,7 @@ MonoBehaviour:
   randomFactor: 0.2
   pauseTime: 1
   currentPauseTime: 0
-  thrust: 30
+  thrust: 40
   currentThrust: 0
   ThrustDelay: 1
   currentThrustDelay: 0

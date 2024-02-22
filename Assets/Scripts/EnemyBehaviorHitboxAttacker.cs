@@ -115,8 +115,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     void Update()
     {
 
-        if (phDefaultType == PHDefaultType.Alkaline) neutralizationFactor = Mathf.Pow(1.1f, CurrentPH - 12);
-        else if (phDefaultType == PHDefaultType.Acidic) neutralizationFactor = Mathf.Pow(1.1f, 2 - CurrentPH);
+        if (phDefaultType == PHDefaultType.Alkaline) neutralizationFactor = Mathf.Pow(1.08f, CurrentPH - 12);
+        else if (phDefaultType == PHDefaultType.Acidic) neutralizationFactor = Mathf.Pow(1.08f, 2 - CurrentPH);
 
         currentThrust = thrust * neutralizationFactor;
         currentThrustDelay = ThrustDelay / neutralizationFactor;

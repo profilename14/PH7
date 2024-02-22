@@ -112,7 +112,7 @@ public class PlayerCombatController : MonoBehaviour
                 comboResetCoroutineRunning = true;
             }*/
 
-            if (Input.GetMouseButtonDown(0) && !canCombo)
+            if ( (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) && !canCombo)
             {
                 transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
 
@@ -131,7 +131,7 @@ public class PlayerCombatController : MonoBehaviour
                 playAttackSound();
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
             {
                 FireTripleBlast();
             }
@@ -176,7 +176,7 @@ public class PlayerCombatController : MonoBehaviour
             playerIsIdle = false;
         }
 
-        if((inRecovery && canCombo) && Input.GetMouseButtonDown(0))
+        if((inRecovery && canCombo) && (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1")) )
         {
             if (recoveryCoroutineRunning == true) {
               Debug.Log("WARNING: recovery Coroutine running yet inRecovery");

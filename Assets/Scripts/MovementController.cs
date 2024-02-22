@@ -98,6 +98,8 @@ public class MovementController : MonoBehaviour
     private Vector3 dashVelocity;
     private Vector3 knockbackVelocity;
 
+    private Vector3 controllerMovement;
+
     public ParticleSystem DashEffect;
 
 
@@ -131,11 +133,11 @@ public class MovementController : MonoBehaviour
           dashCooldownTimer -= Time.deltaTime;
         }
 
-        if ( Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0
+        if ( (Input.GetKeyDown("space") || Input.GetButton("Jump") ) && !isDashing && dashCooldownTimer <= 0
             && rotationController.canTurn ) { // Start dash
           isDashing = true;
             // set flag in animator
-            if (!MouseDash)
+            if (!MouseDash && !GameManager.isControllerUsed)
             {
                 var _hDashIntent = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
                 var _vDashIntent = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
@@ -157,7 +159,7 @@ public class MovementController : MonoBehaviour
           dashVelocity = new Vector3(0, 0, 0);
           DashTimer = 0;
           canMove = false;
-            
+
         }
 
 
@@ -229,9 +231,7 @@ public class MovementController : MonoBehaviour
           Vector3 movement = new Vector3(input.x * speed * Time.deltaTime * 1.1f, 0, input.z * speed * Time.deltaTime * 1.1f);
 
           // We can polish this later
-          transform.position += movement;
-
-          return;
+          controllerMovement = movement;
         }
 
         position = this.gameObject.transform.position;
@@ -274,6 +274,10 @@ public class MovementController : MonoBehaviour
         if (vertical < 0.01 && vertical > -0.01)
         {
             vertical = 0;
+        }
+
+        if (GameManager.isControllerUsed) {
+          moveVelocity = controllerMovement * 50;
         }
 
 

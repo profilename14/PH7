@@ -22,6 +22,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     protected bool canMoveDuringAttack = true;
     public float rotationMultDuringAttack = 0.5f;
     protected bool canRotateDuringAttack = true;
+    [SerializeField] protected float cooldownBeforeNextAttack = 1;
+    protected float attackCooldownTimer = 0;
 
     public bool canJump = false;  // ONLY for Vitriclaws
     public float jumpSpeed = 45f;
@@ -85,6 +87,9 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         jumpTimer -= Time.deltaTime;
         return;
       }
+      if (attackCooldownTimer > 0) {
+        attackCooldownTimer -= Time.deltaTime;
+      }
       if (jumpCooldownTimer > 0) {
         jumpCooldownTimer -= Time.deltaTime;
       }
@@ -128,6 +133,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           TurnRate = originalRotation;
         }
         movesInRotationDir = false;
+        attackCooldownTimer = cooldownBeforeNextAttack;
       }
 
       if(canJump == false && CurrentState == State.Idle)
@@ -143,12 +149,15 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
           if (attackTimer > attackTime - timeUntilHitbox) {
+            //hitbox.gameObject.GetComponent<MeshRenderer>().enabled = false;
             hitbox.enabled = false;
           }
           else if (attackTimer < timeAfterHitbox) {
+            //hitbox.gameObject.GetComponent<MeshRenderer>().enabled = false;
             hitbox.enabled = false;
           }
           else {
+            //hitbox.gameObject.GetComponent<MeshRenderer>().enabled = true;
             hitbox.enabled = true;
           }
         } else if (attackTimer <= 0.0f && CurrentState == State.Attack) {
@@ -161,6 +170,8 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
             }
             movesInRotationDir = false;
             hitbox.enabled = false;
+
+            attackCooldownTimer = cooldownBeforeNextAttack;
 
         }
 
@@ -176,6 +187,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           stunTimer -= Time.deltaTime;
           if (stunTimer <= 0) {
             CurrentState = State.Follow;
+            attackCooldownTimer = cooldownBeforeNextAttack;
           }
         }
         if (stunRecoveryTimer > 0) {
@@ -287,13 +299,11 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
       }
 
-
-
     }
 
     private void makeAttack() {
 
-      if (attackTimer > 0 || jumpTimer > 0) {
+      if (attackTimer > 0 || jumpTimer > 0 || attackCooldownTimer > 0) {
         return;
       }
 

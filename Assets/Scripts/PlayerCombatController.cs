@@ -59,8 +59,8 @@ public class PlayerCombatController : MonoBehaviour
     private float rainCastTimer = 0f;
 
     [SerializeField] private GameObject hydroxideSpellPrefab;
-    [SerializeField] private float hydroxideSpellCooldown = 5f;
-    private float hydroxideCastTimer = 0f;
+    [SerializeField] private float hydroxideSpellCooldown = 2.5f;
+    [HideInInspector] public float hydroxideCastTimer = 0f;
 
 
     [SerializeField]
@@ -124,7 +124,7 @@ public class PlayerCombatController : MonoBehaviour
                 comboResetCoroutineRunning = true;
             }*/
 
-            if (Input.GetMouseButtonDown(0) && !canCombo)
+            if ( (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) && !canCombo)
             {
                 if (recoveryCoroutineRunning == true) {
                   // Not doing this right here was what was causing bugs.
@@ -141,7 +141,7 @@ public class PlayerCombatController : MonoBehaviour
                 playAttackSound();
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
             {
                 FireTripleBlast();
             }
@@ -149,7 +149,7 @@ public class PlayerCombatController : MonoBehaviour
             {
                 SummonRain();
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
             {
                 HydroxideDrain();
             }
@@ -169,9 +169,13 @@ public class PlayerCombatController : MonoBehaviour
             }
             if (hydroxideCastTimer > 0)
             {
+
               hydroxideCastTimer -= Time.deltaTime;
               if (playerStats.strongBaseMode) { // Chain hydroxides especially to keep SBM going
                 hydroxideCastTimer -= Time.deltaTime;
+              }
+              if (playerStats.dyingState) {
+                hydroxideCastTimer -= Time.deltaTime; // Halve recharge rate when dying
               }
             }
 
@@ -211,7 +215,7 @@ public class PlayerCombatController : MonoBehaviour
             playerIsIdle = false;
         }
 
-        if((inRecovery && canCombo) && Input.GetMouseButtonDown(0))
+        if((inRecovery && canCombo) && (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1")) )
         {
             if (recoveryCoroutineRunning == true) {
               Debug.Log("WARNING: recovery Coroutine running yet inRecovery");

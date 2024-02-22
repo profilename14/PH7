@@ -16,9 +16,10 @@ public class PlayerStats : MonoBehaviour
 
     public Slider healthBar;
     public Slider PHBar;
+    private PlayerCombatController combatController;
 
-    private bool dyingState = false;
-    private float deathRate = 25f;
+    [HideInInspector] public bool dyingState = false;
+    private float deathRate = 14f; // 100/14 = about 7 seconds
     [HideInInspector] public bool rainPower = false; // If the player has a rain attack speed boost
     [HideInInspector] public bool hydroxidePower = false; // If the player just went over 14 with hydroxide drain
     [HideInInspector] public bool strongBaseMode = false; // If the playe is in their super mode from the above ^
@@ -27,6 +28,8 @@ public class PlayerStats : MonoBehaviour
     Material NormalSigilMaterial;
     [SerializeField] Material StrongBaseSigilMaterial; // Mask glows in strong base mode
     [SerializeField] SkinnedMeshRenderer Mask;
+    // int lives = 3; // Resets on the nexxt level because its a different typhis prefab
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +42,8 @@ public class PlayerStats : MonoBehaviour
       Material[] NumMat;
       NumMat = Mask.materials;
       NormalSigilMaterial = NumMat[1];
+
+      combatController = GetComponentInChildren<PlayerCombatController>();
     }
 
     // Update is called once per frame
@@ -80,6 +85,7 @@ public class PlayerStats : MonoBehaviour
 
       if (ph <= 0 && ! dyingState) {
         dyingState = true;
+        combatController.hydroxideCastTimer = 0;
         ph = -2; // Player has to ph drain or find an alkaline puddle to get back to zero.
         healthBar.gameObject.transform.localScale = new Vector3(1, 1, 1);
       }
@@ -111,7 +117,7 @@ public class PlayerStats : MonoBehaviour
       if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
       } else if (ph < 0) {
-        //ph = 0;
+        ph = -1;
       }
 
       // Health got turned into a timer lol
@@ -122,7 +128,11 @@ public class PlayerStats : MonoBehaviour
 
       if (ph <= 0) {
         dyingState = true;
-        ph = -2; // Player has to ph drain or find an alkaline puddle to get back to zero.
+        // lives--;
+        // if (lives < 0) {
+        //   Destroy(gameObject);
+        // }
+        ph = -1; // Player has to ph drain or find an alkaline puddle to get back to zero.
         healthBar.gameObject.transform.localScale = new Vector3(1, 1, 1);
       }
 

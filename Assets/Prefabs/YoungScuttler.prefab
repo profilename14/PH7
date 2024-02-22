@@ -204,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartHealth: 38
   StartPH: 8
-  RegenPH: 0.33
+  CurrentPH: 0
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
@@ -217,6 +217,12 @@ MonoBehaviour:
   animDelay: 0
   anim: {fileID: 6847561889305436206}
   NextWaypointDistance: 1
+  naturalPH: 0
+  stunRecoveryTimer: 0
+  stunRecoveryTime: 4
+  stunTimer: 0
+  stunTime: 2
+  damageMultToPH: 3
 --- !u!114 &4560513576031755393
 MonoBehaviour:
   m_ObjectHideFlags: 0

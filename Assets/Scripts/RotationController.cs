@@ -36,7 +36,8 @@ public class RotationController : MonoBehaviour
   public Vector3 GetRotationDirection() {
     Vector3 dir;
     if (GameManager.isControllerUsed) {
-      dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+      dir = new Vector3(1, 0, 0);
+      dir = Quaternion.Euler(0, 90, 0) * transform.forward;
       dir.Normalize();
     } else {
       float h = Input.mousePosition.x - Screen.width / 2;
@@ -57,7 +58,7 @@ public class RotationController : MonoBehaviour
 
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
           {
-              transform.rotation = Quaternion.Euler(0, angle, 0);
+              transform.rotation = Quaternion.Euler(0, angle - 90, 0);
           }
 
       }

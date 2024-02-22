@@ -80,6 +80,8 @@ public class EnemyBehavior : MonoBehaviour
     protected float bonusDamageInRecovery = 2.0f; // Should be kept the same between enemies
     protected float bonusDamageInStun = 4.0f;
 
+    public float damageMultToPH = 1; // Multiplier for how much pH spells affect the enemy. 1x for most
+
 
 
     public void OnPathComplete(Path p)
@@ -292,13 +294,13 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         if (naturalPH == TypesPH.Alkaline) {
-          CurrentPH += ph;
+          CurrentPH += ph * damageMultToPH;
           if (CurrentPH <= 7) {
             StunEnemy();
           }
 
         } else if (naturalPH == TypesPH.Acidic) {
-          CurrentPH += ph;
+          CurrentPH += ph * damageMultToPH;
           if (7 <= CurrentPH) {
             StunEnemy();
           }
@@ -306,7 +308,7 @@ public class EnemyBehavior : MonoBehaviour
         } else {
           // Neutral enemies take a little damage so spells aren't useless against them.
           // They have projectiles so its not like you can spam them down or anything.
-          damage += Mathf.Abs(ph) * 2;
+          damage += Mathf.Abs(ph) * 2 * damageMultToPH;
         }
 
         if (CurrentPH > 14) {

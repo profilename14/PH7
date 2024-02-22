@@ -6,5 +6,10 @@ using UnityEngine;
 
 public class PHGradients : ScriptableObject
 {
-    public Gradient mainPHGradient;
+    public Gradient typhisBodyPHGradient;
+    public Gradient typhisMaskPHGradient;
+    public Gradient typhisAlgaePHGradient;
+    public Gradient typhisStrandsPHGradient;
+    public Gradient alkalinePHGradient;
+    public Gradient acidicPHGradient;
 }

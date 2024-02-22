@@ -114,7 +114,7 @@ public class PlayerCombatController : MonoBehaviour
 
             if ( (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) && !canCombo)
             {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
+                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
 
                 if (recoveryCoroutineRunning == true) {
                   // Not doing this right here was what was causing bugs.
@@ -192,7 +192,7 @@ public class PlayerCombatController : MonoBehaviour
 
             if (weaponSwingCombo == 0)
             {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
+                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
                 playAttackSound();
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 1;
@@ -204,7 +204,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (weaponSwingCombo == 1)
             {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -5f);
+                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -6f);
                 playAttackSound();
                 playerAnim.SetTrigger("Combo");
                 weaponSwingCombo = 2;
@@ -215,7 +215,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if(weaponSwingCombo == 2)
             {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
+                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
                 playAttackSound();
                 weaponSwingCombo = 0;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);

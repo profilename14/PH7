@@ -350,11 +350,11 @@ public class EnemyBehavior : MonoBehaviour
 
         if(phDefaultType == PHDefaultType.Alkaline && attackPh < 7)
         {
-            phMultiplier = Mathf.Pow(1.3f, 7 - attackPh);
+            phMultiplier = Mathf.Pow(1.2f, 7 - attackPh);
         }
         else if (phDefaultType == PHDefaultType.Acidic && attackPh > 7)
         {
-            phMultiplier = Mathf.Pow(1.3f, attackPh - 7);
+            phMultiplier = Mathf.Pow(1.2f, attackPh - 7);
         }
 
         float totalDamage = (damage * phMultiplier) / armorFactor;

@@ -168,8 +168,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.8, y: 1.8, z: 1.8}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &3308545650337785271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 30
   knockback: 3
   phChange: 3
   attackPH: 10.5
@@ -335,8 +335,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6764596011439999448}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 2
+  m_Mass: 2
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -353,7 +353,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!136 &6694962938563113733
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -392,11 +392,11 @@ MonoBehaviour:
   StartHealth: 200
   StartPH: 12.5
   CurrentPH: 0
-  RegenPH: 0.4
+  RegenPH: 2
   phDefaultType: 2
   pHMin: 0
   pHMax: 0
-  pHResistFactor: 1.5
+  pHResistFactor: 2
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 0
@@ -409,12 +409,12 @@ MonoBehaviour:
   randomFactor: 0.5
   pauseTime: 2
   currentPauseTime: 0
-  thrust: 40
+  thrust: 55
   currentThrust: 0
-  ThrustDelay: 1
+  ThrustDelay: 0.2
   currentThrustDelay: 0
   randomFactorRange: 0.1
-  animDelay: 0
+  animDelay: 0.1
   currentAnimDelay: 0
   anim: {fileID: 6876773263915272632}
   NextWaypointDistance: 1
@@ -487,7 +487,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phGradients: {fileID: 11400000, guid: 83385aeb01a55d143922ac20d64be43b, type: 2}
   mainColorObject: {fileID: 3969347883997306237}
+  secondColorObject: {fileID: 0}
+  thirdColorObject: {fileID: 0}
+  fourthColorObject: {fileID: 0}
   mainMaterial: {fileID: 2100000, guid: 6f3c0c9d34de60a448b413062547053d, type: 2}
+  secondMaterial: {fileID: 0}
+  thirdMaterial: {fileID: 0}
+  fourthMaterial: {fileID: 0}
 --- !u!1001 &4594832584249243925
 PrefabInstance:
   m_ObjectHideFlags: 0

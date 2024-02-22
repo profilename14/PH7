@@ -142,7 +142,7 @@ public class MovementController : MonoBehaviour
                 var _hDashIntent = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
                 var _vDashIntent = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
 
-                if (_hDashIntent + _vDashIntent == 0f)
+                if (_hDashIntent == 0f && _vDashIntent == 0f)
                 {
                     dashDirection = rotationController.directionVec;
                 }

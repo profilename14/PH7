@@ -95,6 +95,8 @@ public class MovementController : MonoBehaviour
     private Vector3 dashVelocity;
     private Vector3 knockbackVelocity;
 
+    private Vector3 controllerMovement;
+
 
     void Start()
     {
@@ -126,7 +128,7 @@ public class MovementController : MonoBehaviour
           dashCooldownTimer -= Time.deltaTime;
         }
 
-        if ( (Input.GetKeyDown("space") || Input.GetButton("Fire1") ) && !isDashing && dashCooldownTimer <= 0
+        if ( (Input.GetKeyDown("space") || Input.GetButton("Jump") ) && !isDashing && dashCooldownTimer <= 0
             && rotationController.canTurn ) { // Start dash
           isDashing = true;
           // set flag in animator
@@ -205,9 +207,8 @@ public class MovementController : MonoBehaviour
           Vector3 movement = new Vector3(input.x * speed * Time.deltaTime * 1.1f, 0, input.z * speed * Time.deltaTime * 1.1f);
 
           // We can polish this later
-          transform.position += movement;
+          controllerMovement = movement;
 
-          return;
         }
 
         position = this.gameObject.transform.position;
@@ -250,6 +251,10 @@ public class MovementController : MonoBehaviour
         if (vertical < 0.01 && vertical > -0.01)
         {
             vertical = 0;
+        }
+
+        if (GameManager.isControllerUsed) {
+          moveVelocity = controllerMovement * 50;
         }
 
 

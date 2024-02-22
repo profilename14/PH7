@@ -138,10 +138,18 @@ public class EnemyBehavior : MonoBehaviour
 
         if (stunTimer > 0) {
           stunTimer -= Time.deltaTime;
+
           if (stunTimer <= 0) {
             CurrentState = State.Follow;
+
+            if (CurrentPH < StartPH) {
+              CurrentPH += 0.1f;
+            } else if (CurrentPH > StartPH) {
+              CurrentPH -= 0.1f;
+            }
           }
         }
+
         if (stunRecoveryTimer > 0) {
           stunRecoveryTimer -= Time.deltaTime;
         }
@@ -295,13 +303,13 @@ public class EnemyBehavior : MonoBehaviour
 
         if (naturalPH == TypesPH.Alkaline) {
           CurrentPH += ph * damageMultToPH;
-          if (CurrentPH <= 7) {
+          if (CurrentPH <= 7 && CurrentState != State.Stunned) {
             StunEnemy();
           }
 
         } else if (naturalPH == TypesPH.Acidic) {
           CurrentPH += ph * damageMultToPH;
-          if (7 <= CurrentPH) {
+          if (7 <= CurrentPH && CurrentState != State.Stunned) {
             StunEnemy();
           }
 

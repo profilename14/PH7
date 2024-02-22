@@ -188,8 +188,14 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           if (stunTimer <= 0) {
             CurrentState = State.Follow;
             attackCooldownTimer = cooldownBeforeNextAttack;
+            if (CurrentPH < StartPH) {
+              CurrentPH += 0.1f;
+            } else if (CurrentPH > StartPH) {
+              CurrentPH -= 0.1f;
+            }
           }
         }
+
         if (stunRecoveryTimer > 0) {
           stunRecoveryTimer -= Time.deltaTime;
         }

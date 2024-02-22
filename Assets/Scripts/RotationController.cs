@@ -53,13 +53,16 @@ public class RotationController : MonoBehaviour
       {
           Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
           angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
-          directionVec = new Vector3(input.x, 0, input.y);
-          directionVec.Normalize();
 
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
           {
               transform.rotation = Quaternion.Euler(0, angle - 90, 0);
           }
+
+          Vector3 dir = new Vector3(1, 0, 0);
+          dir = Quaternion.Euler(0, 90, 0) * transform.forward;
+          directionVec = dir;
+          directionVec.Normalize();
 
       }
       else

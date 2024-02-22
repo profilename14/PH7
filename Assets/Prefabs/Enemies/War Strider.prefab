@@ -182,9 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
-  knockback: 5
-  phChange: 2
+  damage: 25
+  knockback: 3
+  phChange: 3
   attackPH: 10.5
 --- !u!1 &5772619685951417392
 GameObject:
@@ -389,31 +389,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 150
-  StartPH: 10.5
+  StartHealth: 200
+  StartPH: 12.5
   CurrentPH: 0
   RegenPH: 0.4
   phDefaultType: 2
   pHMin: 0
   pHMax: 0
-  pHResistFactor: 2
+  pHResistFactor: 1.5
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 0
   TurnRate: 720
   doubleDash: 1
   WalkSpeed: 20
+  currentWalkSpeed: 0
   walkingTime: 5
+  currentWalkingTime: 0
   randomFactor: 0.5
   pauseTime: 2
+  currentPauseTime: 0
   thrust: 40
+  currentThrust: 0
   ThrustDelay: 1
+  currentThrustDelay: 0
   randomFactorRange: 0.1
   animDelay: 0
+  currentAnimDelay: 0
   anim: {fileID: 6876773263915272632}
   NextWaypointDistance: 1
   CurrentState: 1
   PopupPrefab: {fileID: 0}
+  damageHitboxScript: {fileID: 3308545650337785271}
+  neutralizationFactor: 0
 --- !u!114 &8793151733820749111
 MonoBehaviour:
   m_ObjectHideFlags: 0

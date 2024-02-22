@@ -18,6 +18,11 @@ public class PlayerStats : MonoBehaviour
     public Slider healthBar;
     public Slider PHBar;
 
+    //Iframes implementation
+    public bool isInvincible;
+    public float iFrameSeconds;
+    private float iFrameTimer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +36,16 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isInvincible)
+        {
+            iFrameTimer += Time.deltaTime;
+            if (iFrameTimer > iFrameSeconds)
+            {
+                isInvincible = false;
+                iFrameTimer = 0;
+            }
+        }
+
         if (ph < PH_DEFAULT) {
             ph += phRegen * Time.deltaTime;
             if (ph > PH_DEFAULT) ph = PH_DEFAULT;
@@ -55,12 +70,12 @@ public class PlayerStats : MonoBehaviour
 
     public void playerDamage(float damage, float attackPH, float phChange, Vector3 position, float knockback) {
         bool isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
-        if (isPlayerDashing) {
+        if (isPlayerDashing || isInvincible) {
             return;
         }
 
-        //Defensive damage multiplier. Maximum of ~3.5x.
-        float multiplier = 1;
+        //Defensive damage multiplier. Disabled for now.
+        /*float multiplier = 1;
 
         if (attackPH < 7 && ph < 7)
         {
@@ -69,7 +84,7 @@ public class PlayerStats : MonoBehaviour
         else if (attackPH > 7 && ph > 7)
         {
             multiplier = Mathf.Pow(1.2f, (ph - 7));
-        }
+        }*/
 
         ph += phChange;
 
@@ -82,10 +97,10 @@ public class PlayerStats : MonoBehaviour
         /*float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
         float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
         health -= damage * multiplier;*/
-        
-        Debug.Log("Player took damage: " + damage * multiplier + " with a multiplier of " + multiplier);
 
-        health -= damage * multiplier;
+        Debug.Log("Player took damage: " + damage); //* multiplier + " with a multiplier of " + multiplier);
+
+        health -= damage; //* multiplier;
 
         if (health < 0) {
             Scene scene = SceneManager.GetActiveScene();
@@ -93,6 +108,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
-
+        isInvincible = true;
+        iFrameTimer = 0;
     }
 }

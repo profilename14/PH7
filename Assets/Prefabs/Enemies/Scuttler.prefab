@@ -66,9 +66,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
-  knockback: 6
-  phChange: -1
+  damage: 20
+  knockback: 3
+  phChange: -2
   attackPH: 0
 --- !u!1 &4776160627763532898
 GameObject:
@@ -237,7 +237,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!136 &3044909082382528641
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -273,10 +273,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartHealth: 70
-  StartPH: 4
+  StartHealth: 80
+  StartPH: 2
   CurrentPH: 2
-  RegenPH: 0.2
+  RegenPH: 0.5
   phDefaultType: 0
   pHMin: 0
   pHMax: 0
@@ -287,17 +287,25 @@ MonoBehaviour:
   TurnRate: 720
   doubleDash: 0
   WalkSpeed: 30
+  currentWalkSpeed: 0
   walkingTime: 3
+  currentWalkingTime: 0
   randomFactor: 0.5
   pauseTime: 3
+  currentPauseTime: 0
   thrust: 30
+  currentThrust: 0
   ThrustDelay: 0.75
+  currentThrustDelay: 0
   randomFactorRange: 0.1
   animDelay: 0
+  currentAnimDelay: 0
   anim: {fileID: 8691365260090520371}
   NextWaypointDistance: 1
   CurrentState: 1
   PopupPrefab: {fileID: 0}
+  damageHitboxScript: {fileID: 1049170531599335774}
+  neutralizationFactor: 0
 --- !u!114 &5779878395216687929
 MonoBehaviour:
   m_ObjectHideFlags: 0

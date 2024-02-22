@@ -10,17 +10,25 @@ public class DamagePlayer : MonoBehaviour
     public float knockback = 2.5f;
     public float phChange = 0f;
     public float attackPH;
+    private PlayerStats playerStatsScript;
+    private EnemyBehavior enemyScript;
 
     private void Awake()
     {
-        attackPH = GetComponentInParent<EnemyBehavior>().StartPH;
+        enemyScript = GetComponentInParent<EnemyBehavior>();
+        attackPH = enemyScript.StartPH;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && !playerStatsScript.isInvincible)
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, attackPH, phChange, gameObject.transform.position, knockback);
+            playerStatsScript.playerDamage(damage * enemyScript.neutralizationFactor, attackPH, phChange, gameObject.transform.position, knockback);
         }
+    }
+
+    public void SetPlayerStatsRef(PlayerStats script)
+    {
+        playerStatsScript = script;
     }
 }

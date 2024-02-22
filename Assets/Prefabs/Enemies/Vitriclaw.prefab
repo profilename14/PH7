@@ -333,7 +333,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!136 &3196955550826976605
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -356,7 +356,7 @@ CapsuleCollider:
   m_Radius: 1.3
   m_Height: 2.7978942
   m_Direction: 1
-  m_Center: {x: 0.15, y: 1.5, z: 1.5}
+  m_Center: {x: 0.15, y: 1.6, z: 1.5}
 --- !u!114 &6979119148596400993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,36 +421,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 400
-  StartPH: 2
+  StartPH: 1
   CurrentPH: 0
-  RegenPH: 0.5
+  RegenPH: 1
   phDefaultType: 0
   pHMin: 0
   pHMax: 0
-  pHResistFactor: 3
+  pHResistFactor: 2
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
   doubleDash: 0
-  WalkSpeed: 40
+  WalkSpeed: 50
+  currentWalkSpeed: 0
   walkingTime: 5
+  currentWalkingTime: 0
   randomFactor: 0.5
   pauseTime: 2
+  currentPauseTime: 0
   thrust: 30
+  currentThrust: 0
   ThrustDelay: 0.75
+  currentThrustDelay: 0
   randomFactorRange: 0.1
   animDelay: 0.6
+  currentAnimDelay: 0
   anim: {fileID: 3260272899287883542}
   NextWaypointDistance: 1
   CurrentState: 1
   PopupPrefab: {fileID: 0}
+  damageHitboxScript: {fileID: 533527311672630228}
+  neutralizationFactor: 0
   attackRange: 7.5
   attackTime: 1.67
-  speedMultDuringAttack: 0.75
-  rotationMultDuringAttack: 0.45
+  currentAttackTime: 0
+  speedMultDuringAttack: 0.5
+  rotationMultDuringAttack: 1
   canJump: 1
-  jumpSpeed: 55
+  jumpSpeed: 60
   jumpMaxTime: 0.5
   jumpCooldown: 4.5
   jumpDistRequirement: 7
@@ -1052,9 +1061,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
-  knockback: 5
-  phChange: -2
+  damage: 30
+  knockback: 3
+  phChange: -3
   attackPH: 1
 --- !u!23 &6859686730928526662
 MeshRenderer:

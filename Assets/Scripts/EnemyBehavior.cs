@@ -52,20 +52,26 @@ public class EnemyBehavior : MonoBehaviour
 
     // Walk Move Type
     public float WalkSpeed = 0.005f;
+    public float currentWalkSpeed;
     public float walkingTime = 5;
+    public float currentWalkingTime;
     public float randomFactor = 0.5f;
     public float pauseTime = 2;
+    public float currentPauseTime;
     private float timer;
     private bool isPaused = false;
     private float randomNum;
 
     // Impulse Move Type
     public float thrust = 30f;
+    public float currentThrust;
     public float ThrustDelay = .75f;
+    public float currentThrustDelay;
     public float randomFactorRange = 0.1f;
 
     //Animation-related
     public float animDelay;
+    public float currentAnimDelay;
     public Animator anim;
 
     // Pathfinding
@@ -84,6 +90,12 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField] private Transform PopupPrefab;
 
+    public DamagePlayer damageHitboxScript;
+
+    //0.27x for fully neutralized, 1.69x for fully acidic/basic.
+    public float neutralizationFactor;
+
+    private bool disableRotation = false;
 
     public void OnPathComplete(Path p)
     {
@@ -162,6 +174,17 @@ public class EnemyBehavior : MonoBehaviour
           }
         }
 
+        if (phDefaultType == PHDefaultType.Alkaline) neutralizationFactor = Mathf.Pow(1.1f, CurrentPH - 12);
+        else if (phDefaultType == PHDefaultType.Acidic) neutralizationFactor = Mathf.Pow(1.1f, 2 - CurrentPH);
+
+        currentThrust = thrust * neutralizationFactor;
+        currentThrustDelay = ThrustDelay / neutralizationFactor;
+        currentWalkSpeed = WalkSpeed * neutralizationFactor;
+        currentWalkingTime = walkingTime / neutralizationFactor;
+        currentPauseTime = pauseTime * neutralizationFactor;
+
+        anim.speed = neutralizationFactor;
+        currentAnimDelay = animDelay / neutralizationFactor;
 
         switch (CurrentState)
         {
@@ -200,7 +223,7 @@ public class EnemyBehavior : MonoBehaviour
 
     protected void Rotation()
     {
-        if (path == null) { // spam preventer
+        if (path == null || disableRotation) { // spam preventer
           return;
         }
 
@@ -247,13 +270,13 @@ public class EnemyBehavior : MonoBehaviour
         switch (MovementMode)
         {
             case MoveMode.Walk:
-                if(isPaused && timer > pauseTime + randomNum)
+                if(isPaused && timer > currentPauseTime + randomNum)
                 {
                     randomNum = Random.Range(-randomFactor, randomFactor);
                     isPaused = false;
                     timer = 0;
                 }
-                else if(!isPaused && timer > walkingTime + randomNum)
+                else if(!isPaused && timer > currentWalkingTime + randomNum)
                 {
                     randomNum = Random.Range(-randomFactor, randomFactor);
                     isPaused = true;
@@ -274,11 +297,11 @@ public class EnemyBehavior : MonoBehaviour
                     {
                         if (movesInRotationDir)
                         {
-                            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+                            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * currentWalkSpeed);
                         }
                         else
                         {
-                            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+                            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * currentWalkSpeed);
                         }
                     }
                 }
@@ -315,29 +338,30 @@ public class EnemyBehavior : MonoBehaviour
         CurrentHealth -= damage * multiplier;
         float displayedMultiplier = Mathf.Round(multiplier * 10.0f) * 0.1f; // Rounded to 1 decimal*/
 
+        //Degree of how much armor an enemy has. At 7, min value is ~0.28, increasing damage by ~3.7x.
+        //At max/min pH for that type, divides incoming damage by the max value of ~1.7.
         float armorFactor = 1;
 
-        if(phDefaultType == PHDefaultType.Alkaline) armorFactor = Mathf.Pow(1.2f, CurrentPH - StartPH);
-        else if (phDefaultType == PHDefaultType.Acidic) armorFactor = Mathf.Pow(1.2f, StartPH - CurrentPH);
+        if(phDefaultType == PHDefaultType.Alkaline) armorFactor = Mathf.Pow(1.3f, CurrentPH - 12);
+        else if (phDefaultType == PHDefaultType.Acidic) armorFactor = Mathf.Pow(1.3f, 2 - CurrentPH);
 
+        //The player's offensive pH multiplier. If max (player pH is at 0/14 and is alkaline/acidic enemy), mult is 3.58x damage.
         float phMultiplier = 1;
 
         if(phDefaultType == PHDefaultType.Alkaline && attackPh < 7)
         {
-            phMultiplier = Mathf.Pow(1.1f, StartPH - attackPh);
+            phMultiplier = Mathf.Pow(1.3f, 7 - attackPh);
         }
         else if (phDefaultType == PHDefaultType.Acidic && attackPh > 7)
         {
-            phMultiplier = Mathf.Pow(1.1f, StartPH - attackPh);
+            phMultiplier = Mathf.Pow(1.3f, attackPh - 7);
         }
 
         float totalDamage = (damage * phMultiplier) / armorFactor;
 
         CurrentHealth -= totalDamage;
 
-        if (ph != 0) {
-          RegenPHTimer = RegenPHCooldown;
-        }
+        RegenPHTimer = RegenPHCooldown;
 
         if (damage > 0) {
             Debug.Log(this.gameObject.name + " took damage: " + totalDamage + " with armor factor: " + armorFactor + " and pH multiplier: " + phMultiplier);
@@ -408,7 +432,7 @@ public class EnemyBehavior : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
+            yield return new WaitForSeconds(currentThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
             float angle = 10;
             if (path == null) {
               // Lets just wait for now.to avoid spam
@@ -417,26 +441,28 @@ public class EnemyBehavior : MonoBehaviour
             {
                 if (!ReachedPathEnd)
                 {
+                    disableRotation = true;
                     Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
-                    Vector3 velocity = dir * thrust;
+                    Vector3 velocity = dir * currentThrust;
 
                     anim.SetTrigger("Charge");
-                    yield return new WaitForSeconds(animDelay);
+                    yield return new WaitForSeconds(currentAnimDelay);
                     GetComponent<Rigidbody>().velocity = new Vector2(0, 0);
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
                     //Debug.Log("Strider added force: " + velocity);
 
                     if (doubleDash) { // If we're a war strider
                       if (dashCombo == false) { // If we did an initial dash
-                        ThrustDelay = ThrustDelay / 1.5f;
+                        currentThrustDelay = ThrustDelay / 1.5f;
                         TurnRate = TurnRate * 2.5f;
                         dashCombo = true;
                       } else { // If we're wrapping up our second dash.
-                        ThrustDelay = ThrustDelay * 1.5f;
+                        currentThrustDelay = ThrustDelay * 1.5f;
                         TurnRate = TurnRate / 2.5f;
                         dashCombo = false;
                       }
                     }
+                    disableRotation = false;
                 }
                 else
                 {

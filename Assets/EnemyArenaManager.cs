@@ -91,6 +91,7 @@ public class EnemyArenaManager : MonoBehaviour
             GameObject enemy = Instantiate(enemiesToSpawn[waveNumber].enemies[i], spawnPoints[waveNumber].spawnPoints[i]);
             enemy.GetComponent<EnemyBehavior>().AlertEnemy();
             enemy.GetComponent<EnemyBehavior>().target = player.transform;
+            enemy.GetComponent<EnemyBehavior>().damageHitboxScript.SetPlayerStatsRef(player.GetComponent<PlayerStats>());
             aliveEnemies.Add(enemy);
         }
         spawningEnemies = false;

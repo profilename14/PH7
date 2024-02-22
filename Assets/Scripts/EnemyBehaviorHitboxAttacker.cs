@@ -17,6 +17,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
     public float attackRange = 3;
     public float attackTime = 2f;
+    public float currentAttackTime;
     protected float attackTimer = 0.0f;
     public float speedMultDuringAttack = 0.5f;
     protected bool canMoveDuringAttack = true;
@@ -36,7 +37,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     private float originalRotation;
     private float originalSpeed;
 
-
+    bool attacking;
 
     // awake and update can be redefined.
     private void Awake()
@@ -114,7 +115,21 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     void Update()
     {
 
-      if(canJump == false && CurrentState == State.Idle)
+        if (phDefaultType == PHDefaultType.Alkaline) neutralizationFactor = Mathf.Pow(1.1f, CurrentPH - 12);
+        else if (phDefaultType == PHDefaultType.Acidic) neutralizationFactor = Mathf.Pow(1.1f, 2 - CurrentPH);
+
+        currentThrust = thrust * neutralizationFactor;
+        currentThrustDelay = ThrustDelay / neutralizationFactor;
+        if (!attacking) currentWalkSpeed = WalkSpeed * neutralizationFactor;
+        else currentWalkSpeed = WalkSpeed * neutralizationFactor * speedMultDuringAttack;
+        currentWalkingTime = walkingTime / neutralizationFactor;
+        currentPauseTime = pauseTime * neutralizationFactor;
+        currentAttackTime = attackTime / neutralizationFactor;
+
+        anim.speed = neutralizationFactor;
+        currentAnimDelay = animDelay / neutralizationFactor;
+
+        if (canJump == false && CurrentState == State.Idle)
       {
           anim.SetBool("Swim Fast", false);
       }
@@ -126,7 +141,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
 
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
-          if (attackTimer > attackTime - timeUntilHitbox) {
+          if (attackTimer > currentAttackTime - timeUntilHitbox) {
             //hitbox.enabled = false;
           }
           else if (attackTimer < timeAfterHitbox) {
@@ -136,13 +151,14 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
             //hitbox.enabled = true;
           }
         } else if (attackTimer <= 0.0f && CurrentState == State.Attack) {
+            attacking = false;
             CurrentState = State.Follow;
-            if (canMoveDuringAttack) {
+            /*if (canMoveDuringAttack) {
               WalkSpeed = originalSpeed;
             }
             if (canRotateDuringAttack) {
               TurnRate =originalRotation;
-            }
+            }*/
             movesInRotationDir = false;
             //hitbox.enabled = false;
 
@@ -261,41 +277,40 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     }
 
     private void makeAttack() {
+        if (attackTimer > 0 || jumpTimer > 0) {
+          return;
+        }
+        attacking = true;
+        CurrentState = State.Attack; // lock rotation and movement
 
-      if (attackTimer > 0 || jumpTimer > 0) {
-        return;
-      }
+        var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
+        toTarget.y = 0f;
 
-      CurrentState = State.Attack; // lock rotation and movement
-
-      var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
-      toTarget.y = 0f;
-
-      if (toTarget != new Vector3(0,0,0)) { // Immediately look to target
+        if (toTarget != new Vector3(0,0,0)) { // Immediately look to target
           //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toTarget), 360f); // Almost can 180
-      }
+        }
 
-      movesInRotationDir = true;
+        movesInRotationDir = true;
 
-      attackTimer = attackTime;
-      if (canMoveDuringAttack) {
-        WalkSpeed *= speedMultDuringAttack;
-      }
-      if (canRotateDuringAttack) {
-        TurnRate *= rotationMultDuringAttack;
-      }
+        attackTimer = currentAttackTime;
+        /*if (canMoveDuringAttack) {
+            WalkSpeed *= speedMultDuringAttack;
+        }
+        if (canRotateDuringAttack) {
+            TurnRate *= rotationMultDuringAttack;
+        }*/
 
-      Debug.Log("Attacking!");
+        Debug.Log("Attacking!");
 
 
-      if(canJump == false)
-      {
-          anim.SetTrigger("Attack");
-      }
-      if(canJump == true)
-      {
-          anim.SetTrigger("Attack");
-      }
+        if(canJump == false)
+        {
+            anim.SetTrigger("Attack");
+        }
+        if(canJump == true)
+        {
+            anim.SetTrigger("Attack");
+        }
 
 
     }

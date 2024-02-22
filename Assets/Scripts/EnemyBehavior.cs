@@ -111,7 +111,7 @@ public class EnemyBehavior : MonoBehaviour
           naturalPH = TypesPH.Acidic;
           StartPH = 0;
         } else {
-          naturalPH = TypesPH.Neutral;
+          //naturalPH = TypesPH.Neutral;
         }
 
         CurrentPH = StartPH;
@@ -332,6 +332,9 @@ public class EnemyBehavior : MonoBehaviour
           damage = damage * 4;
         } else if (stunRecoveryTimer > 0) {
           damage = damage * 2;
+        } else {
+          float distanceFromSeven = Mathf.Abs(CurrentPH - 7);
+          damage = damage * 2 - damage * (distanceFromSeven/7);
         }
 
         CurrentHealth -= damage;

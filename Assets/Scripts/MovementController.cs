@@ -11,7 +11,7 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     // Movement speed for the player.
-    const float DEFAULT_SPEED = 11.0f;
+    const float DEFAULT_SPEED = 15.0f;
     float speed = DEFAULT_SPEED;
 
     bool isControllerUsed = false;
@@ -64,6 +64,7 @@ public class MovementController : MonoBehaviour
     // Dashing Logic
     public bool isDashing = false;
     public float dashSpeed = 60;
+    private bool MouseDash = false;
 
     [SerializeField] private float dashDuration = 0.6f;
     private float DashTimer = 0.0f;
@@ -130,12 +131,30 @@ public class MovementController : MonoBehaviour
 
         if ( (Input.GetKeyDown("space") || Input.GetButton("Jump") ) && !isDashing && dashCooldownTimer <= 0
             && rotationController.canTurn ) { // Start dash
-          isDashing = true;
-          // set flag in animator
-          dashDirection = rotationController.directionVec;
-          dashVelocity = new Vector3(0, 0, 0);
-          DashTimer = 0;
-          canMove = false;
+
+            isDashing = true;
+              if (!MouseDash && !GameManager.isControllerUsed)
+              {
+                  var _hDashIntent = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
+                  var _vDashIntent = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
+
+                  if ( Mathf.Abs(_hDashIntent) + Mathf.Abs(_vDashIntent) == 0f)
+                  {
+                      dashDirection = rotationController.directionVec;
+                  }
+                  else
+                  {
+                      dashDirection = new Vector3(_hDashIntent, 0f, _vDashIntent).normalized;
+                  }
+              }
+              else
+              {
+                  dashDirection = rotationController.directionVec;
+              }
+
+            dashVelocity = new Vector3(0, 0, 0);
+            DashTimer = 0;
+            canMove = false;
         }
 
 
@@ -204,7 +223,8 @@ public class MovementController : MonoBehaviour
             //input.Normalize();
           }
 
-          Vector3 movement = new Vector3(input.x * speed * Time.deltaTime * 1.1f, 0, input.z * speed * Time.deltaTime * 1.1f);
+          Vector3 movement = new Vector3(input.x, 0, input.z).normalized;
+          movement = movement * (speed * Time.deltaTime * 1.1f);
 
           // We can polish this later
           controllerMovement = movement;
@@ -254,7 +274,7 @@ public class MovementController : MonoBehaviour
         }
 
         if (GameManager.isControllerUsed) {
-          moveVelocity = controllerMovement * 50;
+          moveVelocity = controllerMovement * 45;
         }
 
 

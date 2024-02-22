@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46c14b5e5458254490a982c7551d59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDuration: 0.7
+  AttackDuration: 0.2
   Attack:
     serializedVersion: 2
     m_Curve:
@@ -217,7 +217,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  DecayDuration: 0.5
+  DecayDuration: 0.1
   Decay:
     serializedVersion: 2
     m_Curve:
@@ -267,7 +267,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ReleaseDuration: 0.64
+  ReleaseDuration: 0.1
   Release:
     serializedVersion: 2
     m_Curve:
@@ -320,9 +320,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   isDashing: 0
-  dashSpeed: 60
-  dashDuration: 0.6
-  DashCooldown: 0.6
+  dashSpeed: 120
+  dashDuration: 0.3
+  DashCooldown: 0.2
   Dash:
     serializedVersion: 2
     m_Curve:
@@ -524,6 +524,7 @@ MonoBehaviour:
   phRegen: 0.2
   healthBar: {fileID: 0}
   PHBar: {fileID: 0}
+  dyingState: 0
   rainPower: 0
   hydroxidePower: 0
   strongBaseMode: 0
@@ -1237,7 +1238,8 @@ MonoBehaviour:
   rainSpellPrefab: {fileID: 7014600148762342256, guid: fef5c69b6432a4d4faf2dec03d64696e, type: 3}
   rainSpellCooldown: 10
   hydroxideSpellPrefab: {fileID: 7014600148762342256, guid: dd6d661001e33cf4caa0bd8348724392, type: 3}
-  hydroxideSpellCooldown: 5
+  hydroxideSpellCooldown: 2.5
+  hydroxideCastTimer: 0
   comboResetCoroutineRunning: 0
   recoveryCoroutineRunning: 0
 --- !u!1 &5026466953158404687 stripped

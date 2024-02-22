@@ -63,7 +63,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
           naturalPH = TypesPH.Acidic;
           StartPH = 0;
         } else {
-          naturalPH = TypesPH.Neutral;
+          //naturalPH = TypesPH.Neutral;
         }
 
         CurrentPH = StartPH;

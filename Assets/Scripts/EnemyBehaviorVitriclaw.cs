@@ -12,7 +12,7 @@ using static UnityEngine.GraphicsBuffer;
 // Enemy Behavior code
 
 
-public class EnemyBehaviorHitboxAttacker : EnemyBehavior
+public class EnemyBehaviorVitriclaw : EnemyBehavior
 {
 
     public float attackRange = 3;
@@ -23,7 +23,6 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     public float rotationMultDuringAttack = 0.5f;
     protected bool canRotateDuringAttack = true;
 
-    public bool canJump = false;  // ONLY for Vitriclaws
     public float jumpSpeed = 45f;
     public float jumpMaxTime = 1f;
     protected float jumpTimer = 0f;
@@ -72,14 +71,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         Rotation();
         Movement();
 
-        if(canJump == false)
-        {
-            anim.SetBool("Swim Fast", true);
-        }
-        if(canJump == true)
-        {
-            anim.SetBool("Walking", true);
-        }
+        anim.SetBool("Walking", true);
 
       } else if (CurrentState == State.Attack) {
         if (canMoveDuringAttack) {
@@ -95,14 +87,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     void Update()
     {
 
-      if(canJump == false && CurrentState == State.Idle)
-      {
-          anim.SetBool("Swim Fast", false);
-      }
-      if(canJump == true && CurrentState == State.Idle)
-      {
-          anim.SetBool("Walking", false);
-      }
+        //anim.SetBool("Walking", false);
 
 
         if (attackTimer > 0.0f) {
@@ -189,28 +174,6 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            // For debug: Running into an enemy wakes it up if has no door to guard.
-            AlertEnemy();
-
-            // detect if the player is dashing. The aftermath does less damage.
-            // Primarily increases pH and has high knockback.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
-              if (!other.gameObject.GetComponent<MovementController>().dashEnding)
-              {
-                TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
-              }
-              else
-              {
-                TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
-              }
-            }
-
-        }
-    }
 
     private void checkForAttack() {
       Vector3 distanceToTarget = target.position - transform.position;
@@ -220,7 +183,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         makeAttack();
       }
 
-      if (canJump && jumpCooldownTimer <= 0 && distance > jumpDistRequirement) {
+      if (jumpCooldownTimer <= 0 && distance > jumpDistRequirement) {
 
         if (distanceToTarget != new Vector3(0,0,0)) { // Immediately look to target
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(distanceToTarget), 360f); // Almost can 180
@@ -269,14 +232,7 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
       Debug.Log("Attacking!");
 
 
-      if(canJump == false)
-      {
-          anim.SetTrigger("Attack");
-      }
-      if(canJump == true)
-      {
-          anim.SetTrigger("Attack");
-      }
+      anim.SetTrigger("Attack");
 
 
     }

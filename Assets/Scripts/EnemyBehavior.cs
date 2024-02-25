@@ -40,21 +40,13 @@ public class EnemyBehavior : MonoBehaviour
     public MoveMode MovementMode = MoveMode.Walk;
     public float TurnRate = 360f;
 
-    // Used by war striders. Might turn into a special behavior id later.
-    public bool doubleDash = false;
-    private bool dashCombo = false; // Used to tell if the second dash should happen sooner.
     protected bool movesInRotationDir = false; // used by hitbox attackers to move with attacks.
 
     // Walk Move Type
     public float WalkSpeed = 0.005f;
 
-    // Impulse Move Type
-    public float thrust = 30f;
-    public float ThrustDelay = .75f;
-    public float randomFactorRange = 0.1f;
 
     //Animation-related
-    public float animDelay;
     public Animator anim;
 
     // Pathfinding
@@ -65,11 +57,9 @@ public class EnemyBehavior : MonoBehaviour
     protected State CurrentState = State.Idle;
     protected Vector3 LastKnownPos;
     protected Seeker seeker;
-    protected bool ImpulseActive;
 
     [Header("ATTACKS")]
     protected Coroutine PlayerDetector;
-    protected Coroutine PursueImpulse;
 
     [SerializeField] private Transform PopupPrefab;
 
@@ -92,7 +82,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         CurrentHealth = StartHealth;
         CurrentPH = StartPH;
-        ImpulseActive = false;
+        //ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
     }
 
@@ -108,7 +98,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
+        if(CurrentState == State.Idle)
         {
             anim.SetBool("Walking", false);
         }
@@ -165,7 +155,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    protected void Rotation()
+    protected virtual void Rotation()
     {
         if (path == null) { // spam preventer
           return;
@@ -181,7 +171,7 @@ public class EnemyBehavior : MonoBehaviour
 
     }
 
-    protected void Movement()
+    protected virtual void Movement()
     {
         ReachedPathEnd = false;
 
@@ -211,41 +201,27 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
 
-        switch (MovementMode)
-        {
-            case MoveMode.Walk:
-                NextWaypointDistance = 1;
-                if (!isExtendedClass) {
-                  anim.SetBool("Walking", true);
-                }
-                if (ImpulseActive)
-                {
-                    StopCoroutine(PursueImpulse);
-                }
-                if (path != null) { // preventing spam
-                  if (movesInRotationDir) {
-                    GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
-                  } else {
-                    GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
-                  }
-                }
-
-                //GetComponent<Rigidbody>.AddForce();
-                break;
-
-            case MoveMode.Impulse:
-                NextWaypointDistance = 3;
-
-                if (!ImpulseActive)
-                {
-                    PursueImpulse = StartCoroutine(ImpulsePursuit());
-                }
-                break;
+        NextWaypointDistance = 1;
+        if (!isExtendedClass) {
+          anim.SetBool("Walking", true);
         }
+        /*if (ImpulseActive)
+        {
+            StopCoroutine(PursueImpulse);
+        }*/
+        if (path != null) { // preventing spam
+          if (movesInRotationDir) {
+            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+          } else {
+            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+          }
+        }
+
+        //GetComponent<Rigidbody>.AddForce();
 
     }
 
-    public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
+    public virtual void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
 
         CurrentPH += ph;
@@ -284,7 +260,7 @@ public class EnemyBehavior : MonoBehaviour
         if (CurrentHealth <= 0) Destroy(this.gameObject);
     }
 
-    protected IEnumerator DetectPlayer()
+    protected virtual IEnumerator DetectPlayer()
     {
         // Detects the player's last known location
         while (true)
@@ -311,49 +287,6 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    protected IEnumerator ImpulsePursuit()
-    {
-        ImpulseActive = true;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
-            float angle = 10;
-            if (path == null) {
-              // Lets just wait for now.to avoid spam
-            }
-            else if (Vector3.Angle(transform.forward, (path.vectorPath[CurrentWaypoint] - transform.position)) < angle)
-            {
-                if (!ReachedPathEnd)
-                {
-                    Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
-                    Vector3 velocity = dir * thrust;
-
-                    anim.SetTrigger("Charge");
-                    yield return new WaitForSeconds(animDelay);
-                    GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
-
-                    if (doubleDash) { // If we're a war strider
-                      if (dashCombo == false) { // If we did an initial dash
-                        ThrustDelay = ThrustDelay / 1.5f;
-                        TurnRate = TurnRate * 2.5f;
-                        dashCombo = true;
-                      } else { // If we're wrapping up our second dash.
-                        ThrustDelay = ThrustDelay * 1.5f;
-                        TurnRate = TurnRate / 2.5f;
-                        dashCombo = false;
-                      }
-                    }
-                }
-                else
-                {
-                    // Code to inch closer to the final waypoint
-                }
-            }
-
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 20f, Color.yellow, 1f);
-        }
-    }
 
     public float getHealth() {
       return CurrentHealth;

@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 1469718579398292121}
   - component: {fileID: 6716467226491507079}
   - component: {fileID: 5991122561065978301}
-  - component: {fileID: 7644212568898391672}
+  - component: {fileID: 870713105169113433}
   - component: {fileID: -3715620064022994391}
   m_Layer: 9
   m_Name: Axehead
@@ -291,7 +291,7 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   useGraphRaycasting: 1
   quality: 0
---- !u!114 &7644212568898391672
+--- !u!114 &870713105169113433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -300,34 +300,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1186863411663986525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5151717131dc5c4286a58c2ecb05d02, type: 3}
+  m_Script: {fileID: 11500000, guid: d3a407ca93b6d2b49a7f034268620441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 231
-  StartPH: 7
+  StartPH: 8
   RegenPH: 0.33
-  PlayerDetected: 1
+  PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
-  doubleDash: 0
-  WalkSpeed: 60
-  thrust: 30
-  ThrustDelay: 0.75
-  randomFactorRange: 0.1
-  animDelay: 0.6
+  WalkSpeed: 50
   anim: {fileID: 6088869960003858551}
   NextWaypointDistance: 1
-  PopupPrefab: {fileID: 0}
-  attackRange: 6.5
+  PopupPrefab: {fileID: 3144514733173325165, guid: c0bd3be507f85f547b3184d95c4941ad, type: 3}
+  attackRange: 4
   attackTime: 2.6
-  speedMultDuringAttack: 0.8
+  speedMultDuringAttack: 0.5
   rotationMultDuringAttack: 0.225
-  canJump: 0
-  jumpSpeed: 45
-  jumpMaxTime: 1
-  jumpCooldown: 7.5
-  jumpDistRequirement: 10
   hitbox: {fileID: 8115479191103798033}
   timeUntilHitbox: 1.2
   timeAfterHitbox: 0.45

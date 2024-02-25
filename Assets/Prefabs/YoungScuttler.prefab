@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 4861576350912637951}
   - component: {fileID: 421027670140060732}
   - component: {fileID: 1336030334969757887}
-  - component: {fileID: 7943202687800208349}
+  - component: {fileID: 3092644997886694083}
   - component: {fileID: 4560513576031755393}
   - component: {fileID: 9031041239211979996}
   - component: {fileID: -7079560360086087660}
@@ -131,7 +131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3641273607722931413}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.690003, y: -14.86616, z: 76.880005}
   m_LocalScale: {x: 1, y: 1, z: 0.8}
   m_ConstrainProportionsScale: 0
@@ -191,7 +191,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &7943202687800208349
+--- !u!114 &3092644997886694083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3641273607722931413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a90b18e95dbb224fbb43f2a6e96b4de, type: 3}
+  m_Script: {fileID: 11500000, guid: 155bc444038dc264c8ab99e0df7cd348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 38
@@ -210,12 +210,7 @@ MonoBehaviour:
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
-  doubleDash: 0
   WalkSpeed: 30
-  thrust: 30
-  ThrustDelay: 0.75
-  randomFactorRange: 0.1
-  animDelay: 0
   anim: {fileID: 6847561889305436206}
   NextWaypointDistance: 1
   PopupPrefab: {fileID: 5382661844637383376, guid: b9296d04b36c7e2478f7f34e9a8f502c, type: 3}

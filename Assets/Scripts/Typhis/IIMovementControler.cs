@@ -65,6 +65,9 @@ public class IIMovementController : MonoBehaviour
 
     public ParticleSystem DashEffect;
 
+    private Vector3 camForward;
+    private Vector3 camRight;
+
 
     void Start()
     {
@@ -85,41 +88,52 @@ public class IIMovementController : MonoBehaviour
         // This gargantuan function accurately get's the player's direction respecting stages for FixedUpdate's translations.
         GetMovementDirection();
 
+        var cam = Camera.main;
+
+        camForward = cam.transform.forward;
+        camRight = cam.transform.right;
+
+        camForward.y = 0;
+        camRight.y = 0;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
         // DASH LOGIC:
-
         // Dash should probably be disabled during attacks.
-
-        if (dashCooldownTimer >= 0) { // Decrease cooldown
-          dashCooldownTimer -= Time.deltaTime;
+        if (dashCooldownTimer >= 0)
+        { // Decrease cooldown
+            dashCooldownTimer -= Time.deltaTime;
         }
 
-        if ( Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0
-            && rotationController.canTurn ) { // Start dash
-          isDashing = true;
+        if (Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0
+            && rotationController.canTurn)
+        { // Start dash
+            isDashing = true;
             // set flag in animator
             if (!MouseDash)
             {
-                var _hDashIntent = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
-                var _vDashIntent = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
+                var hDashIntent = horizontal;
+                var vDashIntent = vertical;
 
-                if (_hDashIntent + _vDashIntent == 0f)
+                if (hDashIntent + vDashIntent == 0f)
                 {
-                    dashDirection = rotationController.directionVec;
+                    //dashDirection = rotationController.directionVec;
                 }
                 else
                 {
-                    dashDirection = new Vector3(_hDashIntent, 0f, _vDashIntent).normalized;
+                    dashDirection = camForward * vDashIntent + camRight * hDashIntent;
                 }
             }
             else
             {
-                dashDirection = rotationController.directionVec;
+                //dashDirection = rotationController.directionVec;
             }
-
-          dashVelocity = new Vector3(0, 0, 0);
-          DashTimer = 0;
-          canMove = false;    
+            dashVelocity = new Vector3(0, 0, 0);
+            DashTimer = 0;
+            canMove = false;
         }
+
     }
 
     // Fixed update is used for better compatibility and physics.
@@ -128,7 +142,6 @@ public class IIMovementController : MonoBehaviour
     {
         // Set the player's velocity to zero. This is to prevent continuous knockback when an enemy runs into the player.
         //rigidbody.velocity = new Vector3(0, 0, 0);
-
         if (isDashing) { // Main logic:
 
           if (DashTimer >= dashDuration * (DashAftermathPercent) && dashEnding == false) {
@@ -166,11 +179,11 @@ public class IIMovementController : MonoBehaviour
 
         }
 
-        if (combatController.isAttacking()) {
-          speed = DEFAULT_SPEED / slowdownWhileAttacking;
-        } else {
-          speed = DEFAULT_SPEED;
-        }
+        //if (combatController.isAttacking()) {
+        //  speed = DEFAULT_SPEED / slowdownWhileAttacking;
+        //} else {
+        //  speed = DEFAULT_SPEED;
+        //}
 
         if (GameManager.isControllerUsed) {
           Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -186,25 +199,25 @@ public class IIMovementController : MonoBehaviour
 
           return;
         }
-        
-        //Vector3 camForward = cam.forward;
-        //Vector3 camRight = cam.right;
 
-        //camForward.y = 0;
-        //camRight.y = 0;
+        Vector3 moveDir = camForward * vertical + camRight * horizontal;
 
-        // Vector3 forwardRelative = vertical * camForward;
-        //Vector3 rightRelative = horizontal * camRight;
+        // Floats are often error ridden and slightly off, so this code ensure's the player is always properly stopped when required.
+        if (horizontal < 0.01 && horizontal > -0.01)
+        {
+            horizontal = 0;
+        }
+        if (vertical < 0.01 && vertical > -0.01)
+        {
+            vertical = 0;
+        }
 
-        //Vector3 moveDir = forwardRelative + rightRelative;
-
-        //moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 10;
         position = this.gameObject.transform.position;
 
         // Note position.x is changed based on "horizontal." The speed is decreased for diagonal movement.
         if (vertical != 0 || true)
         {
-            position.x += horizontal * speed * Time.deltaTime * (1.0f / (1 + 0.4142f * Mathf.Abs(vertical)) );
+            position.x += horizontal * speed * Time.deltaTime * (1.0f / (1 + 0.4142f * Mathf.Abs(vertical)));
         }
         else
         {
@@ -220,19 +233,7 @@ public class IIMovementController : MonoBehaviour
             position.z += vertical * speed * Time.deltaTime;
         }
 
-
-        moveVelocity = (position - transform.position) * 50;
-
-        // Floats are often error ridden and slightly off, so this code ensure's the player is always properly stopped when required.
-        if (horizontal < 0.01 && horizontal > -0.01)
-        {
-            horizontal = 0;
-        }
-        if (vertical < 0.01 && vertical > -0.01)
-        {
-            vertical = 0;
-        }
-
+        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 10;
 
         // !!This part is responsible for all actual movement!!
         if (canMove) {
@@ -240,10 +241,6 @@ public class IIMovementController : MonoBehaviour
         } else {
           rigidbody.velocity = dashVelocity + knockbackVelocity;
         }
-
-
-
-
     }
 
     // This LONG chain of if statement sets get player input for WASD, and it helps implement 2D ADSR smoothly.

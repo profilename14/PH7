@@ -213,14 +213,22 @@ public class IIMovementController : MonoBehaviour
 
         Vector3 moveDir = camForward * vertical + camRight * horizontal;
 
-        /*if (GameManager.isControllerUsed) {
-          Vector3 input = new Vector3(camForward * Input.GetAxis("Horizontal"), 0,
-                                      camRight * Input.GetAxis("Vertical"));
+        if (GameManager.isControllerUsed) {
+          Vector3 inputCont = new Vector3( Input.GetAxis("Horizontal"), 0,
+                                           Input.GetAxis("Vertical"));
+
+          if (inputCont.magnitude > 1) {
+            inputCont.Normalize();
+          }
+
+          Vector3 input = camForward * inputCont.x + camRight * inputCont.y;
 
           moveDir = input;
-        }*/
+        }
+        else {
+          moveDir.Normalize();
+        }
 
-        moveDir.Normalize();
 
         if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.y) > 0.0 ) {
           if (currentPhase == Phase.None || currentPhase == Phase.Release) { // If the player stopped

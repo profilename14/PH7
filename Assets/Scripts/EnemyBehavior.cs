@@ -63,6 +63,11 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField] private Transform PopupPrefab;
 
+    public float vulnerabilityTime = 0.0f; // How long after attemptying to start an attack can be stunned
+    protected float vulnerabilityTimer = 0.0f; // When 0 or lower not vulnerable
+    public float hitStun = 0.0f; // How long after attemptying to start an attack can be stunned
+    protected float hitStunTimer = 0.0f; // When over 0, the enemy has been stunned by getting attacked at the right time
+
 
     public void OnPathComplete(Path p)
     {
@@ -99,7 +104,12 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
 
-
+        if (hitStunTimer > 0) {
+          hitStunTimer -= Time.deltaTime;
+        }
+        if (vulnerabilityTimer > 0) {
+          vulnerabilityTimer -= Time.deltaTime;
+        }
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
         } else {
@@ -170,6 +180,9 @@ public class EnemyBehavior : MonoBehaviour
 
     protected virtual void Movement()
     {
+        if (hitStunTimer > 0) {
+          return;
+        }
         ReachedPathEnd = false;
 
         float DistanceToWaypoint;
@@ -220,6 +233,9 @@ public class EnemyBehavior : MonoBehaviour
 
     public virtual void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
+        if (vulnerabilityTimer > 0) {
+          hitStunTimer = hitStun;
+        }
 
         CurrentPH += ph;
 

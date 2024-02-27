@@ -32,6 +32,8 @@ public class EnemyBehaviorStrider : EnemyBehavior
 
     protected Coroutine PursueImpulse;
 
+    bool gotHitstunned;
+
 
 
     private void Awake()
@@ -92,9 +94,21 @@ public class EnemyBehaviorStrider : EnemyBehavior
     {
         ImpulseActive = true;
 
+
         while (true)
         {
-            yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
+            if (gotHitstunned) {
+              // Striders attack after a briefer delay when hitstunned to make them a bit less weak.
+              yield return new WaitForSeconds(ThrustDelay / 2 + Random.Range(-randomFactorRange, randomFactorRange));
+            } else {
+              yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
+            }
+
+            if (hitStunTimer > 0) {
+              hitStunTimer = 0; // You have to hit after they begin animating to hitstun.
+            }
+            gotHitstunned = false;
+
             float angle = 10;
             if (path == null) {
               // Lets just wait for now.to avoid spam
@@ -107,7 +121,25 @@ public class EnemyBehaviorStrider : EnemyBehavior
                     Vector3 velocity = dir * thrust;
 
                     anim.SetTrigger("Charge");
-                    yield return new WaitForSeconds(animDelay);
+
+                    // For hitstun to be responsive:
+                    bool stop = false;
+                    vulnerabilityTimer = vulnerabilityTime;
+                    for (int i = 0; i < 10; i++) {
+                      yield return new WaitForSeconds(animDelay / 10);
+                      if (hitStunTimer > 0) {
+                        anim.ResetTrigger("Charge");
+                        //anim.SetBool("Idle", true);
+                        vulnerabilityTimer = 0;
+                        gotHitstunned = true;
+                        stop = true;
+                        break;
+                      }
+                    }
+                    if (stop) {
+                      continue;
+                    }
+
                     GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
 
                     if (doubleDash) { // If we're a war strider

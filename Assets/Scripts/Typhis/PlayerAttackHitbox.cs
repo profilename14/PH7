@@ -41,12 +41,14 @@ public class PlayerAttackHitbox : MonoBehaviour
                 OnHitVFX vfx = other.gameObject.GetComponent<OnHitVFX>();
                 vfx.HitVFX();
             }
-            
+
 
         }
         else if (other.gameObject.CompareTag("Switch"))
         {
-            other.gameObject.GetComponent<Switch>().Toggle();
+            if (other.gameObject.GetComponent<Switch>() != null) {
+              other.gameObject.GetComponent<Switch>().Toggle();
+            }
             //Debug.Log(controllerScript.weaponSwingCombo);
         }
         else if (other.gameObject.CompareTag("BreakablePrefabContainer"))

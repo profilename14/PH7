@@ -19,6 +19,25 @@ public class RotationController : MonoBehaviour
   bool isControllerUsed = false;
   public bool canTurn = true;
 
+  private Vector3 camForward;
+  private Vector3 camRight;
+
+
+  void Awake() {
+    var cam = Camera.main;
+
+    camForward = cam.transform.forward;
+    camRight = cam.transform.right;
+
+    camForward.y = 0;
+    camRight.y = 0;
+
+    camForward.Normalize();
+    camRight.Normalize();
+
+
+  }
+
 
   void Update() {
   if (Input.GetKeyDown(KeyCode.C))
@@ -52,7 +71,7 @@ public class RotationController : MonoBehaviour
       {
           Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
           angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
-          directionVec = new Vector3(input.x, 0, input.y);
+          directionVec = camForward * input.x + camRight * input.y;
           directionVec.Normalize();
 
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)

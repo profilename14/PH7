@@ -33,7 +33,7 @@ public class IIMovementController : MonoBehaviour
     // Dashing Logic
     public bool isDashing = false;
     public float dashSpeed = 60;
-    public bool MouseDash = true;
+    public bool MouseDash = false;
 
     [SerializeField] private float dashDuration = 0.6f;
     private float DashTimer = 0.0f;
@@ -69,6 +69,29 @@ public class IIMovementController : MonoBehaviour
     private Vector3 camRight;
 
 
+    // ADSR Variables:
+
+    [SerializeField] private float AttackDuration = 0.2f;
+    [SerializeField] private AnimationCurve Attack;
+    private float attackTimer;
+
+    [SerializeField] private float DecayDuration = 0.4f;
+    [SerializeField] private AnimationCurve Decay;
+    private float decayTimer;
+
+    [SerializeField] private float SustainDuration = 1.0f;
+    [SerializeField] private AnimationCurve Sustain;
+    private float sustainTimer;
+
+    [SerializeField] private float ReleaseDuration = 0.3f;
+    [SerializeField] private AnimationCurve Release;
+    private float releaseTimer;
+
+    private enum Phase { Attack, Decay, Sustain, Release, None };
+    [SerializeField] private Phase currentPhase = Phase.None;
+
+    [SerializeField] private Vector3 lastMove; // Where the player was going last frame. Used for slight sliding
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -85,6 +108,7 @@ public class IIMovementController : MonoBehaviour
     // Update is called once per frame.
     void Update()
     {
+
         // This gargantuan function accurately get's the player's direction respecting stages for FixedUpdate's translations.
         GetMovementDirection();
 
@@ -116,18 +140,20 @@ public class IIMovementController : MonoBehaviour
                 var hDashIntent = horizontal;
                 var vDashIntent = vertical;
 
-                if (hDashIntent + vDashIntent == 0f)
+                if ( Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
                 {
-                    //dashDirection = rotationController.directionVec;
+                    dashDirection = rotationController.directionVec;
                 }
                 else
                 {
                     dashDirection = camForward * vDashIntent + camRight * hDashIntent;
+                    //dashDirection = rotationController.directionVec;
                 }
             }
             else
             {
                 //dashDirection = rotationController.directionVec;
+                dashDirection = rotationController.directionVec;
             }
             dashVelocity = new Vector3(0, 0, 0);
             DashTimer = 0;
@@ -179,61 +205,46 @@ public class IIMovementController : MonoBehaviour
 
         }
 
-        //if (combatController.isAttacking()) {
-        //  speed = DEFAULT_SPEED / slowdownWhileAttacking;
-        //} else {
-        //  speed = DEFAULT_SPEED;
-        //}
 
-        if (GameManager.isControllerUsed) {
-          Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-          if (input.magnitude > 1) {
-            //input.Normalize();
-          }
 
-          Vector3 movement = new Vector3(input.x * speed * Time.deltaTime * 1.1f, 0, input.z * speed * Time.deltaTime * 1.1f);
 
-          // We can polish this later
-          transform.position += movement;
-
-          return;
-        }
+        // Get the controls direction then multiply by ADSR state:
 
         Vector3 moveDir = camForward * vertical + camRight * horizontal;
 
-        // Floats are often error ridden and slightly off, so this code ensure's the player is always properly stopped when required.
-        if (horizontal < 0.01 && horizontal > -0.01)
-        {
-            horizontal = 0;
+        /*if (GameManager.isControllerUsed) {
+          Vector3 input = new Vector3(camForward * Input.GetAxis("Horizontal"), 0,
+                                      camRight * Input.GetAxis("Vertical"));
+
+          moveDir = input;
+        }*/
+
+        moveDir.Normalize();
+
+        if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.y) > 0.0 ) {
+          if (currentPhase == Phase.None || currentPhase == Phase.Release) { // If the player stopped
+            currentPhase = Phase.Attack;
+            attackTimer = 0;
+          }
+
+          lastMove = moveDir;
         }
-        if (vertical < 0.01 && vertical > -0.01)
-        {
-            vertical = 0;
+        else if (currentPhase == Phase.Decay || currentPhase == Phase.Attack || currentPhase == Phase.Sustain) { // Player let go while moving
+          if (ADSREnvelope() < 1) {
+            lastMove = lastMove * ADSREnvelope(); // Let go just when starting attack = no slide
+          }
+          currentPhase = Phase.Release;
+          releaseTimer = 0;
         }
 
-        position = this.gameObject.transform.position;
-
-        // Note position.x is changed based on "horizontal." The speed is decreased for diagonal movement.
-        if (vertical != 0 || true)
-        {
-            position.x += horizontal * speed * Time.deltaTime * (1.0f / (1 + 0.4142f * Mathf.Abs(vertical)));
-        }
-        else
-        {
-            position.x += horizontal * speed * Time.deltaTime;
-        }
-        // Note position.y is changed based on "vertical." Again, speed is decreased for diagonal movement.
-        if (horizontal != 0 || true)
-        {
-            position.z += vertical * speed * Time.deltaTime * (1.0f / (1 + 0.4142f * Mathf.Abs(horizontal)) );
-        }
-        else
-        {
-            position.z += vertical * speed * Time.deltaTime;
+        if (currentPhase == Phase.Release) {
+          moveDir = lastMove;
         }
 
-        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 10;
+        moveDir = moveDir * ADSREnvelope();
+
+        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 15;
 
         // !!This part is responsible for all actual movement!!
         if (canMove) {
@@ -241,7 +252,12 @@ public class IIMovementController : MonoBehaviour
         } else {
           rigidbody.velocity = dashVelocity + knockbackVelocity;
         }
+
     }
+
+
+
+
 
     // This LONG chain of if statement sets get player input for WASD, and it helps implement 2D ADSR smoothly.
     // Things get much more advanced when translating things to 2D movement, so this is a long process
@@ -302,6 +318,64 @@ public class IIMovementController : MonoBehaviour
       knockbackPower = power * 10;
       knockbackVelocity = new Vector3(0, 0, 0);
       knockbackTimer = 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    float ADSREnvelope()
+    {
+        float velocity = 0.0f;
+
+        if (Phase.Attack == this.currentPhase)
+        {
+            velocity = this.Attack.Evaluate(this.attackTimer / this.AttackDuration);
+            this.attackTimer += Time.deltaTime;
+            if (this.attackTimer > this.AttackDuration)
+            {
+                this.currentPhase = Phase.Decay;
+                decayTimer = 0;
+            }
+        }
+        else if (Phase.Decay == this.currentPhase)
+        {
+            velocity = this.Decay.Evaluate(this.decayTimer / this.DecayDuration);
+            this.decayTimer += Time.deltaTime;
+            if (this.decayTimer > this.DecayDuration)
+            {
+                this.currentPhase = Phase.Sustain;
+                sustainTimer = 0;
+            }
+        }
+        else if (Phase.Sustain == this.currentPhase)
+        {
+            velocity = this.Sustain.Evaluate(this.sustainTimer / this.SustainDuration);
+            this.sustainTimer += Time.deltaTime;
+        }
+        else if (Phase.Release == this.currentPhase)
+        {
+            velocity = this.Release.Evaluate(this.releaseTimer / this.ReleaseDuration);
+            this.releaseTimer += Time.deltaTime;
+            if (this.releaseTimer > this.ReleaseDuration)
+            {
+                this.currentPhase = Phase.None;
+            }
+        }
+        return velocity;
     }
 
 }

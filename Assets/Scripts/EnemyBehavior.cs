@@ -98,10 +98,7 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if(CurrentState == State.Idle)
-        {
-            anim.SetBool("Walking", false);
-        }
+
 
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
@@ -202,9 +199,9 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         NextWaypointDistance = 1;
-        if (!isExtendedClass) {
+        /*if (!isExtendedClass) {
           anim.SetBool("Walking", true);
-        }
+        }*/
         /*if (ImpulseActive)
         {
             StopCoroutine(PursueImpulse);

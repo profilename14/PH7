@@ -86,7 +86,7 @@ public class RotationController : MonoBehaviour
         angle = Vector2.SignedAngle(Vector2.down, direction) + 270;
 
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
-        if (PlayerCombatController.playerIsIdle)
+        if (PlayerCombatController.isIdle)
         {
             snapToCurrentAngle();
             canTurn = true;

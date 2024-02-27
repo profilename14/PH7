@@ -13,266 +13,97 @@ public class PlayerCombatController : MonoBehaviour
     public int ph;
 
     [Header("ATTACKS")]
-    public WeaponStats[] weaponScriptableObjects;
+    public WeaponStats swordStats;
 
-    public WeaponStats equippedWeapon;
-
-    GameObject[] weaponObjects = new GameObject[3];
-
+    //Is the player doing a left swing?
     [SerializeField]
-    GameObject weaponContainer;
-
-    [SerializeField]
-    int equippedWeaponIndex;
-
-    [SerializeField]
-    bool inAnimation;
-
-    [SerializeField]
-    bool canCombo;
-
-    bool updateWeapon;
-
-    [SerializeField]
-    public int weaponSwingCombo;
+    public bool swingingL;
 
     //Is the player in interruptible recovery frames of an attack animation?
     [SerializeField]
     public bool inRecovery;
 
-    //Amount of time after the player enters idle where a new swing will not result in a combo.
-    [SerializeField]
-    float timeToResetCombo;
+    //Is the player in the idle animation state?
+    public static bool isIdle;
 
-    public static bool playerIsIdle;
-    public static bool inRecoveryPublic;
+    public bool inSwing;
 
-    [SerializeField] private float waveSpellSpreadDegrees;
+    public bool inThrust;
+
+    public bool inDash = true;
+
+    private Vector3 rotForThrust;
+
+    /*[SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
     [SerializeField] private float waveSpellCooldown = 0.42f;
-    private float castTimer = 0f;
-
-    [SerializeField]
-    private bool comboResetCoroutineRunning;
-
-    [SerializeField]
-    private bool recoveryCoroutineRunning;
-
-    private float comboResetTimer = 0.0f;
+    private float castTimer = 0f;*/
 
     // Start is called before the first frame update
     void Start()
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
-
-
-
-        //Get all weapons that are children of the weapon container.
-        //int i = 0;
-        /*foreach(Transform child in weaponContainer.transform)
-        {
-            weaponObjects[i] = child.gameObject;
-            i++;
-        }*/
-
-        equippedWeapon = weaponScriptableObjects[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        inRecoveryPublic = inRecovery;
-        if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            playerIsIdle = true;
-
-            canCombo = false;
+            isIdle = true;
             inRecovery = false;
+            inThrust = false;
+            inSwing = false;
+            inDash = false;
+            swingingL = false;
 
-            /*if (!canCombo) {
-              inRecovery = false;
-            }
-             if (canCombo && comboResetTimer <= 0) {
-               comboResetTimer = timeToResetCombo;
-             }
-
-            if (comboResetTimer > 0) {
-              comboResetTimer -= Time.deltaTime;
-              if (comboResetTimer <= 0) {
-                canCombo = false;
-              }
-            }/*
-
-
-            /*if(!comboResetCoroutineRunning && canCombo && inRecovery)
-            {
-                //StartCoroutine(WaitForResetCombo());
-                //Debug.Log("Wait for reset combo");
-                comboResetCoroutineRunning = true;
-            }*/
-
-            if ( (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) && !canCombo)
-            {
-                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
-
-                if (recoveryCoroutineRunning == true) {
-                  // Not doing this right here was what was causing bugs.
-                  return;
-                }
-                rotationController.snapToCurrentAngle();
-                weaponSwingCombo = 0;
-                canCombo = false;
-                playerAnim.SetTrigger(equippedWeapon.weaponName);
-                //comboResetCoroutineRunning = false;
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
-                //StopCoroutine(WaitForResetCombo());
-                comboResetTimer = 0;
-                playAttackSound();
-            }
-
-            if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
+            /*if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
             {
                 FireTripleBlast();
             }
             if (castTimer > 0)
             {
               castTimer -= Time.deltaTime;
-            }
-
-            //For now, weapon switching is disabled until we implement the other weapons.
-
-            /*if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (equippedWeaponIndex != 0) updateWeapon = true;
-                equippedWeaponIndex = 0;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (equippedWeaponIndex != 1) updateWeapon = true;
-                equippedWeaponIndex = 1;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if (equippedWeaponIndex != 2) updateWeapon = true;
-                equippedWeaponIndex = 2;
-            }
-
-            //Updates the equipped weapon if it was changed
-            if (updateWeapon)
-            {
-                equippedWeapon = weaponScriptableObjects[equippedWeaponIndex];
-                for (int i = 0; i < weaponObjects.Length; i++)
-                {
-                    if (equippedWeaponIndex == i) weaponObjects[i].SetActive(true);
-                    else weaponObjects[i].SetActive(false);
-                }
-
-                updateWeapon = false;
             }*/
         }
         else
         {
-            playerIsIdle = false;
+            isIdle = false;
         }
 
-        if((inRecovery && canCombo) && (Input.GetMouseButtonDown(0) || Input.GetButton("Fire1")) )
+        if (isIdle || inRecovery)
         {
-            if (recoveryCoroutineRunning == true) {
-              Debug.Log("WARNING: recovery Coroutine running yet inRecovery");
-              return;
-            }
-            canCombo = false;
-            inRecovery = false;
-            //StopCoroutine(WaitForResetCombo());
-            comboResetCoroutineRunning = false;
-            comboResetTimer = 0;
+            playerAnim.SetTrigger("Actionable");
+        }
+        else
+        {
+            playerAnim.ResetTrigger("Actionable");
+        }
 
-
-
-            if (weaponSwingCombo == 0)
-            {
-                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
-                playAttackSound();
-                playerAnim.SetTrigger("Combo");
-                weaponSwingCombo = 1;
-                playerAnim.SetInteger("Combo Number", 1);
-
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo1));
-                //Debug.Log(equippedWeapon.t_combo1);
-                recoveryCoroutineRunning = true;
-            }
-            else if (weaponSwingCombo == 1)
-            {
-                transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -6f);
-                playAttackSound();
-                playerAnim.SetTrigger("Combo");
-                weaponSwingCombo = 2;
-                playerAnim.SetInteger("Combo Number", 2);
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo2));
-                //Debug.Log(equippedWeapon.t_combo2);
-                recoveryCoroutineRunning = true;
-            }
-            else if(weaponSwingCombo == 2)
-            {
-                //transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position + rotationController.GetRotationDirection() * 3, -1f);
-                playAttackSound();
-                weaponSwingCombo = 0;
-                playerAnim.SetTrigger(equippedWeapon.weaponName);
-                playerAnim.SetInteger("Combo Number", 0);
-                comboResetCoroutineRunning = false;
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
-                //Debug.Log(equippedWeapon.t_combo0);
-                recoveryCoroutineRunning = true;
-            }
-            rotationController.snapToCurrentAngle();
+        if (Input.GetKeyDown("space") || Input.GetButtonDown("Jump"))
+        {
+            //Need to integrate with new movement controller
+            playerAnim.SetTrigger("Dash");
+            playerAnim.ResetTrigger("Thrust");
+            playerAnim.ResetTrigger("Swing");
+        }
+        else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+        {
+            playerAnim.SetBool("Swing Left", swingingL);
+            playerAnim.SetTrigger("Swing");
+            playerAnim.ResetTrigger("Thrust");
+            playerAnim.ResetTrigger("Dash");
+        }
+        else if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2"))
+        {
+            playerAnim.SetTrigger("Thrust");
+            playerAnim.ResetTrigger("Swing");
+            playerAnim.ResetTrigger("Dash");
         }
     }
 
-    public IEnumerator WaitForResetCombo()
-    {
-        /*
-        yield return new WaitForSeconds(timeToResetCombo);
-        while (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-          yield return new WaitForSeconds(0.1f);
-          Debug.Log("Stuck waiting for idle to combo reset");
-        }
-
-          canCombo = false;
-          playerAnim.SetInteger("Combo Number", 0);
-          weaponSwingCombo = 0;
-          comboResetCoroutineRunning = false;
-
-        */
-        // We can use this later, but its 2am so I'm just gonna make a timer at this point.
-        yield return new WaitForSeconds(0.1f);
-    }
-
-    public IEnumerator WaitForRecoveryFrames(float framesToRecovery)
-    {
-        inRecovery = false;
-        recoveryCoroutineRunning = true;
-        float timeToWait = framesToRecovery / 60.0f;
-        while (timeToWait > 0)
-        {
-            timeToWait -= Time.deltaTime;
-            //Debug.Log(timeToWait);
-            yield return null;
-        }
-        // Don't think attacks should be fps dependent: Causes attacks to become sluggish randomly
-
-        recoveryCoroutineRunning = false;
-        inRecovery = true;
-
-        if(weaponSwingCombo != 2) canCombo = true;
-        //Debug.Log("Recovery frames");
-
-        //StartCoroutine(WaitForResetCombo());
-        //comboResetCoroutineRunning = true;
-    }
-
-    private void FireTripleBlast() {
+    /*private void FireTripleBlast() {
         if (castTimer > 0) {
           return;
         } else {
@@ -289,24 +120,62 @@ public class PlayerCombatController : MonoBehaviour
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees/2, 0) );
 
 
-    }
-
-    public bool isAttacking() {
-      if (comboResetTimer > timeToResetCombo * 0.75 || recoveryCoroutineRunning) {
-        return true;
-      }
-      else {
-        return false;
-      }
-
-    }
+    }*/
 
     private void playAttackSound() {
-      if(soundEffects != null)
+        if (soundEffects != null)
         {
             float pitchMod = Random.Range(-0.25f, 0.25f);
             soundEffects.pitch = 1 + pitchMod;
             soundEffects.Play();
         }
+    }
+
+    private void initiateSwing()
+    {
+        inSwing = true;
+        inRecovery = false;
+        rotationController.snapToCurrentAngle();
+        playAttackSound();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
+    }
+
+    private void initiateThrust()
+    {
+        rotForThrust = rotationController.GetRotationDirection();
+        inThrust = true;
+        inRecovery = false;
+        rotationController.snapToCurrentAngle();
+        playAttackSound();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
+    }
+
+    private void initiateDash()
+    {
+        inDash = true;
+        inRecovery = false;
+        rotationController.snapToCurrentAngle();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
+    }
+
+    private void addPushForward(float amount)
+    {
+        transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position - rotForThrust * 3, amount);
+    }
+
+    private void inRecoveryFrames()
+    {
+        swingingL = !swingingL;
+        playerAnim.SetBool("Swing Left", swingingL);
+        inRecovery = true;
     }
 }

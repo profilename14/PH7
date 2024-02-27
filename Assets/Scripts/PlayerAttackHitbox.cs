@@ -27,16 +27,15 @@ public class PlayerAttackHitbox : MonoBehaviour
             //Debug.Log("Hit " + other.gameObject.name);
             //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
 
-            int curAttackState = controllerScript.weaponSwingCombo;
-            if (curAttackState == 0 || curAttackState == 1) {
+            if (!controllerScript.inThrust) {
                 other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage, stats.ph,
-                controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback,
+                other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage, stats.ph,
+                controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback,
                 controllerScript.gameObject.transform.position);
-            } else if (curAttackState == 2) {
+            } else {
                 other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
-                stats.ph, controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 4,
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 2f,
+                stats.ph, controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 10,
                 controllerScript.gameObject.transform.position);
             }
 

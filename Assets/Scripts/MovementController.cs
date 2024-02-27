@@ -212,11 +212,12 @@ public class MovementController : MonoBehaviour
 
         }
 
-        if (combatController.isAttacking()) {
+        /*if (combatController.isAttacking()) {
           speed = DEFAULT_SPEED / slowdownWhileAttacking;
         } else {
           speed = DEFAULT_SPEED;
         }
+        */
 
         if (GameManager.isControllerUsed) {
 

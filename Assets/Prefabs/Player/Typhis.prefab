@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3094448214845904660}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.19052343, y: -0.71116745, z: 0.6641748, w: 0.12966754}
+  m_LocalPosition: {x: 0.07728691, y: 0.597617, z: 1.6573001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2332982525933250809}
+  m_Father: {fileID: 2331674415744916235}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7915324704449890489
 BoxCollider:
@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46c14b5e5458254490a982c7551d59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEFAULT_SPEED: 11
   AttackDuration: 0.7
   Attack:
     serializedVersion: 2
@@ -321,6 +322,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   isDashing: 0
   dashSpeed: 60
+  MouseDash: 1
   dashDuration: 0.6
   DashCooldown: 0.6
   Dash:
@@ -456,6 +458,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   slowdownWhileAttacking: 2
+  DashEffect: {fileID: 0}
 --- !u!54 &5701857661918338420
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -524,6 +527,8 @@ MonoBehaviour:
   phRegen: 0.33
   healthBar: {fileID: 0}
   PHBar: {fileID: 0}
+  isInvincible: 0
+  iFrameSeconds: 0
 --- !u!114 &6403016540344681571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,8 +1089,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
-      insertIndex: 0
+    - targetCorrespondingSourceObject: {fileID: 554250365522613273, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2246482849434448713}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
@@ -1095,6 +1100,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1473465222993936587}
   m_SourcePrefab: {fileID: 100100000, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
+--- !u!4 &2331674415744916235 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 554250365522613273, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
+  m_PrefabInstance: {fileID: 2876342494479290130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2332982525933250809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
@@ -1141,23 +1151,9 @@ MonoBehaviour:
   soundEffects: {fileID: 5777700335239449702}
   health: 100
   ph: 14
-  weaponScriptableObjects:
-  - {fileID: 11400000, guid: 20d7f661f4d8815408fd97d5da99f960, type: 2}
-  equippedWeapon: {fileID: 0}
-  weaponContainer: {fileID: 5026466953158404687}
-  equippedWeaponIndex: 0
-  inAnimation: 0
-  canCombo: 0
-  weaponSwingCombo: 0
+  swordStats: {fileID: 0}
+  swingingL: 0
   inRecovery: 0
-  timeToResetCombo: 0.2
-  waveSpellSpreadDegrees: 17.5
-  waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
-  waveSpellCooldown: 0.75
-  comboResetCoroutineRunning: 0
-  recoveryCoroutineRunning: 0
---- !u!1 &5026466953158404687 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2149541580070738595, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
-  m_PrefabInstance: {fileID: 2876342494479290130}
-  m_PrefabAsset: {fileID: 0}
+  inSwing: 0
+  inThrust: 0
+  inDash: 1

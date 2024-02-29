@@ -128,7 +128,8 @@ public class EnemyBehaviorStrider : EnemyBehavior
                     for (int i = 0; i < 10; i++) {
                       yield return new WaitForSeconds(animDelay / 10);
                       if (hitStunTimer > 0) {
-                        anim.ResetTrigger("Charge");
+                        //anim.ResetTrigger("Charge");
+                        anim.Play("Charge", 0, 1);
                         //anim.SetBool("Idle", true);
                         vulnerabilityTimer = 0;
                         gotHitstunned = true;

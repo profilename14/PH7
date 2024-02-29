@@ -10,7 +10,7 @@ public class TelekinesisSpell : MonoBehaviour
 
     private float curLifespan;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
-    [HideInInspector] public PlayerStats playerStats;
+    [HideInInspector] public PlayerCombatController combatController;
     private Throwable heldItem;
 
 
@@ -33,7 +33,7 @@ public class TelekinesisSpell : MonoBehaviour
           //Destroy(gameObject);
         }
 
-        if (playerStats != null || true) { // When were sure we've linked the player to the spell:
+        if (combatController != null) { // When were sure we've linked the player to the spell:
           Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
           Throwable target = null;
           float targetValue = 0;
@@ -69,6 +69,7 @@ public class TelekinesisSpell : MonoBehaviour
 
           Debug.Log("Thrown");
           heldItem.Throw();
+          combatController.objectWasThrown();
           Destroy(gameObject);
         }
 

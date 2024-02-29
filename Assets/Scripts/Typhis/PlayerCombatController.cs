@@ -65,6 +65,8 @@ public class PlayerCombatController : MonoBehaviour
 
     private float comboResetTimer = 0.0f;
 
+    public bool isFacingMouse = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -290,7 +292,7 @@ public class PlayerCombatController : MonoBehaviour
 
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
         Vector3 curRotation = rotationController.GetRotationDirection();
-        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90 - 45;
 
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
@@ -312,7 +314,9 @@ public class PlayerCombatController : MonoBehaviour
       float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
       GameObject telekinesis = Instantiate(telekinesisSpellPrefab, this.transform,  worldPositionStays:false );
-      //telekinesis.GetComponent<Telekinesis>().playerStats = playerStats; // This is delayed, so we have to wait on the other side.
+      telekinesis.GetComponent<TelekinesisSpell>().combatController = this; // This is delayed, so we have to wait on the other side.
+
+      rotationController.isFacingMouse = true;
     }
 
 
@@ -333,5 +337,9 @@ public class PlayerCombatController : MonoBehaviour
             soundEffects.pitch = 1 + pitchMod;
             soundEffects.Play();
         }
+    }
+
+    public void objectWasThrown() {
+      rotationController.isFacingMouse = false;
     }
 }

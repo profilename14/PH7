@@ -18,6 +18,7 @@ public class RotationController : MonoBehaviour
 
   bool isControllerUsed = false;
   public bool canTurn = true;
+  public bool isFacingMouse = false;
 
   private Vector3 camForward;
   private Vector3 camRight;
@@ -82,15 +83,42 @@ public class RotationController : MonoBehaviour
       }
       else
       {
-          float h = Input.mousePosition.x - Screen.width / 2;
+          /*float h = Input.mousePosition.x - Screen.width / 2;
           float v = Input.mousePosition.y - Screen.height / 2;
           directionVec = new Vector3(h, 0, v);
+
+
           directionVec.Normalize();
 
           float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
 
-          transform.rotation = Quaternion.Euler(0, angle, 0);
+          transform.rotation = Quaternion.Euler(0, angle , 0);*/
+
+          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+          angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+          directionVec = camForward * input.x + camRight * input.y;
+          directionVec.Normalize();
+
+          if (input.x != 0 || input.y != 0)
+          {
+              transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
+          }
+
+
       }
+  }
+
+  public void snapToCurrentMouseAngle() {
+    float h = Input.mousePosition.x - Screen.width / 2;
+    float v = Input.mousePosition.y - Screen.height / 2;
+    directionVec = new Vector3(h, 0, v);
+
+
+    directionVec.Normalize();
+
+    float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+
+    transform.rotation = Quaternion.Euler(0, angle , 0);
   }
 
 
@@ -103,9 +131,18 @@ public class RotationController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
         if (PlayerCombatController.playerIsIdle)
         {
-            snapToCurrentAngle();
-            canTurn = true;
+            if (!isFacingMouse) {
+              snapToCurrentAngle();
+              canTurn = true;
+            } else {
+              snapToCurrentMouseAngle();
+              canTurn = true;
+            }
+
          } else {
+            if (canTurn == true) {
+              snapToCurrentMouseAngle();
+            }
             canTurn = false;
          }
 

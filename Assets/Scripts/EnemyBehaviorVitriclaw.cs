@@ -67,6 +67,22 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
         jumpCooldownTimer -= Time.deltaTime;
       }
 
+      if (hitStunTimer > 0) {
+        //anim.ResetTrigger("Attack");
+        anim.Play("Attack", 0, 1); // This instantly ends the animation by skipping to 100% time
+        hitbox.enabled = false;
+        CurrentState = State.Follow;
+        jumpCooldownTimer = jumpCooldown;
+        jumpTimer = 0;
+
+        if (canMoveDuringAttack) {
+          WalkSpeed = originalSpeed;
+        }
+        if (canRotateDuringAttack) {
+          TurnRate =originalRotation;
+        }
+      }
+
       if (CurrentState == State.Follow) { // If the enemy has seen the player
         Rotation();
         Movement();
@@ -87,6 +103,12 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
     void Update()
     {
 
+        if (hitStunTimer > 0) {
+          hitStunTimer -= Time.deltaTime;
+        }
+        if (vulnerabilityTimer > 0) {
+          vulnerabilityTimer -= Time.deltaTime;
+        }
         //anim.SetBool("Walking", false);
 
 
@@ -179,6 +201,10 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
       Vector3 distanceToTarget = target.position - transform.position;
       float distance = distanceToTarget.magnitude;
 
+      if (hitStunTimer > 0) {
+        return;
+      }
+
       if (attackTimer <= 0 && distance < attackRange && jumpTimer <= 0) {
         makeAttack();
       }
@@ -209,6 +235,8 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
       if (attackTimer > 0 || jumpTimer > 0) {
         return;
       }
+
+      vulnerabilityTimer = vulnerabilityTime;
 
       CurrentState = State.Attack; // lock rotation and movement
 

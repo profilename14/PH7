@@ -74,10 +74,23 @@ public class EnemyBehaviorAxehead : EnemyBehavior
 
         //anim.SetBool("Swim Fast", false);
 
-
+        if (hitStunTimer > 0) {
+          hitStunTimer -= Time.deltaTime;
+        }
+        if (vulnerabilityTimer > 0) {
+          vulnerabilityTimer -= Time.deltaTime;
+        }
 
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
+
+          if (hitStunTimer > 0) {
+            //anim.ResetTrigger("Attack");
+            anim.Play("Attack", 0, 1); // This instantly ends the animation by skipping to 100% time
+            hitbox.enabled = false;
+            CurrentState = State.Follow;
+          }
+
           if (attackTimer > attackTime - timeUntilHitbox) {
             hitbox.enabled = false;
           }
@@ -165,6 +178,10 @@ public class EnemyBehaviorAxehead : EnemyBehavior
       Vector3 distanceToTarget = target.position - transform.position;
       float distance = distanceToTarget.magnitude;
 
+      if (hitStunTimer > 0) {
+        return;
+      }
+
       if (attackTimer <= 0 && distance < attackRange) {
         makeAttack();
       }
@@ -178,6 +195,8 @@ public class EnemyBehaviorAxehead : EnemyBehavior
       }
 
       CurrentState = State.Attack; // lock rotation and movement
+
+      vulnerabilityTimer = vulnerabilityTime;
 
       var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
       toTarget.y = 0f;

@@ -41,6 +41,8 @@ public class IIMovementController : MonoBehaviour
     private float dashCooldownTimer = 0.0f;
     private Vector3 dashDirection;
 
+    [SerializeField] private AnimationCurve Dash;
+
     // This % through, the player will no longer deal pH damage but will be able to move,
     // still be invulnerable, and still have momentum.
     // At this point the dash animation starts to end and the player is soon also able to attack.
@@ -184,7 +186,8 @@ public class IIMovementController : MonoBehaviour
 
           } else {
             // Set the velocity according the the graph curve
-            dashVelocity = dashDirection * dashSpeed;
+            // dashVelocity = dashDirection * dashSpeed * ;
+            dashVelocity = dashDirection * dashSpeed * Dash.Evaluate(DashTimer / dashDuration);
 
             DashTimer += Time.deltaTime;
           }

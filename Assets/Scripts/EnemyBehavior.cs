@@ -260,9 +260,14 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         // Damage Text Popup
-        Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
-        DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
-        popup.Setup(damage);
+
+
+        if (damage > 9.9) {
+          Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
+          DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
+          popup.Setup(damage * displayedMultiplier);
+        }
+
 
 
         // Knockback

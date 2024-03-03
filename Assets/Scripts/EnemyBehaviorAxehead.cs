@@ -12,7 +12,7 @@ using static UnityEngine.GraphicsBuffer;
 // Enemy Behavior code
 
 
-public class EnemyBehaviorHitboxAttacker : EnemyBehavior
+public class EnemyBehaviorAxehead : EnemyBehavior
 {
 
     public float attackRange = 3;
@@ -23,13 +23,6 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     public float rotationMultDuringAttack = 0.5f;
     protected bool canRotateDuringAttack = true;
 
-    public bool canJump = false;  // ONLY for Vitriclaws
-    public float jumpSpeed = 45f;
-    public float jumpMaxTime = 1f;
-    protected float jumpTimer = 0f;
-    public float jumpCooldown = 7.5f;
-    public float jumpDistRequirement = 10f;
-    protected float jumpCooldownTimer = 0f;
     public Collider hitbox;
     public float timeUntilHitbox = 0.3f;
     public float timeAfterHitbox = 0.8f;
@@ -60,26 +53,10 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     // That, or they just return to a default idle where they choose a random nearby location and patrol around it.
     void FixedUpdate()
     {
-      if (jumpTimer > 0) {
-        jumpTimer -= Time.deltaTime;
-        return;
-      }
-      if (jumpCooldownTimer > 0) {
-        jumpCooldownTimer -= Time.deltaTime;
-      }
 
       if (CurrentState == State.Follow) { // If the enemy has seen the player
         Rotation();
         Movement();
-
-        if(canJump == false)
-        {
-            anim.SetBool("Swim Fast", true);
-        }
-        if(canJump == true)
-        {
-            anim.SetBool("Walking", true);
-        }
 
       } else if (CurrentState == State.Attack) {
         if (canMoveDuringAttack) {
@@ -95,18 +72,25 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
     void Update()
     {
 
-      if(canJump == false && CurrentState == State.Idle)
-      {
-          anim.SetBool("Swim Fast", false);
-      }
-      if(canJump == true && CurrentState == State.Idle)
-      {
-          anim.SetBool("Walking", false);
-      }
+        //anim.SetBool("Swim Fast", false);
 
+        if (hitStunTimer > 0) {
+          hitStunTimer -= Time.deltaTime;
+        }
+        if (vulnerabilityTimer > 0) {
+          vulnerabilityTimer -= Time.deltaTime;
+        }
 
         if (attackTimer > 0.0f) {
           attackTimer -= Time.deltaTime;
+
+          if (hitStunTimer > 0) {
+            //anim.ResetTrigger("Attack");
+            anim.Play("Attack", 0, 1); // This instantly ends the animation by skipping to 100% time
+            hitbox.enabled = false;
+            CurrentState = State.Follow;
+          }
+
           if (attackTimer > attackTime - timeUntilHitbox) {
             hitbox.enabled = false;
           }
@@ -189,65 +173,30 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            // For debug: Running into an enemy wakes it up if has no door to guard.
-            AlertEnemy();
-
-            // detect if the player is dashing. The aftermath does less damage.
-            // Primarily increases pH and has high knockback.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
-              if (!other.gameObject.GetComponent<MovementController>().dashEnding)
-              {
-                TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
-              }
-              else
-              {
-                TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
-              }
-            }
-
-        }
-    }
 
     private void checkForAttack() {
       Vector3 distanceToTarget = target.position - transform.position;
       float distance = distanceToTarget.magnitude;
 
-      if (attackTimer <= 0 && distance < attackRange && jumpTimer <= 0) {
+      if (hitStunTimer > 0) {
+        return;
+      }
+
+      if (attackTimer <= 0 && distance < attackRange) {
         makeAttack();
       }
-
-      if (canJump && jumpCooldownTimer <= 0 && distance > jumpDistRequirement) {
-
-        if (distanceToTarget != new Vector3(0,0,0)) { // Immediately look to target
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(distanceToTarget), 360f); // Almost can 180
-        }
-
-        Debug.Log("Jumping!");
-
-        //anim.SetTrigger("Jump"); Takes like 2 seconds for the animation to actually jump, it can wait.
-
-        jumpCooldownTimer = jumpCooldown;
-        jumpTimer = jumpMaxTime;
-        GetComponent<Rigidbody>().AddForce((transform.forward).normalized * jumpSpeed, ForceMode.Impulse);
-
-
-      }
-
-
 
     }
 
     private void makeAttack() {
 
-      if (attackTimer > 0 || jumpTimer > 0) {
+      if (attackTimer > 0) {
         return;
       }
 
       CurrentState = State.Attack; // lock rotation and movement
+
+      vulnerabilityTimer = vulnerabilityTime;
 
       var toTarget = path.vectorPath[CurrentWaypoint] - transform.position;
       toTarget.y = 0f;
@@ -266,17 +215,10 @@ public class EnemyBehaviorHitboxAttacker : EnemyBehavior
         TurnRate *= rotationMultDuringAttack;
       }
 
-      Debug.Log("Attacking!");
+      //Debug.Log("Attacking! (Axehead)");
 
 
-      if(canJump == false)
-      {
-          anim.SetTrigger("Attack");
-      }
-      if(canJump == true)
-      {
-          anim.SetTrigger("Attack");
-      }
+      anim.SetTrigger("Attack");
 
 
     }

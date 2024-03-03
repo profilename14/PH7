@@ -46,7 +46,13 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
-      bool isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
+      bool isPlayerDashing;
+      if (gameObject.GetComponent<MovementController>() != null) {
+        isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
+      } else {
+        isPlayerDashing = gameObject.GetComponent<IIMovementController>().isDashing;
+      }
+
       if (isPlayerDashing) {
         return;
       }
@@ -67,7 +73,12 @@ public class PlayerStats : MonoBehaviour
         Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
       }
 
-      gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
+      if (gameObject.GetComponent<MovementController>() != null) {
+        gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
+      } else {
+        gameObject.GetComponent<IIMovementController>().applyKnockback(position, knockback);
+      }
+
 
     }
 }

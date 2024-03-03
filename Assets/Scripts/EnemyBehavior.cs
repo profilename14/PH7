@@ -40,21 +40,13 @@ public class EnemyBehavior : MonoBehaviour
     public MoveMode MovementMode = MoveMode.Walk;
     public float TurnRate = 360f;
 
-    // Used by war striders. Might turn into a special behavior id later.
-    public bool doubleDash = false;
-    private bool dashCombo = false; // Used to tell if the second dash should happen sooner.
     protected bool movesInRotationDir = false; // used by hitbox attackers to move with attacks.
 
     // Walk Move Type
     public float WalkSpeed = 0.005f;
 
-    // Impulse Move Type
-    public float thrust = 30f;
-    public float ThrustDelay = .75f;
-    public float randomFactorRange = 0.1f;
 
     //Animation-related
-    public float animDelay;
     public Animator anim;
 
     // Pathfinding
@@ -65,13 +57,16 @@ public class EnemyBehavior : MonoBehaviour
     protected State CurrentState = State.Idle;
     protected Vector3 LastKnownPos;
     protected Seeker seeker;
-    protected bool ImpulseActive;
 
     [Header("ATTACKS")]
     protected Coroutine PlayerDetector;
-    protected Coroutine PursueImpulse;
 
     [SerializeField] private Transform PopupPrefab;
+
+    public float vulnerabilityTime = 0.0f; // How long after attemptying to start an attack can be stunned
+    protected float vulnerabilityTimer = 0.0f; // When 0 or lower not vulnerable
+    public float hitStun = 0.0f; // How long after attemptying to start an attack can be stunned
+    protected float hitStunTimer = 0.0f; // When over 0, the enemy has been stunned by getting attacked at the right time
 
 
     public void OnPathComplete(Path p)
@@ -92,7 +87,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         CurrentHealth = StartHealth;
         CurrentPH = StartPH;
-        ImpulseActive = false;
+        //ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
     }
 
@@ -108,11 +103,13 @@ public class EnemyBehavior : MonoBehaviour
 
     void Update()
     {
-        if(MovementMode == MoveMode.Walk && CurrentState == State.Idle)
-        {
-            anim.SetBool("Walking", false);
-        }
 
+        if (hitStunTimer > 0) {
+          hitStunTimer -= Time.deltaTime;
+        }
+        if (vulnerabilityTimer > 0) {
+          vulnerabilityTimer -= Time.deltaTime;
+        }
         if (RegenPHTimer > 0) {
           RegenPHTimer -= Time.deltaTime;
         } else {
@@ -165,7 +162,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    protected void Rotation()
+    protected virtual void Rotation()
     {
         if (path == null) { // spam preventer
           return;
@@ -181,8 +178,11 @@ public class EnemyBehavior : MonoBehaviour
 
     }
 
-    protected void Movement()
+    protected virtual void Movement()
     {
+        if (hitStunTimer > 0) {
+          return;
+        }
         ReachedPathEnd = false;
 
         float DistanceToWaypoint;
@@ -211,42 +211,31 @@ public class EnemyBehavior : MonoBehaviour
             }
         }
 
-        switch (MovementMode)
+        NextWaypointDistance = 1;
+        /*if (!isExtendedClass) {
+          anim.SetBool("Walking", true);
+        }*/
+        /*if (ImpulseActive)
         {
-            case MoveMode.Walk:
-                NextWaypointDistance = 1;
-                if (!isExtendedClass) {
-                  anim.SetBool("Walking", true);
-                }
-                if (ImpulseActive)
-                {
-                    StopCoroutine(PursueImpulse);
-                }
-                if (path != null) { // preventing spam
-                  if (movesInRotationDir) {
-                    GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
-                  } else {
-                    GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
-                  }
-                }
-
-                //GetComponent<Rigidbody>.AddForce();
-                break;
-
-            case MoveMode.Impulse:
-                NextWaypointDistance = 3;
-
-                if (!ImpulseActive)
-                {
-                    PursueImpulse = StartCoroutine(ImpulsePursuit());
-                }
-                break;
+            StopCoroutine(PursueImpulse);
+        }*/
+        if (path != null) { // preventing spam
+          if (movesInRotationDir) {
+            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+          } else {
+            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+          }
         }
+
+        //GetComponent<Rigidbody>.AddForce();
 
     }
 
-    public void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
+    public virtual void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
+        if (vulnerabilityTimer > 0) {
+          hitStunTimer = hitStun;
+        }
 
         CurrentPH += ph;
 
@@ -271,10 +260,15 @@ public class EnemyBehavior : MonoBehaviour
         }
 
         // Damage Text Popup
-        Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
-        DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
-        popup.Setup(damage);
-        
+
+
+        if (damage > 9.9) {
+          Transform PopupTransform = Instantiate(PopupPrefab, transform.position, Quaternion.identity);
+          DamagePopup popup = PopupTransform.GetComponent<DamagePopup>();
+          popup.Setup(damage * displayedMultiplier);
+        }
+
+
 
         // Knockback
         Vector3 dir = -((sourcePos - transform.position).normalized);
@@ -284,7 +278,7 @@ public class EnemyBehavior : MonoBehaviour
         if (CurrentHealth <= 0) Destroy(this.gameObject);
     }
 
-    protected IEnumerator DetectPlayer()
+    protected virtual IEnumerator DetectPlayer()
     {
         // Detects the player's last known location
         while (true)
@@ -311,49 +305,6 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    protected IEnumerator ImpulsePursuit()
-    {
-        ImpulseActive = true;
-
-        while (true)
-        {
-            yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
-            float angle = 10;
-            if (path == null) {
-              // Lets just wait for now.to avoid spam
-            }
-            else if (Vector3.Angle(transform.forward, (path.vectorPath[CurrentWaypoint] - transform.position)) < angle)
-            {
-                if (!ReachedPathEnd)
-                {
-                    Vector3 dir = (path.vectorPath[CurrentWaypoint] - transform.position).normalized;
-                    Vector3 velocity = dir * thrust;
-
-                    anim.SetTrigger("Charge");
-                    yield return new WaitForSeconds(animDelay);
-                    GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
-
-                    if (doubleDash) { // If we're a war strider
-                      if (dashCombo == false) { // If we did an initial dash
-                        ThrustDelay = ThrustDelay / 1.5f;
-                        TurnRate = TurnRate * 2.5f;
-                        dashCombo = true;
-                      } else { // If we're wrapping up our second dash.
-                        ThrustDelay = ThrustDelay * 1.5f;
-                        TurnRate = TurnRate / 2.5f;
-                        dashCombo = false;
-                      }
-                    }
-                }
-                else
-                {
-                    // Code to inch closer to the final waypoint
-                }
-            }
-
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 20f, Color.yellow, 1f);
-        }
-    }
 
     public float getHealth() {
       return CurrentHealth;
@@ -373,14 +324,29 @@ public class EnemyBehavior : MonoBehaviour
 
             // detect if the player is dashing. The aftermath does less damage.
             // Primarily increases pH and has high knockback.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
-              if (!other.gameObject.GetComponent<MovementController>().dashEnding)
-              {
-                TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
+            if (gameObject.GetComponent<MovementController>() != null) {
+              // If its the old movement controller
+              if (other.gameObject.GetComponent<MovementController>().isDashing) {
+                if (!other.gameObject.GetComponent<MovementController>().dashEnding)
+                {
+                  TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
+                }
+                else
+                {
+                  TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
+                }
               }
-              else
-              {
-                TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
+            } else {
+              // If its the instant movement controller
+              if (other.gameObject.GetComponent<IIMovementController>().isDashing) {
+                if (!other.gameObject.GetComponent<IIMovementController>().dashEnding)
+                {
+                  TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
+                }
+                else
+                {
+                  TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
+                }
               }
             }
 

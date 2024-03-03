@@ -23,9 +23,16 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             // Drains health and pH for now, should probably respect IFrames for HP later.
-            if (other.gameObject.GetComponent<MovementController>().isDashing) {
-              return; // hazard immunity when dashing (you jump over it)
+            if (gameObject.GetComponent<MovementController>() != null) {
+              if (other.gameObject.GetComponent<MovementController>().isDashing) {
+                return; // hazard immunity when dashing (you jump over it)
+              }
+            } else {
+              if (other.gameObject.GetComponent<IIMovementController>().isDashing) {
+                return; // hazard immunity when dashing (you jump over it)
+              }
             }
+
             other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * deltaPhysics;
             other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
             if (!permanent) {

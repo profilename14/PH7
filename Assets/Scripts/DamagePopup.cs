@@ -6,10 +6,11 @@ using UnityEngine;
 public class DamagePopup : MonoBehaviour
 {
     private TextMeshPro text;
-    private float time = 120f;
+    private float time;
 
     private void Awake()
     {
+        time = 3f;
         text = transform.GetComponent<TextMeshPro>();
     }
 

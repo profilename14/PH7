@@ -52,6 +52,11 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private float waveSpellCooldown = 0.42f;
     private float castTimer = 0f;
 
+
+    [SerializeField] private GameObject telekinesisSpellPrefab;
+    [SerializeField] private float telekinesisSpellCooldown = 2.5f;
+    [HideInInspector] public float telekinesisCastTimer = 0f;
+
     [SerializeField]
     private bool comboResetCoroutineRunning;
 
@@ -59,6 +64,8 @@ public class PlayerCombatController : MonoBehaviour
     private bool recoveryCoroutineRunning;
 
     private float comboResetTimer = 0.0f;
+
+    public bool isFacingMouse = false;
 
     // Start is called before the first frame update
     void Start()
@@ -112,7 +119,7 @@ public class PlayerCombatController : MonoBehaviour
                 comboResetCoroutineRunning = true;
             }*/
 
-            if (Input.GetMouseButtonDown(0) && !canCombo)
+            if (Input.GetMouseButtonDown(0) && !canCombo  || Input.GetButton("Fire1") && !canCombo )
             {
                 if (recoveryCoroutineRunning == true) {
                   // Not doing this right here was what was causing bugs.
@@ -129,13 +136,21 @@ public class PlayerCombatController : MonoBehaviour
                 playAttackSound();
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
             {
                 FireTripleBlast();
+            }
+            if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
+            {
+                Telekinesis();
             }
             if (castTimer > 0)
             {
               castTimer -= Time.deltaTime;
+            }
+            if (telekinesisCastTimer > 0)
+            {
+              telekinesisCastTimer -= Time.deltaTime;
             }
 
             //For now, weapon switching is disabled until we implement the other weapons.
@@ -174,7 +189,7 @@ public class PlayerCombatController : MonoBehaviour
             playerIsIdle = false;
         }
 
-        if((inRecovery && canCombo) && Input.GetMouseButtonDown(0))
+        if((inRecovery && canCombo) && ( Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) )
         {
             if (recoveryCoroutineRunning == true) {
               Debug.Log("WARNING: recovery Coroutine running yet inRecovery");
@@ -277,7 +292,7 @@ public class PlayerCombatController : MonoBehaviour
 
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
         Vector3 curRotation = rotationController.GetRotationDirection();
-        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90 - 45;
 
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
@@ -285,6 +300,25 @@ public class PlayerCombatController : MonoBehaviour
 
 
     }
+
+    private void Telekinesis() {
+      if (telekinesisCastTimer > 0 || recoveryCoroutineRunning) {
+        return;
+      } else {
+        telekinesisCastTimer = telekinesisSpellCooldown;
+      }
+
+      Vector3 telekinesisSpellAnchor = transform.position + rotationController.GetRotationDirection() * 2f;
+
+      Vector3 curRotation = rotationController.GetRotationDirection();
+      float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+
+      GameObject telekinesis = Instantiate(telekinesisSpellPrefab, this.transform,  worldPositionStays:false );
+      telekinesis.GetComponent<TelekinesisSpell>().combatController = this; // This is delayed, so we have to wait on the other side.
+
+      rotationController.isFacingMouse = true;
+    }
+
 
     public bool isAttacking() {
       if (comboResetTimer > timeToResetCombo * 0.75 || recoveryCoroutineRunning) {
@@ -303,5 +337,9 @@ public class PlayerCombatController : MonoBehaviour
             soundEffects.pitch = 1 + pitchMod;
             soundEffects.Play();
         }
+    }
+
+    public void objectWasThrown() {
+      rotationController.isFacingMouse = false;
     }
 }

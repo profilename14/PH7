@@ -64,6 +64,8 @@ public class RotationController : MonoBehaviour
       dir = new Vector3(h, 0, v);
       dir.Normalize();
     }
+
+    dir = Quaternion.Euler(0, -45, 0) * dir;
     return dir;
   }
 
@@ -77,7 +79,7 @@ public class RotationController : MonoBehaviour
 
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
           {
-              transform.rotation = Quaternion.Euler(0, angle, 0);
+              transform.rotation = Quaternion.Euler(0, angle - 45, 0);
           }
 
       }
@@ -118,7 +120,8 @@ public class RotationController : MonoBehaviour
 
     float angle = -Mathf.Atan2(v, h) * Mathf.Rad2Deg;
 
-    transform.rotation = Quaternion.Euler(0, angle , 0);
+    //directionVec = Quaternion.Euler(0, -45, 0) * directionVec
+    transform.rotation = Quaternion.Euler(0, angle - 45, 0);
   }
 
 

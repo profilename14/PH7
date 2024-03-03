@@ -292,7 +292,7 @@ public class PlayerCombatController : MonoBehaviour
 
         Vector3 waveSpellAnchor = transform.position + rotationController.GetRotationDirection();
         Vector3 curRotation = rotationController.GetRotationDirection();
-        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90 - 45;
+        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );

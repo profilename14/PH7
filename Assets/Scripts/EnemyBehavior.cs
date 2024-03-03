@@ -233,7 +233,7 @@ public class EnemyBehavior : MonoBehaviour
 
     public virtual void TakeDamage(float damage, float ph, float knockback, Vector3 sourcePos)
     {
-        if (vulnerabilityTimer > 0) {
+        if (vulnerabilityTimer > 0  && damage > 9.9) {
           hitStunTimer = hitStun;
         }
 

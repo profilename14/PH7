@@ -99,7 +99,7 @@ public class EnemyBehaviorStrider : EnemyBehavior
         {
             if (gotHitstunned) {
               // Striders attack after a briefer delay when hitstunned to make them a bit less weak.
-              yield return new WaitForSeconds(ThrustDelay / 2 + Random.Range(-randomFactorRange, randomFactorRange));
+              yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
             } else {
               yield return new WaitForSeconds(ThrustDelay + Random.Range(-randomFactorRange, randomFactorRange));
             }

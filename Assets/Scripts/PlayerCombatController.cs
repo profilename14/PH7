@@ -16,23 +16,30 @@ public class PlayerCombatController : MonoBehaviour
     public WeaponStats swordStats;
 
     //Is the player doing a left swing?
-    [SerializeField]
-    public bool swingingL;
+    private bool swingingL;
 
     //Is the player in interruptible recovery frames of an attack animation?
-    [SerializeField]
-    public bool inRecovery;
+    private bool inRecovery;
 
     //Is the player in the idle animation state?
     public static bool isIdle;
 
-    public bool inSwing;
+    private bool inSwing;
 
+    [HideInInspector]
     public bool inThrust;
 
     public bool inDash = true;
 
     private Vector3 rotForThrust;
+
+    //Time left click needs to be held to initiate a thrust attack.
+    [SerializeField]
+    private float thrustHoldTime = 0.5f;
+
+    private float holdTimer;
+
+    private bool hasClicked = false;
 
     /*[SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
@@ -90,16 +97,30 @@ public class PlayerCombatController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
+            hasClicked = true;
             playerAnim.SetBool("Swing Left", swingingL);
             playerAnim.SetTrigger("Swing");
             playerAnim.ResetTrigger("Thrust");
             playerAnim.ResetTrigger("Dash");
         }
-        else if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2"))
+
+        if(hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
         {
-            playerAnim.SetTrigger("Thrust");
-            playerAnim.ResetTrigger("Swing");
-            playerAnim.ResetTrigger("Dash");
+            holdTimer += Time.deltaTime;
+
+            if(holdTimer >= thrustHoldTime)
+            {
+                hasClicked = false;
+                holdTimer = 0;
+                playerAnim.SetTrigger("Thrust");
+                playerAnim.ResetTrigger("Swing");
+                playerAnim.ResetTrigger("Dash");
+            }
+        }
+        else
+        {
+            hasClicked = false;
+            holdTimer = 0;
         }
     }
 

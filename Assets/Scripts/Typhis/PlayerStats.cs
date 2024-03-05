@@ -41,6 +41,10 @@ public class PlayerStats : MonoBehaviour
         health = HEALTH_MAX;
       }
 
+      if (health < 0) {
+        Destroy(gameObject);
+      }
+
       healthBar.value= health;
       PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
     }

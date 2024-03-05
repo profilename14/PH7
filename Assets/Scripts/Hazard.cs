@@ -13,6 +13,9 @@ public class Hazard : MonoBehaviour
     [SerializeField] private bool shrinks;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
 
+    private float damageTimer = 0;
+    private float damageRate = 0.4f; // How many seconds until the next hit to the enemy happens
+
 
     void Start() {
       curLifespan = maxLifespan;
@@ -33,8 +36,10 @@ public class Hazard : MonoBehaviour
               }
             }
 
-            other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * deltaPhysics;
-            other.gameObject.GetComponent<PlayerStats>().health += changeInHP * deltaPhysics;
+            if (damageTimer >= damageRate) {
+              other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * damageRate;
+              other.gameObject.GetComponent<PlayerStats>().health += changeInHP * damageRate;
+            }
             if (!permanent) {
               curLifespan -= deltaPhysics;
               if (curLifespan < 0) {
@@ -43,11 +48,15 @@ public class Hazard : MonoBehaviour
             }
 
 
+
         }
         else if (other.gameObject.tag == "Enemy") {
           // Ensure this doesn't cause I frames later
-          other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
-           -changeInHP * deltaPhysics, changeInPH * deltaPhysics, 0f, new Vector3(0,0,0));
+
+          if (damageTimer >= damageRate) {
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
+             -changeInHP * damageRate, changeInPH * damageRate, 0f, new Vector3(0,0,0));
+          }
           if (!permanent) {
             curLifespan -= deltaPhysics;
             if (curLifespan < 0) {
@@ -56,6 +65,12 @@ public class Hazard : MonoBehaviour
           }
 
         }
+
+      if (damageTimer >= damageRate) {
+        damageTimer = 0;
+      }
+      damageTimer += deltaPhysics;
+
     }
 
 }

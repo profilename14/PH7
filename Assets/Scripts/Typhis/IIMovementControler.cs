@@ -144,7 +144,9 @@ public class IIMovementController : MonoBehaviour
 
                 if ( Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
                 {
-                    dashDirection = rotationController.directionVec;
+                    dashDirection = camForward * rotationController.transform.forward.z
+                                  + camRight * rotationController.transform.forward.x;
+                    dashDirection = Quaternion.Euler(0, 90 + 45, 0) * dashDirection;
                 }
                 else
                 {
@@ -226,20 +228,24 @@ public class IIMovementController : MonoBehaviour
 
           Vector3 input = camForward * inputCont.x + camRight * inputCont.y;
 
+
+
           moveDir = input;
+
+
         }
         else {
           moveDir.Normalize();
         }
 
 
-        if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.y) > 0.0 ) {
-          if (currentPhase == Phase.None || currentPhase == Phase.Release) { // If the player stopped
+        if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.y) > 0.0 ) { // If the player's moving
+          if (currentPhase == Phase.None || currentPhase == Phase.Release) { // If the player stopped and is moving now
             currentPhase = Phase.Attack;
             attackTimer = 0;
           }
 
-          lastMove = moveDir;
+          lastMove = moveDir; // If the player is just normally moving
         }
         else if (currentPhase == Phase.Decay || currentPhase == Phase.Attack || currentPhase == Phase.Sustain) { // Player let go while moving
           if (ADSREnvelope() < 1) {

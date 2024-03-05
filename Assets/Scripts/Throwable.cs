@@ -13,6 +13,7 @@ public class Throwable : MonoBehaviour
     public bool isBeingCarried;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a
     public int health = 1;
+    public bool breaksOnImpact = true;
 
     // Leave this null to not make anything, in the case of say the rock
     [SerializeField] private GameObject destroyEffect; // Anything to make on destruction, (like explosions)
@@ -32,6 +33,10 @@ public class Throwable : MonoBehaviour
       isBeingCarried = false;
       GetComponent<Rigidbody>().AddForce(-transform.forward * thrownVelocity, ForceMode.Impulse);
       isBeingThrown = true;
+    }
+    public void Drop() {
+      isBeingCarried = false;
+      isBeingThrown = false;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -60,7 +65,21 @@ public class Throwable : MonoBehaviour
           }
 
 
-         }
+        }
+
+        if (breaksOnImpact) {
+          if (isBeingThrown) {
+            Destroy(gameObject);
+            if (destroyEffect != null) {
+              Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            }
+          }
+        }
+        else {
+          if (isBeingThrown) {
+            isBeingThrown = false; // Stops dealing damage after hitting the ground
+          }
+        }
 
     }
 }

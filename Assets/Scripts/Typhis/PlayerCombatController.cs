@@ -125,7 +125,7 @@ public class PlayerCombatController : MonoBehaviour
                   // Not doing this right here was what was causing bugs.
                   return;
                 }
-                rotationController.snapToCurrentAngle();
+                rotationController.snapToCurrentMouseAngle();
                 weaponSwingCombo = 0;
                 canCombo = false;
                 playerAnim.SetTrigger(equippedWeapon.weaponName);
@@ -235,7 +235,7 @@ public class PlayerCombatController : MonoBehaviour
                 //Debug.Log(equippedWeapon.t_combo0);
                 recoveryCoroutineRunning = true;
             }
-            rotationController.snapToCurrentAngle();
+            rotationController.snapToCurrentMouseAngle();
         }
     }
 
@@ -294,6 +294,8 @@ public class PlayerCombatController : MonoBehaviour
         Vector3 curRotation = rotationController.GetRotationDirection();
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
+        rotationController.snapToCurrentMouseAngle();
+
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle - waveSpellSpreadDegrees/2, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle, 0) );
         Instantiate(waveSpellPrefab, waveSpellAnchor, Quaternion.Euler(0, angle + waveSpellSpreadDegrees/2, 0) );
@@ -302,7 +304,7 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void Telekinesis() {
-      if (telekinesisCastTimer > 0 || recoveryCoroutineRunning) {
+      if (telekinesisCastTimer > 0 || recoveryCoroutineRunning || rotationController.isFacingMouse == true) {
         return;
       } else {
         telekinesisCastTimer = telekinesisSpellCooldown;
@@ -340,6 +342,8 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     public void objectWasThrown() {
+      telekinesisCastTimer = telekinesisSpellCooldown;
       rotationController.isFacingMouse = false;
+      Debug.Log("Telekinesis Done");
     }
 }

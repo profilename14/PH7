@@ -101,6 +101,11 @@ public class RotationController : MonoBehaviour
           directionVec = camForward * input.x + camRight * input.y;
           directionVec.Normalize();
 
+          if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+          }
+
           if (input.x != 0 || input.y != 0)
           {
               transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
@@ -136,6 +141,7 @@ public class RotationController : MonoBehaviour
         {
             if (!isFacingMouse) {
               snapToCurrentAngle();
+
               canTurn = true;
             } else {
               snapToCurrentMouseAngle();
@@ -144,7 +150,7 @@ public class RotationController : MonoBehaviour
 
          } else {
             if (canTurn == true) {
-              snapToCurrentMouseAngle();
+              //snapToCurrentMouseAngle();
             }
             canTurn = false;
          }

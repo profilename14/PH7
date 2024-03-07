@@ -75,8 +75,12 @@ public class Throwable : MonoBehaviour
             }
             Destroy(gameObject);
         }
-
-        if (breaksOnImpact) {
+        else if ( other.gameObject.CompareTag("AllowsBubble") ) {
+          Physics.IgnoreCollision(
+            other.gameObject.GetComponent<Collider>(),
+            GetComponent<Collider>(), true);
+        }
+        else if (breaksOnImpact) {
           if (isBeingThrown) {
             isBeingThrown = false;
             /*health -= 0.5f; // Leeway for collision jank

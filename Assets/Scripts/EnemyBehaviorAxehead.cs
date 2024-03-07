@@ -31,6 +31,8 @@ public class EnemyBehaviorAxehead : EnemyBehavior
 
 
 
+
+
     // awake and update can be redefined.
     private void Awake()
     {
@@ -47,6 +49,8 @@ public class EnemyBehaviorAxehead : EnemyBehavior
 
         isExtendedClass = true;
         hitbox.enabled = false;
+
+        enemyRigidbody = GetComponent<Rigidbody>();
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.

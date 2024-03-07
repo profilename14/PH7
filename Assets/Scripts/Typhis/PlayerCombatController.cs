@@ -136,7 +136,6 @@ public class PlayerCombatController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
-            rotationController.snapToCurrentMouseAngle();
             hasClicked = true;
             playerAnim.SetBool("Swing Left", swingingL);
             playerAnim.SetTrigger("Swing");
@@ -173,7 +172,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         inSwing = true;
         inRecovery = false;
-        rotationController.snapToCurrentAngle();
+        rotationController.snapToCurrentMouseAngle();
         playAttackSound();
         playerAnim.ResetTrigger("Swing");
         playerAnim.ResetTrigger("Thrust");
@@ -207,6 +206,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void addPushForward(float amount)
     {
+        rotationController.snapToCurrentMouseAngle();
         transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position - rotForThrust * 3, amount);
     }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2246482849434448713}
   - component: {fileID: 7915324704449890489}
+  - component: {fileID: 9076220362898481018}
   - component: {fileID: 6712392256178504615}
   m_Layer: 9
   m_Name: Melee Attack Hitbox
@@ -26,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3094448214845904660}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.000000013940871, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54,6 +55,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1167668, y: 1, z: 1}
   m_Center: {x: -0.054708403, y: 0, z: 0.000000072648156}
+--- !u!136 &9076220362898481018
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094448214845904660}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Height: 5
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6712392256178504615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1146,7 +1170,7 @@ MonoBehaviour:
   soundEffects: {fileID: 5777700335239449702}
   health: 100
   ph: 14
-  swordStats: {fileID: 0}
+  swordStats: {fileID: 11400000, guid: 20d7f661f4d8815408fd97d5da99f960, type: 2}
   inThrust: 0
   inDash: 1
-  thrustHoldTime: 0.5
+  thrustHoldTime: 0.4

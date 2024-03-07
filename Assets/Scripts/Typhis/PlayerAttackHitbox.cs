@@ -55,7 +55,10 @@ public class PlayerAttackHitbox : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("BreakablePrefabContainer"))
         {
-            other.gameObject.GetComponent<BreakablePrefabContainer>().Break();
+            if (other.gameObject.GetComponent<BreakablePrefabContainer>() != null) {
+              other.gameObject.GetComponent<BreakablePrefabContainer>().Break();
+            }
+
         }
     }
 }

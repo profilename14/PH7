@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2246482849434448713}
   - component: {fileID: 7915324704449890489}
+  - component: {fileID: 4960146679027761798}
   - component: {fileID: 6712392256178504615}
   m_Layer: 9
   m_Name: Melee Attack Hitbox
@@ -54,6 +55,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.1167668, y: 1, z: 1}
   m_Center: {x: -0.054708403, y: 0, z: 0.000000072648156}
+--- !u!136 &4960146679027761798
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3094448214845904660}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Height: 5
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6712392256178504615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,6 +517,8 @@ MonoBehaviour:
   phRegen: 0.33
   healthBar: {fileID: 0}
   PHBar: {fileID: 0}
+  isInvincible: 0
+  iFrameSeconds: 1
 --- !u!114 &6403016540344681571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1179,30 +1205,17 @@ MonoBehaviour:
   soundEffects: {fileID: 5777700335239449702}
   health: 100
   ph: 14
-  weaponScriptableObjects:
-  - {fileID: 11400000, guid: 20d7f661f4d8815408fd97d5da99f960, type: 2}
-  equippedWeapon: {fileID: 0}
-  weaponContainer: {fileID: 5026466953158404687}
-  equippedWeaponIndex: 0
-  inAnimation: 0
-  canCombo: 0
-  weaponSwingCombo: 0
-  inRecovery: 0
-  timeToResetCombo: 0.2
+  swordStats: {fileID: 11400000, guid: 20d7f661f4d8815408fd97d5da99f960, type: 2}
+  inThrust: 0
+  inDash: 1
+  thrustHoldTime: 0.4
   waveSpellSpreadDegrees: 17.5
   waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
   waveSpellCooldown: 0.75
   telekinesisSpellPrefab: {fileID: 7014600148762342256, guid: eb8b09a56938f7345bc9526767d15dd6, type: 3}
   telekinesisSpellCooldown: 0.1
   telekinesisCastTimer: 0
-  comboResetCoroutineRunning: 0
-  recoveryCoroutineRunning: 0
   isFacingMouse: 0
---- !u!1 &5026466953158404687 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -2149541580070738595, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
-  m_PrefabInstance: {fileID: 2876342494479290130}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7176210035824567463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4288034583244035147, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}

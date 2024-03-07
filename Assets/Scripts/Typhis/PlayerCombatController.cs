@@ -136,6 +136,7 @@ public class PlayerCombatController : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
+            rotationController.snapToCurrentMouseAngle();
             hasClicked = true;
             playerAnim.SetBool("Swing Left", swingingL);
             playerAnim.SetTrigger("Swing");
@@ -149,6 +150,7 @@ public class PlayerCombatController : MonoBehaviour
 
             if(holdTimer >= thrustHoldTime)
             {
+                rotationController.snapToCurrentMouseAngle();
                 hasClicked = false;
                 holdTimer = 0;
                 playerAnim.SetTrigger("Thrust");

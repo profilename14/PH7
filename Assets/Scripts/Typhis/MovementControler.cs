@@ -9,7 +9,7 @@ using UnityEngine;
 
 // Credits to Josh McCoy for much of the code implementing Attack-Decay-Sustain-Release movement.
 
-public class IIMovementController : MonoBehaviour
+public class MovementController : MonoBehaviour
 {
     // Movement speed for the player.
     const float DEFAULT_SPEED = 11.0f;

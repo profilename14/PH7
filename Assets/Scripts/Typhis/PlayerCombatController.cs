@@ -13,38 +13,36 @@ public class PlayerCombatController : MonoBehaviour
     public int ph;
 
     [Header("ATTACKS")]
-    public WeaponStats[] weaponScriptableObjects;
+    public WeaponStats swordStats;
 
-    public WeaponStats equippedWeapon;
+    //Is the player doing a left swing?
+    private bool swingingL;
 
-    GameObject[] weaponObjects = new GameObject[3];
-
-    [SerializeField]
-    GameObject weaponContainer;
-
-    [SerializeField]
-    int equippedWeaponIndex;
-
-    [SerializeField]
-    bool inAnimation;
-
-    [SerializeField]
-    bool canCombo;
-
-    bool updateWeapon;
-
-    [SerializeField]
-    public int weaponSwingCombo;
 
     //Is the player in interruptible recovery frames of an attack animation?
-    [SerializeField]
-    public bool inRecovery;
+    private bool inRecovery;
 
-    //Amount of time after the player enters idle where a new swing will not result in a combo.
-    [SerializeField]
-    float timeToResetCombo;
+    //Is the player in the idle animation state?
+    public static bool isIdle;
 
-    public static bool playerIsIdle;
+    private bool inSwing;
+
+    [HideInInspector]
+    public bool inThrust;
+
+    public bool inDash = true;
+
+    private Vector3 rotForThrust;
+
+    //Time left click needs to be held to initiate a thrust attack.
+    [SerializeField]
+    private float thrustHoldTime = 0.5f;
+
+    private float holdTimer;
+
+    private bool hasClicked = false;
+
+
     public static bool inRecoveryPublic;
 
     [SerializeField] private float waveSpellSpreadDegrees;
@@ -56,14 +54,6 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private GameObject telekinesisSpellPrefab;
     [SerializeField] private float telekinesisSpellCooldown = 2.5f;
     [HideInInspector] public float telekinesisCastTimer = 0f;
-
-    [SerializeField]
-    private bool comboResetCoroutineRunning;
-
-    [SerializeField]
-    private bool recoveryCoroutineRunning;
-
-    private float comboResetTimer = 0.0f;
 
     public bool isFacingMouse = false;
 
@@ -83,204 +73,150 @@ public class PlayerCombatController : MonoBehaviour
             i++;
         }*/
 
-        equippedWeapon = weaponScriptableObjects[0];
     }
 
     // Update is called once per frame
     void Update()
     {
-        inRecoveryPublic = inRecovery;
-        if(playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (castTimer > 0)
         {
-            playerIsIdle = true;
+          castTimer -= Time.deltaTime;
+        }
+        if (telekinesisCastTimer > 0)
+        {
+          telekinesisCastTimer -= Time.deltaTime;
+        }
 
-            canCombo = false;
+        if (playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            isIdle = true;
             inRecovery = false;
+            inThrust = false;
+            inSwing = false;
+            inDash = false;
+            swingingL = false;
 
-            /*if (!canCombo) {
-              inRecovery = false;
-            }
-             if (canCombo && comboResetTimer <= 0) {
-               comboResetTimer = timeToResetCombo;
-             }
-
-            if (comboResetTimer > 0) {
-              comboResetTimer -= Time.deltaTime;
-              if (comboResetTimer <= 0) {
-                canCombo = false;
-              }
-            }/*
-
-
-            /*if(!comboResetCoroutineRunning && canCombo && inRecovery)
-            {
-                //StartCoroutine(WaitForResetCombo());
-                //Debug.Log("Wait for reset combo");
-                comboResetCoroutineRunning = true;
-            }*/
-
-            if (Input.GetMouseButtonDown(0) && !canCombo  || Input.GetButton("Fire1") && !canCombo )
-            {
-                if (recoveryCoroutineRunning == true) {
-                  // Not doing this right here was what was causing bugs.
-                  return;
-                }
-                rotationController.snapToCurrentMouseAngle();
-                weaponSwingCombo = 0;
-                canCombo = false;
-                playerAnim.SetTrigger(equippedWeapon.weaponName);
-                //comboResetCoroutineRunning = false;
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
-                //StopCoroutine(WaitForResetCombo());
-                comboResetTimer = 0;
-                playAttackSound();
-            }
-
-            if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
+            /*if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
             {
                 FireTripleBlast();
-            }
-            if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
-            {
-                Telekinesis();
             }
             if (castTimer > 0)
             {
               castTimer -= Time.deltaTime;
-            }
-            if (telekinesisCastTimer > 0)
-            {
-              telekinesisCastTimer -= Time.deltaTime;
-            }
-
-            //For now, weapon switching is disabled until we implement the other weapons.
-
-            /*if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (equippedWeaponIndex != 0) updateWeapon = true;
-                equippedWeaponIndex = 0;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (equippedWeaponIndex != 1) updateWeapon = true;
-                equippedWeaponIndex = 1;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if (equippedWeaponIndex != 2) updateWeapon = true;
-                equippedWeaponIndex = 2;
-            }
-
-            //Updates the equipped weapon if it was changed
-            if (updateWeapon)
-            {
-                equippedWeapon = weaponScriptableObjects[equippedWeaponIndex];
-                for (int i = 0; i < weaponObjects.Length; i++)
-                {
-                    if (equippedWeaponIndex == i) weaponObjects[i].SetActive(true);
-                    else weaponObjects[i].SetActive(false);
-                }
-
-                updateWeapon = false;
             }*/
         }
         else
         {
-            playerIsIdle = false;
+            isIdle = false;
         }
 
-        if((inRecovery && canCombo) && ( Input.GetMouseButtonDown(0) || Input.GetButton("Fire1") ) )
+        if (isIdle || inRecovery)
         {
-            if (recoveryCoroutineRunning == true) {
-              Debug.Log("WARNING: recovery Coroutine running yet inRecovery");
-              return;
-            }
-            canCombo = false;
-            inRecovery = false;
-            //StopCoroutine(WaitForResetCombo());
-            comboResetCoroutineRunning = false;
-            comboResetTimer = 0;
-
-
-
-            if (weaponSwingCombo == 0)
-            {
-                playAttackSound();
-                playerAnim.SetTrigger("Combo");
-                weaponSwingCombo = 1;
-                playerAnim.SetInteger("Combo Number", 1);
-
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo1));
-                //Debug.Log(equippedWeapon.t_combo1);
-                recoveryCoroutineRunning = true;
-            }
-            else if (weaponSwingCombo == 1)
-            {
-                playAttackSound();
-                playerAnim.SetTrigger("Combo");
-                weaponSwingCombo = 2;
-                playerAnim.SetInteger("Combo Number", 2);
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo2));
-                //Debug.Log(equippedWeapon.t_combo2);
-                recoveryCoroutineRunning = true;
-            }
-            else if(weaponSwingCombo == 2)
-            {
-                playAttackSound();
-                weaponSwingCombo = 0;
-                playerAnim.SetTrigger(equippedWeapon.weaponName);
-                playerAnim.SetInteger("Combo Number", 0);
-                comboResetCoroutineRunning = false;
-                StartCoroutine(WaitForRecoveryFrames(equippedWeapon.t_combo0));
-                //Debug.Log(equippedWeapon.t_combo0);
-                recoveryCoroutineRunning = true;
-            }
-            rotationController.snapToCurrentMouseAngle();
+            playerAnim.SetTrigger("Actionable");
         }
+        else
+        {
+            playerAnim.ResetTrigger("Actionable");
+        }
+
+        if (Input.GetKeyDown("space") || Input.GetButtonDown("Jump"))
+        {
+            //Need to integrate with new movement controller
+            playerAnim.SetTrigger("Dash");
+            playerAnim.ResetTrigger("Thrust");
+            playerAnim.ResetTrigger("Swing");
+        }
+        else if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
+        {
+            FireTripleBlast();
+        }
+        else if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
+        {
+            Telekinesis();
+        }
+        else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+        {
+            hasClicked = true;
+            playerAnim.SetBool("Swing Left", swingingL);
+            playerAnim.SetTrigger("Swing");
+            playerAnim.ResetTrigger("Thrust");
+            playerAnim.ResetTrigger("Dash");
+        }
+
+        if(hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
+        {
+            holdTimer += Time.deltaTime;
+
+            if(holdTimer >= thrustHoldTime)
+            {
+                hasClicked = false;
+                holdTimer = 0;
+                playerAnim.SetTrigger("Thrust");
+                playerAnim.ResetTrigger("Swing");
+                playerAnim.ResetTrigger("Dash");
+            }
+        }
+        else
+        {
+            hasClicked = false;
+            holdTimer = 0;
+        }
+
+
+
+
     }
 
-    public IEnumerator WaitForResetCombo()
+    private void initiateSwing()
     {
-        /*
-        yield return new WaitForSeconds(timeToResetCombo);
-        while (!playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-          yield return new WaitForSeconds(0.1f);
-          Debug.Log("Stuck waiting for idle to combo reset");
-        }
-
-          canCombo = false;
-          playerAnim.SetInteger("Combo Number", 0);
-          weaponSwingCombo = 0;
-          comboResetCoroutineRunning = false;
-
-        */
-        // We can use this later, but its 2am so I'm just gonna make a timer at this point.
-        yield return new WaitForSeconds(0.1f);
-    }
-
-    public IEnumerator WaitForRecoveryFrames(float framesToRecovery)
-    {
+        inSwing = true;
         inRecovery = false;
-        recoveryCoroutineRunning = true;
-        float timeToWait = framesToRecovery / 60.0f;
-        while (timeToWait > 0)
-        {
-            timeToWait -= Time.deltaTime;
-            //Debug.Log(timeToWait);
-            yield return null;
-        }
-        // Don't think attacks should be fps dependent: Causes attacks to become sluggish randomly
-
-        recoveryCoroutineRunning = false;
-        inRecovery = true;
-
-        if(weaponSwingCombo != 2) canCombo = true;
-        //Debug.Log("Recovery frames");
-
-        //StartCoroutine(WaitForResetCombo());
-        //comboResetCoroutineRunning = true;
+        rotationController.snapToCurrentAngle();
+        playAttackSound();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
     }
+
+    private void initiateThrust()
+    {
+        rotForThrust = rotationController.GetRotationDirection();
+        inThrust = true;
+        inRecovery = false;
+        rotationController.snapToCurrentAngle();
+        playAttackSound();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
+    }
+
+    private void initiateDash()
+    {
+        inDash = true;
+        inRecovery = false;
+        rotationController.snapToCurrentAngle();
+        playerAnim.ResetTrigger("Swing");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.ResetTrigger("Actionable");
+    }
+
+    private void addPushForward(float amount)
+    {
+        transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position - rotForThrust * 3, amount);
+    }
+
+    private void inRecoveryFrames()
+    {
+        swingingL = !swingingL;
+        playerAnim.SetBool("Swing Left", swingingL);
+        inRecovery = true;
+    }
+
+
+
 
     private void FireTripleBlast() {
         if (castTimer > 0) {
@@ -304,7 +240,7 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void Telekinesis() {
-      if (telekinesisCastTimer > 0 || recoveryCoroutineRunning || rotationController.isFacingMouse == true) {
+      if (telekinesisCastTimer > 0 || inRecovery || rotationController.isFacingMouse == true) {
         return;
       } else {
         telekinesisCastTimer = telekinesisSpellCooldown;
@@ -323,7 +259,7 @@ public class PlayerCombatController : MonoBehaviour
 
 
     public bool isAttacking() {
-      if (comboResetTimer > timeToResetCombo * 0.75 || recoveryCoroutineRunning) {
+      if (inSwing) {
         return true;
       }
       else {

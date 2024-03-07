@@ -5,11 +5,13 @@ using UnityEngine;
 public class PlayerAttackHitbox : MonoBehaviour
 {
     PlayerCombatController controllerScript;
+    PlayerStats stats;
 
     // Start is called before the first frame update
     void Start()
     {
         controllerScript = GetComponentInParent<PlayerCombatController>();
+        stats = GetComponentInParent<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -22,17 +24,17 @@ public class PlayerAttackHitbox : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Hit " + other.gameObject.name);
-            Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
-
-            int curAttackState = controllerScript.weaponSwingCombo;
-            if (curAttackState == 0 || curAttackState == 1) {
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage,
-                controllerScript.equippedWeapon.phDamage, controllerScript.equippedWeapon.knockback,
+            //Debug.Log("Hit " + other.gameObject.name);
+            //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
+            if (!controllerScript.inThrust) {
+                other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage,
+                controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback,
                 controllerScript.gameObject.transform.position);
-            } else if (curAttackState == 2) {
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.equippedWeapon.damage * 1.5f,
-                controllerScript.equippedWeapon.phDamage * 1.5f, controllerScript.equippedWeapon.knockback * 1.75f,
+            } else {
+                other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 2f,
+                controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 10,
                 controllerScript.gameObject.transform.position);
             }
 

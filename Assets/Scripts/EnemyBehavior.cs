@@ -324,9 +324,8 @@ public class EnemyBehavior : MonoBehaviour
 
             // detect if the player is dashing. The aftermath does less damage.
             // Primarily increases pH and has high knockback.
-            if (gameObject.GetComponent<MovementController>() != null) {
-              // If its the old movement controller
-              if (other.gameObject.GetComponent<MovementController>().isDashing) {
+
+            if (other.gameObject.GetComponent<MovementController>().isDashing) {
                 if (!other.gameObject.GetComponent<MovementController>().dashEnding)
                 {
                   TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
@@ -335,19 +334,6 @@ public class EnemyBehavior : MonoBehaviour
                 {
                   TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
                 }
-              }
-            } else {
-              // If its the instant movement controller
-              if (other.gameObject.GetComponent<IIMovementController>().isDashing) {
-                if (!other.gameObject.GetComponent<IIMovementController>().dashEnding)
-                {
-                  TakeDamage(3, 1.5f, 7, other.gameObject.transform.position);
-                }
-                else
-                {
-                  TakeDamage(2, 1f, 3.5f, other.gameObject.transform.position);
-                }
-              }
             }
 
         }

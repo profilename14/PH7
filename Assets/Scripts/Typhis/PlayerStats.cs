@@ -17,6 +17,11 @@ public class PlayerStats : MonoBehaviour
     public Slider healthBar;
     public Slider PHBar;
 
+    public bool isInvincible;
+    public float iFrameSeconds;
+    private float iFrameTimer = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +34,17 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    if (isInvincible)
+    {
+        iFrameTimer += Time.deltaTime;
+        if (iFrameTimer > iFrameSeconds)
+        {
+            isInvincible = false;
+            iFrameTimer = 0;
+        }
+    }
+
       if (ph < PH_DEFAULT) {
         ph += phRegen * Time.deltaTime;
       } else if (ph > PH_DEFAULT) {
@@ -51,13 +67,10 @@ public class PlayerStats : MonoBehaviour
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
       bool isPlayerDashing;
-      if (gameObject.GetComponent<MovementController>() != null) {
-        isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
-      } else {
-        isPlayerDashing = gameObject.GetComponent<IIMovementController>().isDashing;
-      }
+      isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
 
-      if (isPlayerDashing) {
+
+      if (isPlayerDashing || isInvincible) {
         return;
       }
 
@@ -77,11 +90,12 @@ public class PlayerStats : MonoBehaviour
         Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
       }
 
-      if (gameObject.GetComponent<MovementController>() != null) {
-        gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
-      } else {
-        gameObject.GetComponent<IIMovementController>().applyKnockback(position, knockback);
+      if (knockback > 0) {
+        isInvincible = true;
+        iFrameTimer = 0;
       }
+
+      gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
 
 
     }

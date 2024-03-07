@@ -48,6 +48,7 @@ public class EnemyBehavior : MonoBehaviour
 
     //Animation-related
     public Animator anim;
+    protected Rigidbody enemyRigidbody;
 
     // Pathfinding
     public float NextWaypointDistance = 3;
@@ -67,7 +68,6 @@ public class EnemyBehavior : MonoBehaviour
     protected float vulnerabilityTimer = 0.0f; // When 0 or lower not vulnerable
     public float hitStun = 0.0f; // How long after attemptying to start an attack can be stunned
     protected float hitStunTimer = 0.0f; // When over 0, the enemy has been stunned by getting attacked at the right time
-
 
     public void OnPathComplete(Path p)
     {
@@ -89,6 +89,7 @@ public class EnemyBehavior : MonoBehaviour
         CurrentPH = StartPH;
         //ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
+        enemyRigidbody = GetComponent<Rigidbody>();
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -221,13 +222,11 @@ public class EnemyBehavior : MonoBehaviour
         }*/
         if (path != null) { // preventing spam
           if (movesInRotationDir) {
-            GetComponent<Rigidbody>().AddForce((transform.forward).normalized * WalkSpeed);
+            enemyRigidbody.AddForce((transform.forward).normalized * WalkSpeed);
           } else {
-            GetComponent<Rigidbody>().AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
+            enemyRigidbody.AddForce((path.vectorPath[CurrentWaypoint] - transform.position).normalized * WalkSpeed);
           }
         }
-
-        //GetComponent<Rigidbody>.AddForce();
 
     }
 
@@ -273,7 +272,7 @@ public class EnemyBehavior : MonoBehaviour
         // Knockback
         Vector3 dir = -((sourcePos - transform.position).normalized);
         Vector3 velocity = dir * knockback;
-        GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
+        enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
 
         if (CurrentHealth <= 0) Destroy(this.gameObject);
     }

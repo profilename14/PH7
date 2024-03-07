@@ -6,6 +6,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
     RotationController rotationController;
+    MovementController movementController;
     [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
@@ -62,6 +63,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
+        movementController = transform.parent.parent.GetComponent<MovementController>();
 
 
 
@@ -95,6 +97,7 @@ public class PlayerCombatController : MonoBehaviour
             inSwing = false;
             inDash = false;
             swingingL = false;
+            //Time.timeScale = 1f;
 
             /*if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
             {
@@ -119,14 +122,8 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Actionable");
         }
 
-        if (Input.GetKeyDown("space") || Input.GetButtonDown("Jump"))
-        {
-            //Need to integrate with new movement controller
-            playerAnim.SetTrigger("Dash");
-            playerAnim.ResetTrigger("Thrust");
-            playerAnim.ResetTrigger("Swing");
-        }
-        else if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
+
+        if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
         {
             FireTripleBlast();
         }
@@ -169,6 +166,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void initiateSwing()
     {
+        //Time.timeScale = 0.2f;
         inSwing = true;
         inRecovery = false;
         rotationController.snapToCurrentMouseAngle();
@@ -196,18 +194,27 @@ public class PlayerCombatController : MonoBehaviour
     {
         inDash = true;
         inRecovery = false;
-        rotationController.snapToCurrentMouseAngle();
+
         playerAnim.ResetTrigger("Swing");
         playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
         playerAnim.ResetTrigger("Actionable");
+
+
+    }
+
+    public void playDashAnim()
+    {
+      playerAnim.SetTrigger("Dash");
+      playerAnim.ResetTrigger("Thrust");
+      playerAnim.ResetTrigger("Swing");
     }
 
     private void addPushForward(float amount)
     {
         rotationController.snapToCurrentMouseAngle();
         rotForThrust = rotationController.GetRotationDirection();
-        transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position - rotForThrust * 3, amount);
+        movementController.applyKnockback(transform.position - rotForThrust * 3, amount);
     }
 
     private void inRecoveryFrames()

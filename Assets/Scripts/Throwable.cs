@@ -12,7 +12,7 @@ public class Throwable : MonoBehaviour
     public bool isBeingThrown;
     public bool isBeingCarried;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a
-    public int health = 1;
+    public float health = 1;
     public bool breaksOnImpact = true;
 
     // Leave this null to not make anything, in the case of say the rock
@@ -46,7 +46,6 @@ public class Throwable : MonoBehaviour
           if (!isBeingThrown) {
             return;
           }
-          Debug.Log("hi");
           // Ensure this doesn't cause I frames later
           other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
            -changeInHP, changeInPH, knockback, this.transform.position);
@@ -66,13 +65,28 @@ public class Throwable : MonoBehaviour
 
 
         }
-
-        if (breaksOnImpact) {
-          if (isBeingThrown) {
-            Destroy(gameObject);
+        else if (other.gameObject.CompareTag("Switch")) {
+          Debug.Log("AAAAAAAAAAAAAA");
+            if (other.gameObject.GetComponent<Switch>() != null) {
+              other.gameObject.GetComponent<Switch>().Toggle();
+            }
             if (destroyEffect != null) {
               Instantiate(destroyEffect, transform.position, Quaternion.identity);
             }
+            Destroy(gameObject);
+        }
+
+        if (breaksOnImpact) {
+          if (isBeingThrown) {
+            isBeingThrown = false;
+            /*health -= 0.5f; // Leeway for collision jank
+            if (health <= 0) {
+              Destroy(gameObject);
+
+              if (destroyEffect != null) {
+                Instantiate(destroyEffect, transform.position, Quaternion.identity);
+              }
+            }*/
           }
         }
         else {

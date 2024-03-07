@@ -21,6 +21,8 @@ public class PlayerStats : MonoBehaviour
     public float iFrameSeconds;
     private float iFrameTimer = 0;
 
+    private MovementController movementController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,8 @@ public class PlayerStats : MonoBehaviour
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
 
       healthBar.maxValue= HEALTH_MAX;
+
+      movementController = gameObject.GetComponent<MovementController>();
     }
 
     // Update is called once per frame
@@ -67,7 +71,7 @@ public class PlayerStats : MonoBehaviour
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
       bool isPlayerDashing;
-      isPlayerDashing = gameObject.GetComponent<MovementController>().isDashing;
+      isPlayerDashing = movementController.isDashing;
 
 
       if (isPlayerDashing || isInvincible) {
@@ -95,7 +99,7 @@ public class PlayerStats : MonoBehaviour
         iFrameTimer = 0;
       }
 
-      gameObject.GetComponent<MovementController>().applyKnockback(position, knockback);
+      movementController.applyKnockback(position, knockback);
 
 
     }

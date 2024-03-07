@@ -42,6 +42,8 @@ public class EnemyBehaviorStrider : EnemyBehavior
         CurrentPH = StartPH;
         ImpulseActive = false;
         PlayerDetector = StartCoroutine(DetectPlayer());
+
+        enemyRigidbody = GetComponent<Rigidbody>();
     }
 
 // Fixed Update calls move and rotate
@@ -141,7 +143,7 @@ public class EnemyBehaviorStrider : EnemyBehavior
                       continue;
                     }
 
-                    GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Impulse);
+                    enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
 
                     if (doubleDash) { // If we're a war strider
                       if (dashCombo == false) { // If we did an initial dash

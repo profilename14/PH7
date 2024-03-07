@@ -14,22 +14,24 @@ using UnityEngine;
         private Camera managedCamera;
         [SerializeField]
         private GameObject target;
+        private RotationController rotation;
 
         private void Awake()
         {
             this.managedCamera = this.gameObject.GetComponent<Camera>();
+            rotation = target.GetComponent<RotationController>();
         }
 
         //Use the LateUpdate message to avoid setting the camera's position before
         //GameObject locations are finalized.
         void LateUpdate()
         {
-            var targetPosition = this.target.transform.position;
+            var targetPosition = target.transform.position;
             targetPosition.x += targetOffsetX;
             targetPosition.z += targetOffsetZ;
-            var cameraPosition = this.managedCamera.transform.position;
+            var cameraPosition = managedCamera.transform.position;
 
-            var speed = this.target.GetComponent<RotationController>().GetRotationDirection() * leadMaxDistance;
+            var speed = rotation.GetRotationDirection() * leadMaxDistance;
 
             //if ( (speed.x < 0.1 || speed.x > -0.1) && (speed.z < 0.1 || speed.z > -0.1) ) {
 
@@ -58,7 +60,7 @@ using UnityEngine;
 
             // This line of code allows the camera to smoothly jump ahead of the player in their direction at a high speed to
             // combat the code to return to the origin.
-            Vector3 newPosition = cameraPosition + this.target.GetComponent<RotationController>().GetRotationDirection() * leadSpeed * Time.deltaTime;
+            Vector3 newPosition = cameraPosition + rotation.GetRotationDirection() * leadSpeed * Time.deltaTime;
 
             // This is the set of limits on the camera's lead, preventing it from going over leadMaxDistance in any direction.
             if (newPosition.z >= targetPosition.z + leadMaxDistance)

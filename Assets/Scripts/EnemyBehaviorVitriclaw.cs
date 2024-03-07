@@ -53,6 +53,8 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
 
         isExtendedClass = true;
         hitbox.enabled = false;
+
+        enemyRigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
     // We may want a "Favorite Room" or "Default Position" so that enemies know where to return to if they lose track of a player.
@@ -221,7 +223,7 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
 
         jumpCooldownTimer = jumpCooldown;
         jumpTimer = jumpMaxTime;
-        GetComponent<Rigidbody>().AddForce((transform.forward).normalized * jumpSpeed, ForceMode.Impulse);
+        enemyRigidbody.AddForce((transform.forward).normalized * jumpSpeed, ForceMode.Impulse);
 
 
       }

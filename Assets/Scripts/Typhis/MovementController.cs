@@ -36,9 +36,9 @@ public class MovementController : MonoBehaviour
     public bool MouseDash = false;
 
     [SerializeField] private float dashDuration = 0.6f;
-    private float DashTimer = 0.0f;
+    [HideInInspector] public float DashTimer = 0.0f;
     [SerializeField] private float DashCooldown = 0.6f;
-    private float dashCooldownTimer = 0.0f;
+    [HideInInspector] public float dashCooldownTimer = 0.0f;
     private Vector3 dashDirection;
 
     [SerializeField] private AnimationCurve Dash;
@@ -136,6 +136,7 @@ public class MovementController : MonoBehaviour
             && rotationController.canTurn)
         { // Start dash
             isDashing = true;
+            combatController.playDashAnim(); // Allows the dash animation to play
             // set flag in animator
             if (!MouseDash)
             {
@@ -290,28 +291,30 @@ public class MovementController : MonoBehaviour
 
         if (other.CompareTag("PhaseableWallController"))
         {
-            bool dashable = other.GetComponent<ColliderLink>().isDashable;
-            bool phBased = other.GetComponent<ColliderLink>().usesPH;
-            float minPH = other.GetComponent<ColliderLink>().minPH;
-            float maxPH = other.GetComponent<ColliderLink>().maxPH;
+            ColliderLink wall = other.GetComponent<ColliderLink>();
+            bool dashable = wall.isDashable;
+            bool phBased = wall.usesPH;
+            float minPH = wall.minPH;
+            float maxPH = wall.maxPH;
             float playerPH = gameObject.GetComponent<PlayerStats>().ph;
+
 
             if (isDashing && dashable) { // Phase through gates, but only if dashing.
               //Debug.Log("DISABLINGCOLLISION");
               Physics.IgnoreCollision(
-                other.gameObject.GetComponent<ColliderLink>().linkedCollider,
+                wall.linkedCollider,
                 GetComponent<Collider>(), true);
             } else if (phBased
                        && playerPH < maxPH
                        && playerPH > minPH) {
                    //Debug.Log("DISABLINGCOLLISION");
                Physics.IgnoreCollision(
-                 other.gameObject.GetComponent<ColliderLink>().linkedCollider,
+                 wall.linkedCollider,
                  GetComponent<Collider>(), true);
             } else { // Can't bypass
               //Debug.Log("ENABLINGCOLLISION");
               Physics.IgnoreCollision(
-                other.gameObject.GetComponent<ColliderLink>().linkedCollider,
+                wall.linkedCollider,
                 GetComponent<Collider>(), false);
             }
 

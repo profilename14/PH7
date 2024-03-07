@@ -149,7 +149,6 @@ public class PlayerCombatController : MonoBehaviour
 
             if(holdTimer >= thrustHoldTime)
             {
-                rotationController.snapToCurrentMouseAngle();
                 hasClicked = false;
                 holdTimer = 0;
                 playerAnim.SetTrigger("Thrust");
@@ -182,10 +181,10 @@ public class PlayerCombatController : MonoBehaviour
 
     private void initiateThrust()
     {
+        rotationController.snapToCurrentMouseAngle();
         rotForThrust = rotationController.GetRotationDirection();
         inThrust = true;
         inRecovery = false;
-        rotationController.snapToCurrentAngle();
         playAttackSound();
         playerAnim.ResetTrigger("Swing");
         playerAnim.ResetTrigger("Thrust");
@@ -197,7 +196,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         inDash = true;
         inRecovery = false;
-        rotationController.snapToCurrentAngle();
+        rotationController.snapToCurrentMouseAngle();
         playerAnim.ResetTrigger("Swing");
         playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
@@ -207,6 +206,7 @@ public class PlayerCombatController : MonoBehaviour
     private void addPushForward(float amount)
     {
         rotationController.snapToCurrentMouseAngle();
+        rotForThrust = rotationController.GetRotationDirection();
         transform.parent.parent.GetComponent<MovementController>().applyKnockback(transform.position - rotForThrust * 3, amount);
     }
 

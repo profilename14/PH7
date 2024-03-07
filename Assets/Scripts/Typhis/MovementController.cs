@@ -305,8 +305,8 @@ public class MovementController : MonoBehaviour
                 wall.linkedCollider,
                 GetComponent<Collider>(), true);
             } else if (phBased
-                       && playerPH < maxPH
-                       && playerPH > minPH) {
+                       && playerPH <= maxPH + 0.1f
+                       && playerPH >= minPH - 0.1f) {
                    //Debug.Log("DISABLINGCOLLISION");
                Physics.IgnoreCollision(
                  wall.linkedCollider,

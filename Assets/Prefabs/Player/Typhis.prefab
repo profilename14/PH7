@@ -194,7 +194,9 @@ MonoBehaviour:
   dashSpeed: 80
   MouseDash: 0
   dashDuration: 0.3
+  DashTimer: 0
   DashCooldown: 0.4
+  dashCooldownTimer: 0
   Dash:
     serializedVersion: 2
     m_Curve:
@@ -475,7 +477,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!136 &2097971235868933111
 CapsuleCollider:
   m_ObjectHideFlags: 0

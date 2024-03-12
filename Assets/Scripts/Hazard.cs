@@ -59,7 +59,19 @@ public class Hazard : MonoBehaviour
             }
           }
 
+      }
+      else if (other.gameObject.tag == "HasPH") {
+        if (damageTimer >= damageRate) {
+          other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH * damageRate);
         }
+        if (!permanent) {
+          curLifespan -= deltaPhysics;
+          if (curLifespan < 0) {
+            Destroy(gameObject);
+          }
+        }
+
+      }
 
       if (damageTimer >= damageRate) {
         damageTimer = 0;

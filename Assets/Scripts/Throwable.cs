@@ -14,6 +14,8 @@ public class Throwable : MonoBehaviour
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a
     public float health = 1;
     public bool breaksOnImpact = true;
+    public bool usesOwnPH = false;
+    private ObjectWithPH ownPH;
 
     // Leave this null to not make anything, in the case of say the rock
     [SerializeField] private GameObject destroyEffect; // Anything to make on destruction, (like explosions)
@@ -22,6 +24,10 @@ public class Throwable : MonoBehaviour
 
     void Start() {
       //curLifespan = maxLifespan;
+      if (usesOwnPH) {
+        ownPH = GetComponent<ObjectWithPH>();
+      }
+
     }
 
     public void Grab() {
@@ -47,8 +53,22 @@ public class Throwable : MonoBehaviour
             return;
           }
           // Ensure this doesn't cause I frames later
-          other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
-           -changeInHP, changeInPH, knockback, this.transform.position);
+          if (!usesOwnPH) {
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
+             -changeInHP, changeInPH, knockback, this.transform.position);
+          } else {
+            float enemyPH = other.gameObject.GetComponent<EnemyBehavior>().getCurPH();
+
+            ownPH.NeutralizePH(enemyPH); // affects damage, so slight differences mean little
+
+            float phChange = Mathf.Abs(enemyPH - ownPH.CurrentPH);
+
+            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
+             -changeInHP, Mathf.Pow(phChange, 1.5f) * changeInPH, knockback, this.transform.position);
+
+
+          }
+
 
 
           health -= 1;

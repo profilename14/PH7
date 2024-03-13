@@ -128,7 +128,7 @@ public class Throwable : MonoBehaviour
         }
         else if (breaksOnImpact) {
           if (isBeingThrown) {
-            isBeingThrown = false;
+            isBeingThrown = true;
             health -= 1999f; // Leeway for collision jank
             if (health <= 0) {
               Destroy(gameObject);
@@ -141,7 +141,7 @@ public class Throwable : MonoBehaviour
         }
         else {
           if (isBeingThrown) {
-            isBeingThrown = false; // Stops dealing damage after hitting the ground
+            isBeingThrown = true; // Stops dealing damage after hitting the ground
           }
         }
 

@@ -129,7 +129,7 @@ public class Throwable : MonoBehaviour
         else if (breaksOnImpact) {
           if (isBeingThrown) {
             isBeingThrown = false;
-            health -= 1f; // Leeway for collision jank
+            health -= 1999f; // Leeway for collision jank
             if (health <= 0) {
               Destroy(gameObject);
 

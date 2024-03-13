@@ -47,8 +47,28 @@ public class Throwable : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject.tag == "HasPH") {
+          if (!isBeingThrown) {
+            return;
+          }
+          // Ensure this doesn't cause I frames later
+          if (!usesOwnPH) {
+            other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH);
+          } else {
+            float otherPH = other.gameObject.GetComponent<ObjectWithPH>().CurrentPH;
 
-        if (other.gameObject.tag == "Enemy") {
+            ownPH.NeutralizePH(otherPH); // affects damage, so slight differences mean little
+
+            float phChange = Mathf.Abs(otherPH - ownPH.CurrentPH);
+
+            other.gameObject.GetComponent<ObjectWithPH>().ChangePH(Mathf.Pow(phChange, 1.5f) * changeInPH);
+
+            Debug.Log(other.gameObject.GetComponent<ObjectWithPH>().CurrentPH);
+
+          }
+
+        }
+        else if (other.gameObject.tag == "Enemy") {
           if (!isBeingThrown) {
             return;
           }
@@ -79,7 +99,7 @@ public class Throwable : MonoBehaviour
               Instantiate(destroyEffect, transform.position, Quaternion.identity);
             }
           } else {
-            isBeingThrown = false;
+            //isBeingThrown = false;
             isBeingCarried = false;
           }
 
@@ -88,12 +108,18 @@ public class Throwable : MonoBehaviour
         else if (other.gameObject.CompareTag("Switch")) {
           Debug.Log("AAAAAAAAAAAAAA");
             if (other.gameObject.GetComponent<Switch>() != null) {
-              other.gameObject.GetComponent<Switch>().Toggle();
+              if (destroyEffect == null) {
+                other.gameObject.GetComponent<Switch>().Toggle(); // only rocks activate switches
+              }
+
             }
             if (destroyEffect != null) {
               Instantiate(destroyEffect, transform.position, Quaternion.identity);
             }
-            Destroy(gameObject);
+            health -= 1f; // Leeway for collision jank
+            if (health <= 0) {
+              Destroy(gameObject);
+            }
         }
         else if ( other.gameObject.CompareTag("AllowsBubble") ) {
           Physics.IgnoreCollision(
@@ -103,14 +129,14 @@ public class Throwable : MonoBehaviour
         else if (breaksOnImpact) {
           if (isBeingThrown) {
             isBeingThrown = false;
-            /*health -= 0.5f; // Leeway for collision jank
+            health -= 1f; // Leeway for collision jank
             if (health <= 0) {
               Destroy(gameObject);
 
               if (destroyEffect != null) {
                 Instantiate(destroyEffect, transform.position, Quaternion.identity);
               }
-            }*/
+            }
           }
         }
         else {

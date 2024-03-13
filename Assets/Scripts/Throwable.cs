@@ -108,9 +108,9 @@ public class Throwable : MonoBehaviour
         else if (other.gameObject.CompareTag("Switch")) {
           Debug.Log("AAAAAAAAAAAAAA");
             if (other.gameObject.GetComponent<Switch>() != null) {
-              if (destroyEffect == null) {
+              //if (destroyEffect == null) {
                 other.gameObject.GetComponent<Switch>().Toggle(); // only rocks activate switches
-              }
+              //}
 
             }
             if (destroyEffect != null) {

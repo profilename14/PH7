@@ -21,6 +21,7 @@ public class ObjectWithPH : MonoBehaviour
     protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
     public bool destroyedAtPH = false;
     public float deathPH;
+    public bool acidic = false;
 
     private void Awake()
     {
@@ -66,7 +67,9 @@ public class ObjectWithPH : MonoBehaviour
         }
 
         if (destroyedAtPH) {
-          if (CurrentPH == deathPH) {
+          if (CurrentPH >= deathPH && acidic) {
+            Destroy(gameObject);
+          } else if (CurrentPH <= deathPH && !acidic) {
             Destroy(gameObject);
           }
         }

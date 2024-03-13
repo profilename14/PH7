@@ -466,9 +466,9 @@ GameObject:
   - component: {fileID: 2308604500878832084}
   - component: {fileID: 6145871296760495749}
   - component: {fileID: 4086566310225948219}
-  - component: {fileID: 6483012840127634936}
+  - component: {fileID: 3921930281135112201}
   m_Layer: 9
-  m_Name: Giant Enemy Crab
+  m_Name: GIANT ENEMY CRAB
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -593,7 +593,7 @@ MonoBehaviour:
   raycastOffset: {x: 0, y: 0, z: 0}
   useGraphRaycasting: 1
   quality: 0
---- !u!114 &6483012840127634936
+--- !u!114 &3921930281135112201
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -602,37 +602,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 3827884586384633898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5151717131dc5c4286a58c2ecb05d02, type: 3}
+  m_Script: {fileID: 11500000, guid: dce5a79d27b6515478247666e1d26f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StartHealth: 1000
-  StartPH: 4
-  CurrentPH: 0
+  StartPH: 2
+  RegenPH: 0.33
   PlayerDetected: 0
-  target: {fileID: 0}
+  target: {fileID: 8122089382558269488}
   MovementMode: 1
   TurnRate: 720
-  doubleDash: 0
-  WalkSpeed: 27.5
-  thrust: 30
-  ThrustDelay: 0.75
-  randomFactorRange: 0.1
-  animDelay: 0.6
-  anim: {fileID: 9014687034001065280}
+  WalkSpeed: 40
+  anim: {fileID: 0}
   NextWaypointDistance: 1
-  naturalPH: 2
-  stunRecoveryTimer: 0
-  stunRecoveryTime: 10
-  stunTimer: 0
-  stunTime: 6.5
-  damageMultToPH: 1
+  PopupPrefab: {fileID: 5382661844637383376, guid: b9296d04b36c7e2478f7f34e9a8f502c, type: 3}
+  vulnerabilityTime: 0.7
+  hitStun: 0.5
   attackRange: 7.5
   attackTime: 1.67
   speedMultDuringAttack: 0.75
   rotationMultDuringAttack: 0.45
-  cooldownBeforeNextAttack: 1
-  canJump: 1
-  jumpSpeed: 45
+  jumpSpeed: 55
   jumpMaxTime: 0.5
   jumpCooldown: 4.5
   jumpDistRequirement: 7

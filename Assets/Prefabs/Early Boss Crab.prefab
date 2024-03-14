@@ -607,30 +607,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartHealth: 300
   StartPH: 4
-  CurrentPH: 0
+  RegenPH: 0.33
   PlayerDetected: 0
   target: {fileID: 0}
   MovementMode: 1
   TurnRate: 720
-  doubleDash: 0
   WalkSpeed: 27.5
-  thrust: 30
-  ThrustDelay: 0.75
-  randomFactorRange: 0.1
-  animDelay: 0.6
   anim: {fileID: 9014687034001065280}
   NextWaypointDistance: 1
-  naturalPH: 2
-  stunRecoveryTimer: 0
-  stunRecoveryTime: 8
-  stunTimer: 0
-  stunTime: 8.5
-  damageMultToPH: 1.9
+  PopupPrefab: {fileID: 0}
+  vulnerabilityTime: 0
+  hitStun: 0
   attackRange: 7.5
   attackTime: 1.67
   speedMultDuringAttack: 0.75
   rotationMultDuringAttack: 0.45
-  cooldownBeforeNextAttack: 1
   canJump: 1
   jumpSpeed: 45
   jumpMaxTime: 0.5
@@ -1182,7 +1173,7 @@ PrefabInstance:
     - target: {fileID: 8417361359673230750, guid: 62b7070f332313c4f9094c4a93b48093, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa5b0128db40ae740843e52fde6f0cd6, type: 2}
+      objectReference: {fileID: 2100000, guid: ed982dc6d3e166c44ad1281a0e36d8cd, type: 2}
     - target: {fileID: 8417361359673230750, guid: 62b7070f332313c4f9094c4a93b48093, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

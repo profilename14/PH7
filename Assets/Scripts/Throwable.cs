@@ -127,14 +127,16 @@ public class Throwable : MonoBehaviour
             GetComponent<Collider>(), true);
         }
         else if (breaksOnImpact) {
-          if (isBeingThrown) {
-            isBeingThrown = true;
-            health -= 1999f; // Leeway for collision jank
-            if (health <= 0) {
-              Destroy(gameObject);
+          if ( other.gameObject.CompareTag("Wall") ) {
+            if (isBeingThrown) {
+              isBeingThrown = true;
+              health -= 9f; // Leeway for collision jank
+              if (health <= 0) {
+                Destroy(gameObject);
 
-              if (destroyEffect != null) {
-                Instantiate(destroyEffect, transform.position, Quaternion.identity);
+                if (destroyEffect != null) {
+                  Instantiate(destroyEffect, transform.position, Quaternion.identity);
+                }
               }
             }
           }

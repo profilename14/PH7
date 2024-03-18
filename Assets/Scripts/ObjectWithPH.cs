@@ -16,16 +16,22 @@ public class ObjectWithPH : MonoBehaviour
 {
     public float StartPH;
     [HideInInspector] public float CurrentPH;
-    public float RegenPH = 0.33f; // This much H regened toward default per second.
+    public float RegenPH = 0.33f; // This much pH regened toward default per second.
     protected float RegenPHTimer = 0.0f;
     protected float RegenPHCooldown = 2.0f; // How long after a pH attack regen is disabled
     public bool destroyedAtPH = false;
     public float deathPH;
     public bool acidic = false;
+    public float changeRatePH = 1;
+    public bool slowsOnChangePH = false;
+    private Rigidbody rigid;
 
     private void Awake()
     {
         CurrentPH = StartPH;
+        if (slowsOnChangePH) {
+          rigid = gameObject.GetComponent<Rigidbody>();
+        }
     }
 
 
@@ -54,7 +60,11 @@ public class ObjectWithPH : MonoBehaviour
     public void ChangePH(float ph)
     {
 
-        CurrentPH += ph;
+        if (slowsOnChangePH){
+          rigid.velocity = rigid.velocity * 0.9f;
+        }
+
+        CurrentPH += ph * changeRatePH;
 
         if (CurrentPH > 14) {
           CurrentPH = 14;

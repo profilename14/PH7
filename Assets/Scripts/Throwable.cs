@@ -48,6 +48,7 @@ public class Throwable : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "HasPH") {
+          Debug.Log(other.gameObject.GetComponent<ObjectWithPH>().CurrentPH);
           if (!isBeingThrown) {
             return;
           }
@@ -62,9 +63,18 @@ public class Throwable : MonoBehaviour
             float phChange = Mathf.Abs(otherPH - ownPH.CurrentPH);
 
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(Mathf.Pow(phChange, 1.5f) * changeInPH);
+          }
 
-            Debug.Log(other.gameObject.GetComponent<ObjectWithPH>().CurrentPH);
+          health -= 1;
 
+          if (health <= 0) {
+            Destroy(gameObject);
+            if (destroyEffect != null) {
+              Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            }
+          } else {
+            //isBeingThrown = false;
+            isBeingCarried = false;
           }
 
         }

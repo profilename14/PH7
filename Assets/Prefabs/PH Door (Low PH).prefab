@@ -70,12 +70,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d823eeae31c0e47499593404ba6b8d38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartPH: 14
+  StartPH: 0
   CurrentPH: 0
   RegenPH: 0.33
-  destroyedAtPH: 0
-  deathPH: 5
+  destroyedAtPH: 1
+  deathPH: 9
   acidic: 1
+  changeRatePH: 0.375
+  slowsOnChangePH: 0
 --- !u!1 &2427484047509348585
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +290,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5335716708109505066, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8312656262789465090, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
       propertyPath: m_Name
       value: CanvasForObjectUI
@@ -325,6 +331,14 @@ PrefabInstance:
       value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 8591164574823051336, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.017999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591164574823051336, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.007999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8591164574823051336, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -358,7 +372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8591164574823051336, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.03
+      value: 5.81
       objectReference: {fileID: 0}
     - target: {fileID: 8591164574823051336, guid: 2564429b5e8a2454e9c3ab55b5ac4eae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

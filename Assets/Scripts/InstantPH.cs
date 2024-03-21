@@ -22,10 +22,14 @@ public class InstantPH : MonoBehaviour
         {
             other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, pHChange, 0, transform.position);
         }
-        else if (other.gameObject.CompareTag("HasPH"))
-        {
-            other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
-        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+      if (other.gameObject.tag == "HasPH")
+      {
+          other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
+      }
     }
 
     IEnumerator DestroySelf()

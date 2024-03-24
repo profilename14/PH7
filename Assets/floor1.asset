@@ -91,7 +91,7 @@ MonoBehaviour:
     - title: Initial Value
       value: 
       type: 0
-      typeString: 
+      typeString: CustomFieldType_Text
     - title: Description
       value: 
       type: 0
@@ -374,8 +374,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 'Dash by pressing space. You can pass through fences by dashing through
-          them! '
+        value: Dash by pressing space. You can pass through fences and attacks by
+          dashing through them.
         type: 0
         typeString: 
       - title: Sequence
@@ -528,7 +528,11 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 'Right click to perform a ranged attack. '
+        value: 'Hold right click to summon a telekinetic bubble. Release to throw
+          with great force.
+
+          Applying the opposite element to an enemy
+          causes them to take increased damage from attacks '
         type: 0
         typeString: 
       - title: Sequence
@@ -638,7 +642,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 4
@@ -681,8 +685,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Striders are a basic enemy. They are easily dodged, but can be dangerous
-          in swarms.
+        value: Striders are basic foes, attack them as they leap towards you!
         type: 0
         typeString: 
       - title: Sequence
@@ -835,7 +838,7 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Disable the switches on both the left and right paths to progress.
+        value: Traverse both the left and right paths to proceed.
         type: 0
         typeString: 
       - title: Sequence
@@ -1296,8 +1299,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: These are puddles. Orange is acidic, and green is alkaline. I don't
-          really understand the specifics beyond that :)
+        value: Sponges take the element of any puddle they are left in. Acid beats
+          alkaline, alkaline beats acid.
         type: 0
         typeString: 
       - title: Sequence
@@ -1320,7 +1323,7 @@ MonoBehaviour:
       canvasRect:
         serializedVersion: 2
         x: 160
-        y: 80
+        y: 79
         width: 160
         height: 30
     entryGroups: []

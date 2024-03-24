@@ -14,7 +14,7 @@ public class PrefabSpawner : MonoBehaviour
 
     [SerializeField] public GameObject objectToMake;
     public bool objectIsAlive = false;
-    float timeToMake = 1.25f;
+    public float timeToMake = 6f;
     float makeTimer = 0.0f;
     private GameObject curObject = null;
 

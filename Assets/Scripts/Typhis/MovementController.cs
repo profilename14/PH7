@@ -38,7 +38,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float dashDuration = 0.6f;
     [HideInInspector] public float DashTimer = 0.0f;
     [SerializeField] private float DashCooldown = 0.6f;
-    [HideInInspector] public float dashCooldownTimer = 0.0f;
+    [SerializeField] public float dashCooldownTimer = 0.0f;
     private Vector3 dashDirection;
 
     [SerializeField] private AnimationCurve Dash;
@@ -111,6 +111,8 @@ public class MovementController : MonoBehaviour
     void Update()
     {
 
+        dashCooldownTimer -= Time.deltaTime;
+
         // This gargantuan function accurately get's the player's direction respecting stages for FixedUpdate's translations.
         GetMovementDirection();
 
@@ -125,44 +127,16 @@ public class MovementController : MonoBehaviour
         camForward.Normalize();
         camRight.Normalize();
 
-        // DASH LOGIC:
+
+        /*// DASH LOGIC:
         // Dash should probably be disabled during attacks.
         if (dashCooldownTimer >= 0)
         { // Decrease cooldown
-            dashCooldownTimer -= Time.deltaTime;
-        }
+        }*/
 
-        if (Input.GetKeyDown("space") && !isDashing && dashCooldownTimer <= 0
-            && rotationController.canTurn)
-        { // Start dash
-            isDashing = true;
-            combatController.playDashAnim(); // Allows the dash animation to play
-            // set flag in animator
-            if (!MouseDash)
-            {
-                var hDashIntent = horizontal;
-                var vDashIntent = vertical;
-
-                if ( Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
-                {
-                    dashDirection = camForward * rotationController.transform.forward.z
-                                  + camRight * rotationController.transform.forward.x;
-                    dashDirection = Quaternion.Euler(0, 90 + 45, 0) * dashDirection;
-                }
-                else
-                {
-                    dashDirection = camForward * vDashIntent + camRight * hDashIntent;
-                    //dashDirection = rotationController.directionVec;
-                }
-            }
-            else
-            {
-                //dashDirection = rotationController.directionVec;
-                dashDirection = rotationController.directionVec;
-            }
-            dashVelocity = new Vector3(0, 0, 0);
-            DashTimer = 0;
-            canMove = false;
+        if (Input.GetKeyDown(KeyCode.Space) && dashCooldownTimer <= 0)
+        {
+            combatController.bufferDash();
         }
 
     }
@@ -174,6 +148,8 @@ public class MovementController : MonoBehaviour
         // Set the player's velocity to zero. This is to prevent continuous knockback when an enemy runs into the player.
         //rigidbody.velocity = new Vector3(0, 0, 0);
         if (isDashing) { // Main logic:
+
+            dashCooldownTimer = DashCooldown;
 
           if (DashTimer >= dashDuration * (DashAftermathPercent) && dashEnding == false) {
             dashEnding = true;
@@ -344,7 +320,42 @@ public class MovementController : MonoBehaviour
 
 
 
+    public void startDash()
+    {
+        //Debug.Log("Starting dash");
 
+        //rotationController.snapToCurrentAngle();
+
+        // Start dash
+        isDashing = true;
+        combatController.bufferDash(); // Allows the dash animation to play
+                                       // set flag in animator
+        if (!MouseDash)
+        {
+            var hDashIntent = horizontal;
+            var vDashIntent = vertical;
+
+            if (Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
+            {
+                dashDirection = camForward * rotationController.transform.forward.z
+                              + camRight * rotationController.transform.forward.x;
+                dashDirection = Quaternion.Euler(0, 90 + 45, 0) * dashDirection;
+            }
+            else
+            {
+                dashDirection = camForward * vDashIntent + camRight * hDashIntent;
+                //dashDirection = rotationController.directionVec;
+            }
+        }
+        else
+        {
+            //dashDirection = rotationController.directionVec;
+            dashDirection = rotationController.directionVec;
+        }
+        dashVelocity = new Vector3(0, 0, 0);
+        DashTimer = 0;
+        canMove = false;
+    }
 
 
 

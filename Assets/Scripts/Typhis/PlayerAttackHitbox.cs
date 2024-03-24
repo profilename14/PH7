@@ -33,8 +33,8 @@ public class PlayerAttackHitbox : MonoBehaviour
                 controllerScript.gameObject.transform.position);
             } else {
                 other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 2f,
-                controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 2.25f,
+              other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 1.5f,
+                controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 5f,
                 controllerScript.gameObject.transform.position);
             }
 

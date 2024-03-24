@@ -58,6 +58,9 @@ public class PlayerCombatController : MonoBehaviour
 
     public bool isFacingMouse = false;
 
+    [SerializeField]
+    private bool thrustIsDashAttack = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -140,23 +143,35 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Dash");
         }
 
-        if(hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
+        if (!thrustIsDashAttack)
         {
-            holdTimer += Time.deltaTime;
+            if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
+            {
+                holdTimer += Time.deltaTime;
 
-            if(holdTimer >= thrustHoldTime)
+                if (holdTimer >= thrustHoldTime)
+                {
+                    hasClicked = false;
+                    holdTimer = 0;
+                    playerAnim.SetTrigger("Thrust");
+                    playerAnim.ResetTrigger("Swing");
+                    playerAnim.ResetTrigger("Dash");
+                }
+            }
+            else
             {
                 hasClicked = false;
                 holdTimer = 0;
-                playerAnim.SetTrigger("Thrust");
-                playerAnim.ResetTrigger("Swing");
-                playerAnim.ResetTrigger("Dash");
             }
         }
         else
         {
-            hasClicked = false;
-            holdTimer = 0;
+            if((Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) && inDash)
+            {
+                playerAnim.SetTrigger("Thrust");
+                playerAnim.ResetTrigger("Swing");
+                playerAnim.ResetTrigger("Dash");
+            }
         }
 
 
@@ -195,6 +210,8 @@ public class PlayerCombatController : MonoBehaviour
         inDash = true;
         inRecovery = false;
 
+        movementController.startDash();
+
         playerAnim.ResetTrigger("Swing");
         playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
@@ -203,11 +220,12 @@ public class PlayerCombatController : MonoBehaviour
 
     }
 
-    public void playDashAnim()
+    public void bufferDash()
     {
-      playerAnim.SetTrigger("Dash");
-      playerAnim.ResetTrigger("Thrust");
-      playerAnim.ResetTrigger("Swing");
+        //Debug.Log("Buffering dash");
+        playerAnim.SetTrigger("Dash");
+        playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Swing");
     }
 
     private void addPushForward(float amount)
@@ -222,6 +240,7 @@ public class PlayerCombatController : MonoBehaviour
         swingingL = !swingingL;
         playerAnim.SetBool("Swing Left", swingingL);
         inRecovery = true;
+        inDash = false;
     }
 
 
@@ -290,5 +309,10 @@ public class PlayerCombatController : MonoBehaviour
       telekinesisCastTimer = telekinesisSpellCooldown;
       rotationController.isFacingMouse = false;
       Debug.Log("Telekinesis Done");
+    }
+
+    public bool isActionable()
+    {
+        return (isIdle || inRecovery);
     }
 }

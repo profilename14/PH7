@@ -216,8 +216,6 @@ public class PlayerCombatController : MonoBehaviour
         playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
         playerAnim.ResetTrigger("Actionable");
-
-
     }
 
     public void bufferDash()
@@ -242,9 +240,6 @@ public class PlayerCombatController : MonoBehaviour
         inRecovery = true;
         inDash = false;
     }
-
-
-
 
     private void FireTripleBlast() {
         if (castTimer > 0) {

@@ -27,9 +27,9 @@ RenderSettings:
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.35925996, g: 0.45852593, b: 0.71, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-  m_HaloStrength: 0.615
+  m_HaloStrength: 1
   m_FlareStrength: 1
-  m_FlareFadeSpeed: 3
+  m_FlareFadeSpeed: 4
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44393235, g: 0.49331236, b: 0.57279414, a: 1}
+  m_IndirectSpecularColor: {r: 0.1782813, g: 0.2232265, b: 0.30527136, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -24619,15 +24619,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8613765102404926567, guid: 024066d5d1e20df40a9b7ea666f18cf5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8799971490035409731, guid: 024066d5d1e20df40a9b7ea666f18cf5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8799971490035409731, guid: 024066d5d1e20df40a9b7ea666f18cf5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -55726,10 +55726,6 @@ PrefabInstance:
       value: AllowsBubble
       objectReference: {fileID: 0}
     - target: {fileID: 6749036505932490680, guid: bc52e8962db0ddf41869978c2eef731a, type: 3}
-      propertyPath: timeToMake
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749036505932490680, guid: bc52e8962db0ddf41869978c2eef731a, type: 3}
       propertyPath: objectToMake
       value: 
       objectReference: {fileID: 6956576538085600973, guid: 051e8b27e01479c4e80d2c2bef58e9ce, type: 3}
@@ -64716,10 +64712,6 @@ PrefabInstance:
     - target: {fileID: 4143857778301846279, guid: bc52e8962db0ddf41869978c2eef731a, type: 3}
       propertyPath: m_TagString
       value: AllowsBubble
-      objectReference: {fileID: 0}
-    - target: {fileID: 6749036505932490680, guid: bc52e8962db0ddf41869978c2eef731a, type: 3}
-      propertyPath: timeToMake
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6749036505932490680, guid: bc52e8962db0ddf41869978c2eef731a, type: 3}
       propertyPath: objectToMake
@@ -73904,7 +73896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1508267823792538967, guid: 474a35bc9d9cf294da1d45a17d87a9cc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4081528464252385144, guid: 474a35bc9d9cf294da1d45a17d87a9cc, type: 3}
       propertyPath: m_IsActive
@@ -73960,11 +73952,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8616537728697255505, guid: 474a35bc9d9cf294da1d45a17d87a9cc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8616537728697255505, guid: 474a35bc9d9cf294da1d45a17d87a9cc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -87396,7 +87388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectToMake: {fileID: 6956576538085600973, guid: 051e8b27e01479c4e80d2c2bef58e9ce, type: 3}
   objectIsAlive: 0
-  timeToMake: 3
+  timeToMake: 15
 --- !u!1001 &6864397034018636091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87826,7 +87818,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1275973257122552551, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.4
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1275973257122552551, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_LocalPosition.y
@@ -87834,7 +87826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1275973257122552551, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -64.5
+      value: -64.6
       objectReference: {fileID: 0}
     - target: {fileID: 1275973257122552551, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_LocalRotation.w
@@ -88270,7 +88262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5237129565925962359, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_ClearFlags
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5237129565925962359, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: orthographic
@@ -88282,15 +88274,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5237129565925962359, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5237129565925962359, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 0.71423316
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5237129565925962359, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5442852127913990069, guid: 73aa87b19e7936647846480c912a5bab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

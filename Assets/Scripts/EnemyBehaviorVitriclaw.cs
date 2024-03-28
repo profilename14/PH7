@@ -219,17 +219,21 @@ public class EnemyBehaviorVitriclaw : EnemyBehavior
 
         Debug.Log("Jumping!");
 
-        //anim.SetTrigger("Jump"); Takes like 2 seconds for the animation to actually jump, it can wait.
+        anim.SetTrigger("Jump");
+      }
+    }
 
+    public void initiateJump()
+    {
         jumpCooldownTimer = jumpCooldown;
         jumpTimer = jumpMaxTime;
         enemyRigidbody.AddForce((transform.forward).normalized * jumpSpeed, ForceMode.Impulse);
+        GetComponent<CapsuleCollider>().enabled = false;
+    }
 
-
-      }
-
-
-
+    public void endJump()
+    {
+        GetComponent<CapsuleCollider>().enabled = true;
     }
 
     private void makeAttack() {

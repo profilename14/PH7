@@ -68,6 +68,10 @@ public class EnemyAI : MonoBehaviour
                 Ray ray = new(transform.position, player.transform.position - transform.position);
                 Physics.Raycast(ray, out RaycastHit hit, 50f, 1 << LayerMask.NameToLayer("BlocksVision"));
 
+                if(hit.collider.gameObject.CompareTag("Player"))
+                {
+                    
+                }
             }
         };
     }

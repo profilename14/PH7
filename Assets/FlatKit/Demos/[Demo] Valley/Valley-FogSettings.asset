@@ -8,13 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Effect Material
-  m_Shader: {fileID: -6465566751694194690, guid: c77db07224d9f784d90d7eb0e84c57f7,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c77db07224d9f784d90d7eb0e84c57f7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - USE_DISTANCE_FOG
-  - USE_HEIGHT_FOG
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -57,7 +54,6 @@ Material:
     - _Near: 27
     m_Colors: []
   m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6f656ab8114e939b71b289ffd9d7b2, type: 3}
   m_Name: Valley-FogSettings
   m_EditorClassIdentifier: 
-  useDistance: 1
+  useDistance: 0
   distanceGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.85213137, b: 1, a: 0.09803922}
@@ -104,7 +100,7 @@ MonoBehaviour:
   near: 27
   far: 150
   distanceFogIntensity: 0.694
-  useHeight: 1
+  useHeight: 0
   heightGradient:
     serializedVersion: 2
     key0: {r: 0.0745098, g: 0.94509804, b: 0.9280485, a: 0}

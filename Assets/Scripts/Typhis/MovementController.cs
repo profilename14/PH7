@@ -187,13 +187,9 @@ public class MovementController : MonoBehaviour
 
         }
 
-
-
-
-
         // Get the controls direction then multiply by ADSR state:
 
-        Vector3 moveDir = camForward * vertical + camRight * horizontal;
+        Vector3 moveDir = (camForward * vertical) + (camRight * horizontal);
 
         if (GameManager.isControllerUsed) {
           Vector3 inputCont = new Vector3( Input.GetAxis("Horizontal"), 0,
@@ -205,8 +201,6 @@ public class MovementController : MonoBehaviour
 
           Vector3 input = camForward * inputCont.x + camRight * inputCont.y;
 
-
-
           moveDir = input;
 
 
@@ -216,7 +210,7 @@ public class MovementController : MonoBehaviour
         }
 
 
-        if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.y) > 0.0 ) { // If the player's moving
+        if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.z) > 0.0 ) { // If the player's moving
           if (currentPhase == Phase.None || currentPhase == Phase.Release) { // If the player stopped and is moving now
             currentPhase = Phase.Attack;
             attackTimer = 0;
@@ -316,10 +310,6 @@ public class MovementController : MonoBehaviour
       knockbackTimer = 0;
     }
 
-
-
-
-
     public void startDash()
     {
         //Debug.Log("Starting dash");
@@ -356,17 +346,6 @@ public class MovementController : MonoBehaviour
         DashTimer = 0;
         canMove = false;
     }
-
-
-
-
-
-
-
-
-
-
-
 
     float ADSREnvelope()
     {

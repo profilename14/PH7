@@ -23,14 +23,14 @@ namespace Patterns
             return states[key];
         }
 
-        public void SetCurrentState(State state)
+        public void SetCurrentState(string stateKey)
         {
             if (currentState != null)
             {
                 currentState.Exit();
             }
 
-            currentState = state;
+            currentState = GetState(stateKey);
 
             if (currentState != null)
             {

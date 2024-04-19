@@ -30,8 +30,8 @@ public class EnemyAI : MonoBehaviour
 
     public string currentState;
     // This is stored in the enemyAI class for now. We can move it in the future.
-    protected bool isCircling = true;
-    private float circleDistance = 1.25f;
+    public bool isCircling = true;
+    public float circleDistance = 1.25f;
     [SerializeField] private GameObject rotationAnchor;
     [SerializeField] private Rigidbody enemyRigidbody;
 
@@ -101,19 +101,6 @@ public class EnemyAI : MonoBehaviour
     {
         // Make sure the AI is always trying to move towards our target object
         ai.destination = target.transform.position;
-
-        fsm.Update();
-        // Code for visually rotating the enemy towards the player when moving.
-        rotationAnchor.transform.rotation = Quaternion.LookRotation(
-            Vector3.RotateTowards(rotationAnchor.transform.forward, ai.destination - transform.position, 0.025f, 0) );
-
-        if (isCircling) { // Credits to arongranberg.com for the circling tutorial.
-            var normal = (ai.position - ai.destination).normalized;
-            var tangent = Vector3.Cross(normal, target.transform.up);
-
-            // We can accomplish circling by getting the tangent of the vector to the player and offsetting it (for speed).
-            ai.destination = ai.destination + normal * circleDistance + tangent * 4.5f;
-        }
     }
 
     private void checkHealth() {
@@ -236,6 +223,7 @@ public class EnemyAI : MonoBehaviour
         state.OnExitDelegate += delegate ()
         {
             //Debug.Log("OnExit - Idle");
+            //anim.SetTrigger("Aggro");
         };
 
         state.OnFixedUpdateDelegate += delegate ()
@@ -266,9 +254,8 @@ public class EnemyAI : MonoBehaviour
             ai.enableRotation = true;
             ai.maxSpeed = followMoveSpeed;
             ai.acceleration = followAcceleration;
-
             anim.SetBool("Walking", true);
-            ai.endReachedDistance = followDistance;
+
             //Debug.Log("OnEnter - Follow");
         };
 
@@ -276,6 +263,7 @@ public class EnemyAI : MonoBehaviour
         {
             //Debug.Log("OnExit - Follow");
             ai.endReachedDistance = 0.01f;
+            ai.enableRotation = true;
         };
 
         state.OnUpdateDelegate += delegate ()
@@ -283,16 +271,51 @@ public class EnemyAI : MonoBehaviour
             //Debug.Log("OnUpdate - Follow");
             target.transform.position = player.transform.position;
 
-            if(ai.reachedEndOfPath)
+            if (!isCircling)
             {
-                ai.isStopped = true;
-                var direction = (target.transform.position - transform.position).normalized;
-                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+                ai.enableRotation = true;
+                ai.endReachedDistance = followDistance;
+
+                if (ai.reachedEndOfPath)
+                {
+                    ai.isStopped = true;
+                    //anim.SetBool("Walking", false);
+                    var direction = (target.transform.position - transform.position).normalized;
+                    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+                }
+                else
+                {
+                    ai.isStopped = false;
+                    //anim.SetBool("Walking", true);
+                }
             }
             else
             {
-                ai.isStopped = false;
+                ai.endReachedDistance = 0.01f;
+                ai.enableRotation = false;
+
+                var normal = (ai.position - ai.destination).normalized;
+                var tangent = Vector3.Cross(normal, target.transform.up);
+
+                // We can accomplish circling by getting the tangent of the vector to the player and offsetting it (for speed).
+                ai.destination = ai.destination + normal * circleDistance + tangent * 4.5f;
+
+                //Rotate to look at player
+                var direction = (target.transform.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+
+                if (ai.reachedEndOfPath)
+                {
+                    ai.isStopped = true;
+                    //anim.SetBool("Walking", false);
+                }
+                else
+                {
+                    ai.isStopped = false;
+                    //anim.SetBool("Walking", true);
+                }
             }
         };
     }

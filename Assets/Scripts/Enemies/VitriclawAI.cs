@@ -6,7 +6,6 @@ using Patterns;
 
 public class VitriclawAI : EnemyAI
 {
-    //public float followToCirclingProbability;
     public float followToLeftClawProbability;
     public float followToRightClawProbability;
     public float followToJumpProbability;
@@ -40,10 +39,11 @@ public class VitriclawAI : EnemyAI
         base.Start();
 
         fsm.Add("Left Claw", new EnemyState(fsm, "Left Claw", this));
-        fsm.Add("Right Claw", new EnemyState(fsm, "Left Claw", this));
+        //fsm.Add("Right Claw", new EnemyState(fsm, "Left Claw", this));
         fsm.Add("Jump", new EnemyState(fsm, "Left Claw", this));
         Init_Follow();
         Init_Left_Claw();
+        Init_Jump();
     }
 
     // Update is called once per frame
@@ -74,6 +74,13 @@ public class VitriclawAI : EnemyAI
                 nextChosenAttackRange = leftClawAttackRange;
                 timeToAttackNext = Random.Range(minTimeToAttack, maxTimeToAttack) + leftClawAdditionalDelay;
             }
+            else if(num <= followToLeftClawProbability + followToJumpProbability)
+            {
+                nextChosenState = "Jump";
+                nextStateIsAttack = true;
+                nextChosenAttackRange = jumpAttackRange;
+                timeToAttackNext = Random.Range(minTimeToAttack, maxTimeToAttack) + jumpAdditionalDelay;
+            }
         };
 
         state.OnUpdateDelegate += delegate ()
@@ -89,6 +96,15 @@ public class VitriclawAI : EnemyAI
                     fsm.SetCurrentState(nextChosenState);
                 }
             }
+
+            if (Vector3.Distance(this.transform.position, player.transform.position) <= followDistance)
+            {
+                isCircling = true;
+            }
+            else
+            {
+                isCircling = false;
+            }
         };
     }
 
@@ -102,6 +118,25 @@ public class VitriclawAI : EnemyAI
             ai.isStopped = true;
             target.transform.position = player.transform.position;
             anim.SetTrigger("Left Claw");
+        };
+
+        state.OnExitDelegate += delegate ()
+        {
+            //Debug.Log("OnExit - Left Claw");
+            ai.isStopped = false;
+            ai.enableRotation = true;
+        };
+    }
+
+    void Init_Jump()
+    {
+        EnemyState state = (EnemyState)fsm.GetState("Jump");
+
+        state.OnEnterDelegate += delegate ()
+        {
+            ai.isStopped = true;
+            target.transform.position = player.transform.position;
+            anim.SetTrigger("Jump");
         };
 
         state.OnExitDelegate += delegate ()
@@ -132,6 +167,14 @@ public class VitriclawAI : EnemyAI
         {
             GetComponent<Rigidbody>().AddForce((target.transform.position - transform.position).normalized * leftClawForwardForce, ForceMode.Impulse);
             ai.enableRotation = false;
+        }
+        else if(state == "Jump")
+        {
+            target.transform.position = player.transform.position;
+            ai.isStopped = false;
+            ai.enableRotation = false;
+            ai.maxSpeed = 50;
+            ai.acceleration = 10000;
         }
     }
 

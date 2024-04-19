@@ -6,6 +6,11 @@ public class VitriclawAnimEventRelay : MonoBehaviour
 {
     public VitriclawAI aiScript;
 
+    public void PauseStartupForSeconds(float seconds)
+    {
+        aiScript.PauseStartupForSeconds(seconds);
+    }
+
     public void StartAttack(string state)
     {
         aiScript.StartAttack(state);

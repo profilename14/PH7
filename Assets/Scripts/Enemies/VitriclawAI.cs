@@ -112,6 +112,20 @@ public class VitriclawAI : EnemyAI
         };
     }
 
+    public void PauseStartupForSeconds(float seconds)
+    {
+        StartCoroutine(PauseStartup(seconds));
+    }
+
+    public IEnumerator PauseStartup(float seconds)
+    {
+        anim.speed = 0;
+
+        yield return new WaitForSeconds(seconds);
+
+        anim.speed = 1;
+    }
+
     public void StartAttack(string state)
     {
         if(state == "Left Claw")

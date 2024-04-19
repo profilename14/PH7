@@ -19,6 +19,8 @@ public class Throwable : MonoBehaviour
 
     // Leave this null to not make anything, in the case of say the rock
     [SerializeField] private GameObject destroyEffect; // Anything to make on destruction, (like explosions)
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip enemyImpactSound;
 
 
 
@@ -27,7 +29,7 @@ public class Throwable : MonoBehaviour
       if (usesOwnPH) {
         ownPH = GetComponent<ObjectWithPH>();
       }
-
+      audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
     }
 
     public void Grab() {

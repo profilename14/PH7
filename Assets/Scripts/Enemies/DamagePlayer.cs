@@ -9,12 +9,14 @@ public class DamagePlayer : MonoBehaviour
     public float damage;
     public float knockback = 2.5f;
     public float phDamage = 0f;
+    public GameObject parent;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, phDamage, gameObject.transform.position, knockback);
+            Debug.Log("Hit player!");
+            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, phDamage, parent.transform.position, knockback);
         }
     }
 }

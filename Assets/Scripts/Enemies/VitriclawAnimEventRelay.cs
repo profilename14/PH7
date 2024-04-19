@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class VitriclawAnimEventRelay : MonoBehaviour
 {
-    public EnemyBehaviorVitriclaw aiScript;
-    public void initiateJump()
+    public VitriclawAI aiScript;
+
+    public void StartAttack(string state)
     {
-        aiScript.initiateJump();
+        aiScript.StartAttack(state);
     }
     
-    public void endJump()
+    public void EndAttack()
     {
-        aiScript.endJump();
+        aiScript.EndAttack();
     }
 }

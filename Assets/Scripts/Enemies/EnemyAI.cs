@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using UnityEditor;
 
 using Patterns;
 
@@ -13,14 +14,21 @@ public class EnemyAI : MonoBehaviour
     public RichAI ai;
     public Animator anim;
 
-    private GameObject player;
+    protected GameObject player;
 
     [Header("Detection")]
     public bool playerDetected = false;
     public float sightDistance = 20f;
 
-    private GameObject target;
+    [Header("Follow State")]
+    public float followDistance = 1f;
+    public float followMoveSpeed = 5;
+    public float followAcceleration = 5;
+
+    protected GameObject target;
     private LayerMask mask;
+
+    public string currentState;
 
     #endregion
 
@@ -44,18 +52,22 @@ public class EnemyAI : MonoBehaviour
         mask = LayerMask.GetMask("Exclude from A*", "BlocksVision");
 
         target = new GameObject(this.gameObject.name + " AI Target");
+        var iconContent = EditorGUIUtility.IconContent("sv_label_1");
+        EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
+        currentState = fsm.GetCurrentState();
+
         // Make sure the AI is always trying to move towards our target object
         ai.destination = target.transform.position;
 
         fsm.Update();
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         fsm.FixedUpdate();
     }
@@ -68,13 +80,13 @@ public class EnemyAI : MonoBehaviour
 
         state.OnEnterDelegate += delegate ()
         {
-            Debug.Log("OnEnter - Idle");
+            //Debug.Log("OnEnter - Idle");
             ai.isStopped = true;
         };
 
         state.OnExitDelegate += delegate ()
         {
-            Debug.Log("OnExit - Idle");
+            //Debug.Log("OnExit - Idle");
         };
 
         state.OnFixedUpdateDelegate += delegate ()
@@ -102,22 +114,37 @@ public class EnemyAI : MonoBehaviour
         {
             // Make sure that the AI is not stopped
             ai.isStopped = false;
+            ai.enableRotation = true;
+            ai.maxSpeed = followMoveSpeed;
+            ai.acceleration = followAcceleration;
 
             anim.SetBool("Walking", true);
-
-            Debug.Log("OnEnter - Follow");
+            ai.endReachedDistance = followDistance;
+            //Debug.Log("OnEnter - Follow");
         };
 
         state.OnExitDelegate += delegate ()
         {
-            Debug.Log("OnExit - Follow");
+            //Debug.Log("OnExit - Follow");
+            ai.endReachedDistance = 0.01f;
         };
 
         state.OnUpdateDelegate += delegate ()
         {
-            Debug.Log("OnUpdate - Follow");
-
+            //Debug.Log("OnUpdate - Follow");
             target.transform.position = player.transform.position;
+
+            if(ai.reachedEndOfPath)
+            {
+                ai.isStopped = true;
+                var direction = (target.transform.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+            }
+            else
+            {
+                ai.isStopped = false;
+            }
         };
     }
 
@@ -130,17 +157,17 @@ public class EnemyAI : MonoBehaviour
             // Make sure that the AI is stopped
             ai.isStopped = true;
 
-            Debug.Log("OnEnter - Follow");
+            //Debug.Log("OnEnter - Follow");
         };
 
         state.OnExitDelegate += delegate ()
         {
-            Debug.Log("OnExit - Follow");
+            //Debug.Log("OnExit - Follow");
         };
 
         state.OnUpdateDelegate += delegate ()
         {
-            Debug.Log("OnUpdate - Follow");
+            //Debug.Log("OnUpdate - Follow");
 
             target.transform.position = player.transform.position;
         };

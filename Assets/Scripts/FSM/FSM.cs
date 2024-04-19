@@ -23,6 +23,11 @@ namespace Patterns
             return states[key];
         }
 
+        public string GetCurrentState()
+        {
+            return ((EnemyState)currentState).StateName;
+        }
+
         public void SetCurrentState(string stateKey)
         {
             if (currentState != null)

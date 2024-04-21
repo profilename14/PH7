@@ -39,9 +39,9 @@ public class EnemyAI : MonoBehaviour
 
     // This is more hp related stuff to handle the global enemy armor system.
     [SerializeField] public TypesPH naturalPH;
-    [SerializeField] protected float maxArmorRatio = 0.5f; // The maximum percent of the health bar with armor can be fine tuned between enemies.
+    [SerializeField] public float maxArmorRatio = 0.5f; // The maximum percent of the health bar with armor can be fine tuned between enemies.
     // Ex, striders could have 20% armor, making them quite weak but always regen to the same point until almost defeated.
-    [SerializeField] protected float maxHealth = 100f;
+    [SerializeField] public float maxHealth = 100f;
     [HideInInspector] public float health;
     [HideInInspector] public float armor;
     [HideInInspector] public bool armorBroken;
@@ -133,7 +133,7 @@ public class EnemyAI : MonoBehaviour
         if (!armorBroken) {
             if (ph != 0) {
 
-                if ( (ph < 0 && naturalPH == TypesPH.Alkaline) || (ph > 0 && naturalPH == TypesPH.Acidic) ) {
+                if ( (ph < 0 && naturalPH == TypesPH.Alkaline) || (ph > 0 && naturalPH == TypesPH.Acidic) || true ) {
                     armor -= Mathf.Abs(ph);
                     if (armor <= 0) {
                         armor = 0;
@@ -171,7 +171,7 @@ public class EnemyAI : MonoBehaviour
                 
                 audioSource.PlayOneShot(enemyImpactSound, 0.25F);
             } else {
-                if ( (ph < 0 && naturalPH == TypesPH.Alkaline) || (ph > 0 && naturalPH == TypesPH.Acidic) ) {
+                if ( (ph < 0 && naturalPH == TypesPH.Alkaline) || (ph > 0 && naturalPH == TypesPH.Acidic) || true) {
                     health -= Mathf.Abs(ph / 3.0f);
                     displayedDamage = Mathf.Abs(ph / 3.0f);
                 } else if (naturalPH == TypesPH.Neutral) { // What to do is tbd when the enemy's neutral

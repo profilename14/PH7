@@ -86,17 +86,17 @@ public class Throwable : MonoBehaviour
           }
           // Ensure this doesn't cause I frames later
           if (!usesOwnPH) {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
+            other.gameObject.GetComponent<EnemyAI>().TakeDamage(
              -changeInHP, changeInPH, knockback, this.transform.position);
           } else {
-            float enemyPH = other.gameObject.GetComponent<EnemyBehavior>().getCurPH();
+            float enemyPH = other.gameObject.GetComponent<EnemyAI>().armor;
 
             ownPH.NeutralizePH(enemyPH); // affects damage, so slight differences mean little
 
             float phChange = Mathf.Abs(enemyPH - ownPH.CurrentPH);
 
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(
-             -changeInHP, Mathf.Pow(phChange, 1.5f) * changeInPH, knockback, this.transform.position);
+            other.gameObject.GetComponent<EnemyAI>().health -= changeInHP;
+            other.gameObject.GetComponent<EnemyAI>().armor -= changeInPH;
 
 
           }

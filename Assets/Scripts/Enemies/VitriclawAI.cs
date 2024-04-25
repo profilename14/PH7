@@ -134,13 +134,16 @@ public class VitriclawAI : EnemyAI
 
         state.OnEnterDelegate += delegate ()
         {
+            ai.rotationSpeed = 999;
             ai.isStopped = true;
+            ai.enableRotation = true;
             target.transform.position = player.transform.position;
             anim.SetTrigger("Jump");
         };
 
         state.OnExitDelegate += delegate ()
         {
+            ai.rotationSpeed = 360;
             //Debug.Log("OnExit - Left Claw");
             ai.isStopped = false;
             ai.enableRotation = true;
@@ -172,7 +175,7 @@ public class VitriclawAI : EnemyAI
         {
             target.transform.position = player.transform.position;
             ai.isStopped = false;
-            ai.enableRotation = false;
+            //ai.enableRotation = false;
             ai.maxSpeed = 50;
             ai.acceleration = 10000;
         }

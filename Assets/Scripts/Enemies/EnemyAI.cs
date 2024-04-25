@@ -54,6 +54,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private AudioClip enemyImpactSound;
     [SerializeField] private AudioClip enemyPotHitSound;
 
+    private float slowdownRate = 0.14f;
+    private float slowdownLength = 0.02f;
 
 
 
@@ -138,6 +140,9 @@ public class EnemyAI : MonoBehaviour
                     if (armor <= 0) {
                         armor = 0;
                         armorBroken = true;
+                        GameManager.slowdownTime(slowdownRate / 2.3f, slowdownLength);
+                    } else {
+                        GameManager.slowdownTime(slowdownRate / 2.0f, slowdownLength);
                     }
                     displayedDamage = Mathf.Abs(ph);
                 } else if (naturalPH == TypesPH.Neutral) { // What to do is tbd when the enemy's neutral
@@ -146,6 +151,7 @@ public class EnemyAI : MonoBehaviour
                     armor += Mathf.Abs(ph);
                     armorBroken = false;
                     displayedDamage = -Mathf.Abs(ph);
+                    GameManager.slowdownTime(slowdownRate * 1.3f, slowdownLength);
                 }
                 
             audioSource.PlayOneShot(enemyPotHitSound, 0.45F);
@@ -157,7 +163,8 @@ public class EnemyAI : MonoBehaviour
                         armorBroken = true;
                 }
                 displayedDamage = damage / 3.0f;
-                audioSource.PlayOneShot(enemyArmoredImpactSound, 0.2F);
+                audioSource.PlayOneShot(enemyArmoredImpactSound, 0.25F);
+                GameManager.slowdownTime(slowdownRate * 1.2f, slowdownLength);
             }
 
             if (displayedDamage != 0) {
@@ -168,8 +175,15 @@ public class EnemyAI : MonoBehaviour
             if (damage > 0) {
                 health -= damage;
                 displayedDamage = damage;
+                GameManager.slowdownTime(slowdownRate / 1.125f, slowdownLength);
+
+                if (health <= 0) {
+                    audioSource.PlayOneShot(enemyImpactSound, 0.375F);
+                } else {
+                    audioSource.PlayOneShot(enemyImpactSound, 0.3F);
+                }
                 
-                audioSource.PlayOneShot(enemyImpactSound, 0.25F);
+                
             } else {
                 if ( (ph < 0 && naturalPH == TypesPH.Alkaline) || (ph > 0 && naturalPH == TypesPH.Acidic) || true) {
                     health -= Mathf.Abs(ph / 3.0f);
@@ -181,7 +195,9 @@ public class EnemyAI : MonoBehaviour
                     armorBroken = false;
                     displayedDamage = -Mathf.Abs(ph);
                 }
-                audioSource.PlayOneShot(enemyPotHitSound, 0.3F);
+                audioSource.PlayOneShot(enemyPotHitSound, 0.35F);
+                
+                GameManager.slowdownTime(slowdownRate * 1.3f, slowdownLength);
             }
 
             if (displayedDamage != 0) {

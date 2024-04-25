@@ -7,8 +7,8 @@ public class PlayerAttackHitbox : MonoBehaviour
     PlayerCombatController controllerScript;
     PlayerStats stats;
 
-    private float slowdownTimer = 0.0f;
-    private float slowdownLength = 0.03f;
+    private float slowdownRate = 0.14f;
+    private float slowdownLength = 0.02f;
 
 
     // Start is called before the first frame update
@@ -21,30 +21,24 @@ public class PlayerAttackHitbox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (slowdownTimer > 0) {
-            slowdownTimer -= Time.deltaTime;
-            
-        }
-        if (slowdownTimer <= 0 && Time.timeScale == 0.2f) {
-                Time.timeScale = 1f;
-            }
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            Time.timeScale = 0.2f;
-            slowdownTimer = slowdownLength;
             //Debug.Log("Hit " + other.gameObject.name);
             //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
             if (other.gameObject.GetComponent<EnemyAI>() != null) {
                 if (!controllerScript.inThrust) {
+                    //GameManager.slowdownTime(slowdownRate, slowdownLength);
                     other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swordStats.damage,
                     controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback + 20,
                     controllerScript.gameObject.transform.position);
                 } else {
+                    //GameManager.slowdownTime(slowdownRate / 2f, slowdownLength);
                     other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 1.5f,
                     controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 5f,
@@ -52,11 +46,13 @@ public class PlayerAttackHitbox : MonoBehaviour
                 }
             } else {
                 if (!controllerScript.inThrust) {
+                    GameManager.slowdownTime(slowdownRate, slowdownLength);
                     other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage,
                     controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback,
                     controllerScript.gameObject.transform.position);
                 } else {
+                    GameManager.slowdownTime(slowdownRate / 2f, slowdownLength);
                     other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 1.5f,
                     controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 5f,

@@ -149,7 +149,7 @@ public class PlayerCombatController : MonoBehaviour
             {
                 holdTimer += Time.deltaTime;
 
-                if (holdTimer >= thrustHoldTime)
+                if (holdTimer >= thrustHoldTime * 10f) // Disabled right now as it doesn't deal damage
                 {
                     hasClicked = false;
                     holdTimer = 0;

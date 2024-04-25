@@ -20,7 +20,11 @@ public class InstantPH : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, pHChange, 0, transform.position);
+            if (other.gameObject.GetComponent<EnemyAI>() != null) {
+                other.gameObject.GetComponent<EnemyAI>().TakeDamage(0, pHChange, 0, transform.position);
+            } else {
+                other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, pHChange, 0, transform.position);
+            }
         }
         if (other.gameObject.tag == "HasPH")
         {

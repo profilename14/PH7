@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     const float HEALTH_MAX = 100;
     const float PH_DEFAULT = 14;
 
-    public float healthRegen = 3;
+    public float healthRegen = 0f;
     public float phRegen = 0.33f;
 
     public Slider healthBar;
@@ -20,6 +20,12 @@ public class PlayerStats : MonoBehaviour
     public bool isInvincible;
     public float iFrameSeconds;
     private float iFrameTimer = 0;
+    
+
+    private float slowdownRate = 0.14f;
+    private float slowdownLength = 0.02f;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip playerHitSound;
 
     private MovementController movementController;
 
@@ -33,6 +39,8 @@ public class PlayerStats : MonoBehaviour
       healthBar.maxValue= HEALTH_MAX;
 
       movementController = gameObject.GetComponent<MovementController>();
+
+      audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -56,7 +64,7 @@ public class PlayerStats : MonoBehaviour
       }
 
       if (health < HEALTH_MAX) {
-        health += healthRegen * Time.deltaTime;
+        
       } else if (health > HEALTH_MAX) {
         health = HEALTH_MAX;
       }
@@ -100,6 +108,10 @@ public class PlayerStats : MonoBehaviour
       }
 
       movementController.applyKnockback(position, knockback);
+
+      
+      GameManager.slowdownTime(slowdownRate / 2f, slowdownLength * 1f);
+      audioSource.PlayOneShot(playerHitSound, 0.45F);
 
 
     }

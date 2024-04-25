@@ -39,17 +39,29 @@ public class RotationController : MonoBehaviour
 
   }
 
-
-  void Update() {
-  if (Input.GetKeyDown(KeyCode.C))
+  // Rotation controller handles game manager stuff
+  void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.C))
     {
       if (!GameManager.isControllerUsed)
       {
-          GameManager.isControllerUsed = true;
+        GameManager.isControllerUsed = true;
       }
-      else {
-          GameManager.isControllerUsed = false;
+      else
+      {
+        GameManager.isControllerUsed = false;
       }
+    }
+
+    if (GameManager.slowTimer > 0)
+    {
+      GameManager.slowTimer -= Time.deltaTime;
+
+    }
+    if (GameManager.slowTimer <= 0 && Time.timeScale < 1f)
+    {
+      Time.timeScale = 1f;
     }
   }
 

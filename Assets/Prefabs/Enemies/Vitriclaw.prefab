@@ -453,12 +453,13 @@ MonoBehaviour:
   currentState: 
   playerDetected: 0
   sightDistance: 20
+  defaultRotationSpeed: 270
   followDistance: 10
-  followMoveSpeed: 6
-  followAcceleration: 20
+  followMoveSpeed: 8
+  followAcceleration: 15
   isCircling: 1
   isCirclingRight: 1
-  circleDistance: 5
+  circleDistance: 6
   circlingMoveSpeed: 10
   circlingAcceleration: 20
   rotationAnchor: {fileID: 2276678318342156223}
@@ -475,25 +476,23 @@ MonoBehaviour:
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
   enemyPotHitSound: {fileID: 0}
   followToLeftClawProbability: 0.6
-  followToRightClawProbability: 0
-  followToJumpProbability: 0.4
+  followToRightClawProbability: 0.25
+  followToJumpProbability: 0.15
+  timeToRedecideState: 2
   nextChosenState: 
-  nextStateIsAttack: 0
-  nextChosenAttackRange: 0
   timeToAttackNext: 0
-  attackTimer: 0
   leftClawAttackRange: 10
   leftClawAdditionalDelay: 0.5
   leftClawForwardForce: 400
-  rightClawAttackRange: 0
-  rightClawAdditionalDelay: 0
-  rightClawForwardForce: 0
-  dashForce: 0
-  jumpAttackRange: 20
+  rightClawAttackRange: 20
+  rightClawAdditionalDelay: 1
+  rightClawForwardForce: 150
+  dashForce: 15
+  jumpAttackRange: 30
   jumpAdditionalDelay: 1
-  jumpInitialForce: 0
-  jumpPeakForce: 0
-  jumpLandingDelay: 0
+  jumpInitialForce: 300
+  jumpPeakForce: 500
+  jumpLandingDelay: 0.8
   minTimeToAttack: 0
   maxTimeToAttack: 3
 --- !u!82 &2161286058059952538

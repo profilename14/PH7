@@ -15,6 +15,21 @@ public class VitriclawAnimEventRelay : MonoBehaviour
     {
         aiScript.StartAttack(state);
     }
+
+    public void DashStop()
+    {
+        aiScript.DashStop();
+    }
+
+    public void JumpPeak()
+    {
+        aiScript.JumpPeak();
+    }
+
+    public void LandJump()
+    {
+        aiScript.LandJump();
+    }
     
     public void EndAttack()
     {

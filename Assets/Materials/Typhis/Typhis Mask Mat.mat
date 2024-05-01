@@ -25,6 +25,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - DR_OUTLINE_ON
   - DR_RIM_ON
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
@@ -41,8 +42,7 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses:
-  - SRPDEFAULTUNLIT
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -162,7 +162,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
-    - _OutlineEnabled: 0
+    - _OutlineEnabled: 1
     - _OutlineScale: 1
     - _OutlineSpace: 0
     - _OutlineWidth: 1
@@ -204,7 +204,7 @@ Material:
     - _DetailMapColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
     - _FlatRimColor: {r: 0.11929409, g: 0.14625, b: 0.13592647, a: 1}
-    - _FlatSpecularColor: {r: 0.95435274, g: 1.17, b: 1.0874118, a: 1}
+    - _FlatSpecularColor: {r: 0.9543527, g: 1.1699998, b: 1.0874116, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

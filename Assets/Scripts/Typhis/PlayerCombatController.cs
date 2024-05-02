@@ -45,7 +45,7 @@ public class PlayerCombatController : MonoBehaviour
 
     public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash }
 
-    public PlayerState currentState;
+    public static PlayerState currentState;
 
     //public static bool inRecoveryPublic;
 

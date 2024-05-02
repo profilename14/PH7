@@ -23,7 +23,6 @@ public class RotationController : MonoBehaviour
   private Vector3 camForward;
   private Vector3 camRight;
 
-
   void Awake() {
     var cam = Camera.main;
 
@@ -149,7 +148,7 @@ public class RotationController : MonoBehaviour
         angle = Vector2.SignedAngle(Vector2.down, direction) + 270;
 
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
-        if (PlayerCombatController.isIdle)
+        if (PlayerCombatController.currentState == PlayerCombatController.PlayerState.Idle)
         {
             if (!isFacingMouse) {
               snapToCurrentAngle();

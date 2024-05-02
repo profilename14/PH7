@@ -12,7 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - DR_GRADIENT_ON
+  - DR_ENABLE_LIGHTMAP_DIR
   - DR_RIM_ON
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
@@ -119,29 +119,29 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailMapBlendingMode: 0
-    - _DetailMapImpact: 0
+    - _DetailMapImpact: 0.424
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlatRimEdgeSmoothness: 0.16
+    - _FlatRimEdgeSmoothness: 0.709
     - _FlatRimLightAlign: 0
-    - _FlatRimSize: 0.209
+    - _FlatRimSize: 0.247
     - _FlatSpecularEdgeSmoothness: 1
-    - _FlatSpecularSize: 0.527
+    - _FlatSpecularSize: 0
     - _Flatness: 1
-    - _FlatnessExtra: 1
+    - _FlatnessExtra: 0.671
     - _GlossMapScale: 0.4
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _GradientAngle: 0
     - _GradientCenterX: 0
     - _GradientCenterY: 0
-    - _GradientEnabled: 1
+    - _GradientEnabled: 0
     - _GradientSize: 7.14
     - _GradientSpace: 0
-    - _LightContribution: 0
-    - _LightFalloffSize: 0
+    - _LightContribution: 1
+    - _LightFalloffSize: 0.05
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
     - _Metallic: 0
@@ -152,15 +152,15 @@ Material:
     - _OutlineScale: 1
     - _OutlineSpace: 0
     - _OutlineWidth: 1
-    - _OverrideLightmapDir: 0
+    - _OverrideLightmapDir: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RimEnabled: 1
-    - _SelfShadingSize: 0.5
-    - _SelfShadingSizeExtra: 0.111
+    - _SelfShadingSize: 0
+    - _SelfShadingSizeExtra: 0.759
     - _ShadowEdgeSize: 0.05
-    - _ShadowEdgeSizeExtra: 0.206
+    - _ShadowEdgeSizeExtra: 0.014
     - _Smoothness: 0.4
     - _SmoothnessTextureChannel: 0
     - _SpecularEnabled: 1
@@ -173,18 +173,18 @@ Material:
     - _UVSec: 0
     - _UnityShadowMode: 1
     - _UnityShadowOcclusion: 0
-    - _UnityShadowPower: 0.545
-    - _UnityShadowSharpness: 1
+    - _UnityShadowPower: 1
+    - _UnityShadowSharpness: 10
     - _VertexColorsEnabled: 0
     - _VertexExtrusionSmoothNormals: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.7411765, g: 0.7490196, b: 0.7764706, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorDim: {r: 0.83584905, g: 0.9481526, b: 1, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
-    - _ColorDimExtra: {r: 0, g: 0.05786165, b: 0.2603773, a: 1}
+    - _ColorDimExtra: {r: 0.39811313, g: 0.9771661, b: 1, a: 1}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0, g: 0, b: 0, a: 1}
     - _DetailMapColor: {r: 1, g: 1, b: 1, a: 1}

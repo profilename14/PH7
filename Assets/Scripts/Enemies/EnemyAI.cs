@@ -53,7 +53,7 @@ public class EnemyAI : MonoBehaviour
     
     private float armorRegenTimer = 0.0f;
     [SerializeField] private float regenArmorStartSpeed = 3.0f; // Time in seconds until armor regens. Lower = faster.
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] public AudioSource audioSource;
     [SerializeField] private AudioClip enemyArmoredImpactSound;
     [SerializeField] private AudioClip enemyImpactSound;
     [SerializeField] private AudioClip enemyPotHitSound;

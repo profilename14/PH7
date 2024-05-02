@@ -36,6 +36,7 @@ public class VitriclawAI : EnemyAI
     public float jumpInitialForce;
     public float jumpPeakForce;
     public float jumpLandingDelay;
+    public AudioClip jumpLandSound;
 
     [Header("Randomized Delay Range")]
     public float minTimeToAttack = 0.5f; // Min time after reaching chosen attack range to begin attack
@@ -293,6 +294,7 @@ public class VitriclawAI : EnemyAI
         GetComponent<CapsuleCollider>().enabled = true;
         ai.isStopped = true;
         ai.enableRotation = false;
+        audioSource.PlayOneShot(jumpLandSound, 0.375F);
         PauseStartupForSeconds(jumpLandingDelay);
     }
 

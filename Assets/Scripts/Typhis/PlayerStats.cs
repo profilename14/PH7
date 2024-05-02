@@ -20,11 +20,15 @@ public class PlayerStats : MonoBehaviour
     public bool isInvincible;
     public float iFrameSeconds;
     private float iFrameTimer = 0;
-    
 
+    public GameObject cam;
+    
     private float slowdownRate = 0.14f;
     private float slowdownLength = 0.02f;
+    public float slowdownRateMultiplier = 2f;
+    public float slowdownLengthMultiplier = 1f;
     private AudioSource audioSource;
+    [SerializeField] private Material playerHitMaterial;
     [SerializeField] private AudioClip playerHitSound;
 
     private MovementController movementController;
@@ -109,8 +113,11 @@ public class PlayerStats : MonoBehaviour
 
       movementController.applyKnockback(position, knockback);
 
-      
-      GameManager.slowdownTime(slowdownRate / 2f, slowdownLength * 1f);
+        cam.GetComponent<screenShake>().ScreenShake(.1f);
+      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
+        Color flashColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        playerHitMaterial.SetColor("_Color", flashColor);
+        
       audioSource.PlayOneShot(playerHitSound, 0.45F);
 
 

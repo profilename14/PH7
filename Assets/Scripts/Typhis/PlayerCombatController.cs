@@ -43,8 +43,11 @@ public class PlayerCombatController : MonoBehaviour
 
     private bool hasClicked = false;
 
+    public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash }
 
-    public static bool inRecoveryPublic;
+    public PlayerState currentState;
+
+    //public static bool inRecoveryPublic;
 
     [SerializeField] private float waveSpellSpreadDegrees;
     [SerializeField] private GameObject waveSpellPrefab;
@@ -61,6 +64,12 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField]
     private bool thrustIsDashAttack = true;
 
+    public float timeToComboReset = 0.3f;
+
+    private float comboResetTimer;
+
+    public int lastSwingNum;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,7 +77,7 @@ public class PlayerCombatController : MonoBehaviour
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
         movementController = transform.parent.parent.GetComponent<MovementController>();
 
-
+        currentState = PlayerState.Idle;
 
         //Get all weapons that are children of the weapon container.
         //int i = 0;
@@ -94,12 +103,15 @@ public class PlayerCombatController : MonoBehaviour
 
         if (playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            isIdle = true;
+            comboResetTimer += Time.deltaTime;
+            currentState = PlayerState.Idle;
             inRecovery = false;
-            inThrust = false;
-            inSwing = false;
-            inDash = false;
-            swingingL = false;
+
+            if(comboResetTimer > timeToComboReset)
+            {
+                lastSwingNum = 0;
+            }
+
             //Time.timeScale = 1f;
 
             /*if (Input.GetMouseButtonDown(1)  || Input.GetButton("Fire2"))
@@ -111,18 +123,42 @@ public class PlayerCombatController : MonoBehaviour
               castTimer -= Time.deltaTime;
             }*/
         }
-        else
-        {
-            isIdle = false;
-        }
 
-        if (isIdle || inRecovery)
+        if (currentState == PlayerState.Idle || inRecovery)
         {
             playerAnim.SetTrigger("Actionable");
         }
         else
         {
             playerAnim.ResetTrigger("Actionable");
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (lastSwingNum == 0)
+            {
+                Debug.Log("Setting swing1");
+                playerAnim.SetTrigger("Swing1");
+                playerAnim.ResetTrigger("Dash");
+            }
+            else if((currentState == PlayerState.Swing1) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 1))
+            {
+                Debug.Log("Setting swing2");
+                playerAnim.SetTrigger("Swing2");
+                playerAnim.ResetTrigger("Dash");
+            }
+            else if ((currentState == PlayerState.Swing2) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 2))
+            {
+                Debug.Log("Setting swing3");
+                playerAnim.SetTrigger("Swing3");
+                playerAnim.ResetTrigger("Dash");
+            }
+            else if (currentState == PlayerState.Swing3)
+            {
+                Debug.Log("Setting swing1");
+                playerAnim.SetTrigger("Swing1");
+                playerAnim.ResetTrigger("Dash");
+            }
         }
 
 
@@ -134,16 +170,16 @@ public class PlayerCombatController : MonoBehaviour
         {
             Telekinesis();
         }
-        else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
+        /*else if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
             hasClicked = true;
             playerAnim.SetBool("Swing Left", swingingL);
             playerAnim.SetTrigger("Swing");
             playerAnim.ResetTrigger("Thrust");
             playerAnim.ResetTrigger("Dash");
-        }
+        }*/
 
-        if (!thrustIsDashAttack)
+       /* if (!thrustIsDashAttack)
         {
             if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
             {
@@ -172,24 +208,56 @@ public class PlayerCombatController : MonoBehaviour
                 playerAnim.ResetTrigger("Swing");
                 playerAnim.ResetTrigger("Dash");
             }
-        }
+        }*/
 
 
 
 
     }
 
-    private void initiateSwing()
+    public void StartAction(string name)
     {
-        //Time.timeScale = 0.2f;
-        inSwing = true;
         inRecovery = false;
         rotationController.snapToCurrentMouseAngle();
-        playAttackSound();
-        playerAnim.ResetTrigger("Swing");
-        playerAnim.ResetTrigger("Thrust");
-        playerAnim.ResetTrigger("Dash");
+
         playerAnim.ResetTrigger("Actionable");
+        playerAnim.ResetTrigger("Swing1");
+        playerAnim.ResetTrigger("Swing2");
+        playerAnim.ResetTrigger("Swing3");
+        playerAnim.ResetTrigger("Dash");
+
+        if (name == "Dash")
+        {
+            movementController.startDash();
+            inDash = true;
+            currentState = PlayerState.Dash;
+        }
+        else if(name == "Swing1")
+        {
+            Debug.Log("Swing1");
+            comboResetTimer = 0;
+            lastSwingNum = 1;
+            currentState = PlayerState.Swing1;
+        }
+        else if (name == "Swing2")
+        {
+            Debug.Log("Swing2");
+            comboResetTimer = 0;
+            lastSwingNum = 2;
+            currentState = PlayerState.Swing2;
+        }
+        else if (name == "Swing3")
+        {
+            Debug.Log("Swing3");
+            comboResetTimer = 0;
+            lastSwingNum = 3;
+            currentState = PlayerState.Swing3;
+        }
+    }
+
+    private void initiateSwing()
+    {
+        playAttackSound();
     }
 
     private void initiateThrust()
@@ -235,10 +303,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void inRecoveryFrames()
     {
-        swingingL = !swingingL;
-        playerAnim.SetBool("Swing Left", swingingL);
         inRecovery = true;
-        inDash = false;
     }
 
     private void FireTripleBlast() {
@@ -278,17 +343,6 @@ public class PlayerCombatController : MonoBehaviour
       telekinesis.GetComponent<TelekinesisSpell>().combatController = this; // This is delayed, so we have to wait on the other side.
 
       rotationController.isFacingMouse = true;
-    }
-
-
-    public bool isAttacking() {
-      if (inSwing) {
-        return true;
-      }
-      else {
-        return false;
-      }
-
     }
 
     private void playAttackSound() {

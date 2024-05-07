@@ -258,6 +258,18 @@ public class MovementController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (other.CompareTag("Enemy"))
+        {
+            Collider enemyCollider = other.GetComponent<Collider>();
+            if (isDashing)
+            {
+                //Physics.IgnoreLayerCollision(9,)
+            }
+            else
+            {
+                //Physics.IgnoreCollision(enemyCollider, GetComponent<Collider>(), false);
+            }
+        }
 
         if (other.CompareTag("PhaseableWallController"))
         {

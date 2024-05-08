@@ -11,6 +11,16 @@ public class VitriclawAnimEventRelay : MonoBehaviour
         aiScript.PauseStartupForSeconds(seconds);
     }
 
+    public void StopHitstun()
+    {
+        aiScript.StopHitstun();
+    }
+
+    public void StartupFinished()
+    {
+        aiScript.StartupFinished();
+    }
+
     public void StartAttack(string state)
     {
         aiScript.StartAttack(state);
@@ -34,5 +44,10 @@ public class VitriclawAnimEventRelay : MonoBehaviour
     public void EndAttack()
     {
         aiScript.EndAttack();
+    }
+
+    public void Die()
+    {
+        aiScript.Die();
     }
 }

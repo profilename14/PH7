@@ -7,6 +7,8 @@ public class InstantPH : MonoBehaviour
     public float pHChange;
     public float lifetime;
 
+    public EnemyAI.DamageSource damageSourceType;
+
     private void Awake()
     {
         StartCoroutine(DestroySelf());
@@ -21,7 +23,7 @@ public class InstantPH : MonoBehaviour
         else if (other.gameObject.CompareTag("Enemy"))
         {
             if (other.gameObject.GetComponent<EnemyAI>() != null) {
-                other.gameObject.GetComponent<EnemyAI>().TakeDamage(0, pHChange, 0, transform.position);
+                other.gameObject.GetComponent<EnemyAI>().TakeDamage(0, pHChange, 0, transform.position, damageSourceType);
             } else {
                 other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(0, pHChange, 0, transform.position);
             }

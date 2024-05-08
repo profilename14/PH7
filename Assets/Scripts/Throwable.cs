@@ -6,7 +6,7 @@ using UnityEngine;
 public class Throwable : MonoBehaviour
 {
     [SerializeField] private float changeInPH;
-    [SerializeField] private float changeInHP;
+    [SerializeField] private float damage;
     [SerializeField] private float thrownVelocity;
     [SerializeField] private float knockback;
     public bool isBeingThrown;
@@ -22,7 +22,7 @@ public class Throwable : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private AudioClip enemyImpactSound;
 
-
+    public EnemyAI.DamageSource damageSourceType;
 
     void Start() {
       //curLifespan = maxLifespan;
@@ -81,25 +81,35 @@ public class Throwable : MonoBehaviour
 
         }
         else if (other.gameObject.tag == "Enemy") {
-          if (!isBeingThrown) {
-            return;
-          }
-          // Ensure this doesn't cause I frames later
-          if (!usesOwnPH) {
-            other.gameObject.GetComponent<EnemyAI>().TakeDamage(
-             -changeInHP, changeInPH, knockback, this.transform.position);
-          } else {
-            float enemyPH = other.gameObject.GetComponent<EnemyAI>().armor;
+            if (damageSourceType == EnemyAI.DamageSource.Rock || damageSourceType == EnemyAI.DamageSource.Pot)
+            {
+                if (!isBeingThrown)
+                {
+                    return;
+                }
 
-            ownPH.NeutralizePH(enemyPH); // affects damage, so slight differences mean little
+                other.gameObject.GetComponent<EnemyAI>().TakeDamage(damage, changeInPH, knockback, this.transform.position, damageSourceType);
 
-            float phChange = Mathf.Abs(enemyPH - ownPH.CurrentPH);
+                /*// Ensure this doesn't cause I frames later
+                if (!usesOwnPH)
+                {
+                    other.gameObject.GetComponent<EnemyAI>().TakeDamage(
+                     -changeInHP, changeInPH, knockback, this.transform.position, damageSourceType);
+                }
+                else
+                {
+                    float enemyPH = other.gameObject.GetComponent<EnemyAI>().armor;
 
-            other.gameObject.GetComponent<EnemyAI>().health -= changeInHP;
-            other.gameObject.GetComponent<EnemyAI>().armor -= changeInPH;
+                    ownPH.NeutralizePH(enemyPH); // affects damage, so slight differences mean little
+
+                    float phChange = Mathf.Abs(enemyPH - ownPH.CurrentPH);
+
+                    other.gameObject.GetComponent<EnemyAI>().health -= changeInHP;
+                    other.gameObject.GetComponent<EnemyAI>().armor -= changeInPH;
 
 
-          }
+                }*/
+            }
 
 
 

@@ -31,32 +31,41 @@ public class PlayerAttackHitbox : MonoBehaviour
             //Debug.Log("Hit " + other.gameObject.name);
             //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
             if (other.gameObject.GetComponent<EnemyAI>() != null) {
-                if (!controllerScript.inThrust) {
-                    //GameManager.slowdownTime(slowdownRate, slowdownLength);
-                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swordStats.damage,
-                    controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback + 20,
-                    controllerScript.gameObject.transform.position);
-                } else {
-                    //GameManager.slowdownTime(slowdownRate / 2f, slowdownLength);
-                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 1.5f,
-                    controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 5f,
-                    controllerScript.gameObject.transform.position);
-                }
-            } else {
-                if (!controllerScript.inThrust) {
-                    GameManager.slowdownTime(slowdownRate, slowdownLength);
-                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage,
-                    controllerScript.swordStats.phDamage, controllerScript.swordStats.knockback,
-                    controllerScript.gameObject.transform.position);
-                } else {
-                    GameManager.slowdownTime(slowdownRate / 2f, slowdownLength);
-                    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    other.gameObject.GetComponent<EnemyBehavior>().TakeDamage(controllerScript.swordStats.damage * 1.5f,
-                    controllerScript.swordStats.phDamage * 2f, controllerScript.swordStats.knockback * 5f,
-                    controllerScript.gameObject.transform.position);
+
+                switch (controllerScript.GetActionState())
+                {
+                    case PlayerCombatController.PlayerState.Idle:
+
+                        Debug.Log("Something is wrong, player sword hitbox hit enemy during idle.");
+                        break;
+
+                    case PlayerCombatController.PlayerState.Swing1:
+                        Debug.Log("Hit swing 1!");
+                        other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing1Damage,
+                        0, controllerScript.swing1Knockback,
+                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        break;
+
+                    case PlayerCombatController.PlayerState.Swing2:
+                        Debug.Log("Hit swing 2!");
+                        other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing2Damage,
+                        0, controllerScript.swing2Knockback,
+                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        break;
+
+                    case PlayerCombatController.PlayerState.Swing3:
+                        Debug.Log("Hit swing 3!");
+                        other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing3Damage,
+                        0, controllerScript.swing3Knockback,
+                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        break;
+                    case PlayerCombatController.PlayerState.Dash:
+
+                        Debug.Log("Something is wrong, player sword hitbox hit enemy during dashing.");
+                        break;
                 }
             }
 

@@ -26,7 +26,7 @@ public class EnemyNewUI : MonoBehaviour
         enemyArmorBar = gameObject.transform.GetChild(1).gameObject.GetComponent<Slider>(); // Make sure the Armor bar is after HP!
         enemyHPBar.maxValue = enemy.maxHealth;
         prevHealth = enemy.health;
-        enemyArmorBar.maxValue = enemy.maxHealth;
+        enemyArmorBar.maxValue = enemy.maxArmor;
         prevArmor = enemy.armor;
 
         enemyArmorBar.value = enemy.armor;

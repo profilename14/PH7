@@ -23,12 +23,14 @@ public class VitriclawAI : EnemyAI
     public float leftClawAttackRange;
     public float leftClawAdditionalDelay;
     public float leftClawForwardForce;
+    //public bool leftClawAfterHitstun;
 
     [Header("Right Claw Attack")]
     public float rightClawAttackRange;
     public float rightClawAdditionalDelay;
     public float rightClawForwardForce;
     public float dashForce;
+    public bool isDashing;
 
     [Header("Jump Attack")]
     public float jumpAttackRange;
@@ -53,6 +55,7 @@ public class VitriclawAI : EnemyAI
         fsm.Add("Right Claw", new EnemyState(fsm, "Right Claw", this));
         fsm.Add("Jump", new EnemyState(fsm, "Jump", this));
         Init_Follow();
+        Init_Hitstun();
         Init_Left_Claw();
         Init_Jump();
         Init_Right_Claw();
@@ -163,6 +166,16 @@ public class VitriclawAI : EnemyAI
         };
     }
 
+    void Init_Hitstun()
+    {
+        EnemyState state = (EnemyState)fsm.GetState("Hitstun");
+
+        state.OnExitDelegate += delegate ()
+        {
+            //fsm.SetCurrentState("Left Claw");
+        };
+    }
+
     void Init_Left_Claw()
     {
         EnemyState state = (EnemyState)fsm.GetState("Left Claw");
@@ -223,20 +236,6 @@ public class VitriclawAI : EnemyAI
         };
     }
 
-    public void PauseStartupForSeconds(float seconds)
-    {
-        StartCoroutine(PauseStartup(seconds));
-    }
-
-    public IEnumerator PauseStartup(float seconds)
-    {
-        anim.speed = 0;
-
-        yield return new WaitForSeconds(seconds);
-
-        anim.speed = 1;
-    }
-
     public void StartAttack(string state)
     {
         if(state == "Left Claw")
@@ -246,6 +245,7 @@ public class VitriclawAI : EnemyAI
         }
         else if(state == "Jump")
         {
+            inPuddle = false;
             target.transform.position = player.transform.position;
             ai.isStopped = false; 
             GetComponent<Rigidbody>().AddForce(transform.forward * jumpInitialForce, ForceMode.Impulse);
@@ -257,6 +257,7 @@ public class VitriclawAI : EnemyAI
         {
             ai.enableRotation = true;
             ai.isStopped = false;
+            isDashing = true;
             StartCoroutine(Dash());
         }
     }
@@ -264,7 +265,7 @@ public class VitriclawAI : EnemyAI
     public IEnumerator Dash()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        while(true)
+        while(!isHitstunned && isDashing)
         {
             target.transform.position = player.transform.position;
             rb.AddForce((target.transform.position - transform.position).normalized * dashForce, ForceMode.Impulse);
@@ -274,7 +275,7 @@ public class VitriclawAI : EnemyAI
 
     public void DashStop()
     {
-        StopAllCoroutines();
+        isDashing = false;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<CapsuleCollider>().enabled = true;
         ai.isStopped = true;
@@ -300,6 +301,7 @@ public class VitriclawAI : EnemyAI
 
     public void EndAttack()
     {
+        inInterruptFrames = true;
         GetComponent<CapsuleCollider>().enabled = true;
         fsm.SetCurrentState("Follow");
     }

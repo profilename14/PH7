@@ -14,7 +14,12 @@ public class PlayerCombatController : MonoBehaviour
     public int ph;
 
     [Header("ATTACKS")]
-    public WeaponStats swordStats;
+    public float swing1Damage;
+    public float swing1Knockback;
+    public float swing2Damage;
+    public float swing2Knockback;
+    public float swing3Damage;
+    public float swing3Knockback;
 
     //Is the player doing a left swing?
     private bool swingingL;
@@ -101,10 +106,9 @@ public class PlayerCombatController : MonoBehaviour
           telekinesisCastTimer -= Time.deltaTime;
         }
 
-        if (playerAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (currentState == PlayerState.Idle)
         {
             comboResetTimer += Time.deltaTime;
-            currentState = PlayerState.Idle;
             inRecovery = false;
 
             if(comboResetTimer > timeToComboReset)
@@ -137,27 +141,35 @@ public class PlayerCombatController : MonoBehaviour
         {
             if (lastSwingNum == 0)
             {
-                Debug.Log("Setting swing1");
+                //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
+                playerAnim.ResetTrigger("Swing2");
+                playerAnim.ResetTrigger("Swing3");
             }
             else if((currentState == PlayerState.Swing1) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 1))
             {
-                Debug.Log("Setting swing2");
+                //Debug.Log("Setting swing2");
                 playerAnim.SetTrigger("Swing2");
                 playerAnim.ResetTrigger("Dash");
+                playerAnim.ResetTrigger("Swing1");
+                playerAnim.ResetTrigger("Swing3");
             }
             else if ((currentState == PlayerState.Swing2) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 2))
             {
-                Debug.Log("Setting swing3");
+                //Debug.Log("Setting swing3");
                 playerAnim.SetTrigger("Swing3");
                 playerAnim.ResetTrigger("Dash");
+                playerAnim.ResetTrigger("Swing1");
+                playerAnim.ResetTrigger("Swing2");
             }
             else if (currentState == PlayerState.Swing3)
             {
-                Debug.Log("Setting swing1");
+                //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
+                playerAnim.ResetTrigger("Swing2");
+                playerAnim.ResetTrigger("Swing3");
             }
         }
 
@@ -225,8 +237,12 @@ public class PlayerCombatController : MonoBehaviour
         playerAnim.ResetTrigger("Swing2");
         playerAnim.ResetTrigger("Swing3");
         playerAnim.ResetTrigger("Dash");
-
-        if (name == "Dash")
+        
+        if(name == "Idle")
+        {
+            currentState = PlayerState.Idle;
+        }
+        else if (name == "Dash")
         {
             movementController.startDash();
             inDash = true;
@@ -260,6 +276,12 @@ public class PlayerCombatController : MonoBehaviour
         playAttackSound();
     }
 
+
+    public PlayerState GetActionState()
+    {
+        return currentState;
+    }
+
     private void initiateThrust()
     {
         rotationController.snapToCurrentMouseAngle();
@@ -267,8 +289,8 @@ public class PlayerCombatController : MonoBehaviour
         inThrust = true;
         inRecovery = false;
         playAttackSound();
-        playerAnim.ResetTrigger("Swing");
-        playerAnim.ResetTrigger("Thrust");
+        //playerAnim.ResetTrigger("Swing");
+        //playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
         playerAnim.ResetTrigger("Actionable");
     }
@@ -280,18 +302,23 @@ public class PlayerCombatController : MonoBehaviour
 
         movementController.startDash();
 
-        playerAnim.ResetTrigger("Swing");
-        playerAnim.ResetTrigger("Thrust");
+        //playerAnim.ResetTrigger("Swing");
+        //playerAnim.ResetTrigger("Thrust");
         playerAnim.ResetTrigger("Dash");
         playerAnim.ResetTrigger("Actionable");
+        playerAnim.ResetTrigger("Swing1");
+        playerAnim.ResetTrigger("Swing2");
+        playerAnim.ResetTrigger("Swing3");
     }
 
     public void bufferDash()
     {
         //Debug.Log("Buffering dash");
         playerAnim.SetTrigger("Dash");
-        playerAnim.ResetTrigger("Thrust");
-        playerAnim.ResetTrigger("Swing");
+        //playerAnim.ResetTrigger("Thrust");
+        playerAnim.ResetTrigger("Swing1");
+        playerAnim.ResetTrigger("Swing2");
+        playerAnim.ResetTrigger("Swing3");
     }
 
     private void addPushForward(float amount)

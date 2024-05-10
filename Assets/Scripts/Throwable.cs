@@ -151,7 +151,6 @@ public class Throwable : MonoBehaviour
         else if (breaksOnImpact) {
           if ( other.gameObject.CompareTag("Wall") ) {
             if (isBeingThrown) {
-              isBeingThrown = true;
               health -= 9f; // Leeway for collision jank
               if (health <= 0) {
                 Destroy(gameObject);
@@ -161,11 +160,6 @@ public class Throwable : MonoBehaviour
                 }
               }
             }
-          }
-        }
-        else {
-          if (isBeingThrown) {
-            isBeingThrown = true; // Stops dealing damage after hitting the ground
           }
         }
 

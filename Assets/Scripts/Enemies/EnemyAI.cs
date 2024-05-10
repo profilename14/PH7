@@ -174,7 +174,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
-                armor += Mathf.Abs(changeInPh);
+                armor = Mathf.Clamp(armor + Mathf.Abs(changeInPh),0,maxArmor);
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }
@@ -293,6 +293,7 @@ public class EnemyAI : MonoBehaviour
 
     public void Die()
     {
+
         Destroy(this.gameObject);
     }
     #endregion

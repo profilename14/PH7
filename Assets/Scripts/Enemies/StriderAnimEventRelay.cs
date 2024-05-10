@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StriderAnimRelay : MonoBehaviour
+public class StriderAnimEventRelay : MonoBehaviour
 {
     public StriderAI aiScript;
 
@@ -24,5 +24,11 @@ public class StriderAnimRelay : MonoBehaviour
     public void EndAttack()
     {
         aiScript.EndAttack();
+    }
+
+    public void Die()
+    {
+        Debug.Log("Die");
+        aiScript.Die();
     }
 }

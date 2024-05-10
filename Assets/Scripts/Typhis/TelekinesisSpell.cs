@@ -7,16 +7,13 @@ public class TelekinesisSpell : MonoBehaviour
 {
     private bool isCarryingObject; // False if just summoned and nothings grabbed
 
-
     private float curLifespan;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
     [HideInInspector] public PlayerCombatController combatController;
     private Throwable heldItem;
 
-
     void Start() {
       curLifespan = 0.5f;
-
     }
 
     void Update()

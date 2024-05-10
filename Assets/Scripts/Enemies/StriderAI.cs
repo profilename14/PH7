@@ -9,6 +9,9 @@ public class StriderAI : EnemyAI
     [Header("State Transition Variables")]
     public float timeToRedecideState;
 
+    [Header("Throwable")]
+    public Throwable throwableScript;
+
     [Header("Next State Info")]
     public string nextChosenState;
     private float nextChosenAttackRange;
@@ -32,8 +35,10 @@ public class StriderAI : EnemyAI
         base.Start();
        
         fsm.Add("Charge", new EnemyState(fsm, "Charge", this));
+        fsm.Add("Bubbled", new EnemyState(fsm, "Bubbled", this));
         Init_Follow();
         Init_Charge();
+        Init_Bubbled();
     }
 
     // Update is called once per frame
@@ -65,7 +70,11 @@ public class StriderAI : EnemyAI
             //if(Vector3.Distance(this.transform.position, player.transform.position) < nextChosenAttackRange)
             attackTimer += Time.deltaTime;
 
-            if(attackTimer > timeToAttackNext)
+            if (throwableScript.isBeingCarried)
+            {
+                fsm.SetCurrentState("Bubbled");
+            }
+            else if (attackTimer > timeToAttackNext)
             {
                 fsm.SetCurrentState(nextChosenState);
             }
@@ -88,6 +97,25 @@ public class StriderAI : EnemyAI
         {
             ai.isStopped = false;
             ai.enableRotation = true;
+        };
+    }
+
+    void Init_Bubbled()
+    {
+        EnemyState state = (EnemyState)fsm.GetState("Bubbled");
+
+        state.OnEnterDelegate += delegate ()
+        {
+            ai.isStopped = true;
+            ai.enableRotation = false;
+            anim.SetTrigger("Bubbled");
+        };
+
+        state.OnExitDelegate += delegate ()
+        {
+            ai.isStopped = false;
+            ai.enableRotation = true;
+            anim.SetTrigger("Thrown");
         };
     }
 
@@ -125,6 +153,12 @@ public class StriderAI : EnemyAI
             yield return null;
         }
     }
+
+    //public IEnumerator Bubbled()
+    //{
+
+
+    //}
 
     public void DashImpulse()
     {

@@ -148,7 +148,6 @@ public class StriderAI : EnemyAI
         Rigidbody rb = GetComponent<Rigidbody>();
         while(true)
         {
-            target.transform.position = player.transform.position;
             rb.AddForce((target.transform.position - transform.position).normalized * dashForce, ForceMode.Impulse);
             yield return null;
         }
@@ -163,7 +162,6 @@ public class StriderAI : EnemyAI
     public void DashImpulse()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        target.transform.position = player.transform.position;
         rb.AddForce((target.transform.position - transform.position).normalized * dashForce, ForceMode.Impulse);
     }
 

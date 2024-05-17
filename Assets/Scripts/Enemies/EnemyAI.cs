@@ -55,6 +55,7 @@ public class EnemyAI : MonoBehaviour
     public bool inInterruptFrames;
     public bool inPuddle;
     public float puddleTickInterval = 0.5f;
+    private bool isDead = false;
 
     //private float armorRegenTimer = 0.0f;
     //[SerializeField] private float regenArmorStartSpeed = 3.0f; // Time in seconds until armor regens. Lower = faster.
@@ -90,8 +91,8 @@ public class EnemyAI : MonoBehaviour
         mask = LayerMask.GetMask("Exclude from A*", "BlocksVision");
 
         target = new GameObject(this.gameObject.name + " AI Target");
-        var iconContent = EditorGUIUtility.IconContent("sv_label_1");
-        EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
+        //var iconContent = EditorGUIUtility.IconContent("sv_label_1");
+        //EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
 
         health = maxHealth;
         armor =  maxArmor;
@@ -148,11 +149,12 @@ public class EnemyAI : MonoBehaviour
         }*/
     }
 
-    public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 sourcePos, DamageSource source)
+    public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 knockbackDir, DamageSource source)
     {
         if(health <= 0)
         {
-            return;
+            if (isDead)return;
+            else fsm.SetCurrentState("Die");
         }
 
         float displayedDamage = 0;
@@ -174,7 +176,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
-                armor = Mathf.Clamp(armor + Mathf.Abs(changeInPh),0,maxArmor);
+                armor = Mathf.Clamp(armor + armorResistMultiplier * Mathf.Abs(changeInPh),0,maxArmor);
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }
@@ -187,7 +189,7 @@ public class EnemyAI : MonoBehaviour
             {
                 audioSource.PlayOneShot(enemyArmoredImpactSound, 0.25F);
             }
-            else if (source == DamageSource.Puddle)
+            else if (source == DamageSource.Puddle && (changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic))
             {
                 audioSource.PlayOneShot(enemyImpactSound, 0.45F);
             }
@@ -229,6 +231,7 @@ public class EnemyAI : MonoBehaviour
                 else if(source == DamageSource.Pot) audioSource.PlayOneShot(enemyPotHitSound, 0.375F);
 
                 fsm.SetCurrentState("Die");
+                isDead = true;
             }
             else
             {
@@ -247,15 +250,18 @@ public class EnemyAI : MonoBehaviour
           popup.Setup(displayedDamage);
         }*/
 
-        Vector3 dir = -((sourcePos - transform.position).normalized);
+        Vector3 dir = ((knockbackDir).normalized);
         Vector3 velocity = dir * knockback;
         enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
     }
 
     public void EnteredPuddle(float damage, float pHChange)
     {
-        inPuddle = true;
-        StartCoroutine(PuddleDamageTicks(damage, pHChange));
+        if (inPuddle == false)
+        {
+            inPuddle = true;
+            StartCoroutine(PuddleDamageTicks(damage, pHChange));
+        }
     }
 
     public IEnumerator PuddleDamageTicks(float damage, float pHChange)

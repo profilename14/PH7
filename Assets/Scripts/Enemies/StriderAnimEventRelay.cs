@@ -11,6 +11,11 @@ public class StriderAnimEventRelay : MonoBehaviour
         aiScript.PauseStartupForSeconds(seconds);
     }
 
+    public void StopHitstun()
+    {
+        aiScript.StopHitstun();
+    }
+
     public void StartAttack(string state)
     {
         aiScript.StartAttack(state);

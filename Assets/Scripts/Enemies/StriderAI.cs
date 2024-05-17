@@ -108,14 +108,14 @@ public class StriderAI : EnemyAI
         {
             ai.isStopped = true;
             ai.enableRotation = false;
-            anim.SetTrigger("Bubbled");
+            anim.SetBool("Bubbled", true);
         };
 
         state.OnExitDelegate += delegate ()
         {
             ai.isStopped = false;
             ai.enableRotation = true;
-            anim.SetTrigger("Thrown");
+            anim.SetBool("Bubbled", false);
         };
     }
 

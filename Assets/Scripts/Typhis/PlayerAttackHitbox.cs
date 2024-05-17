@@ -44,7 +44,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing1Damage,
                         0, controllerScript.swing1Knockback,
-                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
                         break;
 
                     case PlayerCombatController.PlayerState.Swing2:
@@ -52,7 +52,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing2Damage,
                         0, controllerScript.swing2Knockback,
-                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
                         break;
 
                     case PlayerCombatController.PlayerState.Swing3:
@@ -60,7 +60,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing3Damage,
                         0, controllerScript.swing3Knockback,
-                        controllerScript.gameObject.transform.position, EnemyAI.DamageSource.Sword);
+                        controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
                         break;
                     case PlayerCombatController.PlayerState.Dash:
 

@@ -174,11 +174,11 @@ public class PlayerCombatController : MonoBehaviour
         }
 
 
-        if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
+        /*if ( Input.GetKeyDown(KeyCode.E) || Input.GetButton("Fire3") )
         {
             FireTripleBlast();
-        }
-        else if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
+        }*/
+        if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
         {
             Telekinesis();
         }

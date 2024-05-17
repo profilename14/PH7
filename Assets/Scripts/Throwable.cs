@@ -24,7 +24,10 @@ public class Throwable : MonoBehaviour
 
     public EnemyAI.DamageSource damageSourceType;
 
+    private Rigidbody rb;
+
     void Start() {
+        rb = GetComponent<Rigidbody>();
       //curLifespan = maxLifespan;
       if (usesOwnPH) {
         ownPH = GetComponent<ObjectWithPH>();
@@ -39,7 +42,7 @@ public class Throwable : MonoBehaviour
 
     public void Throw() {
       isBeingCarried = false;
-      GetComponent<Rigidbody>().AddForce(-transform.forward * thrownVelocity, ForceMode.Impulse);
+      rb.AddForce(-transform.forward * thrownVelocity, ForceMode.Impulse);
       isBeingThrown = true;
     }
     public void Drop() {
@@ -88,7 +91,7 @@ public class Throwable : MonoBehaviour
                     return;
                 }
 
-                other.gameObject.GetComponent<EnemyAI>().TakeDamage(damage, changeInPH, knockback, this.transform.position, damageSourceType);
+                other.gameObject.GetComponent<EnemyAI>().TakeDamage(damage, changeInPH, knockback, rb.velocity, damageSourceType);
 
                 /*// Ensure this doesn't cause I frames later
                 if (!usesOwnPH)
@@ -112,6 +115,11 @@ public class Throwable : MonoBehaviour
             }
 
 
+            if(this.gameObject.CompareTag("Enemy"))
+            {
+                //buggy
+                //GetComponent<EnemyAI>().TakeDamage(damage, -changeInPH, 0, Vector3.zero, EnemyAI.DamageSource.Rock);
+            }
 
           health -= 1;
 

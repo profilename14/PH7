@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class PlayerStats : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private Material playerHitMaterial;
     [SerializeField] private AudioClip playerHitSound;
+
+    public MusicClass music;
 
     private MovementController movementController;
 
@@ -74,8 +77,10 @@ public class PlayerStats : MonoBehaviour
       }
 
       if (health < 0) {
-        Destroy(gameObject);
-      }
+            music.StopMusic();
+          Scene scene = SceneManager.GetActiveScene();
+          SceneManager.LoadScene(scene.name);
+        }
 
       healthBar.value= health;
       PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
@@ -103,7 +108,7 @@ public class PlayerStats : MonoBehaviour
       health -= damage * multiplier;
 
       if (health < 0) {
-        Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
+        //Destroy(gameObject); // No camera is displaying appears, but hey at least it stops gameplay
       }
 
       if (knockback > 0) {

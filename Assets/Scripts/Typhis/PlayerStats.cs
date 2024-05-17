@@ -34,6 +34,7 @@ public class PlayerStats : MonoBehaviour
 
     private MovementController movementController;
 
+    public MusicClass music;
 
     // Start is called before the first frame update
     void Start()
@@ -75,6 +76,7 @@ public class PlayerStats : MonoBehaviour
       }
 
       if (health < 0) {
+            music.StopMusic();
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }
@@ -105,9 +107,9 @@ public class PlayerStats : MonoBehaviour
       health -= damage * multiplier;
 
       if (health < 0) {
+            music.StopMusic();
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
-            // No camera is displaying appears, but hey at least it stops gameplay
         }
 
       if (knockback > 0) {

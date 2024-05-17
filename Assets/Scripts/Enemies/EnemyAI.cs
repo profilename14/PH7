@@ -5,6 +5,7 @@ using Pathfinding;
 using UnityEditor;
 
 using Patterns;
+using Unity.VisualScripting;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -174,7 +175,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
-                armor = Mathf.Clamp(armor + Mathf.Abs(changeInPh),0,maxArmor);
+                armor = Mathf.Clamp(armor + Mathf.Abs(changeInPh / 2f),0,maxArmor); // heals half to not make puddles as annoying
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }
@@ -189,7 +190,7 @@ public class EnemyAI : MonoBehaviour
             }
             else if (source == DamageSource.Puddle)
             {
-                audioSource.PlayOneShot(enemyImpactSound, 0.45F);
+                //audioSource.PlayOneShot(enemyImpactSound, 0.25F); // Acid burn sound effect would work well here
             }
 
             //Debug.Log("Damage: " + displayedDamage + " Against Armor");
@@ -260,12 +261,22 @@ public class EnemyAI : MonoBehaviour
 
     public IEnumerator PuddleDamageTicks(float damage, float pHChange)
     {
-        while(inPuddle)
+        while (inPuddle)
         {
-            TakeDamage(damage, pHChange, 0, Vector3.zero, DamageSource.Puddle);
-            yield return new WaitForSeconds(puddleTickInterval);
+            yield return new WaitForSeconds(0.5f);
+            if (naturalPH == TypesPH.Acidic && pHChange < 0)
+            {
+                TakeDamage(0, pHChange, 0, Vector3.zero, DamageSource.Puddle);
+            }
+            else
+            {
+                TakeDamage(damage, pHChange, 0, Vector3.zero, DamageSource.Puddle);
+            }
+
+
         }
     }
+
 
     public void StopHitstun()
     {

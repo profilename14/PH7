@@ -253,6 +253,7 @@ MonoBehaviour:
   damage: 15
   knockback: 2.5
   phDamage: 0
+  parent: {fileID: 0}
 --- !u!1 &6652104385415750006
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +270,7 @@ GameObject:
   - component: {fileID: 6748171434654086253}
   - component: {fileID: 1075397295379230220}
   m_Layer: 9
-  m_Name: IntroStrider
+  m_Name: IntroStrider (OUTDATED)
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,9 +341,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2.5
+  m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &8676583077461765229
 MonoBehaviour:
   m_ObjectHideFlags: 0

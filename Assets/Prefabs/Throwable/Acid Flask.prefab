@@ -184,7 +184,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeInPH: 0
-  changeInHP: -20
+  damage: 0
   thrownVelocity: 70
   knockback: 0
   isBeingThrown: 0
@@ -347,6 +347,8 @@ MonoBehaviour:
   breaksOnImpact: 1
   usesOwnPH: 0
   destroyEffect: {fileID: 7505144090472914900, guid: e3eb43158c6b44a428c1b3914c80b0ef, type: 3}
+  enemyImpactSound: {fileID: 0}
+  damageSourceType: 0
 --- !u!1 &7581563923665796243
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +448,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

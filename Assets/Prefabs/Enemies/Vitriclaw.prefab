@@ -465,12 +465,16 @@ MonoBehaviour:
   rotationAnchor: {fileID: 2276678318342156223}
   enemyRigidbody: {fileID: 2881394270360499269}
   naturalPH: 2
-  maxArmorRatio: 0.5
   maxHealth: 100
+  maxArmor: 50
   health: 0
   armor: 0
+  armorResistMultiplier: 0.33
   armorBroken: 0
-  regenArmorStartSpeed: 3
+  isHitstunned: 0
+  inInterruptFrames: 0
+  inPuddle: 0
+  puddleTickInterval: 0.5
   audioSource: {fileID: 2161286058059952538}
   enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
@@ -488,11 +492,13 @@ MonoBehaviour:
   rightClawAdditionalDelay: 1
   rightClawForwardForce: 150
   dashForce: 15
+  isDashing: 0
   jumpAttackRange: 30
   jumpAdditionalDelay: 1
   jumpInitialForce: 300
   jumpPeakForce: 500
   jumpLandingDelay: 0.8
+  jumpLandSound: {fileID: 0}
   minTimeToAttack: 0
   maxTimeToAttack: 3
 --- !u!82 &2161286058059952538
@@ -1287,7 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 2
   knockback: 8
   phDamage: 0
   parent: {fileID: 2276678318342156223}
@@ -1643,7 +1649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 1
   knockback: 5
   phDamage: 4
   parent: {fileID: 2276678318342156223}
@@ -2859,7 +2865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f6805106f6b7649a436c99168aaf29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 1
   knockback: 5
   phDamage: 4
   parent: {fileID: 2276678318342156223}

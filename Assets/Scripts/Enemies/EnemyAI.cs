@@ -90,8 +90,8 @@ public class EnemyAI : MonoBehaviour
         mask = LayerMask.GetMask("Exclude from A*", "BlocksVision");
 
         target = new GameObject(this.gameObject.name + " AI Target");
-        var iconContent = EditorGUIUtility.IconContent("sv_label_1");
-        EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
+        //var iconContent = EditorGUIUtility.IconContent("sv_label_1");
+        //EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
 
         health = maxHealth;
         armor =  maxArmor;
@@ -187,10 +187,10 @@ public class EnemyAI : MonoBehaviour
             {
                 audioSource.PlayOneShot(enemyArmoredImpactSound, 0.25F);
             }
-            else if (source == DamageSource.Puddle)
-            {
-                audioSource.PlayOneShot(enemyImpactSound, 0.45F);
-            }
+            //else if (source == DamageSource.Puddle)
+            //{
+            //    audioSource.PlayOneShot(enemyImpactSound, 0.45F);
+            //}
 
             //Debug.Log("Damage: " + displayedDamage + " Against Armor");
 

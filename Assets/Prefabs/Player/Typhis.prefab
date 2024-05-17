@@ -521,6 +521,12 @@ MonoBehaviour:
   PHBar: {fileID: 0}
   isInvincible: 0
   iFrameSeconds: 1
+  cam: {fileID: 0}
+  slowdownRateMultiplier: 2
+  slowdownLengthMultiplier: 1
+  playerHitMaterial: {fileID: 0}
+  playerHitSound: {fileID: 0}
+  music: {fileID: 0}
 --- !u!114 &6403016540344681571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,8 +602,7 @@ GameObject:
   - component: {fileID: 5237129565925962359}
   - component: {fileID: 1775046617491088430}
   - component: {fileID: 5758579924185609134}
-  - component: {fileID: 5636195436490683871}
-  - component: {fileID: 2506686260315596449}
+  - component: {fileID: 6217855154158030603}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -699,7 +704,7 @@ MonoBehaviour:
   targetOffsetX: 6.5
   targetOffsetZ: -6.5
   target: {fileID: 3397493436924346263}
---- !u!114 &5636195436490683871
+--- !u!114 &6217855154158030603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -708,74 +713,41 @@ MonoBehaviour:
   m_GameObject: {fileID: 6884941607381013856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 6773371055094577621}
-  volumeLayer:
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 8
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 0
-  antialiasingMode: 2
-  temporalAntialiasing:
-    jitterSpread: 0.796
-    sharpness: 1.727
-    stationaryBlending: 0.441
-    motionBlending: 0.455
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 0
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 1
-  m_ShowCustomSorter: 1
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
---- !u!114 &2506686260315596449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6884941607381013856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: d161cda01f1770c48a575dc00e3ea976, type: 2}
-  isGlobal: 0
-  blendDistance: 0
-  weight: 1
-  priority: 0
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &6995743650276396401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1179,12 @@ MonoBehaviour:
   soundEffects: {fileID: 5777700335239449702}
   health: 100
   ph: 14
-  swordStats: {fileID: 11400000, guid: 20d7f661f4d8815408fd97d5da99f960, type: 2}
+  swing1Damage: 0
+  swing1Knockback: 0
+  swing2Damage: 0
+  swing2Knockback: 0
+  swing3Damage: 0
+  swing3Knockback: 0
   inThrust: 0
   inDash: 1
   thrustHoldTime: 0.4
@@ -1218,6 +1195,9 @@ MonoBehaviour:
   telekinesisSpellCooldown: 0.1
   telekinesisCastTimer: 0
   isFacingMouse: 0
+  thrustIsDashAttack: 1
+  timeToComboReset: 0.3
+  lastSwingNum: 0
 --- !u!1 &7176210035824567463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4288034583244035147, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}

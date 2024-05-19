@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
-    public float health = 100;
+    public float health = 6;
     public float ph = 14;
 
-    const float HEALTH_MAX = 100;
+    const float HEALTH_MAX = 6;
     const float PH_DEFAULT = 14;
 
     public float healthRegen = 0f;

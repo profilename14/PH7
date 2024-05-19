@@ -361,12 +361,15 @@ public class PlayerCombatController : MonoBehaviour
         telekinesisCastTimer = telekinesisSpellCooldown;
       }
 
+      Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
+
       Vector3 telekinesisSpellAnchor = transform.position + rotationController.GetRotationDirection() * 2f;
 
       Vector3 curRotation = rotationController.GetRotationDirection();
       float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
       GameObject telekinesis = Instantiate(telekinesisSpellPrefab, this.transform,  worldPositionStays:false );
+      telekinesis.GetComponent<TelekinesisSpell>().TyphisCollider = TyphisCollision;
       telekinesis.GetComponent<TelekinesisSpell>().combatController = this; // This is delayed, so we have to wait on the other side.
 
       rotationController.isFacingMouse = true;

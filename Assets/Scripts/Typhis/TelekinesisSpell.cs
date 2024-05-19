@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class TelekinesisSpell : MonoBehaviour
 {
-    private bool isCarryingObject; // False if just summoned and nothings grabbed
+    private bool isCarryingObject; // False if just summoned and nothing's grabbed
 
     private float curLifespan;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
     [HideInInspector] public PlayerCombatController combatController;
     private Throwable heldItem;
+    private Vector3 throwableOffset;
+    private Rigidbody itemRigidbody;
+    public Collider TyphisCollider;
 
     void Start() {
       curLifespan = 0.5f;
+      throwableOffset = new Vector3(0, 0.1f, 0);
     }
 
     void Update()
@@ -64,9 +68,15 @@ public class TelekinesisSpell : MonoBehaviour
           combatController.objectWasThrown();
           Destroy(gameObject);
         }
-
-        heldItem.transform.position = this.transform.position;
         heldItem.transform.rotation = this.transform.rotation;
+      
+
+        Vector3 destination = this.transform.position;
+
+        // Velocity is the vector required to reach the middle of the bubble, allowing smooth movement that respects collision
+        itemRigidbody.velocity = 20f * (destination - heldItem.transform.position);
+
+
         if (Input.GetMouseButtonUp(1)) {
 
           Debug.Log("Thrown");
@@ -93,11 +103,16 @@ public class TelekinesisSpell : MonoBehaviour
 
     }
 
-    void TargetLocked(Throwable target) // Throwable target
+    void TargetLocked(Throwable target)
     {
-      //???
+      //This code runs when there's a valid target after a delay, and does initialization so that the rest of the code can run
+      //(It has to wait for the CombatController to send over parameters before running)
       heldItem = target.GetComponent<Throwable>();
+      itemRigidbody = target.GetComponent<Rigidbody>();
       heldItem.Grab();
+      Physics.IgnoreCollision(TyphisCollider, target.GetComponent<Collider>());
+      target.transform.position = new Vector3(target.transform.position.x, 
+                                              this.transform.position.y + throwableOffset.y, target.transform.position.z);
       Debug.Log("Gottem");
       isCarryingObject = true;
     }

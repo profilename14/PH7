@@ -5,7 +5,6 @@ using Pathfinding;
 using UnityEditor;
 
 using Patterns;
-using Unity.VisualScripting;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -56,6 +55,7 @@ public class EnemyAI : MonoBehaviour
     public bool inInterruptFrames;
     public bool inPuddle;
     public float puddleTickInterval = 0.5f;
+    private bool isDead = false;
 
     //private float armorRegenTimer = 0.0f;
     //[SerializeField] private float regenArmorStartSpeed = 3.0f; // Time in seconds until armor regens. Lower = faster.
@@ -91,8 +91,8 @@ public class EnemyAI : MonoBehaviour
         mask = LayerMask.GetMask("Exclude from A*", "BlocksVision");
 
         target = new GameObject(this.gameObject.name + " AI Target");
-        var iconContent = EditorGUIUtility.IconContent("sv_label_1");
-        EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
+        //var iconContent = EditorGUIUtility.IconContent("sv_label_1");
+        //EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
 
         health = maxHealth;
         armor =  maxArmor;
@@ -149,11 +149,12 @@ public class EnemyAI : MonoBehaviour
         }*/
     }
 
-    public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 sourcePos, DamageSource source)
+    public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 knockbackDir, DamageSource source)
     {
         if(health <= 0)
         {
-            return;
+            if (isDead) return;
+            else fsm.SetCurrentState("Die");
         }
 
         float displayedDamage = 0;
@@ -175,7 +176,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
-                armor = Mathf.Clamp(armor + Mathf.Abs(changeInPh / 2f),0,maxArmor); // heals half to not make puddles as annoying
+                armor = Mathf.Clamp(armor + armorResistMultiplier * Mathf.Abs(changeInPh),0,maxArmor);
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }
@@ -188,9 +189,9 @@ public class EnemyAI : MonoBehaviour
             {
                 audioSource.PlayOneShot(enemyArmoredImpactSound, 0.25F);
             }
-            else if (source == DamageSource.Puddle)
+            else if (source == DamageSource.Puddle && (changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic))
             {
-                //audioSource.PlayOneShot(enemyImpactSound, 0.25F); // Acid burn sound effect would work well here
+                audioSource.PlayOneShot(enemyImpactSound, 0.45F);
             }
 
             //Debug.Log("Damage: " + displayedDamage + " Against Armor");
@@ -230,13 +231,14 @@ public class EnemyAI : MonoBehaviour
                 else if(source == DamageSource.Pot) audioSource.PlayOneShot(enemyPotHitSound, 0.375F);
 
                 fsm.SetCurrentState("Die");
+                isDead = true;
             }
             else
             {
                 audioSource.PlayOneShot(enemyImpactSound, 0.3F);
                 if (!isHitstunned && inInterruptFrames && source != DamageSource.Puddle)
                 {
-                    Debug.Log("Hitstun!");
+                    //Debug.Log("Hitstun!");
                     fsm.SetCurrentState("Hitstun");
                 }
             }
@@ -248,35 +250,28 @@ public class EnemyAI : MonoBehaviour
           popup.Setup(displayedDamage);
         }*/
 
-        Vector3 dir = -((sourcePos - transform.position).normalized);
+        Vector3 dir = knockbackDir.normalized;
         Vector3 velocity = dir * knockback;
         enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
     }
 
     public void EnteredPuddle(float damage, float pHChange)
     {
-        inPuddle = true;
-        StartCoroutine(PuddleDamageTicks(damage, pHChange));
+        if (inPuddle == false)
+        {
+            inPuddle = true;
+            StartCoroutine(PuddleDamageTicks(damage, pHChange));
+        }
     }
 
     public IEnumerator PuddleDamageTicks(float damage, float pHChange)
     {
-        while (inPuddle)
+        while(inPuddle)
         {
-            yield return new WaitForSeconds(0.5f);
-            if (naturalPH == TypesPH.Acidic && pHChange < 0)
-            {
-                TakeDamage(0, pHChange, 0, Vector3.zero, DamageSource.Puddle);
-            }
-            else
-            {
-                TakeDamage(damage, pHChange, 0, Vector3.zero, DamageSource.Puddle);
-            }
-
-
+            TakeDamage(damage, pHChange, 0, Vector3.zero, DamageSource.Puddle);
+            yield return new WaitForSeconds(puddleTickInterval);
         }
     }
-
 
     public void StopHitstun()
     {

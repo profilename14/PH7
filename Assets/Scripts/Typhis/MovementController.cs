@@ -278,7 +278,7 @@ public class MovementController : MonoBehaviour
             bool phBased = wall.usesPH;
             float minPH = wall.minPH;
             float maxPH = wall.maxPH;
-            float playerPH = gameObject.GetComponent<PlayerStats>().ph;
+            //float playerPH = gameObject.GetComponent<PlayerStats>().ph;
 
 
             if (isDashing && dashable) { // Phase through gates, but only if dashing.
@@ -287,8 +287,8 @@ public class MovementController : MonoBehaviour
                 wall.linkedCollider,
                 GetComponent<Collider>(), true);
             } else if (phBased
-                       && playerPH <= maxPH + 0.1f
-                       && playerPH >= minPH - 0.1f) {
+                       //&& playerPH <= maxPH + 0.1f
+                       /*&& playerPH >= minPH - 0.1f*/) {
                    //Debug.Log("DISABLINGCOLLISION");
                Physics.IgnoreCollision(
                  wall.linkedCollider,

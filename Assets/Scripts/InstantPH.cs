@@ -16,11 +16,11 @@ public class InstantPH : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player"))
+        /*if(other.gameObject.CompareTag("Player"))
         {
             other.gameObject.GetComponent<PlayerStats>().ph = Mathf.Clamp(other.gameObject.GetComponent<PlayerStats>().ph + pHChange, 0, 14);
-        }
-        else if (other.gameObject.CompareTag("Enemy"))
+        }*/
+        if (other.gameObject.CompareTag("Enemy"))
         {
             if (other.gameObject.GetComponent<EnemyAI>() != null) {
                 other.gameObject.GetComponent<EnemyAI>().TakeDamage(0, pHChange, 0, transform.position, damageSourceType);

@@ -70,7 +70,7 @@ public class HydroxideSpell : MonoBehaviour
     {
       // Ensure this doesn't cause I frames later
       float opponentPH = target.getCurPH();
-      float pHDifference = opponentPH - playerStats.ph;
+      //float pHDifference = opponentPH - playerStats.ph;
       float multiplier = 1;
 
       if (opponentPH > 7) {
@@ -85,11 +85,11 @@ public class HydroxideSpell : MonoBehaviour
 
 
 
-      if (pHDifference >= 0) {
+      /*if (pHDifference >= 0) {
         multiplier = 1 + 0.02f * Mathf.Pow(pHDifference, 1.496f); // 1x - 2x
       } else {
         multiplier = 1 * Mathf.Pow( (-pHDifference + 1), -0.5f); // 1-15 ^ -0.5 = 1x to 0.25x
-      }
+      }*/
 
       /*if (target.stunTimer <= 0
        && target.stunRecoveryTimer > 0 ) {
@@ -101,11 +101,11 @@ public class HydroxideSpell : MonoBehaviour
 
       target.TakeDamage(0f, -drainRatePH * multiplier, 0f, new Vector3(0,0,0));
 
-      playerStats.ph += drainRatePH * multiplier;
+      //playerStats.ph += drainRatePH * multiplier;
 
-      if (playerStats.ph > 14) {
+      //if (playerStats.ph > 14) {
         //playerStats.hydroxidePower = true;
-      }
+      //}
     }
 
 }

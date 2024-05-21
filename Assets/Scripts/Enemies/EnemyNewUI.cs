@@ -14,12 +14,12 @@ public class EnemyNewUI : MonoBehaviour
     private Vector3 originalScale;
     private bool isInvisible = true;
 
-    public Transform camTransform;
+    Transform camTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-        camTransform = GameObject.Find("Main Camera").transform;
+        camTransform = GameObject.FindWithTag("MainCamera").transform;
         gameObject.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         enemy = gameObject.transform.parent.gameObject.GetComponent<EnemyAI>();
         enemyHPBar = gameObject.transform.GetChild(0).gameObject.GetComponent<Slider>();

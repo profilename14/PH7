@@ -143,16 +143,6 @@ public class StriderAI : EnemyAI
         }
     }
 
-    public IEnumerator Dash()
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        while(true)
-        {
-            rb.AddForce((target.transform.position - transform.position).normalized * dashForce, ForceMode.Impulse);
-            yield return null;
-        }
-    }
-
     //public IEnumerator Bubbled()
     //{
 
@@ -169,7 +159,6 @@ public class StriderAI : EnemyAI
     {
         StopAllCoroutines();
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<CapsuleCollider>().enabled = true;
         ai.isStopped = true;
         ai.enableRotation = false;
         GetComponent<Rigidbody>().AddForce(transform.forward * chargeForwardForce, ForceMode.Impulse);
@@ -177,7 +166,6 @@ public class StriderAI : EnemyAI
 
     public void EndAttack()
     {
-        GetComponent<CapsuleCollider>().enabled = true;
         fsm.SetCurrentState("Follow");
     }
 }

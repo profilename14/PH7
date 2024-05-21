@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     public float health = 6;
-    public float ph = 14;
+    private float ph = 14;
 
-    const float HEALTH_MAX = 6;
+    public float maxHealth = 6;
     const float PH_DEFAULT = 14;
 
     public float healthRegen = 0f;
@@ -42,7 +42,7 @@ public class PlayerStats : MonoBehaviour
       healthBar = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
 
-      healthBar.maxValue= HEALTH_MAX;
+      healthBar.maxValue= maxHealth;
 
       movementController = gameObject.GetComponent<MovementController>();
 
@@ -69,10 +69,10 @@ public class PlayerStats : MonoBehaviour
         ph = PH_DEFAULT;
       }
 
-      if (health < HEALTH_MAX) {
+      if (health < maxHealth) {
         
-      } else if (health > HEALTH_MAX) {
-        health = HEALTH_MAX;
+      } else if (health > maxHealth) {
+        health = maxHealth;
       }
 
       if (health < 0) {

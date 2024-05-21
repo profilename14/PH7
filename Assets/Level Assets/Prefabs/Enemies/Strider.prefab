@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6072349434169344667}
   - component: {fileID: 2830429188482986892}
-  - component: {fileID: 4276848219179079329}
+  - component: {fileID: 2133947911341634006}
   - component: {fileID: 3788048769044688836}
   - component: {fileID: 9090396985199954398}
   - component: {fileID: 1754675701902994689}
@@ -51,7 +51,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284680255025459895}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 4
   m_Drag: 5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -70,8 +70,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!136 &4276848219179079329
-CapsuleCollider:
+--- !u!65 &2133947911341634006
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -88,10 +88,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Height: 4
-  m_Direction: 0
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &3788048769044688836
 MonoBehaviour:
@@ -344,10 +342,10 @@ MonoBehaviour:
   timeToAttackNext: 0
   chargeAttackRange: 30
   chargeAdditionalDelay: 1
-  chargeForwardForce: 300
-  dashForce: 600
+  chargeForwardForce: 250
+  dashForce: 500
   minTimeToAttack: 0
-  maxTimeToAttack: 0.5
+  maxTimeToAttack: 1
 --- !u!114 &759581717623424888
 MonoBehaviour:
   m_ObjectHideFlags: 0

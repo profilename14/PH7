@@ -25,7 +25,7 @@ public class TelekinesisSpell : MonoBehaviour
 
       if (!isCarryingObject) {
 
-        if (Input.GetMouseButtonUp(1)) {
+        if (Input.GetMouseButtonDown(1)) {
           combatController.objectWasThrown();
           Destroy(gameObject);
         }
@@ -69,22 +69,23 @@ public class TelekinesisSpell : MonoBehaviour
           Destroy(gameObject);
         }
         heldItem.transform.rotation = this.transform.rotation;
-      
+        heldItem.transform.position = this.transform.position;
 
         Vector3 destination = this.transform.position;
 
         // Velocity is the vector required to reach the middle of the bubble, allowing smooth movement that respects collision
-        itemRigidbody.velocity = 20f * (destination - heldItem.transform.position);
+        //For right now I disabled this since it looks a bit jittery and pushes the current pot prefabs out of the bubble. We should revisit this when we revise the bubble code. -Nick
+            //itemRigidbody.velocity = 20f * (destination - heldItem.transform.position);
 
 
-        if (Input.GetMouseButtonUp(1)) {
+        if (Input.GetMouseButtonDown(0)) {
 
           Debug.Log("Thrown");
           heldItem.Throw();
           combatController.objectWasThrown();
           Destroy(gameObject);
         }
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(1)) {
 
           Debug.Log("Dropped");
           heldItem.Drop();

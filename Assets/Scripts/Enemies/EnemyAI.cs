@@ -176,7 +176,7 @@ public class EnemyAI : MonoBehaviour
             {
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
-                armor = Mathf.Clamp(armor + armorResistMultiplier * Mathf.Abs(changeInPh),0,maxArmor);
+                armor = Mathf.Clamp(armor + (armor * 1/Mathf.Abs(changeInPh)),0,maxArmor);
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }
@@ -218,7 +218,7 @@ public class EnemyAI : MonoBehaviour
             {
                 // Same pH heals armor.
                 armor = 0;
-                armor += Mathf.Abs(changeInPh);
+                armor = Mathf.Clamp(armor + (armor * 1 / Mathf.Abs(changeInPh)), 0, maxArmor);
                 armorBroken = false;
                 displayedDamage -= Mathf.Abs(changeInPh);
             }

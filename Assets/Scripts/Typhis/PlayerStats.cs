@@ -39,6 +39,7 @@ public class PlayerStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
       healthBar = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
 

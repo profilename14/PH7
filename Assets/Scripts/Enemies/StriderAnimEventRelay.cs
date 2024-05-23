@@ -21,6 +21,11 @@ public class StriderAnimEventRelay : MonoBehaviour
         aiScript.StartAttack(state);
     }
 
+    public void StartupFinished()
+    {
+        aiScript.StartupFinished();
+    }
+
     public void DashStop()
     {
         aiScript.DashStop();

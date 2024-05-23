@@ -9,8 +9,8 @@ public class StriderAI : EnemyAI
     [Header("State Transition Variables")]
     public float timeToRedecideState;
 
-    [Header("Throwable")]
-    public Throwable throwableScript;
+    /*[Header("Throwable")]
+    public Throwable throwableScript;*/
 
     [Header("Next State Info")]
     public string nextChosenState;
@@ -70,11 +70,11 @@ public class StriderAI : EnemyAI
             //if(Vector3.Distance(this.transform.position, player.transform.position) < nextChosenAttackRange)
             attackTimer += Time.deltaTime;
 
-            if (throwableScript.isBeingCarried)
+            /*if (throwableScript.isBeingCarried)
             {
                 fsm.SetCurrentState("Bubbled");
-            }
-            else if (attackTimer > timeToAttackNext)
+            }*/
+            if (attackTimer > timeToAttackNext)
             {
                 fsm.SetCurrentState(nextChosenState);
             }
@@ -119,20 +119,6 @@ public class StriderAI : EnemyAI
         };
     }
 
-    public void PauseStartupForSeconds(float seconds)
-    {
-        StartCoroutine(PauseStartup(seconds));
-    }
-
-    public IEnumerator PauseStartup(float seconds)
-    {
-        anim.speed = 0;
-
-        yield return new WaitForSeconds(seconds);
-
-        anim.speed = 1;
-    }
-
     public void StartAttack(string state)
     {
         if(state == "Charge")
@@ -142,12 +128,6 @@ public class StriderAI : EnemyAI
             DashImpulse();
         }
     }
-
-    //public IEnumerator Bubbled()
-    //{
-
-
-    //}
 
     public void DashImpulse()
     {
@@ -166,6 +146,7 @@ public class StriderAI : EnemyAI
 
     public void EndAttack()
     {
+        inInterruptFrames = true;
         fsm.SetCurrentState("Follow");
     }
 }

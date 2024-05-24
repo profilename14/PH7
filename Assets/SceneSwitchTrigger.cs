@@ -17,7 +17,7 @@ public class SceneSwitchTrigger : MonoBehaviour
     {
         if(touchingPlayer && isDoor && Input.GetKeyDown(KeyCode.E))
         {
-            player.transform.position = spawnPosition;
+            player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
             SceneManager.LoadScene(sceneToLoad);
         }
     }
@@ -30,7 +30,7 @@ public class SceneSwitchTrigger : MonoBehaviour
             touchingPlayer = true;
             if(!isDoor)
             {
-                player.transform.position = spawnPosition;
+                player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
                 SceneManager.LoadScene(sceneToLoad);
             }
         }

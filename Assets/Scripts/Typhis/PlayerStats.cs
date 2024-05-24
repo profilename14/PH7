@@ -36,6 +36,10 @@ public class PlayerStats : MonoBehaviour
 
     public MusicClass music;
 
+    public Vector3 spawnpoint;
+
+    public bool gameStarted = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +52,22 @@ public class PlayerStats : MonoBehaviour
       movementController = gameObject.GetComponent<MovementController>();
 
       audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
+        gameStarted = true;
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
+
+    void OnDisable()
+    {
+        //Tell our 'OnLevelFinishedLoading' function to stop listening for a scene change as soon as this script is disabled. Remember to always have an unsubscription for every delegate you subscribe to!
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        if (gameStarted)
+        {
+            this.gameObject.transform.position = spawnpoint;
+        }
     }
 
     // Update is called once per frame

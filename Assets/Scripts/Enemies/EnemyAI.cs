@@ -5,6 +5,7 @@ using Pathfinding;
 using UnityEditor;
 
 using Patterns;
+using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -155,6 +156,17 @@ public class EnemyAI : MonoBehaviour
         {
             if (isDead) return;
             else fsm.SetCurrentState("Die");
+        }
+
+        if (source == DamageSource.Puddle) {
+            if ((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic)) {
+                armor -= Mathf.Abs(changeInPh);
+            }
+            
+            if (armor < 0) {
+                armor = 0;
+            }
+            return; // quick fix to the sound bug
         }
 
         float displayedDamage = 0;

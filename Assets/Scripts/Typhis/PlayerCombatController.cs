@@ -23,6 +23,7 @@ public class PlayerCombatController : MonoBehaviour
 
     //Is the player doing a left swing?
     private bool swingingL;
+    public AudioClip swordSwoosh;
 
 
     //Is the player in interruptible recovery frames of an attack animation?
@@ -141,6 +142,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             if (lastSwingNum == 0)
             {
+                //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
@@ -149,6 +151,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if((currentState == PlayerState.Swing1) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 1))
             {
+                //playAttackSound();
                 //Debug.Log("Setting swing2");
                 playerAnim.SetTrigger("Swing2");
                 playerAnim.ResetTrigger("Dash");
@@ -157,6 +160,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if ((currentState == PlayerState.Swing2) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 2))
             {
+                //playAttackSound();
                 //Debug.Log("Setting swing3");
                 playerAnim.SetTrigger("Swing3");
                 playerAnim.ResetTrigger("Dash");
@@ -165,6 +169,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (currentState == PlayerState.Swing3)
             {
+                //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
@@ -380,7 +385,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             float pitchMod = Random.Range(-0.25f, 0.25f);
             soundEffects.pitch = 1 + pitchMod;
-            soundEffects.Play();
+            soundEffects.PlayOneShot(swordSwoosh, 0.375F);
         }
     }
 

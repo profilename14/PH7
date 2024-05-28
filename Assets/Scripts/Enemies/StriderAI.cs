@@ -132,7 +132,7 @@ public class StriderAI : EnemyAI
     public void DashImpulse()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce((target.transform.position - transform.position).normalized * dashForce, ForceMode.Impulse);
+        rb.AddForce((transform.forward).normalized * dashForce, ForceMode.Impulse);
     }
 
     public void DashStop()

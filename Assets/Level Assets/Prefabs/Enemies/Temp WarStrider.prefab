@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 1754675701902994689}
   - component: {fileID: 5878864523466203447}
   - component: {fileID: 2716815000636192395}
-  - component: {fileID: 4023253225430677610}
+  - component: {fileID: 868935774283386609}
   m_Layer: 9
   m_Name: Temp WarStrider
   m_TagString: Enemy
@@ -322,7 +322,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4023253225430677610
+--- !u!114 &868935774283386609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 284680255025459895}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c4a412ef6ec9e488f9db4e1ea23d64, type: 3}
+  m_Script: {fileID: 11500000, guid: 41f56de02b162a14fa737e943cc7b625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 5878864523466203447}
@@ -345,14 +345,14 @@ MonoBehaviour:
   followAcceleration: 30
   isCircling: 0
   isCirclingRight: 0
-  circleDistance: 1.25
-  circlingMoveSpeed: 10
-  circlingAcceleration: 20
+  circleDistance: 15
+  circlingMoveSpeed: 25
+  circlingAcceleration: 15
   rotationAnchor: {fileID: 284680255025459895}
   enemyRigidbody: {fileID: 2830429188482986892}
   naturalPH: 0
   maxHealth: 80
-  maxArmor: 60
+  maxArmor: 40
   health: 0
   armor: 0
   armorResistMultiplier: 0.33
@@ -368,12 +368,17 @@ MonoBehaviour:
   timeToRedecideState: 0
   nextChosenState: 
   timeToAttackNext: 0
+  attackTimer: 0
   chargeAttackRange: 20
   chargeAdditionalDelay: 0
   chargeForwardForce: 1000
   dashForce: 1000
-  minTimeToAttack: 0
-  maxTimeToAttack: 3
+  venomProjectilePrefab: {fileID: 5028151487594542329, guid: 94d08b8151db00743ab72608156a4b81, type: 3}
+  minTimeToAttack: 0.75
+  maxTimeToAttack: 1.2
+  isFlying: 1
+  groundedDashProbability: 0.75
+  timeToRecoverFlight: 10
 --- !u!1 &366914311786579641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,7 +1379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3337570973051856269}
   - component: {fileID: 4437848554634757331}
-  - component: {fileID: 4346772037852640675}
+  - component: {fileID: 6447271056283291775}
   m_Layer: 0
   m_Name: War Strider Animation Root
   m_TagString: Untagged
@@ -1415,7 +1420,7 @@ Animator:
   m_GameObject: {fileID: 4534220367831247444}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e66c4a3ae07cc5849b59d9f0782b7b7a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9f2257a37f063784a89612ef13b7cc7a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1426,7 +1431,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4346772037852640675
+--- !u!114 &6447271056283291775
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1435,10 +1440,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4534220367831247444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b450a6dab20f5694ab91e91d13f68d53, type: 3}
+  m_Script: {fileID: 11500000, guid: 3851817f7f5936641be1c46f903e54ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiScript: {fileID: 4023253225430677610}
+  aiScript: {fileID: 868935774283386609}
 --- !u!1 &4563938000096715465
 GameObject:
   m_ObjectHideFlags: 0

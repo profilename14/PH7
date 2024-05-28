@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WarStriderAnimEventRelay : MonoBehaviour
 {
-    public StriderAI aiScript;
+    public WarStriderAI aiScript;
 
     public void PauseStartupForSeconds(float seconds)
     {
@@ -21,29 +21,34 @@ public class WarStriderAnimEventRelay : MonoBehaviour
         aiScript.StartAttack(state);
     }
 
+    public void StartupFinished()
+    {
+        aiScript.StartupFinished();
+    }
+
     public void DashStop()
     {
         aiScript.DashStop();
     }
-
+    
     public void EndAttack()
     {
         aiScript.EndAttack();
+    }
+
+    public void FinishedFalling()
+    {
+        aiScript.FinishedFalling();
+    }
+
+    public void FinishedTakingOff()
+    {
+        aiScript.FinishedFalling();
     }
 
     public void Die()
     {
         Debug.Log("Die");
         aiScript.Die();
-    }
-
-    public void FinishedFalling()
-    {
-
-    }
-
-    public void FinishedTakingOff()
-    {
-
     }
 }

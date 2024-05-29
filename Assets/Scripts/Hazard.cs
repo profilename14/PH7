@@ -52,7 +52,7 @@ public class Hazard : MonoBehaviour
                 return; // hazard immunity when dashing (you jump over it)
               }
               //other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * damageRate;
-              other.gameObject.GetComponent<PlayerStats>().health -= damage * damageRate;
+              //other.gameObject.GetComponent<PlayerStats>().health -= damage * damageRate;
             }
             if (!permanent) {
               curLifespan -= deltaPhysics;

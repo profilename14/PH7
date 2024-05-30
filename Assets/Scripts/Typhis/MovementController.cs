@@ -12,8 +12,8 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     // Movement speed for the player.
-    const float DEFAULT_SPEED = 11.0f;
-    float speed = DEFAULT_SPEED;
+    //[SerializeField] const float DEFAULT_SPEED = 14.0f;
+    [SerializeField] float speed = 1.2f;
 
     bool isControllerUsed = false;
 
@@ -232,7 +232,7 @@ public class MovementController : MonoBehaviour
 
         moveDir = moveDir * ADSREnvelope();
 
-        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 15;
+        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 15 * speed;
 
         // !!This part is responsible for all actual movement!!
         if (canMove) {
@@ -301,7 +301,39 @@ public class MovementController : MonoBehaviour
             }
 
         }
+
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            GameObject enemy = other.gameObject;
+
+
+            if (isDashing) { // Phase through gates, but only if dashing.
+              //Debug.Log("DISABLINGCOLLISION");
+              Physics.IgnoreCollision(
+                enemy.gameObject.GetComponent<Collider>(),
+                GetComponent<Collider>(), true);
+                StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
+            } else { // Can't bypass
+              //Debug.Log("ENABLINGCOLLISION");
+              
+            }
+
+        }
+    }
+
+    private IEnumerator ReenableCollision(float waitTime, Collider collider)
+    {
+        yield return new WaitForSeconds(waitTime + 0.1f); // just to be safe
+        
+        Physics.IgnoreCollision(
+                collider,
+                GetComponent<Collider>(), false);
+    }
+
 
     // Call this with an origin transform.position to push Typhis around
     // a power of 4 is probably strong enough for an explosion, 0.5 perhaps a scuttler.

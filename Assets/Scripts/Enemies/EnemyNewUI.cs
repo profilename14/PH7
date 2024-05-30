@@ -13,6 +13,10 @@ public class EnemyNewUI : MonoBehaviour
 
     private Vector3 originalScale;
     private bool isInvisible = true;
+    private bool debuffed = false;
+    [SerializeField] Sprite armorBarImage;
+    [SerializeField] Sprite brokenArmorBarImage;
+    private Image ArmorBarVisual;
 
     Transform camTransform;
 
@@ -31,6 +35,8 @@ public class EnemyNewUI : MonoBehaviour
 
         enemyArmorBar.value = enemy.armor;
         enemyHPBar.value = enemy.health;
+
+        ArmorBarVisual = enemyArmorBar.transform.GetChild(0).gameObject.GetComponent<Image>();
 
 
         originalScale = transform.localScale;  // Make the UI invisible until an enemy is hit.
@@ -61,6 +67,14 @@ public class EnemyNewUI : MonoBehaviour
             transform.localScale = originalScale;
           }
         }
+
+        if (enemy.debuffTimer > 0 && debuffed == false) {
+          ArmorBarVisual.sprite = brokenArmorBarImage;
+          debuffed = true;
+        } else if (enemy.debuffTimer <= 0 && debuffed == true) {
+          ArmorBarVisual.sprite = armorBarImage;
+        }
+
 
     }
 }

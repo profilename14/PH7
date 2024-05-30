@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: 0.25, z: 1.2}
-  m_LocalScale: {x: 2.8, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 3.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 912766553836469475}
@@ -160,7 +160,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2276678318342156223}
   serializedVersion: 4
-  m_Mass: 4
+  m_Mass: 3
   m_Drag: 5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -325,7 +325,7 @@ MonoBehaviour:
   currentState: 
   playerDetected: 0
   sightDistance: 20
-  defaultRotationSpeed: 270
+  defaultRotationSpeed: 360
   followDistance: 10
   followMoveSpeed: 5
   followAcceleration: 15
@@ -354,9 +354,9 @@ MonoBehaviour:
   timeToRedecideState: 0
   nextChosenState: 
   timeToAttackNext: 0
-  leftClawAttackRange: 6
+  leftClawAttackRange: 12
   leftClawAdditionalDelay: 0
-  leftClawForwardForce: 200
+  leftClawForwardForce: 150
   minTimeToAttack: 1
   maxTimeToAttack: 3
 --- !u!82 &2161286058059952538
@@ -465,15 +465,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 304f20656f1d4074da872bde8e79c786, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.25
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 304f20656f1d4074da872bde8e79c786, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 304f20656f1d4074da872bde8e79c786, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.1
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 304f20656f1d4074da872bde8e79c786, type: 3}
       propertyPath: m_LocalPosition.x

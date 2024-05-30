@@ -169,7 +169,7 @@ public class WarStriderAI : EnemyAI
             
             nextChosenAttackRange = chargeAttackRange;
             timeToAttackNext = Random.Range(minTimeToAttack, maxTimeToAttack) + chargeAdditionalDelay;
-            anim.SetTrigger("Follow");
+            //anim.SetTrigger("Follow");
         };
 
         state.OnUpdateDelegate += delegate ()

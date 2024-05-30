@@ -80,6 +80,12 @@ public class ScuttlerAI : EnemyAI
 
             if (Vector3.Distance(this.transform.position, player.transform.position) <= followDistance)
             {
+                if (!isCircling)
+                {
+                    if (Random.Range(0, 1f) > 0.5) isCirclingRight = true;
+                    else isCirclingRight = false;
+                }
+
                 isCircling = true;
             }
             else

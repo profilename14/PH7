@@ -109,13 +109,7 @@ public class PlayerCombatController : MonoBehaviour
 
         if (currentState == PlayerState.Idle)
         {
-            comboResetTimer += Time.deltaTime;
             inRecovery = false;
-
-            if(comboResetTimer > timeToComboReset)
-            {
-                lastSwingNum = 0;
-            }
 
             //Time.timeScale = 1f;
 
@@ -127,6 +121,16 @@ public class PlayerCombatController : MonoBehaviour
             {
               castTimer -= Time.deltaTime;
             }*/
+        }
+
+        if(currentState == PlayerState.Idle || currentState == PlayerState.Dash)
+        {
+            comboResetTimer += Time.deltaTime;
+
+            if (comboResetTimer > timeToComboReset)
+            {
+                lastSwingNum = 0;
+            }
         }
 
         if (currentState == PlayerState.Idle || inRecovery)

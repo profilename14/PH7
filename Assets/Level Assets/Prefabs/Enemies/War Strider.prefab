@@ -677,6 +677,7 @@ GameObject:
   - component: {fileID: 238050583864290016}
   - component: {fileID: 6161391686151614143}
   - component: {fileID: 8787197610779990367}
+  - component: {fileID: 7939847571092882239}
   m_Layer: 9
   m_Name: War Strider
   m_TagString: Enemy
@@ -692,15 +693,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434611131919388528}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.99676186, z: -0, w: 0.0804107}
+  m_LocalPosition: {x: 13.098898, y: 0, z: -10.20212}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6963155929764820347}
   - {fileID: 8144003116230343238}
+  - {fileID: 6963155929764820347}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 170.776, z: 0}
 --- !u!54 &607418861252853071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -747,8 +748,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.5, y: 3, z: 3.5}
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Size: {x: 4, y: 2, z: 4}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &7145445565755413133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,10 +827,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 3
-  height: 3
+  radius: 3.5
+  height: 2.5
   canMove: 1
-  maxSpeed: 10
+  maxSpeed: 5
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
@@ -847,7 +848,7 @@ MonoBehaviour:
     visualizeSensitivity: 0
   targetCompatibility: {fileID: 0}
   acceleration: 10
-  rotationSpeed: 360
+  rotationSpeed: 270
   slowdownTime: 0.5
   endReachedDistance: 0.01
   wallForce: 3
@@ -951,6 +952,63 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7939847571092882239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434611131919388528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f56de02b162a14fa737e943cc7b625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 6161391686151614143}
+  anim: {fileID: 1778641947860536736}
+  currentState: 
+  playerDetected: 0
+  sightDistance: 20
+  defaultRotationSpeed: 360
+  followDistance: 10
+  followMoveSpeed: 12
+  followAcceleration: 30
+  isCircling: 0
+  isCirclingRight: 0
+  circleDistance: 15
+  circlingMoveSpeed: 25
+  circlingAcceleration: 15
+  rotationAnchor: {fileID: 2434611131919388528}
+  enemyRigidbody: {fileID: 607418861252853071}
+  naturalPH: 0
+  maxHealth: 80
+  maxArmor: 40
+  health: 0
+  armor: 0
+  armorResistMultiplier: 0.33
+  armorBroken: 0
+  isHitstunned: 0
+  inInterruptFrames: 0
+  inPuddle: 0
+  puddleTickInterval: 0.5
+  audioSource: {fileID: 8787197610779990367}
+  enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
+  enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
+  enemyPotHitSound: {fileID: 8300000, guid: c7d33010aef77a3438bcc9c352258748, type: 3}
+  timeToRedecideState: 0
+  nextChosenState: 
+  timeToAttackNext: 0
+  attackTimer: 0
+  chargeAttackRange: 20
+  chargeAdditionalDelay: 0
+  chargeForwardForce: 1000
+  dashForce: 1000
+  venomProjectilePrefab: {fileID: 5028151487594542329, guid: 94d08b8151db00743ab72608156a4b81, type: 3}
+  minTimeToAttack: 0.75
+  maxTimeToAttack: 1.2
+  isFlying: 1
+  groundedDashProbability: 0.75
+  timeToRecoverFlight: 10
 --- !u!1 &2609893479344068152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,10 +1472,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3813025062022033978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ace8e796b126387449a0d71e9e55dae9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3851817f7f5936641be1c46f903e54ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aiScript: {fileID: 0}
+  aiScript: {fileID: 7939847571092882239}
 --- !u!1 &3850306424793822463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3278,7 +3336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5
+      value: 3.0499878
       objectReference: {fileID: 0}
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

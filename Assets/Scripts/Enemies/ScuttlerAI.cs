@@ -106,6 +106,14 @@ public class ScuttlerAI : EnemyAI
             anim.SetTrigger("Left Claw");
         };
 
+        state.OnUpdateDelegate += delegate ()
+        {
+            target.transform.position = player.transform.position;
+            var direction = (target.transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 1.25f);
+        };
+
         state.OnExitDelegate += delegate ()
         {
             ai.isStopped = false;

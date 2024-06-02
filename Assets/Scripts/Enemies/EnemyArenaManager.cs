@@ -89,8 +89,8 @@ public class EnemyArenaManager : MonoBehaviour
             if (spawnPoints[waveNumber].spawnPoints[i] == null || enemiesToSpawn[waveNumber].enemies[i] == null) continue;
 
             GameObject enemy = Instantiate(enemiesToSpawn[waveNumber].enemies[i], spawnPoints[waveNumber].spawnPoints[i]);
-            enemy.GetComponent<EnemyBehavior>().AlertEnemy();
-            enemy.GetComponent<EnemyBehavior>().target = player.transform;
+            enemy.GetComponent<EnemyAI>().AlertEnemy();
+            //enemy.GetComponent<EnemyAI>().target = player.transform;
             Vector3 location = new Vector3 (enemy.gameObject.transform.position.x, 0, enemy.gameObject.transform.position.z);
             enemy.gameObject.transform.position = spawnPoints[waveNumber].spawnPoints[i].transform.position;
             //enemy.GetComponent<EnemyBehavior>().damageHitboxScript.SetPlayerStatsRef(player.GetComponent<PlayerStats>());

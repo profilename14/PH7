@@ -331,6 +331,14 @@ public class EnemyAI : MonoBehaviour
 
         Destroy(this.gameObject);
     }
+    public void AlertEnemy()
+    {
+        //playerDetected = true;
+        sightDistance = 200f;
+        
+        //anim.SetTrigger("Notice Player");
+        //fsm.SetCurrentState("Follow");
+    }
     #endregion
 
     #region Initializing states

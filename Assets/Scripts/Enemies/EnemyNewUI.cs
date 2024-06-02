@@ -73,6 +73,7 @@ public class EnemyNewUI : MonoBehaviour
           debuffed = true;
         } else if (enemy.debuffTimer <= 0 && debuffed == true) {
           ArmorBarVisual.sprite = armorBarImage;
+          debuffed = false;
         }
 
 

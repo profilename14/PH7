@@ -351,10 +351,11 @@ MonoBehaviour:
   rotationAnchor: {fileID: 284680255025459895}
   enemyRigidbody: {fileID: 2830429188482986892}
   naturalPH: 0
-  maxHealth: 80
-  maxArmor: 40
+  maxHealth: 90
+  maxArmor: 45
   health: 0
   armor: 0
+  debuffTimer: 0
   armorResistMultiplier: 0.33
   armorBroken: 0
   isHitstunned: 0
@@ -364,7 +365,6 @@ MonoBehaviour:
   audioSource: {fileID: 2716815000636192395}
   enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
-  enemyPotHitSound: {fileID: 8300000, guid: c7d33010aef77a3438bcc9c352258748, type: 3}
   timeToRedecideState: 0
   nextChosenState: 
   timeToAttackNext: 0

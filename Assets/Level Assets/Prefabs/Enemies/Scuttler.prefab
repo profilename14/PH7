@@ -325,20 +325,20 @@ MonoBehaviour:
   currentState: 
   playerDetected: 0
   sightDistance: 20
-  defaultRotationSpeed: 360
+  defaultRotationSpeed: 720
   followDistance: 10
   followMoveSpeed: 5
   followAcceleration: 15
   isCircling: 0
   isCirclingRight: 1
   circleDistance: 4
-  circlingMoveSpeed: 6
+  circlingMoveSpeed: 7.5
   circlingAcceleration: 20
   rotationAnchor: {fileID: 2276678318342156223}
   enemyRigidbody: {fileID: 2881394270360499269}
   naturalPH: 2
   maxHealth: 20
-  maxArmor: 8
+  maxArmor: 15
   health: 0
   armor: 0
   debuffTimer: 0
@@ -351,15 +351,14 @@ MonoBehaviour:
   audioSource: {fileID: 2161286058059952538}
   enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
-  enemyPotHitSound: {fileID: 8300000, guid: c7d33010aef77a3438bcc9c352258748, type: 3}
   timeToRedecideState: 0
   nextChosenState: 
   timeToAttackNext: 0
-  leftClawAttackRange: 12
+  leftClawAttackRange: 10
   leftClawAdditionalDelay: 0
   leftClawForwardForce: 150
-  minTimeToAttack: 1
-  maxTimeToAttack: 3
+  minTimeToAttack: 0.5
+  maxTimeToAttack: 1.5
 --- !u!82 &2161286058059952538
 AudioSource:
   m_ObjectHideFlags: 0

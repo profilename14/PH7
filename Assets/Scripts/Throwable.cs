@@ -40,9 +40,9 @@ public class Throwable : MonoBehaviour
       isBeingThrown = false;
     }
 
-    public void Throw() {
+    public void Throw(Vector3 bubbleAngle) {
       isBeingCarried = false;
-      rb.AddForce(-transform.forward * thrownVelocity, ForceMode.Impulse);
+      rb.AddForce(bubbleAngle * thrownVelocity, ForceMode.Impulse);
       isBeingThrown = true;
     }
     public void Drop() {
@@ -90,6 +90,9 @@ public class Throwable : MonoBehaviour
                 {
                     return;
                 }
+                
+                audioSource.PlayOneShot(enemyImpactSound, 0.95F);
+                 
 
                 other.gameObject.GetComponent<EnemyAI>().TakeDamage(damage, changeInPH, knockback, rb.velocity, damageSourceType);
 

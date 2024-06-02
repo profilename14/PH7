@@ -230,6 +230,7 @@ MonoBehaviour:
   maxArmor: 100
   health: 0
   armor: 0
+  debuffTimer: 0
   armorResistMultiplier: 0.33
   armorBroken: 0
   isHitstunned: 0
@@ -1060,7 +1061,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   knockback: 5
-  phDamage: 4
+  phDamage: 0
   parent: {fileID: 2276678318342156223}
 --- !u!4 &782514147794578896 stripped
 Transform:
@@ -2402,7 +2403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   knockback: 5
-  phDamage: 4
+  phDamage: 0
   parent: {fileID: 2276678318342156223}
 --- !u!4 &7617824739445139112 stripped
 Transform:

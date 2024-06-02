@@ -14,6 +14,7 @@ public class TelekinesisSpell : MonoBehaviour
     private Vector3 throwableOffset;
     private Rigidbody itemRigidbody;
     public Collider TyphisCollider;
+    [SerializeField] GameObject throwEffect;
 
     void Start() {
       curLifespan = 0.5f;
@@ -25,7 +26,7 @@ public class TelekinesisSpell : MonoBehaviour
 
       if (!isCarryingObject) {
 
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) {
           combatController.objectWasThrown();
           Destroy(gameObject);
         }
@@ -68,20 +69,38 @@ public class TelekinesisSpell : MonoBehaviour
           combatController.objectWasThrown();
           Destroy(gameObject);
         }
-        heldItem.transform.rotation = this.transform.rotation;
-        heldItem.transform.position = this.transform.position;
+        //heldItem.transform.rotation = this.transform.rotation;
+        //heldItem.transform.position = this.transform.position;
 
         Vector3 destination = this.transform.position;
 
         // Velocity is the vector required to reach the middle of the bubble, allowing smooth movement that respects collision
         //For right now I disabled this since it looks a bit jittery and pushes the current pot prefabs out of the bubble. We should revisit this when we revise the bubble code. -Nick
-            //itemRigidbody.velocity = 20f * (destination - heldItem.transform.position);
+        // vector * (20 + magitude^2)
+        //itemRigidbody.velocity = (destination - heldItem.transform.position) * (20f + 40f * (destination - heldItem.transform.position).magnitude );
+        Vector3 movement = new Vector3( (destination - heldItem.transform.position).x, 0, (destination - heldItem.transform.position).z);
 
+        /*if (movement.magnitude < 2.54f && Physics.Raycast (heldItem.gameObject.transform.position, Vector3.Normalize(movement), movement.magnitude) == false) {
+          heldItem.gameObject.transform.position = destination;
+        } else {
+          itemRigidbody.velocity = (destination - heldItem.transform.position) * 70f;
+        }*/
+
+        heldItem.gameObject.transform.position = destination;
+
+        /*if (movement.magnitude > 7f && Physics.Raycast (heldItem.gameObject.transform.position + new Vector3(0, 1, 0), Vector3.Normalize(movement), movement.magnitude) == true) {
+          Debug.Log("Dropped");
+          itemRigidbody.velocity = new Vector3(0, 0, 0);
+          heldItem.Drop();
+          combatController.objectWasThrown();
+          Destroy(gameObject);
+        }*/
 
         if (Input.GetMouseButtonDown(0)) {
 
           Debug.Log("Thrown");
-          heldItem.Throw();
+          Instantiate(throwEffect, transform.position, Quaternion.identity);
+          heldItem.Throw(-transform.forward);
           combatController.objectWasThrown();
           Destroy(gameObject);
         }

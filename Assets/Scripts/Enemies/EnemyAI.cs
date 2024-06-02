@@ -65,7 +65,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] public AudioSource audioSource;
     [SerializeField] private AudioClip enemyArmoredImpactSound;
     [SerializeField] private AudioClip enemyImpactSound;
-    [SerializeField] private AudioClip enemyPotHitSound;
+    //[SerializeField] private AudioClip enemyPotHitSound;
 
     private float slowdownRate = 0.14f;
     private float slowdownLength = 0.02f;
@@ -208,7 +208,7 @@ public class EnemyAI : MonoBehaviour
 
             if(source == DamageSource.Pot)
             {
-                audioSource.PlayOneShot(enemyPotHitSound, 0.45F);
+                //audioSource.PlayOneShot(enemyPotHitSound, 0.45F);
             }
             else if(source == DamageSource.Sword)
             {
@@ -257,7 +257,7 @@ public class EnemyAI : MonoBehaviour
             if (health <= 0)
             {
                 if(source == DamageSource.Sword) audioSource.PlayOneShot(enemyImpactSound, 0.375F);
-                else if(source == DamageSource.Pot) audioSource.PlayOneShot(enemyPotHitSound, 0.375F);
+                //else if(source == DamageSource.Pot) audioSource.PlayOneShot(enemyPotHitSound, 0.375F);
 
                 fsm.SetCurrentState("Die");
                 isDead = true;

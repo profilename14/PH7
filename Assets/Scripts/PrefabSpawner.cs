@@ -17,6 +17,15 @@ public class PrefabSpawner : MonoBehaviour
     public float timeToMake = 6f;
     float makeTimer = 0.0f;
     private GameObject curObject = null;
+    [SerializeField] bool spawnOnAwake = false;
+
+    void Start() {
+      if (spawnOnAwake) {
+        objectIsAlive = true;
+        makeTimer = 0;
+        curObject = Instantiate(objectToMake, transform.position, Quaternion.identity);
+      }
+    }
 
 
     void Update() {

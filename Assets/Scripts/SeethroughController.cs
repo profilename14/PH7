@@ -3,29 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using FlatKit;
 
+
 public class SeethroughController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject player;
+    private LayerMask mask;
 
-    private void OnTriggerEnter(Collider other)
+    private List<RaycastHit> hits = new();
+    private List<RaycastHit> seethroughObjHits = new();
+
+    SeethroughMatSwapper swapper;
+
+    private void Start()
     {
-        if(other.gameObject.CompareTag("Seethrough"))
-        {
-            Color c = other.gameObject.GetComponent<Renderer>().material.color;
-            c.a = 0.5f;
-            other.gameObject.GetComponent<Renderer>().material.color = c;
-            //other.gameObject.GetComponent<MeshRenderer>().enabled = false;
-        }
+        mask = LayerMask.GetMask("Player", "Obstacles");
     }
 
-    private void OnTriggerExit(Collider other)
+    private void Update()
     {
-        if (other.gameObject.CompareTag("Seethrough"))
+        hits.Clear();
+        hits.AddRange(Physics.RaycastAll(transform.position, (player.transform.position - transform.position).normalized, mask));
+
+        foreach(RaycastHit h in hits)
         {
-            Color c = other.gameObject.GetComponent<Renderer>().material.color;
-            c.a = 1;
-            other.gameObject.GetComponent<Renderer>().material.color = c;
-            //other.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            if (h.collider != null && h.collider.gameObject.CompareTag("Seethrough"))
+            {
+                swapper = h.collider.gameObject.GetComponent<SeethroughMatSwapper>();
+                
+                if(swapper != null && !swapper.isSeethrough && !seethroughObjHits.Contains(h))
+                {
+                    swapper.MakeSeethrough();
+                    seethroughObjHits.Add(h);
+                }
+            }
+        }
+
+        foreach(RaycastHit h in seethroughObjHits)
+        {
+            if(!hits.Contains(h))
+            {
+                h.collider.gameObject.GetComponent<SeethroughMatSwapper>().ResetMaterial();
+            }
         }
     }
 }

@@ -15,6 +15,8 @@ public class MovementController : MonoBehaviour
     //[SerializeField] const float DEFAULT_SPEED = 14.0f;
     [SerializeField] float speed = 1.2f;
 
+    [SerializeField] bool hideMouse = false;
+
     bool isControllerUsed = false;
 
     Rigidbody rigidbody;
@@ -110,6 +112,7 @@ public class MovementController : MonoBehaviour
     // Update is called once per frame.
     void Update()
     {
+        Cursor.visible = !hideMouse;
 
         dashCooldownTimer -= Time.deltaTime;
 

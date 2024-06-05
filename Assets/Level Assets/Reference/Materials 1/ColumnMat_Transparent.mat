@@ -35,6 +35,7 @@ Material:
   - _OUTLINESPACE_SCREEN
   - _TEXTUREBLENDINGMODE_MULTIPLY
   - _UNITYSHADOWMODE_MULTIPLY
+  - _UNITYSHADOW_OCCLUSION
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -165,9 +166,9 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
-    - _OutlineScale: 1
+    - _OutlineScale: 1.025
     - _OutlineSpace: 0
-    - _OutlineWidth: 3
+    - _OutlineWidth: 0
     - _OverrideLightmapDir: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
@@ -188,7 +189,7 @@ Material:
     - _TextureImpact: 1
     - _UVSec: 0
     - _UnityShadowMode: 1
-    - _UnityShadowOcclusion: 0
+    - _UnityShadowOcclusion: 1
     - _UnityShadowPower: 1
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
@@ -196,11 +197,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.57254905}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
-    - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimExtra: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0, g: 0.06415099, b: 0.05085457, a: 1}
     - _DetailMapColor: {r: 1, g: 1, b: 1, a: 1}
@@ -210,5 +211,5 @@ Material:
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _UnityShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3720200618297698828}
   - component: {fileID: 3344240210062810447}
   - component: {fileID: 1277915955675089723}
-  - component: {fileID: 1862532020978112528}
-  m_Layer: 0
+  - component: {fileID: 3986504212271870857}
+  m_Layer: 10
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Seethrough
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679119141876290017}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &3344240210062810447
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1862532020978112528
+--- !u!114 &3986504212271870857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,6 +115,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 679119141876290017}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750caebd3fda8944c87daf2a5753475d, type: 3}
+  m_Script: {fileID: 11500000, guid: 91e7e31a084c77e4aa6bdf842e383bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: eda763f6a91925d42a7b7e0f27b74cbb, type: 2}
+  seethroughMaterial: {fileID: 2100000, guid: 140fe0690b860f54fa1c90a331514751, type: 2}
+  fadeSpeed: 3
+  fadePercent: 0.5
+  isSeethrough: 0

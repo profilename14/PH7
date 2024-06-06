@@ -106,6 +106,9 @@ public class PlayerAttackHitbox : MonoBehaviour
             } else {
                 stats.changePH(1.5f);
                 //stats.changeAcidity(-1);
+                if (stats.inAlkaline) {
+                    stats.changePH(1.0f);
+                }
             }
             
         } else if (opponent.naturalPH == TypesPH.Acidic) {
@@ -116,6 +119,9 @@ public class PlayerAttackHitbox : MonoBehaviour
             }  else {
                 stats.changeAcidity(1.5f);
                 //stats.changePH(-0.3f);
+                if (stats.inAcid) {
+                    stats.changeAcidity(1.0f);
+                }
             }
 
         }
@@ -125,9 +131,9 @@ public class PlayerAttackHitbox : MonoBehaviour
 
     private float getDamageMult(EnemyAI opponent) {
         if (opponent.naturalPH == TypesPH.Alkaline) {
-            return (1.5f * (stats.acid / 14f) + 0.5f);
+            return (1f * (stats.acid / 14f) + 1f);
         } else if (opponent.naturalPH == TypesPH.Acidic) {
-            return (1.5f * (stats.ph / 14f) + 0.5f);
+            return (1f * (stats.ph / 14f) + 1f);
         } else {
             return 1;
         }

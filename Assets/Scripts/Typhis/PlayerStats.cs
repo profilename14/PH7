@@ -97,7 +97,7 @@ public class PlayerStats : MonoBehaviour
       } else if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
       } else {
-        ph -= 1.5f * Time.deltaTime;
+        ph -= 0.5f * Time.deltaTime;
       }
 
       if (acid < 0) {
@@ -105,7 +105,7 @@ public class PlayerStats : MonoBehaviour
       } else if (acid > 14) {
         acid = 14;
       } else {
-        acid -= 1.5f * Time.deltaTime;
+        acid -= 0.5f * Time.deltaTime;
       }
 
       if (health < maxHealth) {
@@ -121,7 +121,7 @@ public class PlayerStats : MonoBehaviour
         }
 
       healthBar.value= health;
-      PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
+      PHBar.value = 4 + 80 * (ph / PH_DEFAULT);
       AcidBar.value = 16 + 80 * (acid / PH_DEFAULT);
       
       if (inAlkaline) {
@@ -172,7 +172,7 @@ public class PlayerStats : MonoBehaviour
       movementController.applyKnockback(position, knockback);
 
         cam.GetComponent<screenShake>().ScreenShake(.1f);
-      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
+        GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
         Color flashColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         playerHitMaterial.SetColor("_Color", flashColor);
         
@@ -194,6 +194,10 @@ public class PlayerStats : MonoBehaviour
         ph -= Time.deltaTime;
       }
 
+      if (ph > 14 - acid) {
+        acid = 14 - ph;
+      }
+
   }
 
   public void changeAcidity(float amount) {
@@ -201,10 +205,16 @@ public class PlayerStats : MonoBehaviour
 
       if (acid < 0) {
         acid = 0;
-      } else if (acid > 14) {
+      }
+      else if (acid > 14) {
         acid = 14;
-      } else {
+      }
+      else {
         acid -= Time.deltaTime;
+      }
+
+      if (acid > 14 - ph) {
+        ph = 14 - acid;
       }
     }
     

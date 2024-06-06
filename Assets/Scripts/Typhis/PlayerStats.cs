@@ -97,7 +97,7 @@ public class PlayerStats : MonoBehaviour
       } else if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
       } else {
-        ph -= Time.deltaTime;
+        ph -= 1.5f * Time.deltaTime;
       }
 
       if (acid < 0) {
@@ -105,7 +105,7 @@ public class PlayerStats : MonoBehaviour
       } else if (acid > 14) {
         acid = 14;
       } else {
-        acid -= Time.deltaTime;
+        acid -= 1.5f * Time.deltaTime;
       }
 
       if (health < maxHealth) {

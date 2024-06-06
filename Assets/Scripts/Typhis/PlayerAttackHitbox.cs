@@ -100,20 +100,20 @@ public class PlayerAttackHitbox : MonoBehaviour
     private void changePlayerPH(EnemyAI opponent) {
         if (opponent.naturalPH == TypesPH.Alkaline) {
             if (stats.inAcid) {
-                stats.changeAcidity(3);
-                stats.changePH(-1);
+                stats.changeAcidity(1.5f);
+                //stats.changePH(-1);
             } else {
                 stats.changePH(1.5f);
-                stats.changeAcidity(-1);
+                //stats.changeAcidity(-1);
             }
             
         } else if (opponent.naturalPH == TypesPH.Acidic) {
             if (stats.inAlkaline) {
-                stats.changePH(3);
-                stats.changeAcidity(-1);
+                stats.changePH(1.5f);
+                //stats.changeAcidity(-0.3f);
             }  else {
                 stats.changeAcidity(1.5f);
-                stats.changePH(-1);
+                //stats.changePH(-0.3f);
             }
 
         }

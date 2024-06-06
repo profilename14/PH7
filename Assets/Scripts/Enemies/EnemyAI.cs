@@ -132,6 +132,15 @@ public class EnemyAI : MonoBehaviour
     {
         if (debuffTimer > 0) {
             debuffTimer -= Time.deltaTime;
+            if (debuffTimer < 0) {
+                debuffTimer = 0;
+            }
+        }
+        else if (debuffTimer < 0) {
+            debuffTimer += Time.deltaTime;
+            if (debuffTimer > 0) {
+                debuffTimer = 0;
+            }
         }
         /*if (armor < maxArmorRatio * health)
         {
@@ -166,7 +175,11 @@ public class EnemyAI : MonoBehaviour
 
         if (source == DamageSource.Puddle) {
             if ((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic)) {
-                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), 0, debuffTimerMax);
+                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), -1, debuffTimerMax);
+            }
+            
+            if ((changeInPh > 0 && naturalPH == TypesPH.Alkaline) || (changeInPh < 0 && naturalPH == TypesPH.Acidic)) {
+                debuffTimer = Mathf.Clamp(debuffTimer - Mathf.Abs(changeInPh), -1, debuffTimerMax);
             }
             
             return; // quick fix to the sound bug
@@ -187,7 +200,7 @@ public class EnemyAI : MonoBehaviour
 
             if((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic))
             {
-                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), 0, debuffTimerMax);
+                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), -1, debuffTimerMax);
                 //Debug.Log("It's super effective!");
                 // Opposite pH should deal damage directly to armor.
                 //armor -= Mathf.Abs(changeInPh);
@@ -196,10 +209,7 @@ public class EnemyAI : MonoBehaviour
             }
             else if ((changeInPh > 0 && naturalPH == TypesPH.Alkaline) || (changeInPh < 0 && naturalPH == TypesPH.Acidic))
             {
-                debuffTimer = Mathf.Clamp(debuffTimer - Mathf.Abs(changeInPh) / 2, 0, debuffTimerMax);
-                if (debuffTimer < 0) {
-                    debuffTimer = 0;
-                }
+                debuffTimer = Mathf.Clamp(debuffTimer - Mathf.Abs(changeInPh) / 2, -1, debuffTimerMax);
                 //Debug.Log("Healing armor");
                 // Same pH heals armor.
                 //armor = Mathf.Clamp(armor + (armor * 1/Mathf.Abs(changeInPh)),0,maxArmor);
@@ -235,7 +245,7 @@ public class EnemyAI : MonoBehaviour
 
             if ((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic))
             {
-                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), 0, debuffTimerMax);
+                debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), -1, debuffTimerMax);
                 // Opposite pH should deal reduced damage to health.
                 //health -= Mathf.Abs(changeInPh) * armorResistMultiplier;
 
@@ -244,7 +254,7 @@ public class EnemyAI : MonoBehaviour
             else if ((changeInPh > 0 && naturalPH == TypesPH.Alkaline) || (changeInPh < 0 && naturalPH == TypesPH.Acidic))
             {
                 if (debuffTimer > 0) {
-                    debuffTimer = Mathf.Clamp(debuffTimer - Mathf.Abs(changeInPh) / 2, 0, debuffTimerMax);
+                    debuffTimer = Mathf.Clamp(debuffTimer - Mathf.Abs(changeInPh) / 2, -1, debuffTimerMax);
                 }
                 // Same pH heals armor.
                 //armor = 0;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 // Used by spikes, acid puddles, and alkaline puddles.
@@ -11,6 +12,7 @@ public class Throwable : MonoBehaviour
     [SerializeField] private float knockback;
     public bool isBeingThrown;
     public bool isBeingCarried;
+    private Vector3 thrownDirection;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a
     public float health = 1;
     public bool breaksOnImpact = true;
@@ -19,6 +21,7 @@ public class Throwable : MonoBehaviour
 
     // Leave this null to not make anything, in the case of say the rock
     [SerializeField] private GameObject destroyEffect; // Anything to make on destruction, (like explosions)
+    [SerializeField] private GameObject puddleEffect; // Anything to make on destruction, (like puddles)
     private AudioSource audioSource;
     [SerializeField] private AudioClip enemyImpactSound;
 
@@ -44,6 +47,7 @@ public class Throwable : MonoBehaviour
       isBeingCarried = false;
       rb.AddForce(bubbleAngle * thrownVelocity, ForceMode.Impulse);
       isBeingThrown = true;
+      thrownDirection = bubbleAngle * thrownVelocity;
     }
     public void Drop() {
       isBeingCarried = false;
@@ -76,6 +80,13 @@ public class Throwable : MonoBehaviour
             Destroy(gameObject);
             if (destroyEffect != null) {
               Instantiate(destroyEffect, transform.position, Quaternion.identity);
+              
+            }
+            if (puddleEffect != null) {
+              Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+              puddlePos = puddlePos + (thrownDirection * 0.2f);
+              Instantiate(puddleEffect, puddlePos, Quaternion.identity);
+
             }
           } else {
             //isBeingThrown = false;
@@ -130,6 +141,12 @@ public class Throwable : MonoBehaviour
             Destroy(gameObject);
             if (destroyEffect != null) {
               Instantiate(destroyEffect, transform.position, Quaternion.identity);
+            }
+            if (puddleEffect != null) {
+              Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+              puddlePos = puddlePos + (thrownDirection * 0.05f);
+              Instantiate(puddleEffect, puddlePos, Quaternion.identity);
+
             }
           } else {
             //isBeingThrown = false;

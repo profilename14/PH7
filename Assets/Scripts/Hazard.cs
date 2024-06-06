@@ -28,6 +28,14 @@ public class Hazard : MonoBehaviour
         {
             if (other.gameObject.GetComponent<EnemyAI>() != null) other.gameObject.GetComponent<EnemyAI>().EnteredPuddle(damage, changeInPH);
         }
+        if (other.gameObject.tag == "Player")
+        {
+          if (changeInPH < 0) {
+            other.gameObject.GetComponent<PlayerStats>().inAcid = true;
+          } else {
+            other.gameObject.GetComponent<PlayerStats>().inAlkaline = true;
+          }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -35,6 +43,14 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             if(other.gameObject.GetComponent<EnemyAI>() != null) other.gameObject.GetComponent<EnemyAI>().inPuddle = false;
+        }
+        if (other.gameObject.tag == "Player")
+        {
+          if (changeInPH < 0) {
+            other.gameObject.GetComponent<PlayerStats>().inAcid = false;
+          } else {
+            other.gameObject.GetComponent<PlayerStats>().inAlkaline = false;
+          }
         }
     }
 

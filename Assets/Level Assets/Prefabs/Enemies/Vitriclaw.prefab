@@ -226,11 +226,12 @@ MonoBehaviour:
   rotationAnchor: {fileID: 2276678318342156223}
   enemyRigidbody: {fileID: 2881394270360499269}
   naturalPH: 2
-  maxHealth: 100
-  maxArmor: 100
+  maxHealth: 60
+  maxArmor: 45
   health: 0
   armor: 0
   debuffTimer: 0
+  debuffTimerMax: 10
   armorResistMultiplier: 0.33
   armorBroken: 0
   isHitstunned: 0
@@ -240,7 +241,6 @@ MonoBehaviour:
   audioSource: {fileID: 2161286058059952538}
   enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
-  enemyPotHitSound: {fileID: 8300000, guid: c7d33010aef77a3438bcc9c352258748, type: 3}
   followToLeftClawProbability: 0.6
   followToRightClawProbability: 0.25
   followToJumpProbability: 0.15
@@ -1179,6 +1179,14 @@ PrefabInstance:
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.55719537
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_FillAmount

@@ -32,6 +32,7 @@ public class PlayerAttackHitbox : MonoBehaviour
             //Debug.Log("Dealt " + controllerScript.equippedWeapon.damage + " damage");
             if (other.gameObject.GetComponent<EnemyAI>() != null) {
 
+                float damageMult = getDamageMult(other.gameObject.GetComponent<EnemyAI>());
                 switch (controllerScript.GetActionState())
                 {
                     case PlayerCombatController.PlayerState.Idle:
@@ -42,25 +43,28 @@ public class PlayerAttackHitbox : MonoBehaviour
                     case PlayerCombatController.PlayerState.Swing1:
                         Debug.Log("Hit swing 1!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing1Damage,
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing1Damage * damageMult,
                         0, controllerScript.swing1Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
+                        changePlayerPH(other.gameObject.GetComponent<EnemyAI>());
                         break;
 
                     case PlayerCombatController.PlayerState.Swing2:
                         Debug.Log("Hit swing 2!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing2Damage,
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing2Damage * damageMult,
                         0, controllerScript.swing2Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
+                        changePlayerPH(other.gameObject.GetComponent<EnemyAI>());
                         break;
 
                     case PlayerCombatController.PlayerState.Swing3:
                         Debug.Log("Hit swing 3!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing3Damage,
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing3Damage * damageMult,
                         0, controllerScript.swing3Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
+                        changePlayerPH(other.gameObject.GetComponent<EnemyAI>());
                         break;
                     case PlayerCombatController.PlayerState.Dash:
 
@@ -91,5 +95,40 @@ public class PlayerAttackHitbox : MonoBehaviour
             }
 
         }
+    }
+
+    private void changePlayerPH(EnemyAI opponent) {
+        if (opponent.naturalPH == TypesPH.Alkaline) {
+            if (stats.inAcid) {
+                stats.changeAcidity(3);
+                stats.changePH(-1);
+            } else {
+                stats.changePH(1.5f);
+                stats.changeAcidity(-1);
+            }
+            
+        } else if (opponent.naturalPH == TypesPH.Acidic) {
+            if (stats.inAlkaline) {
+                stats.changePH(3);
+                stats.changeAcidity(-1);
+            }  else {
+                stats.changeAcidity(1.5f);
+                stats.changePH(-1);
+            }
+
+        }
+
+        
+    }
+
+    private float getDamageMult(EnemyAI opponent) {
+        if (opponent.naturalPH == TypesPH.Alkaline) {
+            return (1.5f * (stats.acid / 14f) + 0.5f);
+        } else if (opponent.naturalPH == TypesPH.Acidic) {
+            return (1.5f * (stats.ph / 14f) + 0.5f);
+        } else {
+            return 1;
+        }
+        
     }
 }

@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     public float health = 6;
-    private float ph = 14;
+    public float ph = 0;
+    public float acid = 0;
 
     public float maxHealth = 6;
     const float PH_DEFAULT = 14;
@@ -15,8 +16,14 @@ public class PlayerStats : MonoBehaviour
     public float healthRegen = 0f;
     public float phRegen = 0.33f;
 
+    public bool inAcid = false;
+    public bool inAlkaline = false;
+
     public Slider healthBar;
     public Slider PHBar;
+    public Slider AcidBar;
+    public Image AlkalineIndicator;
+    public Image AcidIndicator;
 
     public bool isInvincible;
     public float iFrameSeconds;
@@ -46,6 +53,7 @@ public class PlayerStats : MonoBehaviour
         //DontDestroyOnLoad(this.gameObject);
       healthBar = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
+      AcidBar = GameObject.FindWithTag("Acid Bar").GetComponent<Slider>();
 
       healthBar.maxValue= maxHealth;
 
@@ -84,10 +92,20 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-      if (ph < PH_DEFAULT) {
-        ph += phRegen * Time.deltaTime;
+      if (ph < 0) {
+        ph = 0;
       } else if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
+      } else {
+        ph -= Time.deltaTime;
+      }
+
+      if (acid < 0) {
+        acid = 0;
+      } else if (acid > 14) {
+        acid = 14;
+      } else {
+        acid -= Time.deltaTime;
       }
 
       if (health < maxHealth) {
@@ -104,6 +122,19 @@ public class PlayerStats : MonoBehaviour
 
       healthBar.value= health;
       PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
+      AcidBar.value = 16 + 80 * (acid / PH_DEFAULT);
+      
+      if (inAlkaline) {
+        AlkalineIndicator.enabled = true;
+      } else {
+        AlkalineIndicator.enabled = false;
+      }
+
+      if (inAcid) {
+        AcidIndicator.enabled = true;
+      } else {
+        AcidIndicator.enabled = false;
+      }
     }
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
@@ -124,8 +155,8 @@ public class PlayerStats : MonoBehaviour
       }
 
       float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
-      float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
-      health -= damage * multiplier;
+      //float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+      health -= damage;
 
       if (health < 0) {
             music.StopMusic();
@@ -149,4 +180,32 @@ public class PlayerStats : MonoBehaviour
 
 
     }
+
+    public void changePH(float amount) {
+      ph += amount;
+
+      if (ph < 0) {
+        ph = 0;
+      }
+      else if (ph > PH_DEFAULT) {
+        ph = PH_DEFAULT;
+      }
+      else {
+        ph -= Time.deltaTime;
+      }
+
+  }
+
+  public void changeAcidity(float amount) {
+      acid += amount;
+
+      if (acid < 0) {
+        acid = 0;
+      } else if (acid > 14) {
+        acid = 14;
+      } else {
+        acid -= Time.deltaTime;
+      }
+    }
+    
 }

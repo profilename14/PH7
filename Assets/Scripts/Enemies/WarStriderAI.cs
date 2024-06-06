@@ -142,7 +142,9 @@ public class WarStriderAI : EnemyAI
             if (isFlying == true) { // For idle sending us to follow
                 //fsm.SetCurrentState("Fly");
             }
-            attackTimer = 0;
+            if (wasHitstunned == false) {
+                attackTimer = 0;
+            }
             redecideStateTimer = 0;
             if (isFlying == true) { // For idle sending us to follow
                 nextChosenState = "Spit";

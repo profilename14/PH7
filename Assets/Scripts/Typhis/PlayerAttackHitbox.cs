@@ -101,7 +101,7 @@ public class PlayerAttackHitbox : MonoBehaviour
         if (opponent.naturalPH == TypesPH.Alkaline) {
             if (stats.inAcid || opponent.debuffTimer > 0) {
                 stats.changeAcidity(1.0f);
-                stats.changePH(1.0f);
+                stats.changePH(2f);
                 //stats.changePH(-1);
             } else {
                 stats.changePH(1.5f);
@@ -114,7 +114,7 @@ public class PlayerAttackHitbox : MonoBehaviour
         } else if (opponent.naturalPH == TypesPH.Acidic) {
             if (stats.inAlkaline || opponent.debuffTimer > 0) {
                 stats.changePH(1.0f);
-                stats.changeAcidity(1.0f);
+                stats.changeAcidity(2f);
                 //stats.changeAcidity(-0.3f);
             }  else {
                 stats.changeAcidity(1.5f);

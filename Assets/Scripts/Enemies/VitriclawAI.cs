@@ -78,7 +78,9 @@ public class VitriclawAI : EnemyAI
 
         state.OnEnterDelegate += delegate ()
         {
-            attackTimer = 0;
+            if (wasHitstunned == false) {
+                attackTimer = 0;
+            }
             redecideStateTimer = 0;
 
             float num = Random.value;

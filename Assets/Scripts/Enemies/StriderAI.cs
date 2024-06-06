@@ -58,7 +58,9 @@ public class StriderAI : EnemyAI
 
         state.OnEnterDelegate += delegate ()
         {
-            attackTimer = 0;
+            if (wasHitstunned == false) {
+                attackTimer = 0;
+            }
             redecideStateTimer = 0;
             nextChosenState = "Charge";
             nextChosenAttackRange = chargeAttackRange;

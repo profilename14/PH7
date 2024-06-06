@@ -56,6 +56,7 @@ public class EnemyAI : MonoBehaviour
     public float armorResistMultiplier = 0.33f;
     public bool armorBroken;
     public bool isHitstunned;
+    public bool wasHitstunned = false;
     public bool inInterruptFrames;
     public bool inPuddle;
     public float puddleTickInterval = 0.5f;
@@ -240,7 +241,18 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            health -= damage;
+            
+            if (debuffTimer > 0) {
+                if (armorResistMultiplier != 0) {
+                    Debug.Log("Something has 0 armor resist multiplier!");
+                    health -= damage / armorResistMultiplier;
+                } else {
+                    health -= damage * 2;
+                }
+                
+            } else {
+                health -= damage;
+            }
             displayedDamage += damage;
 
             if ((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic))
@@ -491,6 +503,7 @@ public class EnemyAI : MonoBehaviour
             isHitstunned = false;
             ai.isStopped = false;
             ai.enableRotation = true;
+            wasHitstunned = true;
         };
     }
 

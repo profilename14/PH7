@@ -97,7 +97,7 @@ public class PlayerStats : MonoBehaviour
       } else if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
       } else {
-        ph -= 0.5f * Time.deltaTime;
+        //ph -= 0.5f * Time.deltaTime;
       }
 
       if (acid < 0) {
@@ -105,7 +105,7 @@ public class PlayerStats : MonoBehaviour
       } else if (acid > 14) {
         acid = 14;
       } else {
-        acid -= 0.5f * Time.deltaTime;
+        //acid -= 0.5f * Time.deltaTime;
       }
 
       if (health < maxHealth) {
@@ -182,7 +182,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void changePH(float amount) {
-      ph += amount;
+      ph += amount / 3;
 
       if (ph < 0) {
         ph = 0;
@@ -201,7 +201,7 @@ public class PlayerStats : MonoBehaviour
   }
 
   public void changeAcidity(float amount) {
-      acid += amount;
+      acid += amount / 3;
 
       if (acid < 0) {
         acid = 0;

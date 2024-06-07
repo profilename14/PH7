@@ -43,6 +43,9 @@ public class PlayerAttackHitbox : MonoBehaviour
                     case PlayerCombatController.PlayerState.Swing1:
                         Debug.Log("Hit swing 1!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        if (other.gameObject.GetComponent<EnemyAI>().health < -10) {
+                            Destroy(other.gameObject);
+                        }
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing1Damage * damageMult,
                         0, controllerScript.swing1Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
@@ -52,6 +55,9 @@ public class PlayerAttackHitbox : MonoBehaviour
                     case PlayerCombatController.PlayerState.Swing2:
                         Debug.Log("Hit swing 2!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        if (other.gameObject.GetComponent<EnemyAI>().health < -10) {
+                            Destroy(other.gameObject);
+                        }
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing2Damage * damageMult,
                         0, controllerScript.swing2Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
@@ -61,6 +67,9 @@ public class PlayerAttackHitbox : MonoBehaviour
                     case PlayerCombatController.PlayerState.Swing3:
                         Debug.Log("Hit swing 3!");
                         other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        if (other.gameObject.GetComponent<EnemyAI>().health < -10) {
+                            Destroy(other.gameObject);
+                        }
                         other.gameObject.GetComponent<EnemyAI>().TakeDamage(controllerScript.swing3Damage * damageMult,
                         0, controllerScript.swing3Knockback,
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);

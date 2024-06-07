@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,6 +19,8 @@ public class PlayerStats : MonoBehaviour
 
     public bool inAcid = false;
     public bool inAlkaline = false;
+    public Hazard acidLink = null;
+    public Hazard alkalineLink = null;
 
     public Slider healthBar;
     public Slider PHBar;
@@ -182,6 +185,10 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void changePH(float amount) {
+      if (alkalineLink != null) {
+        alkalineLink.spendPuddle();
+      }
+
       ph += amount / 3;
 
       if (ph < 0) {
@@ -201,6 +208,10 @@ public class PlayerStats : MonoBehaviour
   }
 
   public void changeAcidity(float amount) {
+      if (acidLink != null) {
+        acidLink.spendPuddle();
+      }
+
       acid += amount / 3;
 
       if (acid < 0) {

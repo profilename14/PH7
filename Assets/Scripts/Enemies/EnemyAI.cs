@@ -57,6 +57,7 @@ public class EnemyAI : MonoBehaviour
     public bool armorBroken;
     public bool isHitstunned;
     public bool wasHitstunned = false;
+    public bool canBeHitstunned = true;
     public bool inInterruptFrames;
     public bool inPuddle;
     public float puddleTickInterval = 0.5f;
@@ -291,7 +292,12 @@ public class EnemyAI : MonoBehaviour
                 if (!isHitstunned && inInterruptFrames && source != DamageSource.Puddle)
                 {
                     //Debug.Log("Hitstun!");
-                    fsm.SetCurrentState("Hitstun");
+                    if (canBeHitstunned) {
+                        fsm.SetCurrentState("Hitstun");
+                    } else {
+                        Debug.Log("Immune to Hitstun!");
+                    }
+                    
                 }
             }
         }

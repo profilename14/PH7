@@ -2560,6 +2560,8 @@ MonoBehaviour:
   phRegen: 10
   inAcid: 0
   inAlkaline: 0
+  acidLink: {fileID: 0}
+  alkalineLink: {fileID: 0}
   healthBar: {fileID: 4004860878099880832}
   PHBar: {fileID: 8382096235463104032}
   AcidBar: {fileID: 2050356532030914632}
@@ -4804,11 +4806,11 @@ MonoBehaviour:
   health: 100
   ph: 14
   swing1Damage: 10.1
-  swing1Knockback: 75
+  swing1Knockback: 100
   swing2Damage: 10.1
-  swing2Knockback: 85
+  swing2Knockback: 110
   swing3Damage: 10.1
-  swing3Knockback: 250
+  swing3Knockback: 235
   swordSwoosh: {fileID: 8300000, guid: 199cb74e2da8b4847bdef2fc3b8aac10, type: 3}
   inThrust: 0
   inDash: 1

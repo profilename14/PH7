@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class PlayerAttackHitbox : MonoBehaviour
@@ -10,18 +11,29 @@ public class PlayerAttackHitbox : MonoBehaviour
     private float slowdownRate = 0.14f;
     private float slowdownLength = 0.02f;
 
+    [SerializeField] Animator playerAnim;
+    float hitStop = 0.10f;
+    private float hitStopTimer = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         controllerScript = GetComponentInParent<PlayerCombatController>();
         stats = GetComponentInParent<PlayerStats>();
+        playerAnim = GetComponentInParent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (hitStopTimer > 0) {
+            hitStopTimer -= Time.deltaTime;
+            if (hitStopTimer <= 0) {
+                playerAnim.speed = 1f;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -86,6 +98,9 @@ public class PlayerAttackHitbox : MonoBehaviour
             {
                 OnHitVFX vfx = other.gameObject.GetComponent<OnHitVFX>();
                 vfx.HitVFX();
+                hitStopTimer = hitStop;
+                playerAnim.speed = 0.0f;
+                other.GetComponent<EnemyAI>().hitPause();
             }
 
 

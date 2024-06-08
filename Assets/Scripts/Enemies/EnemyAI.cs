@@ -62,6 +62,7 @@ public class EnemyAI : MonoBehaviour
     public bool inPuddle;
     public float puddleTickInterval = 0.5f;
     private bool isDead = false;
+    private float hitStopTimer = 0;
 
     //private float armorRegenTimer = 0.0f;
     //[SerializeField] private float regenArmorStartSpeed = 3.0f; // Time in seconds until armor regens. Lower = faster.
@@ -132,6 +133,12 @@ public class EnemyAI : MonoBehaviour
 
     private void checkHealth()
     {
+        if (hitStopTimer > 0) {
+            hitStopTimer -= Time.deltaTime;
+            if (hitStopTimer <= 0) {
+                anim.speed = 1f;
+            }
+        }
         if (debuffTimer > 0) {
             debuffTimer -= Time.deltaTime;
             if (debuffTimer < 0) {
@@ -353,6 +360,11 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(seconds);
 
         anim.speed = 1;
+    }
+
+    public void hitPause() {
+        hitStopTimer = 0.1f;
+        anim.speed = 0.0f;
     }
 
     public void Die()

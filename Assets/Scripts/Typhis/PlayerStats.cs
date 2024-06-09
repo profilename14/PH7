@@ -174,10 +174,14 @@ public class PlayerStats : MonoBehaviour
 
       movementController.applyKnockback(position, knockback);
 
+      if (GameManager.isScreenshakeEnabled) {
         cam.GetComponent<screenShake>().ScreenShake(.1f);
         GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
         Color flashColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         playerHitMaterial.SetColor("_Color", flashColor);
+      }
+
+        
         
       audioSource.PlayOneShot(playerHitSound, 0.45F);
 
@@ -185,6 +189,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void changePH(float amount) {
+
       if (alkalineLink != null) {
         alkalineLink.spendPuddle();
       }
@@ -228,5 +233,13 @@ public class PlayerStats : MonoBehaviour
         ph = 14 - acid;
       }
     }
+
+  public void makeScreenshake() {
+    if (GameManager.isScreenshakeEnabled) {
+      cam.GetComponent<screenShake>().ScreenShake(0.05f);
+      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier / 4f);
+    }
+        
+  }
     
 }

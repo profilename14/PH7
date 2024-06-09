@@ -7,6 +7,7 @@ using UnityEngine;
 public static class GameManager
 {
     public static bool isControllerUsed = false;
+    public static bool isScreenshakeEnabled = true;
     // Start is called before the first frame update
     public static float slowTimer = 0.0f;
 

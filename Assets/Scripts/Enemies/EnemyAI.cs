@@ -7,6 +7,7 @@ using UnityEditor;
 using Patterns;
 using UnityEngine.AI;
 using System.Linq.Expressions;
+using UnityEngine.UIElements;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -176,6 +177,8 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 knockbackDir, DamageSource source)
     {
+        
+
         if(health <= 0)
         {
             if (isDead) return;
@@ -315,10 +318,12 @@ public class EnemyAI : MonoBehaviour
           popup.Setup(displayedDamage);
         }*/
 
-        Vector3 dir = knockbackDir.normalized;
-        Vector3 velocity = dir * knockback;
-        enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
+        
+        StartCoroutine(applyDelayedKnockback(0.00f, knockbackDir, knockback));
+        
     }
+
+    
 
     public void EnteredPuddle(float damage, float pHChange)
     {
@@ -327,6 +332,24 @@ public class EnemyAI : MonoBehaviour
             inPuddle = true;
             StartCoroutine(PuddleDamageTicks(damage, pHChange));
         }
+    }
+
+    public IEnumerator applyDelayedKnockback(float time, Vector3 knockbackDir, float knockback) {
+        if (time > 0) {
+            circlingMoveSpeed /= 50;
+            followMoveSpeed /= 50;
+            yield return new WaitForSeconds(time);
+            
+            circlingMoveSpeed *= 50;
+            followMoveSpeed *= 50;
+        }
+        
+
+        Vector3 dir = knockbackDir.normalized;
+        Vector3 velocity = dir * knockback;
+        enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
+
+        Debug.Log("AAAAAAAAAAAAAAAAAAAAA");
     }
 
     public IEnumerator PuddleDamageTicks(float damage, float pHChange)

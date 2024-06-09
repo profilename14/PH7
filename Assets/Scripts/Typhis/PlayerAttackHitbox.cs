@@ -12,7 +12,7 @@ public class PlayerAttackHitbox : MonoBehaviour
     private float slowdownLength = 0.02f;
 
     [SerializeField] Animator playerAnim;
-    float hitStop = 0.10f;
+    float hitStop = 0.1f;
     private float hitStopTimer = 0;
 
 
@@ -122,6 +122,9 @@ public class PlayerAttackHitbox : MonoBehaviour
     }
 
     private void changePlayerPH(EnemyAI opponent) {
+        if (opponent.debuffTimer > 0) {
+            stats.makeScreenshake();
+        }
         if (opponent.naturalPH == TypesPH.Alkaline) {
             if (stats.inAcid || opponent.debuffTimer > 0) {
                 stats.changeAcidity(1.0f);

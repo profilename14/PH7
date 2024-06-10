@@ -126,7 +126,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                 if (phObject.phOnHit > 0) {
                     stats.changePH(phObject.phOnHit);
                 } else {
-                    stats.changeAcidity(phObject.phOnHit);
+                    stats.changeAcidity(-phObject.phOnHit);
                 }
                 phObject.ChangePH(-3);
                 phObject.instantiateParticles();

@@ -12,6 +12,11 @@ public class SceneSwitchTrigger : MonoBehaviour
     private bool touchingPlayer;
 
     private GameObject player;
+    private ActivateableUI activateableUI;
+
+    void Awake() {
+        activateableUI = transform.GetChild(0).gameObject.GetComponent<ActivateableUI>();
+    }
 
     private void Update()
     {
@@ -29,6 +34,7 @@ public class SceneSwitchTrigger : MonoBehaviour
         {
             player = other.gameObject;
             touchingPlayer = true;
+            activateableUI.showUI();
             if(!isDoor)
             {
                 player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
@@ -42,6 +48,7 @@ public class SceneSwitchTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             touchingPlayer = false;
+            activateableUI.hideUI();
         }
     }
 }

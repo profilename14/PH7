@@ -19,6 +19,9 @@ public class MusicClass : MonoBehaviour
 
     public void StopMusic()
     {
-        audioSource.Stop();
+        if (audioSource != null) {
+            audioSource.Stop();
+        }
+        
     }
 }

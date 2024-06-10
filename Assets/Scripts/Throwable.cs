@@ -64,6 +64,8 @@ public class Throwable : MonoBehaviour
           // Ensure this doesn't cause I frames later
           if (!usesOwnPH) {
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH);
+
+            
           } else {
             float otherPH = other.gameObject.GetComponent<ObjectWithPH>().CurrentPH;
 
@@ -84,7 +86,7 @@ public class Throwable : MonoBehaviour
             }
             if (puddleEffect != null) {
               Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
-              puddlePos = puddlePos + (thrownDirection * 0.2f);
+              //puddlePos = puddlePos + (thrownDirection * 0.2f);
               Instantiate(puddleEffect, puddlePos, Quaternion.identity);
 
             }

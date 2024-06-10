@@ -232,6 +232,7 @@ public class EnemyAI : MonoBehaviour
             if(source == DamageSource.Pot)
             {
                 //audioSource.PlayOneShot(enemyPotHitSound, 0.45F);
+                AlertEnemy();
             }
             else if(source == DamageSource.Sword)
             {
@@ -349,7 +350,6 @@ public class EnemyAI : MonoBehaviour
         Vector3 velocity = dir * knockback;
         enemyRigidbody.AddForce(velocity, ForceMode.Impulse);
 
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAA");
     }
 
     public IEnumerator PuddleDamageTicks(float damage, float pHChange)

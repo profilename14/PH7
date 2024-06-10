@@ -131,9 +131,7 @@ public class Hazard : MonoBehaviour
 
       }
       else if (other.gameObject.tag == "HasPH") {
-        if (damageTimer >= damageRate) {
-          other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH * damageRate);
-        }
+        other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH * damageRate / 14f);
         if (!permanent) {
           curLifespan -= deltaPhysics;
           if (curLifespan < 0) {

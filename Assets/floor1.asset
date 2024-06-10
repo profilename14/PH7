@@ -100,7 +100,7 @@ MonoBehaviour:
   - id: 1
     fields:
     - title: Title
-      value: tutorial/howto switch
+      value: tutorial/howto pot
       type: 0
       typeString: 
     - title: Description
@@ -221,7 +221,10 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Attack the switch to open the gate.
+        value: 'You may summon a bubble with right click to pick up objects in front
+          of you.
+
+          With an object, you can throw it with left click.'
         type: 0
         typeString: 
       - title: Sequence
@@ -253,7 +256,7 @@ MonoBehaviour:
   - id: 2
     fields:
     - title: Title
-      value: tutorial/howto dash
+      value: tutorial/alkalinedoor
       type: 0
       typeString: 
     - title: Description
@@ -374,8 +377,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Dash by pressing space. You can pass through fences and attacks by
-          dashing through them.
+        value: 'To our king: You may melt away this alkaline containment door with
+          the nearby acid pot.'
         type: 0
         typeString: 
       - title: Sequence
@@ -407,7 +410,7 @@ MonoBehaviour:
   - id: 3
     fields:
     - title: Title
-      value: tutorial/howto ranged
+      value: tutorial/acidVsStrider
       type: 0
       typeString: 
     - title: Description
@@ -485,7 +488,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 3
@@ -528,11 +531,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: 'Hold right click to summon a telekinetic bubble. Release to throw
-          with great force.
-
-          Applying the opposite element to an enemy
-          causes them to take increased damage from attacks '
+        value: Feral alkaline Striders are ahead. Like any green foes, throw an acid
+          pot against them to dramatically weaken their defense.
         type: 0
         typeString: 
       - title: Sequence
@@ -564,7 +564,7 @@ MonoBehaviour:
   - id: 4
     fields:
     - title: Title
-      value: tutorial/striders
+      value: tutorial/AlkalineVsScuttler
       type: 0
       typeString: 
     - title: Description
@@ -685,7 +685,12 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Striders are basic foes, attack them as they leap towards you!
+        value: 'Your halite blade steals alkalinity and acidity from your foes, which
+          you can spend on typed abilities.
+
+          Hit this gem until your ph
+          bar is fully green, then hold left click to spinslash the acidic scuttlers
+          ahead.'
         type: 0
         typeString: 
       - title: Sequence
@@ -1324,6 +1329,104 @@ MonoBehaviour:
         serializedVersion: 2
         x: 160
         y: 79
+        width: 160
+        height: 30
+    entryGroups: []
+    canvasScrollPosition: {x: 0, y: 0}
+    canvasZoom: 1
+  - id: 9
+    fields:
+    - title: Title
+      value: tutorial/extra
+      type: 0
+      typeString: 
+    - title: Description
+      value: 
+      type: 0
+      typeString: 
+    - title: Actor
+      value: 1
+      type: 5
+      typeString: CustomFieldType_Actor
+    - title: Conversant
+      value: 2
+      type: 5
+      typeString: CustomFieldType_Actor
+    overrideSettings:
+      useOverrides: 0
+      overrideSubtitleSettings: 0
+      showNPCSubtitlesDuringLine: 1
+      showNPCSubtitlesWithResponses: 1
+      showPCSubtitlesDuringLine: 0
+      skipPCSubtitleAfterResponseMenu: 0
+      subtitleCharsPerSecond: 30
+      minSubtitleSeconds: 2
+      continueButton: 0
+      overrideSequenceSettings: 0
+      defaultSequence: 
+      defaultPlayerSequence: 
+      defaultResponseMenuSequence: 
+      overrideInputSettings: 0
+      alwaysForceResponseMenu: 1
+      includeInvalidEntries: 0
+      responseTimeout: 0
+      emTagForOldResponses: 0
+      emTagForInvalidResponses: 0
+      cancelSubtitle:
+        key: 27
+        buttonName: 
+      cancelConversation:
+        key: 27
+        buttonName: 
+    nodeColor: 
+    dialogueEntries:
+    - id: 0
+      fields:
+      - title: Title
+        value: START
+        type: 0
+        typeString: 
+      - title: Description
+        value: 
+        type: 0
+        typeString: 
+      - title: Actor
+        value: 1
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Conversant
+        value: 2
+        type: 5
+        typeString: CustomFieldType_Actor
+      - title: Menu Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Dialogue Text
+        value: 
+        type: 0
+        typeString: 
+      - title: Sequence
+        value: None()
+        type: 0
+        typeString: 
+      conversationID: 9
+      isRoot: 0
+      isGroup: 0
+      nodeColor: 
+      delaySimStatus: 0
+      falseConditionAction: 
+      conditionPriority: 2
+      outgoingLinks: []
+      conditionsString: 
+      userScript: 
+      onExecute:
+        m_PersistentCalls:
+          m_Calls: []
+      canvasRect:
+        serializedVersion: 2
+        x: 160
+        y: 30
         width: 160
         height: 30
     entryGroups: []

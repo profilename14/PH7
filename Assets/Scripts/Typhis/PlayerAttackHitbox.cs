@@ -119,11 +119,26 @@ public class PlayerAttackHitbox : MonoBehaviour
             }
 
         }
+        else if (other.gameObject.CompareTag("HasPH"))
+        {
+            ObjectWithPH phObject = other.gameObject.GetComponent<ObjectWithPH>();
+            if (phObject != null && phObject.canBeAttacked) {
+                if (phObject.phOnHit > 0) {
+                    stats.changePH(phObject.phOnHit);
+                } else {
+                    stats.changeAcidity(phObject.phOnHit);
+                }
+                phObject.ChangePH(-3);
+                phObject.instantiateParticles();
+                
+            }
+
+        }
     }
 
     private void changePlayerPH(EnemyAI opponent) {
         if (opponent.debuffTimer > 0) {
-            stats.makeScreenshake();
+            //stats.makeScreenshake();
         }
         if (opponent.naturalPH == TypesPH.Alkaline) {
             if (stats.inAcid || opponent.debuffTimer > 0) {

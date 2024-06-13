@@ -337,12 +337,13 @@ MonoBehaviour:
   rotationAnchor: {fileID: 2276678318342156223}
   enemyRigidbody: {fileID: 2881394270360499269}
   naturalPH: 2
-  maxHealth: 15
-  maxArmor: 15
+  maxHealth: 30
+  maxArmor: 30
   health: 0
   armor: 0
   debuffTimer: 0
-  armorResistMultiplier: 0.33
+  debuffTimerMax: 10
+  armorResistMultiplier: 0.67
   armorBroken: 0
   isHitstunned: 0
   inInterruptFrames: 0
@@ -1238,6 +1239,14 @@ PrefabInstance:
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.50250345
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_FillAmount

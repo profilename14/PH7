@@ -40,6 +40,9 @@ public class EnemyArenaManager : MonoBehaviour
 
     private bool activated = false;
 
+    [SerializeField] private bool lockedDoor = false;
+    [SerializeField] SceneSwitchTrigger doorPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +51,10 @@ public class EnemyArenaManager : MonoBehaviour
             activated = true;
             spawningEnemies = true;
             StartCoroutine(SpawnEnemyWave(0, 0));
+            foreach(GameObject g in wallsToEnable)
+            {
+                g.SetActive(true);
+            }
         }
     }
 
@@ -76,6 +83,10 @@ public class EnemyArenaManager : MonoBehaviour
                 foreach (GameObject g in wallsToEnable)
                 {
                     g.SetActive(false);
+
+                }
+                if (lockedDoor == true) {
+                    doorPrefab.unlock();
                 }
             }
         }

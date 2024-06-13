@@ -76,6 +76,8 @@ public class PlayerCombatController : MonoBehaviour
 
     public int lastSwingNum;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -369,6 +371,9 @@ public class PlayerCombatController : MonoBehaviour
       } else {
         telekinesisCastTimer = telekinesisSpellCooldown;
       }
+
+      
+      playerAnim.SetTrigger("Batting");
 
       Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
 

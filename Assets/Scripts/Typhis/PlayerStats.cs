@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,7 +8,8 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     public float health = 6;
-    private float ph = 14;
+    public float ph = 0;
+    public float acid = 0;
 
     public float maxHealth = 6;
     const float PH_DEFAULT = 14;
@@ -15,8 +17,16 @@ public class PlayerStats : MonoBehaviour
     public float healthRegen = 0f;
     public float phRegen = 0.33f;
 
+    public bool inAcid = false;
+    public bool inAlkaline = false;
+    public Hazard acidLink = null;
+    public Hazard alkalineLink = null;
+
     public Slider healthBar;
     public Slider PHBar;
+    public Slider AcidBar;
+    public Image AlkalineIndicator;
+    public Image AcidIndicator;
 
     public bool isInvincible;
     public float iFrameSeconds;
@@ -46,6 +56,7 @@ public class PlayerStats : MonoBehaviour
         //DontDestroyOnLoad(this.gameObject);
       healthBar = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
       PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
+      AcidBar = GameObject.FindWithTag("Acid Bar").GetComponent<Slider>();
 
       healthBar.maxValue= maxHealth;
 
@@ -84,10 +95,20 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-      if (ph < PH_DEFAULT) {
-        ph += phRegen * Time.deltaTime;
+      if (ph < 0) {
+        ph = 0;
       } else if (ph > PH_DEFAULT) {
         ph = PH_DEFAULT;
+      } else {
+        //ph -= 0.5f * Time.deltaTime;
+      }
+
+      if (acid < 0) {
+        acid = 0;
+      } else if (acid > 14) {
+        acid = 14;
+      } else {
+        //acid -= 0.5f * Time.deltaTime;
       }
 
       if (health < maxHealth) {
@@ -103,7 +124,20 @@ public class PlayerStats : MonoBehaviour
         }
 
       healthBar.value= health;
-      PHBar.value = 16 + 80 * (ph / PH_DEFAULT);
+      PHBar.value = 4 + 80 * (ph / PH_DEFAULT);
+      AcidBar.value = 16 + 80 * (acid / PH_DEFAULT);
+      
+      if (inAlkaline) {
+        AlkalineIndicator.enabled = true;
+      } else {
+        AlkalineIndicator.enabled = false;
+      }
+
+      if (inAcid) {
+        AcidIndicator.enabled = true;
+      } else {
+        AcidIndicator.enabled = false;
+      }
     }
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
@@ -124,8 +158,8 @@ public class PlayerStats : MonoBehaviour
       }
 
       float pHDifference = Mathf.Abs(PH_DEFAULT - ph);
-      float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
-      health -= damage * multiplier;
+      //float multiplier = 1 + 0.057f * Mathf.Pow(pHDifference, 1.496f);
+      health -= damage;
 
       if (health < 0) {
             music.StopMusic();
@@ -140,13 +174,72 @@ public class PlayerStats : MonoBehaviour
 
       movementController.applyKnockback(position, knockback);
 
+      if (GameManager.isScreenshakeEnabled) {
         cam.GetComponent<screenShake>().ScreenShake(.1f);
-      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
+        GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
         Color flashColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         playerHitMaterial.SetColor("_Color", flashColor);
+      }
+
+        
         
       audioSource.PlayOneShot(playerHitSound, 0.45F);
 
 
     }
+
+    public void changePH(float amount) {
+
+      if (alkalineLink != null) {
+        alkalineLink.spendPuddle();
+      }
+
+      ph += amount / 3;
+
+      if (ph < 0) {
+        ph = 0;
+      }
+      else if (ph > PH_DEFAULT) {
+        ph = PH_DEFAULT;
+      }
+      else {
+        ph -= Time.deltaTime;
+      }
+
+      if (ph > 14 - acid) {
+        acid = 14 - ph;
+      }
+
+  }
+
+  public void changeAcidity(float amount) {
+      if (acidLink != null) {
+        acidLink.spendPuddle();
+      }
+
+      acid += amount / 3;
+
+      if (acid < 0) {
+        acid = 0;
+      }
+      else if (acid > 14) {
+        acid = 14;
+      }
+      else {
+        acid -= Time.deltaTime;
+      }
+
+      if (acid > 14 - ph) {
+        ph = 14 - acid;
+      }
+    }
+
+  public void makeScreenshake() {
+    if (GameManager.isScreenshakeEnabled) {
+      cam.GetComponent<screenShake>().ScreenShake(0.05f);
+      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier / 4f);
+    }
+        
+  }
+    
 }

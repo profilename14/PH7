@@ -18,12 +18,16 @@ public class PrefabSpawner : MonoBehaviour
     float makeTimer = 0.0f;
     private GameObject curObject = null;
     [SerializeField] bool spawnOnAwake = false;
+    [SerializeField] bool getChildObject = false;
 
     void Start() {
       if (spawnOnAwake) {
         objectIsAlive = true;
         makeTimer = 0;
         curObject = Instantiate(objectToMake, transform.position, Quaternion.identity);
+        if (getChildObject) {
+            curObject = curObject.transform.GetChild(0).gameObject;
+        }
       }
     }
 
@@ -37,6 +41,10 @@ public class PrefabSpawner : MonoBehaviour
           objectIsAlive = true;
           //Vector3 spawnPoint = new Vector3 (transform.position.x, transform.position.y + 1, transform.position.z);
           curObject = Instantiate(objectToMake, transform.position, Quaternion.identity);
+          if (getChildObject) {
+            curObject = curObject.transform.GetChild(0).gameObject;
+          }
+
           Debug.Log("Remade object!");
         }
       }

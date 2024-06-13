@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 // Used by spikes, acid puddles, and alkaline puddles.
 public class Hazard : MonoBehaviour
@@ -8,7 +10,7 @@ public class Hazard : MonoBehaviour
     [SerializeField] private float changeInPH;
     [SerializeField] private float damage;
     [SerializeField] private float maxLifespan = 5;
-    private float curLifespan;
+    [SerializeField] private float curLifespan;
     [SerializeField] private bool permanent;
     [SerializeField] private bool shrinks;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
@@ -18,8 +20,29 @@ public class Hazard : MonoBehaviour
 
     public EnemyAI.DamageSource damageSourceType;
 
+    private Vector3 startScale;
+    private Vector3 newScale;
+
     void Start() {
       curLifespan = maxLifespan;
+      startScale = transform.parent.localScale;
+      newScale = startScale;
+    }
+
+    void Update() {
+      if (!permanent) {
+        curLifespan -= Time.deltaTime;
+        newScale = startScale * (1 - Mathf.Exp(-4 * (curLifespan / maxLifespan)));
+        transform.parent.localScale = newScale;
+
+        if (curLifespan < maxLifespan / 5) {
+          curLifespan -= Time.deltaTime;
+        }
+
+        if (curLifespan < 0) {
+          Destroy(gameObject);
+        }
+      }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +51,16 @@ public class Hazard : MonoBehaviour
         {
             if (other.gameObject.GetComponent<EnemyAI>() != null) other.gameObject.GetComponent<EnemyAI>().EnteredPuddle(damage, changeInPH);
         }
+        if (other.gameObject.tag == "Player")
+        {
+          if (changeInPH < 0) {
+            other.gameObject.GetComponent<PlayerStats>().inAcid = true;
+            other.gameObject.GetComponent<PlayerStats>().acidLink = this;
+          } else {
+            other.gameObject.GetComponent<PlayerStats>().inAlkaline = true;
+            other.gameObject.GetComponent<PlayerStats>().alkalineLink = this;
+          }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -35,6 +68,21 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         {
             if(other.gameObject.GetComponent<EnemyAI>() != null) other.gameObject.GetComponent<EnemyAI>().inPuddle = false;
+        }
+        if (other.gameObject.tag == "Player")
+        {
+          if (changeInPH < 0) {
+            other.gameObject.GetComponent<PlayerStats>().inAcid = false;
+            if (other.gameObject.GetComponent<PlayerStats>().acidLink == this) {
+              other.gameObject.GetComponent<PlayerStats>().acidLink = null;
+            }
+          } else {
+            other.gameObject.GetComponent<PlayerStats>().inAlkaline = false;
+            if (other.gameObject.GetComponent<PlayerStats>().alkalineLink == this) {
+              other.gameObject.GetComponent<PlayerStats>().alkalineLink = null;
+            }
+            
+          }
         }
     }
 
@@ -55,7 +103,7 @@ public class Hazard : MonoBehaviour
               //other.gameObject.GetComponent<PlayerStats>().health -= damage * damageRate;
             }
             if (!permanent) {
-              curLifespan -= deltaPhysics;
+              //curLifespan -= deltaPhysics;
               if (curLifespan < 0) {
                 Destroy(gameObject);
               }
@@ -83,9 +131,7 @@ public class Hazard : MonoBehaviour
 
       }
       else if (other.gameObject.tag == "HasPH") {
-        if (damageTimer >= damageRate) {
-          other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH * damageRate);
-        }
+        other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH * damageRate / 14f);
         if (!permanent) {
           curLifespan -= deltaPhysics;
           if (curLifespan < 0) {
@@ -100,6 +146,12 @@ public class Hazard : MonoBehaviour
       }
       damageTimer += deltaPhysics;
 
+    }
+
+    public void spendPuddle() {
+      if (permanent == false) {
+        curLifespan -= 0.5f;
+      }
     }
 
 }

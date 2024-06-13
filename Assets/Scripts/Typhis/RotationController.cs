@@ -53,6 +53,18 @@ public class RotationController : MonoBehaviour
       }
     }
 
+        if (Input.GetKeyDown(KeyCode.K))
+    {
+      if (!GameManager.isScreenshakeEnabled)
+      {
+        GameManager.isScreenshakeEnabled = true;
+      }
+      else
+      {
+        GameManager.isScreenshakeEnabled = false;
+      }
+    }
+
     if (GameManager.slowTimer > 0)
     {
       GameManager.slowTimer -= Time.deltaTime;

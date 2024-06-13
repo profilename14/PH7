@@ -56,7 +56,18 @@ public class ScuttlerAI : EnemyAI
 
         state.OnEnterDelegate += delegate ()
         {
-            attackTimer = 0;
+            if (canBeHitstunned == false) {
+                canBeHitstunned = true;
+            }
+            if (wasHitstunned == false) {
+                attackTimer = 0;
+            } else {
+                attackTimer += 0.25f;
+                wasHitstunned = false;
+                if (attackTimer >= maxTimeToAttack * 1.0f) {
+                    canBeHitstunned = false;
+                }
+            }
             redecideStateTimer = 0;
             nextChosenState = "Left Claw";
             nextChosenAttackRange = leftClawAttackRange;

@@ -76,24 +76,6 @@ public class Throwable : MonoBehaviour
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(Mathf.Pow(phChange, 1.5f) * changeInPH);
           }
 
-          health -= 1;
-
-          if (health <= 0) {
-            Destroy(gameObject);
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-              
-            }
-            if (puddleEffect != null) {
-              Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
-              //puddlePos = puddlePos + (thrownDirection * 0.2f);
-              Instantiate(puddleEffect, puddlePos, Quaternion.identity);
-
-            }
-          } else {
-            //isBeingThrown = false;
-            isBeingCarried = false;
-          }
 
         }
         else if (other.gameObject.tag == "Enemy") {
@@ -131,46 +113,19 @@ public class Throwable : MonoBehaviour
             }
 
 
-            if(this.gameObject.CompareTag("Enemy"))
+            if (this.gameObject.CompareTag("Enemy"))
             {
                 //buggy
                 //GetComponent<EnemyAI>().TakeDamage(damage, -changeInPH, 0, Vector3.zero, EnemyAI.DamageSource.Rock);
             }
 
-          health -= 1;
-
-          if (health <= 0) {
-            Destroy(gameObject);
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-            }
-            if (puddleEffect != null) {
-              Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
-              puddlePos = puddlePos + (thrownDirection * 0.05f);
-              Instantiate(puddleEffect, puddlePos, Quaternion.identity);
-
-            }
-          } else {
-            //isBeingThrown = false;
-            isBeingCarried = false;
-          }
-
-
         }
         else if (other.gameObject.CompareTag("Switch")) {
-          Debug.Log("AAAAAAAAAAAAAA");
             if (other.gameObject.GetComponent<Switch>() != null) {
               //if (destroyEffect == null) {
                 other.gameObject.GetComponent<Switch>().Toggle(); // only rocks activate switches
               //}
 
-            }
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-            }
-            health -= 1f; // Leeway for collision jank
-            if (health <= 0) {
-              Destroy(gameObject);
             }
         }
         else if ( other.gameObject.CompareTag("AllowsBubble") ) {
@@ -178,20 +133,21 @@ public class Throwable : MonoBehaviour
             other.gameObject.GetComponent<Collider>(),
             GetComponent<Collider>(), true);
         }
-        else if (breaksOnImpact) {
-          if ( other.gameObject.CompareTag("Wall") ) {
-            if (isBeingThrown) {
-              health -= 9f; // Leeway for collision jank
-              if (health <= 0) {
-                Destroy(gameObject);
 
-                if (destroyEffect != null) {
-                  Instantiate(destroyEffect, transform.position, Quaternion.identity);
-                }
-              }
+        if(breaksOnImpact && isBeingThrown)
+        {
+            Destroy(gameObject);
+            if (destroyEffect != null)
+            {
+                Instantiate(destroyEffect, transform.position, Quaternion.identity);
             }
-          }
-        }
+            if (puddleEffect != null)
+            {
+                Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+                puddlePos = puddlePos + (thrownDirection * 0.05f);
+                Instantiate(puddleEffect, puddlePos, Quaternion.identity);
 
+            }
+        }
     }
 }

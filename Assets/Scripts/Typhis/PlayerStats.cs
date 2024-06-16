@@ -19,8 +19,12 @@ public class PlayerStats : MonoBehaviour
 
     public bool inAcid = false;
     public bool inAlkaline = false;
-    public Hazard acidLink = null;
-    public Hazard alkalineLink = null;
+    [HideInInspector] public Hazard acidLink = null;
+    [HideInInspector] public Hazard alkalineLink = null;
+
+    [SerializeField] private GameObject spinslashAcidPuddle;
+    [SerializeField] private GameObject spinslashAlkalinePuddle;
+
 
     public Slider healthBar;
     public Slider PHBar;
@@ -43,6 +47,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private AudioClip playerHitSound;
 
     private MovementController movementController;
+    private RotationController rotation;
 
     public MusicClass music;
 
@@ -61,6 +66,7 @@ public class PlayerStats : MonoBehaviour
       healthBar.maxValue= maxHealth;
 
       movementController = gameObject.GetComponent<MovementController>();
+      rotation = gameObject.transform.GetChild(0).GetComponent<RotationController>();
 
       audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
         gameStarted = true;
@@ -233,6 +239,30 @@ public class PlayerStats : MonoBehaviour
         ph = 14 - acid;
       }
     }
+
+  public TypesPH spinslashStarted() {
+    if (ph > 7) {
+      ph -= 7;
+
+      Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 2f);
+      Instantiate(spinslashAlkalinePuddle, puddlePos, rotation.transform.rotation);
+
+      return TypesPH.Alkaline;
+    }
+    else if (acid > 7) {
+      acid -= 7;
+
+      Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 2f);
+      Instantiate(spinslashAcidPuddle, puddlePos, rotation.transform.rotation);
+
+      return TypesPH.Acidic;
+    }
+    else {
+      return TypesPH.Neutral;
+    }
+  }
 
   public void makeScreenshake() {
     if (GameManager.isScreenshakeEnabled) {

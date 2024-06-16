@@ -87,6 +87,30 @@ public class PlayerAttackHitbox : MonoBehaviour
                         controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
                         changePlayerPH(other.gameObject.GetComponent<EnemyAI>());
                         break;
+
+                    case PlayerCombatController.PlayerState.Spinslash:
+                        Debug.Log("Hit swing 3!");
+                        other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                        EnemyAI targetEnemy = other.gameObject.GetComponent<EnemyAI>();
+                        if (controllerScript.alkalineSlash == true) {
+                            if (targetEnemy.naturalPH == TypesPH.Acidic) {
+                                targetEnemy.debuffTimer += 7f;
+                                damageMult = 6;
+                            }
+                        } else if (controllerScript.acidSlash == true) {
+                            if (targetEnemy.naturalPH == TypesPH.Alkaline) {
+                                targetEnemy.debuffTimer += 7f;
+                                damageMult = 6;
+                            }
+                        }
+                        if (other.gameObject.GetComponent<EnemyAI>().health < -10) { // If you spam enemies in death animation they die faster
+                            Destroy(other.gameObject);
+                        }
+                        other.gameObject.GetComponent<EnemyAI>().TakeDamage(30 * damageMult,
+                        0, controllerScript.swing3Knockback,
+                        controllerScript.gameObject.transform.parent.right, EnemyAI.DamageSource.Sword);
+                        changePlayerPH(other.gameObject.GetComponent<EnemyAI>());
+                        break;
                     case PlayerCombatController.PlayerState.Dash:
 
                         Debug.Log("Something is wrong, player sword hitbox hit enemy during dashing.");

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerCombatController : MonoBehaviour
     Animator playerAnim;
     RotationController rotationController;
     MovementController movementController;
+    PlayerStats stats;
     [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
@@ -49,7 +51,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private bool hasClicked = false;
 
-    public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash }
+    public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash, ChargeSpinslash, Spinslash }
 
     public static PlayerState currentState;
 
@@ -77,6 +79,8 @@ public class PlayerCombatController : MonoBehaviour
     public int lastSwingNum;
 
     private bool spinslashCharging = false;
+    public bool alkalineSlash = false;
+    public bool acidSlash = false;
 
     
 
@@ -86,6 +90,7 @@ public class PlayerCombatController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
         movementController = transform.parent.parent.GetComponent<MovementController>();
+        stats = transform.parent.parent.GetComponent<PlayerStats>();
 
         currentState = PlayerState.Idle;
 
@@ -187,7 +192,7 @@ public class PlayerCombatController : MonoBehaviour
                 playerAnim.ResetTrigger("Dash");
                 playerAnim.ResetTrigger("Swing2");
                 playerAnim.ResetTrigger("Swing3");
-                holdTimer = -thrustHoldTime / 2;
+                holdTimer = -thrustHoldTime * 0.75f;
             }
         }
 
@@ -299,6 +304,29 @@ public class PlayerCombatController : MonoBehaviour
             comboResetTimer = 0;
             lastSwingNum = 3;
             currentState = PlayerState.Swing3;
+        }
+        else if (name == "ChargeSpinslash")
+        {
+            Debug.Log("ChargeSpinslash");
+            currentState = PlayerState.ChargeSpinslash;
+        }
+        else if (name == "Spinslash")
+        {
+            Debug.Log("Spinslash");
+            lastSwingNum = 3;
+            TypesPH spinslashElement = stats.spinslashStarted();
+            if (spinslashElement == TypesPH.Alkaline) {
+                acidSlash =     false;
+                alkalineSlash = true;
+            } else if (spinslashElement == TypesPH.Acidic) {
+                acidSlash =     true;
+                alkalineSlash = false;
+            } else {
+                acidSlash =     false;
+                alkalineSlash = false;
+            }
+            
+            currentState = PlayerState.Spinslash;
         }
     }
 

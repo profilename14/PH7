@@ -76,6 +76,8 @@ public class PlayerCombatController : MonoBehaviour
 
     public int lastSwingNum;
 
+    private bool spinslashCharging = false;
+
     
 
     // Start is called before the first frame update
@@ -148,6 +150,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             if (lastSwingNum == 0)
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
@@ -157,6 +160,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if((currentState == PlayerState.Swing1) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 1))
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing2");
                 playerAnim.SetTrigger("Swing2");
@@ -166,6 +170,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if ((currentState == PlayerState.Swing2) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 2))
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing3");
                 playerAnim.SetTrigger("Swing3");
@@ -175,12 +180,14 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (currentState == PlayerState.Swing3)
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
                 playerAnim.ResetTrigger("Swing2");
                 playerAnim.ResetTrigger("Swing3");
+                holdTimer = -thrustHoldTime / 2;
             }
         }
 
@@ -202,19 +209,23 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Dash");
         }*/
 
-       /* if (!thrustIsDashAttack)
+        if (true)
         {
-            if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
+            if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire3")))
             {
                 holdTimer += Time.deltaTime;
 
-                if (holdTimer >= thrustHoldTime * 10f) // Disabled right now as it doesn't deal damage
+                if (holdTimer >= thrustHoldTime * 1.5f)
                 {
                     hasClicked = false;
                     holdTimer = 0;
-                    playerAnim.SetTrigger("Thrust");
-                    playerAnim.ResetTrigger("Swing");
+                    playerAnim.SetTrigger("SpinslashCharge");
+                    playerAnim.ResetTrigger("Spinslash");
+                    playerAnim.ResetTrigger("Swing1");
+                    playerAnim.ResetTrigger("Swing2");
+                    playerAnim.ResetTrigger("Swing3");
                     playerAnim.ResetTrigger("Dash");
+                    spinslashCharging = true;
                 }
             }
             else
@@ -223,7 +234,16 @@ public class PlayerCombatController : MonoBehaviour
                 holdTimer = 0;
             }
         }
-        else
+        if (Input.GetMouseButtonUp(0) && spinslashCharging) {
+            spinslashCharging = false;
+            playerAnim.SetTrigger("Spinslash");
+            playerAnim.ResetTrigger("SpinslashCharge");
+            playerAnim.ResetTrigger("Swing1");
+            playerAnim.ResetTrigger("Swing2");
+            playerAnim.ResetTrigger("Swing3");
+            playerAnim.ResetTrigger("Dash");
+        }
+        /*else
         {
             if((Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) && inDash)
             {
@@ -372,9 +392,6 @@ public class PlayerCombatController : MonoBehaviour
         telekinesisCastTimer = telekinesisSpellCooldown;
       }
 
-      
-      playerAnim.SetTrigger("Batting");
-
       Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
 
       Vector3 telekinesisSpellAnchor = transform.position + rotationController.GetRotationDirection() * 2f;
@@ -402,6 +419,11 @@ public class PlayerCombatController : MonoBehaviour
       telekinesisCastTimer = telekinesisSpellCooldown;
       rotationController.isFacingMouse = false;
       Debug.Log("Telekinesis Done");
+      playerAnim.ResetTrigger("Swing1");
+      playerAnim.ResetTrigger("Swing2");
+      playerAnim.ResetTrigger("Swing3");
+      playerAnim.ResetTrigger("Dash");
+      playerAnim.SetTrigger("Batting");
     }
 
     public bool isActionable()

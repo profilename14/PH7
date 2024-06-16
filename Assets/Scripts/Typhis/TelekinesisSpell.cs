@@ -16,6 +16,8 @@ public class TelekinesisSpell : MonoBehaviour
     public Collider TyphisCollider;
     [SerializeField] GameObject throwEffect;
 
+
+
     void Start() {
       curLifespan = 0.5f;
       throwableOffset = new Vector3(0, 0.1f, 0);
@@ -100,7 +102,7 @@ public class TelekinesisSpell : MonoBehaviour
 
           Debug.Log("Thrown");
           Instantiate(throwEffect, transform.position, Quaternion.identity);
-          heldItem.Throw(-transform.forward);
+          heldItem.Throw(transform.forward);
           combatController.objectWasThrown();
           Destroy(gameObject);
         }

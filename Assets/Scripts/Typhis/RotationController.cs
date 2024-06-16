@@ -88,7 +88,7 @@ public class RotationController : MonoBehaviour
       dir.Normalize();
     }
 
-    dir = Quaternion.Euler(0, -45, 0) * dir;
+    dir = Quaternion.Euler(0, -45+180, 0) * dir;
     return dir;
   }
 

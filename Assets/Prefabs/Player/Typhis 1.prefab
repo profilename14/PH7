@@ -668,7 +668,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 199cb74e2da8b4847bdef2fc3b8aac10, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 56a77a543e4096646acbee5ad1b7fe01, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -1597,6 +1597,8 @@ MonoBehaviour:
   inAlkaline: 0
   acidLink: {fileID: 0}
   alkalineLink: {fileID: 0}
+  spinslashAcidPuddle: {fileID: 8588484744153944100, guid: e0952196e1ee6e448a8541bd2d7da8be, type: 3}
+  spinslashAlkalinePuddle: {fileID: 1859149568551371991, guid: 0ec5b9924fbf44e4abe6a7ff001923a2, type: 3}
   healthBar: {fileID: 3203132850140138507}
   PHBar: {fileID: 2982210337572157079}
   AcidBar: {fileID: 3909666856454068169}
@@ -1692,7 +1694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8102357054373695960
 Transform:
   m_ObjectHideFlags: 0
@@ -5240,10 +5242,13 @@ MonoBehaviour:
   telekinesisSpellPrefab: {fileID: 7014600148762342256, guid: eb8b09a56938f7345bc9526767d15dd6, type: 3}
   telekinesisSpellCooldown: 0.1
   telekinesisCastTimer: 0
+  castingBubble: 0
   isFacingMouse: 0
   thrustIsDashAttack: 0
   timeToComboReset: 0.2
   lastSwingNum: 0
+  alkalineSlash: 0
+  acidSlash: 0
 --- !u!1 &3003676343555504759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6151125147142744330, guid: ee8e92393c50ab3429b439ed2ba90a62, type: 3}
@@ -7809,44 +7814,56 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: b769c45be7832b848a252829a8917394, type: 2}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.99999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0211
+      value: 0.0035999997
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0135
+      value: 0.006
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0195
+      value: 0.0251
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.35215035
+      value: 0.6745071
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.24436454
+      value: 0.7233205
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6912502
+      value: 0.10080583
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5817639
+      value: -0.10810104
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -77.526
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -110.341
+      value: -163
       objectReference: {fileID: 0}
     - target: {fileID: 6158928185268107638, guid: 6ec853155f15a484a8a14b931a4e7f02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -19.444
+      value: -180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11448,17 +11465,20 @@ MonoBehaviour:
   swordSwoosh: {fileID: 8300000, guid: 199cb74e2da8b4847bdef2fc3b8aac10, type: 3}
   inThrust: 0
   inDash: 0
-  thrustHoldTime: 0.3
+  thrustHoldTime: 0.4
   waveSpellSpreadDegrees: 17.5
   waveSpellPrefab: {fileID: 5028151487594542329, guid: ade620a42e21de54ba02a66b1751b682, type: 3}
   waveSpellCooldown: 2.5
   telekinesisSpellPrefab: {fileID: 7014600148762342256, guid: eb8b09a56938f7345bc9526767d15dd6, type: 3}
   telekinesisSpellCooldown: 0.1
   telekinesisCastTimer: 0
+  castingBubble: 0
   isFacingMouse: 0
   thrustIsDashAttack: 0
   timeToComboReset: 0.2
   lastSwingNum: 0
+  alkalineSlash: 0
+  acidSlash: 0
 --- !u!95 &7819167953584741906
 Animator:
   serializedVersion: 5

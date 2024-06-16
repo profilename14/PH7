@@ -41,7 +41,7 @@ public class TelekinesisSpell : MonoBehaviour
         if (combatController != null) { // When were sure we've linked the player to the spell:
           Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
           Throwable target = null;
-          float targetValue = 0;
+          //float targetValue = 0;
 
           foreach (var other in hitColliders)
           {

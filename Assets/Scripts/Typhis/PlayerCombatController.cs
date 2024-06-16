@@ -66,6 +66,8 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private GameObject telekinesisSpellPrefab;
     [SerializeField] private float telekinesisSpellCooldown = 2.5f;
     [HideInInspector] public float telekinesisCastTimer = 0f;
+    [HideInInspector] public bool castingBubble = false;
+
 
     public bool isFacingMouse = false;
 
@@ -78,7 +80,6 @@ public class PlayerCombatController : MonoBehaviour
 
     public int lastSwingNum;
 
-    private bool spinslashCharging = false;
     public bool alkalineSlash = false;
     public bool acidSlash = false;
 
@@ -142,7 +143,7 @@ public class PlayerCombatController : MonoBehaviour
             }
         }
 
-        if (currentState == PlayerState.Idle || inRecovery)
+        if (currentState == PlayerState.Idle || inRecovery || currentState == PlayerState.ChargeSpinslash)
         {
             playerAnim.SetTrigger("Actionable");
         }
@@ -225,12 +226,13 @@ public class PlayerCombatController : MonoBehaviour
                     hasClicked = false;
                     holdTimer = 0;
                     playerAnim.SetTrigger("SpinslashCharge");
+                    playerAnim.SetTrigger("Actionable");
                     playerAnim.ResetTrigger("Spinslash");
                     playerAnim.ResetTrigger("Swing1");
                     playerAnim.ResetTrigger("Swing2");
                     playerAnim.ResetTrigger("Swing3");
                     playerAnim.ResetTrigger("Dash");
-                    spinslashCharging = true;
+                    
                 }
             }
             else
@@ -239,8 +241,7 @@ public class PlayerCombatController : MonoBehaviour
                 holdTimer = 0;
             }
         }
-        if (Input.GetMouseButtonUp(0) && spinslashCharging) {
-            spinslashCharging = false;
+        if (Input.GetMouseButtonUp(0) && currentState == PlayerState.ChargeSpinslash) {
             playerAnim.SetTrigger("Spinslash");
             playerAnim.ResetTrigger("SpinslashCharge");
             playerAnim.ResetTrigger("Swing1");
@@ -308,6 +309,7 @@ public class PlayerCombatController : MonoBehaviour
         else if (name == "ChargeSpinslash")
         {
             Debug.Log("ChargeSpinslash");
+            rotationController.isFacingMouse = true;
             currentState = PlayerState.ChargeSpinslash;
         }
         else if (name == "Spinslash")
@@ -325,6 +327,8 @@ public class PlayerCombatController : MonoBehaviour
                 acidSlash =     false;
                 alkalineSlash = false;
             }
+            
+            rotationController.isFacingMouse = false;
             
             currentState = PlayerState.Spinslash;
         }
@@ -358,6 +362,9 @@ public class PlayerCombatController : MonoBehaviour
     {
         inDash = true;
         inRecovery = false;
+        if (!castingBubble) {
+            rotationController.isFacingMouse = false;
+        }
 
         movementController.startDash();
 
@@ -414,11 +421,12 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void Telekinesis() {
-      if (telekinesisCastTimer > 0 || inRecovery || rotationController.isFacingMouse == true) {
+      if (telekinesisCastTimer > 0 || inRecovery || castingBubble == true) {
         return;
       } else {
         telekinesisCastTimer = telekinesisSpellCooldown;
       }
+      castingBubble = true;
 
       Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
 
@@ -439,13 +447,19 @@ public class PlayerCombatController : MonoBehaviour
         {
             float pitchMod = Random.Range(-0.25f, 0.25f);
             soundEffects.pitch = 1 + pitchMod;
-            soundEffects.PlayOneShot(swordSwoosh, 0.375F);
+            if (currentState == PlayerState.Spinslash) {
+                soundEffects.PlayOneShot(swordSwoosh, 0.925F);
+            } else {
+                soundEffects.PlayOneShot(swordSwoosh, 0.725F);
+            }
+            
         }
     }
 
     public void objectWasThrown() {
       telekinesisCastTimer = telekinesisSpellCooldown;
       rotationController.isFacingMouse = false;
+      castingBubble = false;
       Debug.Log("Telekinesis Done");
       playerAnim.ResetTrigger("Swing1");
       playerAnim.ResetTrigger("Swing2");

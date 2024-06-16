@@ -133,13 +133,13 @@ public class PlayerStats : MonoBehaviour
       PHBar.value = 4 + 80 * (ph / PH_DEFAULT);
       AcidBar.value = 16 + 80 * (acid / PH_DEFAULT);
       
-      if (inAlkaline) {
+      if (ph > 7) {
         AlkalineIndicator.enabled = true;
       } else {
         AlkalineIndicator.enabled = false;
       }
 
-      if (inAcid) {
+      if (acid > 7) {
         AcidIndicator.enabled = true;
       } else {
         AcidIndicator.enabled = false;
@@ -245,7 +245,7 @@ public class PlayerStats : MonoBehaviour
       ph -= 7;
 
       Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
-      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 2f);
+      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 3f);
       Instantiate(spinslashAlkalinePuddle, puddlePos, rotation.transform.rotation);
 
       return TypesPH.Alkaline;
@@ -254,7 +254,7 @@ public class PlayerStats : MonoBehaviour
       acid -= 7;
 
       Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
-      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 2f);
+      puddlePos = puddlePos + (-rotation.GetRotationDirection() * 3);
       Instantiate(spinslashAcidPuddle, puddlePos, rotation.transform.rotation);
 
       return TypesPH.Acidic;

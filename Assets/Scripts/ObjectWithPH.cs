@@ -106,6 +106,7 @@ public class ObjectWithPH : MonoBehaviour
     }
 
     public void instantiateParticles() {
+      
       if (particles != null) {
         Instantiate(particles, transform.position, Quaternion.identity);
         if (soundEffect != null) {

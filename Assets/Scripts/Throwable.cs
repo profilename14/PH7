@@ -74,6 +74,8 @@ public class Throwable : MonoBehaviour
             float phChange = Mathf.Abs(otherPH - ownPH.CurrentPH);
 
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(Mathf.Pow(phChange, 1.5f) * changeInPH);
+
+            audioSource.PlayOneShot(enemyImpactSound, 0.75F);
           }
 
 
@@ -136,6 +138,7 @@ public class Throwable : MonoBehaviour
 
         if(breaksOnImpact && isBeingThrown)
         {
+            audioSource.PlayOneShot(enemyImpactSound, 0.75F);
             Destroy(gameObject);
             if (destroyEffect != null)
             {

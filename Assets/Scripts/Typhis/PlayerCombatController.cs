@@ -311,6 +311,8 @@ public class PlayerCombatController : MonoBehaviour
             Debug.Log("ChargeSpinslash");
             rotationController.isFacingMouse = true;
             currentState = PlayerState.ChargeSpinslash;
+                playerAnim.ResetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
         }
         else if (name == "Spinslash")
         {
@@ -320,12 +322,19 @@ public class PlayerCombatController : MonoBehaviour
             if (spinslashElement == TypesPH.Alkaline) {
                 acidSlash =     false;
                 alkalineSlash = true;
+                //playerAnim.SetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
+
             } else if (spinslashElement == TypesPH.Acidic) {
                 acidSlash =     true;
                 alkalineSlash = false;
+                //playerAnim.SetTrigger("SpinslashAcidic");
+                playerAnim.ResetTrigger("SpinslashAlkaline");
             } else {
                 acidSlash =     false;
                 alkalineSlash = false;
+                playerAnim.ResetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
             }
             
             rotationController.isFacingMouse = false;

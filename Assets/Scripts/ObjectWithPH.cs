@@ -27,6 +27,7 @@ public class ObjectWithPH : MonoBehaviour
     private Rigidbody rigid;
     public bool canBeAttacked = false;
     public float phOnHit = 0;
+    public bool heals = false;
     public GameObject particles;
     [SerializeField] public AudioSource audioSource;
     [SerializeField] private AudioClip soundEffect;

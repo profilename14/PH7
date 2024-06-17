@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
+using UnityEngine.Windows.WebCam;
 
 public class PlayerAttackHitbox : MonoBehaviour
 {
@@ -149,8 +150,14 @@ public class PlayerAttackHitbox : MonoBehaviour
             if (phObject != null && phObject.canBeAttacked) {
                 if (phObject.phOnHit > 0) {
                     stats.changePH(phObject.phOnHit);
-                } else {
+                } else if (phObject.phOnHit > 0) {
                     stats.changeAcidity(-phObject.phOnHit);
+                } 
+                if (phObject.heals == true) {
+                    stats.health += 2;
+                    if (stats.health > 10) {
+                        stats.health = 10;
+                    }
                 }
                 phObject.ChangePH(-3);
                 phObject.instantiateParticles();

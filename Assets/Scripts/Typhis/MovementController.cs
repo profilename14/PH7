@@ -137,7 +137,7 @@ public class MovementController : MonoBehaviour
         { // Decrease cooldown
         }*/
 
-        if (Input.GetKeyDown(KeyCode.Space) && dashCooldownTimer <= 0)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire3")) && dashCooldownTimer <= 0)
         {
             combatController.bufferDash();
         }
@@ -194,23 +194,8 @@ public class MovementController : MonoBehaviour
 
         Vector3 moveDir = (camForward * vertical) + (camRight * horizontal);
 
-        if (GameManager.isControllerUsed) {
-          Vector3 inputCont = new Vector3( Input.GetAxis("Horizontal"), 0,
-                                           Input.GetAxis("Vertical"));
 
-          if (inputCont.magnitude > 1) {
-            inputCont.Normalize();
-          }
-
-          Vector3 input = camForward * inputCont.x + camRight * inputCont.y;
-
-          moveDir = input;
-
-
-        }
-        else {
-          moveDir.Normalize();
-        }
+        moveDir.Normalize();
 
 
         if (Mathf.Abs(moveDir.x) + Mathf.Abs(moveDir.z) > 0.0 ) { // If the player's moving
@@ -257,6 +242,13 @@ public class MovementController : MonoBehaviour
         // REVISIT FOR CONTROLLER SUPPORT
         horizontal = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
         vertical = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
+
+        if (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A)) {
+          horizontal = Input.GetAxis("Horizontal");
+        }
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S)) {
+          vertical = Input.GetAxis("Vertical");
+        }
     }
 
     private void OnTriggerStay(Collider other)

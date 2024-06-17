@@ -23,7 +23,7 @@ public class SceneSwitchTrigger : MonoBehaviour
 
     private void Update()
     {
-        if(touchingPlayer && isDoor && Input.GetKeyDown(KeyCode.E))
+        if(touchingPlayer && isDoor && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump")))
         {
             if (locked == false) {
                 player.transform.position = spawnPosition;

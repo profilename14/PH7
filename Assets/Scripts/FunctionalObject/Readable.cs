@@ -21,7 +21,7 @@ public class Readable : MonoBehaviour
 
     private void Update()
     {
-        if(nearPlayer && Input.GetKeyDown(KeyCode.E))
+        if(nearPlayer && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump")))
         {
             dialogueSystemTrigger.OnUse();
             activateableUI.hideUI();

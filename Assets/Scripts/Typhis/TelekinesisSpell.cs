@@ -28,7 +28,7 @@ public class TelekinesisSpell : MonoBehaviour
 
       if (!isCarryingObject) {
 
-        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire1")) {
           combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
@@ -98,7 +98,7 @@ public class TelekinesisSpell : MonoBehaviour
           Destroy(gameObject);
         }*/
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) {
 
           Debug.Log("Thrown");
           Instantiate(throwEffect, transform.position, Quaternion.identity);
@@ -106,7 +106,7 @@ public class TelekinesisSpell : MonoBehaviour
           combatController.objectWasThrown(true);
           Destroy(gameObject);
         }
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2")) {
 
           Debug.Log("Dropped");
           heldItem.Drop();

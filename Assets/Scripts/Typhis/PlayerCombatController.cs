@@ -152,7 +152,7 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Actionable");
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
             if (lastSwingNum == 0)
             {
@@ -202,7 +202,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             FireTripleBlast();
         }*/
-        if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
+        if ( Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2")) // || Input.GetButton("Fire2")
         {
             Telekinesis();
         }
@@ -217,7 +217,7 @@ public class PlayerCombatController : MonoBehaviour
 
         if (true)
         {
-            if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire3")))
+            if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
             {
                 holdTimer += Time.deltaTime;
 
@@ -241,7 +241,7 @@ public class PlayerCombatController : MonoBehaviour
                 holdTimer = 0;
             }
         }
-        if (Input.GetMouseButtonUp(0) && currentState == PlayerState.ChargeSpinslash) {
+        if ((Input.GetMouseButtonUp(0) || Input.GetButtonUp("Fire1")) && currentState == PlayerState.ChargeSpinslash) {
             playerAnim.SetTrigger("Spinslash");
             playerAnim.ResetTrigger("SpinslashCharge");
             playerAnim.ResetTrigger("Swing1");

@@ -53,6 +53,10 @@ public class RotationController : MonoBehaviour
       }
     }
 
+    /*if (Input.GetButton("Jump") && !Input.GetKeyDown(KeyCode.Space)) {
+      GameManager.isControllerUsed = true;
+    }*/
+
         if (Input.GetKeyDown(KeyCode.K))
     {
       if (!GameManager.isScreenshakeEnabled)
@@ -95,7 +99,7 @@ public class RotationController : MonoBehaviour
   public void snapToCurrentAngle() { // calls fixed update code, to be called between attacks and frames
       if (GameManager.isControllerUsed)
       {
-          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+          /*Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
           angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
           directionVec = camForward * input.x + camRight * input.y;
           directionVec.Normalize();
@@ -103,6 +107,21 @@ public class RotationController : MonoBehaviour
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
           {
               transform.rotation = Quaternion.Euler(0, angle - 45, 0);
+          }*/
+
+          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+          angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+          directionVec = camForward * input.x + camRight * input.y;
+          directionVec.Normalize();
+
+          if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+          }
+
+          if (input.x != 0 || input.y != 0)
+          {
+              transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
           }
 
       }
@@ -139,6 +158,25 @@ public class RotationController : MonoBehaviour
   }
 
   public void snapToCurrentMouseAngle() {
+    if (GameManager.isControllerUsed) {
+      return;
+      Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+      float angle2 = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+      directionVec = camForward * input.x + camRight * input.y;
+      directionVec.Normalize();
+
+      if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, angle2 - 90 - 45, 0)) == 180f)
+      {
+        angle2 -= 90;
+        //Debug.Log ("1 frame Flip");
+      }
+
+      if (input.x != 0 || input.y != 0)
+      {
+        transform.rotation = Quaternion.Euler(0, angle2 - 90 - 45, 0);
+      }
+      return;
+    }
     float h = Input.mousePosition.x - Screen.width / 2;
     float v = Input.mousePosition.y - Screen.height / 2;
     directionVec = new Vector3(h, 0, v);

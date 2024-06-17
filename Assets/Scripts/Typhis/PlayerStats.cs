@@ -28,7 +28,9 @@ public class PlayerStats : MonoBehaviour
 
     public Slider healthBar;
     public Slider PHBar;
+    public Slider PHBar2;
     public Slider AcidBar;
+    public Slider AcidBar2;
     public Image AlkalineIndicator;
     public Image AcidIndicator;
 
@@ -60,8 +62,11 @@ public class PlayerStats : MonoBehaviour
     {
         //DontDestroyOnLoad(this.gameObject);
       healthBar = GameObject.FindWithTag("Health Bar").GetComponent<Slider>();
-      PHBar = GameObject.FindWithTag("PH Bar").GetComponent<Slider>();
-      AcidBar = GameObject.FindWithTag("Acid Bar").GetComponent<Slider>();
+      GameObject PHUI = GameObject.FindWithTag("PH Bar");
+      PHBar = PHUI.transform.GetChild(0).GetComponent<Slider>();
+      PHBar2 = PHUI.transform.GetChild(1).GetComponent<Slider>();
+      AcidBar = PHUI.transform.GetChild(2).GetComponent<Slider>();
+      AcidBar2 = PHUI.transform.GetChild(3).GetComponent<Slider>();
 
       healthBar.maxValue= maxHealth;
 
@@ -132,17 +137,38 @@ public class PlayerStats : MonoBehaviour
       healthBar.value= health;
       PHBar.value = 4 + 80 * (ph / PH_DEFAULT);
       AcidBar.value = 16 + 80 * (acid / PH_DEFAULT);
+
       
       if (ph > 7) {
         AlkalineIndicator.enabled = true;
+        PHBar.value = 7;
+        PHBar2.value = (ph-7) / 7;
       } else {
         AlkalineIndicator.enabled = false;
+        PHBar.value = ((ph) / 7);
+        PHBar2.value = 0;
+
       }
 
       if (acid > 7) {
         AcidIndicator.enabled = true;
+        AcidBar.value = 7;
+        AcidBar2.value = (acid-7) / 7;
       } else {
         AcidIndicator.enabled = false;
+        AcidBar.value = ((acid) / 7);
+        AcidBar2.value = 0;
+
+      }
+
+
+      
+      if (ph > 7) {
+      } else {
+      }
+
+      if (acid > 7) {
+      } else {
       }
     }
 

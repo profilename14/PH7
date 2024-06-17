@@ -130,10 +130,11 @@ public class Throwable : MonoBehaviour
 
             }
         }
-        else if ( other.gameObject.CompareTag("AllowsBubble") ) {
+        else if ( other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Puddle")) {
           Physics.IgnoreCollision(
             other.gameObject.GetComponent<Collider>(),
             GetComponent<Collider>(), true);
+          return;
         }
 
         if(breaksOnImpact && isBeingThrown)

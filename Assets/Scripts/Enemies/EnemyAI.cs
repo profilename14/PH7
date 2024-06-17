@@ -64,6 +64,7 @@ public class EnemyAI : MonoBehaviour
     public float puddleTickInterval = 0.5f;
     private bool isDead = false;
     private float hitStopTimer = 0;
+    private float invincibilityTimer = 0;
 
     //private float armorRegenTimer = 0.0f;
     //[SerializeField] private float regenArmorStartSpeed = 3.0f; // Time in seconds until armor regens. Lower = faster.
@@ -134,6 +135,10 @@ public class EnemyAI : MonoBehaviour
 
     private void checkHealth()
     {
+        if (invincibilityTimer > 0) {
+            invincibilityTimer -= Time.deltaTime;
+        }
+        
         if (hitStopTimer > 0) {
             hitStopTimer -= Time.deltaTime;
             if (hitStopTimer <= 0) {
@@ -177,7 +182,14 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void TakeDamage(float damage, float changeInPh, float knockback, Vector3 knockbackDir, DamageSource source)
     {
-        
+
+        if (source == DamageSource.Sword) {
+            if (invincibilityTimer > 0) {
+                return;
+            } else {
+                invincibilityTimer = 0.22f;
+            }
+        }
 
         if(health <= 0)
         {

@@ -29,7 +29,7 @@ public class TelekinesisSpell : MonoBehaviour
       if (!isCarryingObject) {
 
         if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) {
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
 
@@ -68,7 +68,7 @@ public class TelekinesisSpell : MonoBehaviour
         // Lifespan stops ticking if this isn't the case
 
         if (heldItem == null) {
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
         //heldItem.transform.rotation = this.transform.rotation;
@@ -103,14 +103,14 @@ public class TelekinesisSpell : MonoBehaviour
           Debug.Log("Thrown");
           Instantiate(throwEffect, transform.position, Quaternion.identity);
           heldItem.Throw(transform.forward);
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(true);
           Destroy(gameObject);
         }
         if (Input.GetMouseButtonDown(1)) {
 
           Debug.Log("Dropped");
           heldItem.Drop();
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
 

@@ -33,6 +33,7 @@ public class EnemyArenaManager : MonoBehaviour
     public int currentWave = 0;
 
     public float waveDelay;
+    public float waveSpawnDelay = 0;
 
     private bool spawningEnemies;
 
@@ -72,6 +73,17 @@ public class EnemyArenaManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKey(KeyCode.K)) {
+            for(int i = 0; i < aliveEnemies.Count; i++)
+            {
+                //aliveEnemies.RemoveAt(i);
+                foreach(GameObject g in aliveEnemies)
+                {
+                    Destroy(g);
+                }
+            }
+        }
+
         if(aliveEnemies.Count == 0 && !spawningEnemies && activated)
         {
             if (currentWave < waves)
@@ -102,6 +114,7 @@ public class EnemyArenaManager : MonoBehaviour
         for(int i = 0; i < spawnPoints[waveNumber].spawnPoints.Length; i++)
         {
             if (spawnPoints[waveNumber].spawnPoints[i] == null || enemiesToSpawn[waveNumber].enemies[i] == null) continue;
+            yield return new WaitForSeconds(waveSpawnDelay);
 
             GameObject enemy = Instantiate(enemiesToSpawn[waveNumber].enemies[i], spawnPoints[waveNumber].spawnPoints[i]);
             enemy.GetComponent<EnemyAI>().AlertEnemy();

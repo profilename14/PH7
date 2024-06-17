@@ -128,8 +128,10 @@ public class PlayerStats : MonoBehaviour
         health = maxHealth;
       }
 
-      if (health < 0) {
-            music.StopMusic();
+      if (health <= 0) {
+            if (music != null) {
+              music.StopMusic();
+            }
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }
@@ -194,7 +196,9 @@ public class PlayerStats : MonoBehaviour
       health -= damage;
 
       if (health < 0) {
-            music.StopMusic();
+            if (music != null) {
+              music.StopMusic();
+            }
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }

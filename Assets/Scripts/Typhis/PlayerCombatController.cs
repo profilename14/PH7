@@ -456,16 +456,18 @@ public class PlayerCombatController : MonoBehaviour
         }
     }
 
-    public void objectWasThrown() {
-      telekinesisCastTimer = telekinesisSpellCooldown;
+    public void objectWasThrown(bool wasThrown) { // false if dropped / cancelled
       rotationController.isFacingMouse = false;
       castingBubble = false;
       Debug.Log("Telekinesis Done");
-      playerAnim.ResetTrigger("Swing1");
-      playerAnim.ResetTrigger("Swing2");
-      playerAnim.ResetTrigger("Swing3");
-      playerAnim.ResetTrigger("Dash");
-      playerAnim.SetTrigger("Batting");
+      if (wasThrown) {
+        telekinesisCastTimer = telekinesisSpellCooldown;
+        playerAnim.ResetTrigger("Swing1");
+        playerAnim.ResetTrigger("Swing2");
+        playerAnim.ResetTrigger("Swing3");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.SetTrigger("Batting");
+      }
     }
 
     public bool isActionable()

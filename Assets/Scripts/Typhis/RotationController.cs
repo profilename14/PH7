@@ -159,7 +159,7 @@ public class RotationController : MonoBehaviour
 
   public void snapToCurrentMouseAngle() {
     if (GameManager.isControllerUsed) {
-      return;
+
       Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
       float angle2 = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
       directionVec = camForward * input.x + camRight * input.y;

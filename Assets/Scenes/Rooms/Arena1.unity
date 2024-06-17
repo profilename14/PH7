@@ -3870,6 +3870,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5386359370979381672, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
+      propertyPath: locked
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5658615452905108328, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
       propertyPath: m_Name
       value: Door (1)
@@ -3878,9 +3882,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5658615452905108328, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 128998892}
     - targetCorrespondingSourceObject: {fileID: 5658615452905108328, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
       insertIndex: -1
       addedObject: {fileID: 128998891}
@@ -3914,22 +3915,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 6, z: 4}
   m_Center: {x: 2, y: 5, z: 0}
---- !u!114 &128998892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128998890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ec77cd089848e745b4a193abefd9b75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: Grand Hall
-  spawnPosition: {x: 0, y: 0, z: 0}
-  isDoor: 1
-  locked: 0
 --- !u!4 &128998895 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3041528039825056609, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
@@ -57016,9 +57001,21 @@ PrefabInstance:
       propertyPath: locked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5386359370979381672, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
+      propertyPath: sceneToLoad
+      value: Hallway1
+      objectReference: {fileID: 0}
     - target: {fileID: 5658615452905108328, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
       propertyPath: m_Name
       value: Door (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6316819229967022417, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
+      propertyPath: m_text
+      value: 'Press E to return
+
+        to the start
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -236,6 +236,7 @@ MonoBehaviour:
   armorBroken: 0
   isHitstunned: 0
   wasHitstunned: 0
+  canBeHitstunned: 1
   inInterruptFrames: 0
   inPuddle: 0
   puddleTickInterval: 0.5
@@ -1180,6 +1181,10 @@ PrefabInstance:
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563262460808067675, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Color.b

@@ -19,6 +19,7 @@ public class RotationController : MonoBehaviour
   bool isControllerUsed = false;
   public bool canTurn = true;
   public bool isFacingMouse = false;
+  public bool controllerBufferLock = false;
 
   private Vector3 camForward;
   private Vector3 camRight;
@@ -99,6 +100,7 @@ public class RotationController : MonoBehaviour
   public void snapToCurrentAngle() { // calls fixed update code, to be called between attacks and frames
       if (GameManager.isControllerUsed)
       {
+
           /*Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
           angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
           directionVec = camForward * input.x + camRight * input.y;
@@ -159,6 +161,10 @@ public class RotationController : MonoBehaviour
 
   public void snapToCurrentMouseAngle() {
     if (GameManager.isControllerUsed) {
+
+      if (controllerBufferLock) {
+        return;
+      }
 
       Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
       float angle2 = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;

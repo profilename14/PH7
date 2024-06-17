@@ -83,6 +83,9 @@ public class PlayerCombatController : MonoBehaviour
     public bool alkalineSlash = false;
     public bool acidSlash = false;
 
+    private float controllerLockTimer = 0f;
+
+
     
 
     // Start is called before the first frame update
@@ -116,10 +119,18 @@ public class PlayerCombatController : MonoBehaviour
         {
           telekinesisCastTimer -= Time.deltaTime;
         }
+        if (controllerLockTimer > 0) {
+            controllerLockTimer -= Time.deltaTime;
+            if (controllerLockTimer <= 0) {
+                rotationController.controllerBufferLock = false;
+            }
+        }
 
         if (currentState == PlayerState.Idle)
         {
             inRecovery = false;
+            rotationController.controllerBufferLock = false;
+            controllerLockTimer = 0;
 
             //Time.timeScale = 1f;
 
@@ -406,6 +417,10 @@ public class PlayerCombatController : MonoBehaviour
     private void inRecoveryFrames()
     {
         inRecovery = true;
+        if (GameManager.isControllerUsed) {
+            rotationController.controllerBufferLock = true;
+            controllerLockTimer = 0.04f;
+        }
     }
 
     private void FireTripleBlast() {

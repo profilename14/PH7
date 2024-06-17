@@ -21,6 +21,8 @@ public class EnemyArenaManager : MonoBehaviour
     public SpawnPoint[] spawnPoints;
 
     public EnemyWave[] enemiesToSpawn;
+    
+    public EnemyWave[] objectsToEnable; // Non enemy waves but it works considering they're gameobjects
 
     public bool spawnOnStart;
 
@@ -50,6 +52,7 @@ public class EnemyArenaManager : MonoBehaviour
         {
             activated = true;
             spawningEnemies = true;
+            StartCoroutine(EnableObjectSet(0, 0));
             StartCoroutine(SpawnEnemyWave(0, 0));
             foreach(GameObject g in wallsToEnable)
             {
@@ -75,6 +78,7 @@ public class EnemyArenaManager : MonoBehaviour
             {
                 //Debug.Log("Spawned from next wave");
                 spawningEnemies = true;
+                StartCoroutine(EnableObjectSet(currentWave, 0));
                 StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
             }
             else
@@ -109,6 +113,20 @@ public class EnemyArenaManager : MonoBehaviour
         }
         spawningEnemies = false;
         currentWave++;
+    }
+
+    IEnumerator EnableObjectSet(int waveNumber, float delay)
+    {
+        if (objectsToEnable.Length <= waveNumber) {
+            yield break;
+        }
+        for(int i = 0; i < objectsToEnable[waveNumber].enemies.Length; i++)
+        {
+            yield return new WaitForSeconds(delay);
+            if (objectsToEnable[waveNumber].enemies[i] == null) continue;
+
+            objectsToEnable[waveNumber].enemies[i].SetActive(true);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

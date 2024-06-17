@@ -191,15 +191,22 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        if(health <= 0)
-        {
-            if (isDead) return;
-            else fsm.SetCurrentState("Die");
-        }
+        
 
         if (source == DamageSource.Puddle) {
             if ((changeInPh < 0 && naturalPH == TypesPH.Alkaline) || (changeInPh > 0 && naturalPH == TypesPH.Acidic)) {
                 debuffTimer = Mathf.Clamp(debuffTimer + Mathf.Abs(changeInPh), -1, debuffTimerMax);
+                if (damage > 0) {
+                    if(health <= 15)
+                    {
+                        return;
+                    }
+                    if (armor > 0) {
+                        armor -= damage;
+                    } else {
+                        health -= damage;
+                    }
+                }
             }
             
             if ((changeInPh > 0 && naturalPH == TypesPH.Alkaline) || (changeInPh < 0 && naturalPH == TypesPH.Acidic)) {
@@ -207,6 +214,12 @@ public class EnemyAI : MonoBehaviour
             }
             
             return; // quick fix to the sound bug
+        }
+
+        if(health <= 0)
+        {
+            if (isDead) return;
+            else fsm.SetCurrentState("Die");
         }
 
         float displayedDamage = 0;

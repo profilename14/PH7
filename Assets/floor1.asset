@@ -1030,7 +1030,7 @@ MonoBehaviour:
   - id: 7
     fields:
     - title: Title
-      value: tutorial/scuttlers
+      value: tutorial/throwSmallEnemies
       type: 0
       typeString: 
     - title: Description
@@ -1108,7 +1108,7 @@ MonoBehaviour:
       isGroup: 0
       nodeColor: 
       delaySimStatus: 0
-      falseConditionAction: 
+      falseConditionAction: Block
       conditionPriority: 2
       outgoingLinks:
       - originConversationID: 7
@@ -1151,8 +1151,8 @@ MonoBehaviour:
         type: 0
         typeString: 
       - title: Dialogue Text
-        value: Scuttlers are another basic enemy. They relentlessly pursue you, doing
-          a small amount of damage with every attack.
+        value: 'All foes have two bars of life: armor and health. Smaller enemies
+          can be grabbed and thrown when their armor is lost.'
         type: 0
         typeString: 
       - title: Sequence

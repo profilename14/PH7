@@ -18,10 +18,16 @@ public class Hazard : MonoBehaviour
     private float damageTimer = 0;
     private float damageRate = 0.4f; // How many seconds until the next hit to the enemy happens
 
+    
+    private float playerDamageTimer = 0;
+    private float playerDamageRate = 0.6f; // How many seconds until the next hit to the enemy happens
+
     public EnemyAI.DamageSource damageSourceType;
 
     private Vector3 startScale;
     private Vector3 newScale;
+    [SerializeField] private bool damagesAlkaline = false;
+    [SerializeField] private bool damagesPlayer = false;
 
     void Start() {
       curLifespan = maxLifespan;
@@ -43,12 +49,19 @@ public class Hazard : MonoBehaviour
           Destroy(gameObject);
         }
       }
+      if (playerDamageTimer > 0) {
+        playerDamageTimer -= Time.deltaTime * 0.2f;
+      }
+      
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Enemy")
         {
+            if (other.gameObject.GetComponent<EnemyAI>() != null && damagesAlkaline && other.gameObject.GetComponent<EnemyAI>().naturalPH == TypesPH.Acidic) {
+              return; // Don't do damage to acidic enemies if your a spike puddle
+            }
             if (other.gameObject.GetComponent<EnemyAI>() != null) other.gameObject.GetComponent<EnemyAI>().EnteredPuddle(damage, changeInPH);
         }
         if (other.gameObject.tag == "Player")
@@ -95,12 +108,21 @@ public class Hazard : MonoBehaviour
             // Drains health and pH for now, should probably respect IFrames for HP later.
 
 
-            if (damageTimer >= damageRate) {
+            if (playerDamageTimer >= playerDamageRate && damagesPlayer) {
               if (other.gameObject.GetComponent<MovementController>().isDashing) {
                 return; // hazard immunity when dashing (you jump over it)
               }
               //other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * damageRate;
-              //other.gameObject.GetComponent<PlayerStats>().health -= damage * damageRate;
+              if (damagesPlayer == true) {
+                if (other.gameObject.GetComponent<PlayerStats>().health > 1.1) {
+                  other.gameObject.GetComponent<PlayerStats>().health -= 1;
+                  playerDamageTimer = 0;
+                }
+                
+              }
+            }
+            else {
+              playerDamageTimer += Time.deltaTime;
             }
             if (!permanent) {
               //curLifespan -= deltaPhysics;
@@ -109,7 +131,7 @@ public class Hazard : MonoBehaviour
               }
             }
 
-
+            
 
         }
         else if (other.gameObject.tag == "Enemy") {

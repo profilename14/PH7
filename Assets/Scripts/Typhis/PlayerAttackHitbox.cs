@@ -150,7 +150,7 @@ public class PlayerAttackHitbox : MonoBehaviour
             if (phObject != null && phObject.canBeAttacked) {
                 if (phObject.phOnHit > 0) {
                     stats.changePH(phObject.phOnHit);
-                } else if (phObject.phOnHit > 0) {
+                } else if (phObject.phOnHit < 0) {
                     stats.changeAcidity(-phObject.phOnHit);
                 } 
                 if (phObject.heals == true) {

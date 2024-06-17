@@ -197,9 +197,9 @@ public class PlayerAttackHitbox : MonoBehaviour
 
     private float getDamageMult(EnemyAI opponent) {
         if (opponent.naturalPH == TypesPH.Alkaline) {
-            return (1f * (stats.acid / 14f) + 1f);
+            return (0f * (stats.acid / 14f) + 1f);
         } else if (opponent.naturalPH == TypesPH.Acidic) {
-            return (1f * (stats.ph / 14f) + 1f);
+            return (0f * (stats.ph / 14f) + 1f);
         } else {
             return 1;
         }

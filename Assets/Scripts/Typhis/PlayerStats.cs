@@ -269,6 +269,9 @@ public class PlayerStats : MonoBehaviour
   public TypesPH spinslashStarted() {
     if (ph > 7) {
       ph -= 7;
+      if (ph == 7) {
+        ph= 7.01f;
+      }
 
       Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
       puddlePos = puddlePos + (-rotation.GetRotationDirection() * 3f);
@@ -278,6 +281,9 @@ public class PlayerStats : MonoBehaviour
     }
     else if (acid > 7) {
       acid -= 7;
+      if (acid == 7) {
+        acid = 7.01f;
+      }
 
       Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
       puddlePos = puddlePos + (-rotation.GetRotationDirection() * 3);

@@ -153,7 +153,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                     stats.changeAcidity(-phObject.phOnHit);
                 } 
                 if (phObject.heals == true) {
-                    stats.health += 2;
+                    stats.health += 3;
                     if (stats.health > 10) {
                         stats.health = 10;
                     }

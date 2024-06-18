@@ -73,7 +73,7 @@ public class EnemyArenaManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.K) && false) {
+        if (Input.GetKey(KeyCode.K) && true) {
             for(int i = 0; i < aliveEnemies.Count; i++)
             {
                 //aliveEnemies.RemoveAt(i);

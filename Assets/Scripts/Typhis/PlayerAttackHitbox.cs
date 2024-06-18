@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 //using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
-using UnityEngine.Windows.WebCam;
 
 public class PlayerAttackHitbox : MonoBehaviour
 {
@@ -124,7 +123,7 @@ public class PlayerAttackHitbox : MonoBehaviour
                 OnHitVFX vfx = other.gameObject.GetComponent<OnHitVFX>();
                 vfx.HitVFX();
                 hitStopTimer = hitStop;
-                playerAnim.speed = 0.0f;
+                playerAnim.speed = 1.0f;
                 other.GetComponent<EnemyAI>().hitPause();
             }
 

@@ -412,7 +412,7 @@ public class EnemyAI : MonoBehaviour
 
     public void hitPause() {
         hitStopTimer = 0.1f;
-        anim.speed = 0.0f;
+        anim.speed = 1.0f;
     }
 
     public void Die()

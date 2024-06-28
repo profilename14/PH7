@@ -247,14 +247,14 @@ public class VitriclawAI : EnemyAI
         };
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        if(state == "Left Claw")
+        if(currentState == "Left Claw")
         {
             GetComponent<Rigidbody>().AddForce(transform.forward * leftClawForwardForce, ForceMode.Impulse);
             ai.enableRotation = false;
         }
-        else if(state == "Jump")
+        else if(currentState == "Jump")
         {
             inPuddle = false;
             target.transform.position = player.transform.position;
@@ -264,7 +264,7 @@ public class VitriclawAI : EnemyAI
             //ai.maxSpeed = 50;
             //ai.acceleration = 10000;
         }
-        else if(state == "Right Claw")
+        else if(currentState == "Right Claw")
         {
             ai.enableRotation = true;
             ai.isStopped = false;
@@ -307,7 +307,7 @@ public class VitriclawAI : EnemyAI
         ai.isStopped = true;
         ai.enableRotation = false;
         audioSource.PlayOneShot(jumpLandSound, 0.375F);
-        PauseStartupForSeconds(jumpLandingDelay);
+        //PauseStartupForSeconds(jumpLandingDelay);
     }
 
     public void EndAttack()

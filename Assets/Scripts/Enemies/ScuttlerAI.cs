@@ -151,9 +151,9 @@ public class ScuttlerAI : EnemyAI
         };
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        if(state == "Left Claw")
+        if(currentState == "Left Claw")
         {
             GetComponent<Rigidbody>().AddForce(transform.forward * leftClawForwardForce, ForceMode.Impulse);
             ai.enableRotation = false;

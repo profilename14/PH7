@@ -262,15 +262,15 @@ public class WarStriderAI : EnemyAI
         };
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        if(state == "Charge")
+        if(currentState == "Charge")
         {
             ai.enableRotation = true;
             ai.isStopped = true;
             DashImpulse();
         }
-        else if(state == "Spit")
+        else if(currentState == "Spit")
         {
             ai.enableRotation = true;
             ai.isStopped = true;

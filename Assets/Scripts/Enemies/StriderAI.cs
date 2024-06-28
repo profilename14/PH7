@@ -130,9 +130,9 @@ public class StriderAI : EnemyAI
         };
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        if(state == "Charge")
+        if(currentState == "Charge")
         {
             ai.enableRotation = false;
             ai.isStopped = true;

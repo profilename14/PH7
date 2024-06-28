@@ -16,6 +16,7 @@ public class EnemyAI : MonoBehaviour
     public FSM fsm;
     public RichAI ai;
     public Animator anim;
+    public Renderer[] renderers;
     public string currentState;
 
     protected GameObject player;
@@ -404,10 +405,24 @@ public class EnemyAI : MonoBehaviour
     public IEnumerator PauseStartup(float seconds)
     {
         anim.speed = 0;
+        SetEmissionColor(new Color(40, 40, 40));
 
         yield return new WaitForSeconds(seconds);
 
         anim.speed = 1;
+        SetEmissionColor(new Color(0, 0, 0));
+    }
+
+    public void SetEmissionColor(Color c)
+    {
+        foreach(Renderer m in renderers)
+        {
+            foreach(Material mat in m.materials)
+            {
+                mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", c);
+            }
+        }
     }
 
     public void hitPause() {

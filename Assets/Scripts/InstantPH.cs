@@ -30,16 +30,26 @@ public class InstantPH : MonoBehaviour
         }
         if (other.gameObject.tag == "HasPH")
         {
+             Debug.Log("Hasph trigger");
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
         }
     }
 
     private void OnCollisionEnter(Collision other)
     {
+      Debug.Log("AAAAAAAAAAAAAAA");
       if (other.gameObject.tag == "HasPH")
       {
-          other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
+          Debug.Log("Collision");
+          //other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
       }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "HasPH") {
+            other.gameObject.GetComponent<ObjectWithPH>().ChangePH(pHChange);
+        }
     }
 
     IEnumerator DestroySelf()

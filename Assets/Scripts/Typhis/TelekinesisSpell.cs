@@ -16,6 +16,8 @@ public class TelekinesisSpell : MonoBehaviour
     public Collider TyphisCollider;
     [SerializeField] GameObject throwEffect;
 
+
+
     void Start() {
       curLifespan = 0.5f;
       throwableOffset = new Vector3(0, 0.1f, 0);
@@ -26,8 +28,8 @@ public class TelekinesisSpell : MonoBehaviour
 
       if (!isCarryingObject) {
 
-        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) {
-          combatController.objectWasThrown();
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire1")) {
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
 
@@ -39,7 +41,7 @@ public class TelekinesisSpell : MonoBehaviour
         if (combatController != null) { // When were sure we've linked the player to the spell:
           Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
           Throwable target = null;
-          float targetValue = 0;
+          //float targetValue = 0;
 
           foreach (var other in hitColliders)
           {
@@ -66,7 +68,7 @@ public class TelekinesisSpell : MonoBehaviour
         // Lifespan stops ticking if this isn't the case
 
         if (heldItem == null) {
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
         //heldItem.transform.rotation = this.transform.rotation;
@@ -96,19 +98,19 @@ public class TelekinesisSpell : MonoBehaviour
           Destroy(gameObject);
         }*/
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) {
 
           Debug.Log("Thrown");
           Instantiate(throwEffect, transform.position, Quaternion.identity);
-          heldItem.Throw(-transform.forward);
-          combatController.objectWasThrown();
+          heldItem.Throw(transform.forward);
+          combatController.objectWasThrown(true);
           Destroy(gameObject);
         }
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2")) {
 
           Debug.Log("Dropped");
           heldItem.Drop();
-          combatController.objectWasThrown();
+          combatController.objectWasThrown(false);
           Destroy(gameObject);
         }
 

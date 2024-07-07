@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerCombatController : MonoBehaviour
     Animator playerAnim;
     RotationController rotationController;
     MovementController movementController;
+    PlayerStats stats;
     [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
@@ -49,7 +51,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private bool hasClicked = false;
 
-    public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash }
+    public enum PlayerState { Idle, Swing1, Swing2, Swing3, Dash, ChargeSpinslash, Spinslash }
 
     public static PlayerState currentState;
 
@@ -64,6 +66,8 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private GameObject telekinesisSpellPrefab;
     [SerializeField] private float telekinesisSpellCooldown = 2.5f;
     [HideInInspector] public float telekinesisCastTimer = 0f;
+    [HideInInspector] public bool castingBubble = false;
+
 
     public bool isFacingMouse = false;
 
@@ -76,12 +80,21 @@ public class PlayerCombatController : MonoBehaviour
 
     public int lastSwingNum;
 
+    public bool alkalineSlash = false;
+    public bool acidSlash = false;
+
+    private float controllerLockTimer = 0f;
+
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
         movementController = transform.parent.parent.GetComponent<MovementController>();
+        stats = transform.parent.parent.GetComponent<PlayerStats>();
 
         currentState = PlayerState.Idle;
 
@@ -106,10 +119,18 @@ public class PlayerCombatController : MonoBehaviour
         {
           telekinesisCastTimer -= Time.deltaTime;
         }
+        if (controllerLockTimer > 0) {
+            controllerLockTimer -= Time.deltaTime;
+            if (controllerLockTimer <= 0) {
+                rotationController.controllerBufferLock = false;
+            }
+        }
 
         if (currentState == PlayerState.Idle)
         {
             inRecovery = false;
+            rotationController.controllerBufferLock = false;
+            controllerLockTimer = 0;
 
             //Time.timeScale = 1f;
 
@@ -133,7 +154,7 @@ public class PlayerCombatController : MonoBehaviour
             }
         }
 
-        if (currentState == PlayerState.Idle || inRecovery)
+        if (currentState == PlayerState.Idle || inRecovery || currentState == PlayerState.ChargeSpinslash)
         {
             playerAnim.SetTrigger("Actionable");
         }
@@ -142,10 +163,11 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Actionable");
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
         {
             if (lastSwingNum == 0)
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
@@ -155,6 +177,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if((currentState == PlayerState.Swing1) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 1))
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing2");
                 playerAnim.SetTrigger("Swing2");
@@ -164,6 +187,7 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if ((currentState == PlayerState.Swing2) || (currentState == PlayerState.Idle && comboResetTimer < timeToComboReset && lastSwingNum == 2))
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing3");
                 playerAnim.SetTrigger("Swing3");
@@ -173,12 +197,14 @@ public class PlayerCombatController : MonoBehaviour
             }
             else if (currentState == PlayerState.Swing3)
             {
+                hasClicked = true;
                 //playAttackSound();
                 //Debug.Log("Setting swing1");
                 playerAnim.SetTrigger("Swing1");
                 playerAnim.ResetTrigger("Dash");
                 playerAnim.ResetTrigger("Swing2");
                 playerAnim.ResetTrigger("Swing3");
+                holdTimer = -thrustHoldTime * 0.75f;
             }
         }
 
@@ -187,7 +213,7 @@ public class PlayerCombatController : MonoBehaviour
         {
             FireTripleBlast();
         }*/
-        if ( Input.GetMouseButtonDown(1) ) // || Input.GetButton("Fire2")
+        if ( Input.GetMouseButtonDown(1) || Input.GetButtonDown("Fire2")) // || Input.GetButton("Fire2")
         {
             Telekinesis();
         }
@@ -200,19 +226,24 @@ public class PlayerCombatController : MonoBehaviour
             playerAnim.ResetTrigger("Dash");
         }*/
 
-       /* if (!thrustIsDashAttack)
+        if (true)
         {
             if (hasClicked && (Input.GetMouseButton(0) || Input.GetButton("Fire1")))
             {
                 holdTimer += Time.deltaTime;
 
-                if (holdTimer >= thrustHoldTime * 10f) // Disabled right now as it doesn't deal damage
+                if (holdTimer >= thrustHoldTime * 1.5f)
                 {
                     hasClicked = false;
                     holdTimer = 0;
-                    playerAnim.SetTrigger("Thrust");
-                    playerAnim.ResetTrigger("Swing");
+                    playerAnim.SetTrigger("SpinslashCharge");
+                    playerAnim.SetTrigger("Actionable");
+                    playerAnim.ResetTrigger("Spinslash");
+                    playerAnim.ResetTrigger("Swing1");
+                    playerAnim.ResetTrigger("Swing2");
+                    playerAnim.ResetTrigger("Swing3");
                     playerAnim.ResetTrigger("Dash");
+                    
                 }
             }
             else
@@ -221,7 +252,15 @@ public class PlayerCombatController : MonoBehaviour
                 holdTimer = 0;
             }
         }
-        else
+        if ((Input.GetMouseButtonUp(0) || Input.GetButtonUp("Fire1")) && currentState == PlayerState.ChargeSpinslash) {
+            playerAnim.SetTrigger("Spinslash");
+            playerAnim.ResetTrigger("SpinslashCharge");
+            playerAnim.ResetTrigger("Swing1");
+            playerAnim.ResetTrigger("Swing2");
+            playerAnim.ResetTrigger("Swing3");
+            playerAnim.ResetTrigger("Dash");
+        }
+        /*else
         {
             if((Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) && inDash)
             {
@@ -278,6 +317,41 @@ public class PlayerCombatController : MonoBehaviour
             lastSwingNum = 3;
             currentState = PlayerState.Swing3;
         }
+        else if (name == "ChargeSpinslash")
+        {
+            Debug.Log("ChargeSpinslash");
+            rotationController.isFacingMouse = true;
+            currentState = PlayerState.ChargeSpinslash;
+                playerAnim.ResetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
+        }
+        else if (name == "Spinslash")
+        {
+            Debug.Log("Spinslash");
+            lastSwingNum = 3;
+            TypesPH spinslashElement = stats.spinslashStarted();
+            if (spinslashElement == TypesPH.Alkaline) {
+                acidSlash =     false;
+                alkalineSlash = true;
+                //playerAnim.SetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
+
+            } else if (spinslashElement == TypesPH.Acidic) {
+                acidSlash =     true;
+                alkalineSlash = false;
+                //playerAnim.SetTrigger("SpinslashAcidic");
+                playerAnim.ResetTrigger("SpinslashAlkaline");
+            } else {
+                acidSlash =     false;
+                alkalineSlash = false;
+                playerAnim.ResetTrigger("SpinslashAlkaline");
+                playerAnim.ResetTrigger("SpinslashAcidic");
+            }
+            
+            rotationController.isFacingMouse = false;
+            
+            currentState = PlayerState.Spinslash;
+        }
     }
 
     private void initiateSwing()
@@ -308,6 +382,9 @@ public class PlayerCombatController : MonoBehaviour
     {
         inDash = true;
         inRecovery = false;
+        if (!castingBubble) {
+            rotationController.isFacingMouse = false;
+        }
 
         movementController.startDash();
 
@@ -340,6 +417,10 @@ public class PlayerCombatController : MonoBehaviour
     private void inRecoveryFrames()
     {
         inRecovery = true;
+        if (GameManager.isControllerUsed) {
+            rotationController.controllerBufferLock = true;
+            controllerLockTimer = 0.03f;
+        }
     }
 
     private void FireTripleBlast() {
@@ -364,11 +445,12 @@ public class PlayerCombatController : MonoBehaviour
     }
 
     private void Telekinesis() {
-      if (telekinesisCastTimer > 0 || inRecovery || rotationController.isFacingMouse == true) {
+      if (telekinesisCastTimer > 0 || inRecovery || castingBubble == true) {
         return;
       } else {
         telekinesisCastTimer = telekinesisSpellCooldown;
       }
+      castingBubble = true;
 
       Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
 
@@ -389,14 +471,27 @@ public class PlayerCombatController : MonoBehaviour
         {
             float pitchMod = Random.Range(-0.25f, 0.25f);
             soundEffects.pitch = 1 + pitchMod;
-            soundEffects.PlayOneShot(swordSwoosh, 0.375F);
+            if (currentState == PlayerState.Spinslash) {
+                soundEffects.PlayOneShot(swordSwoosh, 0.925F);
+            } else {
+                soundEffects.PlayOneShot(swordSwoosh, 0.725F);
+            }
+            
         }
     }
 
-    public void objectWasThrown() {
-      telekinesisCastTimer = telekinesisSpellCooldown;
+    public void objectWasThrown(bool wasThrown) { // false if dropped / cancelled
       rotationController.isFacingMouse = false;
+      castingBubble = false;
       Debug.Log("Telekinesis Done");
+      if (wasThrown) {
+        telekinesisCastTimer = telekinesisSpellCooldown;
+        playerAnim.ResetTrigger("Swing1");
+        playerAnim.ResetTrigger("Swing2");
+        playerAnim.ResetTrigger("Swing3");
+        playerAnim.ResetTrigger("Dash");
+        playerAnim.SetTrigger("Batting");
+      }
     }
 
     public bool isActionable()

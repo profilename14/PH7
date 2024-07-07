@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+//using System.Numerics;
 using UnityEngine;
 
 // Used by spikes, acid puddles, and alkaline puddles.
@@ -11,6 +12,7 @@ public class Throwable : MonoBehaviour
     [SerializeField] private float knockback;
     public bool isBeingThrown;
     public bool isBeingCarried;
+    private Vector3 thrownDirection;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a
     public float health = 1;
     public bool breaksOnImpact = true;
@@ -19,6 +21,7 @@ public class Throwable : MonoBehaviour
 
     // Leave this null to not make anything, in the case of say the rock
     [SerializeField] private GameObject destroyEffect; // Anything to make on destruction, (like explosions)
+    [SerializeField] private GameObject puddleEffect; // Anything to make on destruction, (like puddles)
     private AudioSource audioSource;
     [SerializeField] private AudioClip enemyImpactSound;
 
@@ -44,6 +47,7 @@ public class Throwable : MonoBehaviour
       isBeingCarried = false;
       rb.AddForce(bubbleAngle * thrownVelocity, ForceMode.Impulse);
       isBeingThrown = true;
+      thrownDirection = bubbleAngle * thrownVelocity;
     }
     public void Drop() {
       isBeingCarried = false;
@@ -60,6 +64,8 @@ public class Throwable : MonoBehaviour
           // Ensure this doesn't cause I frames later
           if (!usesOwnPH) {
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(changeInPH);
+
+            
           } else {
             float otherPH = other.gameObject.GetComponent<ObjectWithPH>().CurrentPH;
 
@@ -68,19 +74,10 @@ public class Throwable : MonoBehaviour
             float phChange = Mathf.Abs(otherPH - ownPH.CurrentPH);
 
             other.gameObject.GetComponent<ObjectWithPH>().ChangePH(Mathf.Pow(phChange, 1.5f) * changeInPH);
+
+            audioSource.PlayOneShot(enemyImpactSound, 0.75F);
           }
 
-          health -= 1;
-
-          if (health <= 0) {
-            Destroy(gameObject);
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-            }
-          } else {
-            //isBeingThrown = false;
-            isBeingCarried = false;
-          }
 
         }
         else if (other.gameObject.tag == "Enemy") {
@@ -118,61 +115,43 @@ public class Throwable : MonoBehaviour
             }
 
 
-            if(this.gameObject.CompareTag("Enemy"))
+            if (this.gameObject.CompareTag("Enemy"))
             {
                 //buggy
                 //GetComponent<EnemyAI>().TakeDamage(damage, -changeInPH, 0, Vector3.zero, EnemyAI.DamageSource.Rock);
             }
 
-          health -= 1;
-
-          if (health <= 0) {
-            Destroy(gameObject);
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-            }
-          } else {
-            //isBeingThrown = false;
-            isBeingCarried = false;
-          }
-
-
         }
         else if (other.gameObject.CompareTag("Switch")) {
-          Debug.Log("AAAAAAAAAAAAAA");
             if (other.gameObject.GetComponent<Switch>() != null) {
               //if (destroyEffect == null) {
                 other.gameObject.GetComponent<Switch>().Toggle(); // only rocks activate switches
               //}
 
             }
-            if (destroyEffect != null) {
-              Instantiate(destroyEffect, transform.position, Quaternion.identity);
-            }
-            health -= 1f; // Leeway for collision jank
-            if (health <= 0) {
-              Destroy(gameObject);
-            }
         }
-        else if ( other.gameObject.CompareTag("AllowsBubble") ) {
+        else if ( other.gameObject.CompareTag("AllowsBubble") || other.gameObject.CompareTag("Puddle")) {
           Physics.IgnoreCollision(
             other.gameObject.GetComponent<Collider>(),
             GetComponent<Collider>(), true);
+          return;
         }
-        else if (breaksOnImpact) {
-          if ( other.gameObject.CompareTag("Wall") ) {
-            if (isBeingThrown) {
-              health -= 9f; // Leeway for collision jank
-              if (health <= 0) {
-                Destroy(gameObject);
 
-                if (destroyEffect != null) {
-                  Instantiate(destroyEffect, transform.position, Quaternion.identity);
-                }
-              }
+        if(breaksOnImpact && isBeingThrown)
+        {
+            audioSource.PlayOneShot(enemyImpactSound, 0.75F);
+            Destroy(gameObject);
+            if (destroyEffect != null)
+            {
+                Instantiate(destroyEffect, transform.position, Quaternion.identity);
             }
-          }
-        }
+            if (puddleEffect != null)
+            {
+                Vector3 puddlePos = new Vector3(transform.position.x, -0.85f, transform.position.z);
+                puddlePos = puddlePos + (thrownDirection * 0.05f);
+                Instantiate(puddleEffect, puddlePos, Quaternion.identity);
 
+            }
+        }
     }
 }

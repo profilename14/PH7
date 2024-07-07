@@ -21,6 +21,8 @@ public class EnemyArenaManager : MonoBehaviour
     public SpawnPoint[] spawnPoints;
 
     public EnemyWave[] enemiesToSpawn;
+    
+    public EnemyWave[] objectsToEnable; // Non enemy waves but it works considering they're gameobjects
 
     public bool spawnOnStart;
 
@@ -31,6 +33,7 @@ public class EnemyArenaManager : MonoBehaviour
     public int currentWave = 0;
 
     public float waveDelay;
+    public float waveSpawnDelay = 0;
 
     private bool spawningEnemies;
 
@@ -40,6 +43,9 @@ public class EnemyArenaManager : MonoBehaviour
 
     private bool activated = false;
 
+    [SerializeField] private bool lockedDoor = false;
+    [SerializeField] SceneSwitchTrigger doorPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +53,12 @@ public class EnemyArenaManager : MonoBehaviour
         {
             activated = true;
             spawningEnemies = true;
+            StartCoroutine(EnableObjectSet(0, 0));
             StartCoroutine(SpawnEnemyWave(0, 0));
+            foreach(GameObject g in wallsToEnable)
+            {
+                g.SetActive(true);
+            }
         }
     }
 
@@ -62,12 +73,24 @@ public class EnemyArenaManager : MonoBehaviour
             }
         }
 
+        if (Input.GetKey(KeyCode.K) && true) {
+            for(int i = 0; i < aliveEnemies.Count; i++)
+            {
+                //aliveEnemies.RemoveAt(i);
+                foreach(GameObject g in aliveEnemies)
+                {
+                    Destroy(g);
+                }
+            }
+        }
+
         if(aliveEnemies.Count == 0 && !spawningEnemies && activated)
         {
             if (currentWave < waves)
             {
                 //Debug.Log("Spawned from next wave");
                 spawningEnemies = true;
+                StartCoroutine(EnableObjectSet(currentWave, 0));
                 StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
             }
             else
@@ -76,6 +99,10 @@ public class EnemyArenaManager : MonoBehaviour
                 foreach (GameObject g in wallsToEnable)
                 {
                     g.SetActive(false);
+
+                }
+                if (lockedDoor == true) {
+                    doorPrefab.unlock();
                 }
             }
         }
@@ -87,6 +114,7 @@ public class EnemyArenaManager : MonoBehaviour
         for(int i = 0; i < spawnPoints[waveNumber].spawnPoints.Length; i++)
         {
             if (spawnPoints[waveNumber].spawnPoints[i] == null || enemiesToSpawn[waveNumber].enemies[i] == null) continue;
+            yield return new WaitForSeconds(waveSpawnDelay);
 
             GameObject enemy = Instantiate(enemiesToSpawn[waveNumber].enemies[i], spawnPoints[waveNumber].spawnPoints[i]);
             enemy.GetComponent<EnemyAI>().AlertEnemy();
@@ -98,6 +126,20 @@ public class EnemyArenaManager : MonoBehaviour
         }
         spawningEnemies = false;
         currentWave++;
+    }
+
+    IEnumerator EnableObjectSet(int waveNumber, float delay)
+    {
+        if (objectsToEnable.Length <= waveNumber) {
+            yield break;
+        }
+        for(int i = 0; i < objectsToEnable[waveNumber].enemies.Length; i++)
+        {
+            yield return new WaitForSeconds(delay);
+            if (objectsToEnable[waveNumber].enemies[i] == null) continue;
+
+            objectsToEnable[waveNumber].enemies[i].SetActive(true);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -19,6 +19,7 @@ public class RotationController : MonoBehaviour
   bool isControllerUsed = false;
   public bool canTurn = true;
   public bool isFacingMouse = false;
+  public bool controllerBufferLock = false;
 
   private Vector3 camForward;
   private Vector3 camRight;
@@ -53,6 +54,22 @@ public class RotationController : MonoBehaviour
       }
     }
 
+    /*if (Input.GetButton("Jump") && !Input.GetKeyDown(KeyCode.Space)) {
+      GameManager.isControllerUsed = true;
+    }*/
+
+        if (Input.GetKeyDown(KeyCode.K))
+    {
+      if (!GameManager.isScreenshakeEnabled)
+      {
+        GameManager.isScreenshakeEnabled = true;
+      }
+      else
+      {
+        GameManager.isScreenshakeEnabled = false;
+      }
+    }
+
     if (GameManager.slowTimer > 0)
     {
       GameManager.slowTimer -= Time.deltaTime;
@@ -76,14 +93,15 @@ public class RotationController : MonoBehaviour
       dir.Normalize();
     }
 
-    dir = Quaternion.Euler(0, -45, 0) * dir;
+    dir = Quaternion.Euler(0, -45+180, 0) * dir;
     return dir;
   }
 
   public void snapToCurrentAngle() { // calls fixed update code, to be called between attacks and frames
       if (GameManager.isControllerUsed)
       {
-          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+          /*Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
           angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
           directionVec = camForward * input.x + camRight * input.y;
           directionVec.Normalize();
@@ -91,6 +109,21 @@ public class RotationController : MonoBehaviour
           if (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2)
           {
               transform.rotation = Quaternion.Euler(0, angle - 45, 0);
+          }*/
+
+          Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+          angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+          directionVec = camForward * input.x + camRight * input.y;
+          directionVec.Normalize();
+
+          if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+          }
+
+          if (input.x != 0 || input.y != 0)
+          {
+              transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
           }
 
       }
@@ -127,6 +160,29 @@ public class RotationController : MonoBehaviour
   }
 
   public void snapToCurrentMouseAngle() {
+    if (GameManager.isControllerUsed) {
+
+      if (controllerBufferLock) {
+        return;
+      }
+
+      Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+      float angle2 = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+      directionVec = camForward * input.x + camRight * input.y;
+      directionVec.Normalize();
+
+      if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, angle2 - 90 - 45, 0)) == 180f)
+      {
+        angle2 -= 90;
+        //Debug.Log ("1 frame Flip");
+      }
+
+      if (input.x != 0 || input.y != 0)
+      {
+        transform.rotation = Quaternion.Euler(0, angle2 - 90 - 45, 0);
+      }
+      return;
+    }
     float h = Input.mousePosition.x - Screen.width / 2;
     float v = Input.mousePosition.y - Screen.height / 2;
     directionVec = new Vector3(h, 0, v);
@@ -148,7 +204,8 @@ public class RotationController : MonoBehaviour
         angle = Vector2.SignedAngle(Vector2.down, direction) + 270;
 
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);*/
-        if (PlayerCombatController.currentState == PlayerCombatController.PlayerState.Idle)
+        if (PlayerCombatController.currentState == PlayerCombatController.PlayerState.Idle
+         || PlayerCombatController.currentState == PlayerCombatController.PlayerState.ChargeSpinslash)
         {
             if (!isFacingMouse) {
               snapToCurrentAngle();

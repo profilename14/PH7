@@ -25,6 +25,12 @@ public class ObjectWithPH : MonoBehaviour
     public float changeRatePH = 1;
     public bool slowsOnChangePH = false;
     private Rigidbody rigid;
+    public bool canBeAttacked = false;
+    public float phOnHit = 0;
+    public bool heals = false;
+    public GameObject particles;
+    [SerializeField] public AudioSource audioSource;
+    [SerializeField] private AudioClip soundEffect;
 
     private void Awake()
     {
@@ -32,6 +38,7 @@ public class ObjectWithPH : MonoBehaviour
         if (slowsOnChangePH) {
           rigid = gameObject.GetComponent<Rigidbody>();
         }
+        audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
     }
 
 
@@ -54,6 +61,7 @@ public class ObjectWithPH : MonoBehaviour
           }
         }
 
+      
     }
 
 
@@ -97,5 +105,18 @@ public class ObjectWithPH : MonoBehaviour
         CurrentPH = CurrentPH + 0.4f * dif;
       }
     }
+
+    public void instantiateParticles() {
+      
+      if (particles != null) {
+        Instantiate(particles, transform.position, Quaternion.identity);
+        if (soundEffect != null) {
+          audioSource.PlayOneShot(soundEffect, 0.35F);
+        }
+        
+      }
+    }
+
+
 
 }

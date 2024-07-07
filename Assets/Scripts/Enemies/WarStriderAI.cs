@@ -142,7 +142,18 @@ public class WarStriderAI : EnemyAI
             if (isFlying == true) { // For idle sending us to follow
                 //fsm.SetCurrentState("Fly");
             }
-            attackTimer = 0;
+            if (canBeHitstunned == false) {
+                canBeHitstunned = true;
+            }
+            if (wasHitstunned == false) {
+                attackTimer = 0;
+            } else {
+                attackTimer += 0.25f;
+                wasHitstunned = false;
+                if (attackTimer >= maxTimeToAttack * 1.0f) {
+                    canBeHitstunned = false;
+                }
+            }
             redecideStateTimer = 0;
             if (isFlying == true) { // For idle sending us to follow
                 nextChosenState = "Spit";
@@ -251,15 +262,15 @@ public class WarStriderAI : EnemyAI
         };
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        if(state == "Charge")
+        if(currentState == "Charge")
         {
             ai.enableRotation = true;
             ai.isStopped = true;
             DashImpulse();
         }
-        else if(state == "Spit")
+        else if(currentState == "Spit")
         {
             ai.enableRotation = true;
             ai.isStopped = true;

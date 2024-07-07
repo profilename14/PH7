@@ -21,9 +21,9 @@ public class ScuttlerAnimEventRelay : MonoBehaviour
         aiScript.StartupFinished();
     }
 
-    public void StartAttack(string state)
+    public void StartAttack()
     {
-        aiScript.StartAttack(state);
+        aiScript.StartAttack();
     }
 
     public void EndAttack()

@@ -322,6 +322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ai: {fileID: 3620641129139211355}
   anim: {fileID: 4369421627504211026}
+  renderers:
+  - {fileID: 5563191783759476121}
   currentState: 
   playerDetected: 0
   sightDistance: 20
@@ -337,14 +339,17 @@ MonoBehaviour:
   rotationAnchor: {fileID: 2276678318342156223}
   enemyRigidbody: {fileID: 2881394270360499269}
   naturalPH: 2
-  maxHealth: 15
-  maxArmor: 15
+  maxHealth: 30
+  maxArmor: 30
   health: 0
   armor: 0
   debuffTimer: 0
-  armorResistMultiplier: 0.33
+  debuffTimerMax: 10
+  armorResistMultiplier: 0.5
   armorBroken: 0
   isHitstunned: 0
+  wasHitstunned: 0
+  canBeHitstunned: 1
   inInterruptFrames: 0
   inPuddle: 0
   puddleTickInterval: 0.5
@@ -356,7 +361,7 @@ MonoBehaviour:
   timeToAttackNext: 0
   leftClawAttackRange: 10
   leftClawAdditionalDelay: 0
-  leftClawForwardForce: 150
+  leftClawForwardForce: 50
   minTimeToAttack: 0.5
   maxTimeToAttack: 1.5
 --- !u!82 &2161286058059952538
@@ -1127,6 +1132,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6601128f02ed45c4e861dbbc3e547f2b, type: 3}
   m_PrefabInstance: {fileID: 801769536569924360}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &5563191783759476121 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5049687842161176209, guid: 6601128f02ed45c4e861dbbc3e547f2b, type: 3}
+  m_PrefabInstance: {fileID: 801769536569924360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1255582104488657795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1238,6 +1248,18 @@ PrefabInstance:
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6563262460808067675, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.50250345
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_FillAmount

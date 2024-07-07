@@ -25,7 +25,7 @@ public class SeethroughController : MonoBehaviour
         hitObjects.Clear();
         objsToRemove.Clear();
 
-        foreach (RaycastHit h in Physics.RaycastAll(transform.position, (player.transform.position - transform.position).normalized, mask))
+        foreach (RaycastHit h in Physics.RaycastAll(transform.position, (player.transform.position - transform.position).normalized, Vector3.Distance(player.transform.position, transform.position), mask))
         {
             if (h.collider != null && h.collider.gameObject.CompareTag("Seethrough"))
             {

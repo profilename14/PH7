@@ -12,14 +12,24 @@ public class SceneSwitchTrigger : MonoBehaviour
     private bool touchingPlayer;
 
     private GameObject player;
+    private ActivateableUI activateableUI;
+    public bool locked = false;
+
+    void Awake() {
+        if (isDoor) {
+            activateableUI = transform.GetChild(0).gameObject.GetComponent<ActivateableUI>();
+        }
+    }
 
     private void Update()
     {
-        if(touchingPlayer && isDoor && Input.GetKeyDown(KeyCode.E))
+        if(touchingPlayer && isDoor && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump")))
         {
-            //player.transform.position = spawnPosition;
-            //player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
-            SceneManager.LoadScene(sceneToLoad);
+            if (locked == false) {
+                player.transform.position = spawnPosition;
+                player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
+                SceneManager.LoadScene(sceneToLoad);
+            }
         }
     }
 
@@ -29,9 +39,13 @@ public class SceneSwitchTrigger : MonoBehaviour
         {
             player = other.gameObject;
             touchingPlayer = true;
+            if (locked == false && isDoor) {
+                activateableUI.showUI();
+            }
+            
             if(!isDoor)
             {
-                //player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
+                player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
                 SceneManager.LoadScene(sceneToLoad);
             }
         }
@@ -42,6 +56,15 @@ public class SceneSwitchTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             touchingPlayer = false;
+            if (locked == false && isDoor) {
+                activateableUI.hideUI();
+            }
+        }
+    }
+
+    public void unlock() {
+        if (locked) {
+            locked = false;
         }
     }
 }

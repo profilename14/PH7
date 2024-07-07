@@ -7,8 +7,17 @@ public class MusicClass : MonoBehaviour
     private AudioSource audioSource;
     private void Awake()
     {
-        DontDestroyOnLoad(transform.gameObject);
         audioSource = GetComponent<AudioSource>();
+        if (GameManager.isMusicPlaying) {
+            
+            if (audioSource != null) {
+                audioSource.Stop();
+            }
+            Destroy(gameObject);
+        } else {
+            GameManager.isMusicPlaying = true;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     public void PlayMusic()
@@ -19,6 +28,9 @@ public class MusicClass : MonoBehaviour
 
     public void StopMusic()
     {
-        audioSource.Stop();
+        if (audioSource != null) {
+            audioSource.Stop();
+        }
+        
     }
 }

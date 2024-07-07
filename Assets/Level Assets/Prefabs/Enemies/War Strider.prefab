@@ -966,6 +966,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ai: {fileID: 6161391686151614143}
   anim: {fileID: 1778641947860536736}
+  renderers:
+  - {fileID: 2681633011752669238}
+  - {fileID: 7122144098485002132}
+  - {fileID: 7633483586357568159}
+  - {fileID: 3803432048624898465}
+  - {fileID: 2699245809655858883}
+  - {fileID: 916884176011160573}
   currentState: 
   playerDetected: 0
   sightDistance: 20
@@ -981,20 +988,23 @@ MonoBehaviour:
   rotationAnchor: {fileID: 2434611131919388528}
   enemyRigidbody: {fileID: 607418861252853071}
   naturalPH: 0
-  maxHealth: 80
-  maxArmor: 40
+  maxHealth: 120
+  maxArmor: 45
   health: 0
   armor: 0
-  armorResistMultiplier: 0.33
+  debuffTimer: 0
+  debuffTimerMax: 10
+  armorResistMultiplier: 0.5
   armorBroken: 0
   isHitstunned: 0
+  wasHitstunned: 0
+  canBeHitstunned: 1
   inInterruptFrames: 0
   inPuddle: 0
   puddleTickInterval: 0.5
   audioSource: {fileID: 8787197610779990367}
   enemyArmoredImpactSound: {fileID: 8300000, guid: 055aa279c140ed24d8aa0a6276ed2d98, type: 3}
   enemyImpactSound: {fileID: 8300000, guid: 4265a741d9b953a4f88154308644c176, type: 3}
-  enemyPotHitSound: {fileID: 8300000, guid: c7d33010aef77a3438bcc9c352258748, type: 3}
   timeToRedecideState: 0
   nextChosenState: 
   timeToAttackNext: 0
@@ -3246,6 +3256,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6565897792324809467}
     m_Modifications:
+    - target: {fileID: 395823709359917667, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6c108cbde0b827d46ac5ca4829941e62, type: 3}
     - target: {fileID: 1836251641952908669, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Name
       value: CanvasForNewEnemyUI
@@ -3270,6 +3284,10 @@ PrefabInstance:
       propertyPath: m_Value
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4873561757039239497, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 769ba84917b86df4d83ccbe33645baf5, type: 3}
     - target: {fileID: 4939163447091681556, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3352,11 +3370,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.4173801
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Color.g
-      value: 0.90322113
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8225778966096788151, guid: 203ce303945514c41b845b1b575f02a1, type: 3}
       propertyPath: m_Color.r

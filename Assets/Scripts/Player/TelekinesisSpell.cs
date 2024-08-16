@@ -14,7 +14,7 @@ public class TelekinesisSpell : MonoBehaviour
     private Vector3 throwableOffset;
     private Rigidbody itemRigidbody;
     public Collider TyphisCollider;
-    [SerializeField] GameObject throwEffect;
+    //[SerializeField] GameObject throwEffect;
 
 
 
@@ -101,7 +101,7 @@ public class TelekinesisSpell : MonoBehaviour
         if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1")) {
 
           Debug.Log("Thrown");
-          Instantiate(throwEffect, transform.position, Quaternion.identity);
+          //Instantiate(throwEffect, transform.position, Quaternion.identity);
           heldItem.Throw(transform.forward);
           combatController.objectWasThrown(true);
           Destroy(gameObject);

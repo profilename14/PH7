@@ -12,7 +12,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PrefabSpawner : MonoBehaviour
 {
 
-    [SerializeField] public GameObject objectToMake;
+    public GameObject objectToMake;
     public bool objectIsAlive = false;
     public float timeToMake = 6f;
     float makeTimer = 0.0f;

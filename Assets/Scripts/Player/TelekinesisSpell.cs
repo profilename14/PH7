@@ -43,7 +43,7 @@ public class TelekinesisSpell : MonoBehaviour
           Throwable target = null;
           //float targetValue = 0;
 
-          foreach (var other in hitColliders)
+          foreach (Collider other in hitColliders)
           {
 
             if (target == null) {

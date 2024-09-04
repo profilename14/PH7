@@ -12,8 +12,8 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     // Movement speed for the player.
-    //[SerializeField] const float DEFAULT_SPEED = 14.0f;
-    [SerializeField] float speed = 1.2f;
+    [SerializeField] const float DEFAULT_SPEED = 19.0f;
+    [SerializeField] float speed = 1.0f; // !!!Convert into a table of speed modifiers that get added/removed by value via function
 
     [SerializeField] bool hideMouse = false;
 
@@ -59,7 +59,7 @@ public class MovementController : MonoBehaviour
     private Vector3 knockbackSource;
     public bool isBeingKnockedBack = false;
     [SerializeField] private AnimationCurve Knockback;
-    public float slowdownWhileAttacking = 2;
+    public float slowdownWhileAttacking = 2; //!!! Reimplement as full stop
 
 
     // All velocities in fixedUpdate are stored before they're all applied at once.
@@ -183,7 +183,7 @@ public class MovementController : MonoBehaviour
           } else {
             float curKnockbackVelocity = Knockback.Evaluate(knockbackTimer / knockbackDuration);
             Vector3 direction = -((knockbackSource - transform.position).normalized);
-            knockbackVelocity = direction * curKnockbackVelocity * knockbackPower;
+            knockbackVelocity = direction * curKnockbackVelocity * knockbackPower * 2;
 
             knockbackTimer += Time.deltaTime;
           }
@@ -220,13 +220,13 @@ public class MovementController : MonoBehaviour
 
         moveDir = moveDir * ADSREnvelope();
 
-        moveVelocity = new Vector3(moveDir.x, rigidbody.velocity.y, moveDir.z) * 15 * speed;
+        moveVelocity = new Vector3(moveDir.x * DEFAULT_SPEED * speed, rigidbody.velocity.y, moveDir.z * DEFAULT_SPEED * speed);
 
         // !!This part is responsible for all actual movement!!
         if (canMove) {
-          rigidbody.velocity = moveVelocity + dashVelocity + knockbackVelocity;
+          //rigidbody.velocity = moveVelocity + dashVelocity + knockbackVelocity;
         } else {
-          rigidbody.velocity = dashVelocity + knockbackVelocity;
+          //rigidbody.velocity = dashVelocity + knockbackVelocity;
         }
 
     }
@@ -332,7 +332,7 @@ public class MovementController : MonoBehaviour
 
     // Call this with an origin transform.position to push Typhis around
     // a power of 4 is probably strong enough for an explosion, 0.5 perhaps a scuttler.
-    public void applyKnockback(Vector3 source, float power) {
+    public void applyKnockback(Vector3 source, float power) { // !!!Change name to applyForce
       // Big limitation: only one knockback source at once. Should we reset?
       // if we JUST got exploded and then immediately snipped by a crab, then no
       if (isBeingKnockedBack) {
@@ -351,6 +351,7 @@ public class MovementController : MonoBehaviour
 
     public void startDash()
     {
+      return;
         //Debug.Log("Starting dash");
 
         //rotationController.snapToCurrentAngle();

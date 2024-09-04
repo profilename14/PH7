@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KinematicCharacterController.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -48,7 +49,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Material playerHitMaterial;
     [SerializeField] private AudioClip playerHitSound;
 
-    private MovementController movementController;
+    private ExampleCharacterController movementController;
     private RotationController rotation;
 
     public MusicClass music;
@@ -70,7 +71,7 @@ public class PlayerStats : MonoBehaviour
 
       healthBar.maxValue= maxHealth;
 
-      movementController = gameObject.GetComponent<MovementController>();
+      movementController = gameObject.GetComponent<ExampleCharacterController>();
       rotation = gameObject.transform.GetChild(0).GetComponent<RotationController>();
 
       audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
@@ -175,7 +176,7 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void playerDamage(float damage, float phChange, Vector3 position, float knockback) {
-      bool isPlayerDashing;
+      bool isPlayerDashing = false;
       isPlayerDashing = movementController.isDashing;
 
 

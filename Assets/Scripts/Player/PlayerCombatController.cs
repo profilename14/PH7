@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using KinematicCharacterController.Examples;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
     RotationController rotationController;
-    MovementController movementController;
+    ExampleCharacterController movementController;
     PlayerStats stats;
     [SerializeField] AudioSource soundEffects;
 
@@ -93,7 +94,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
-        movementController = transform.parent.parent.GetComponent<MovementController>();
+        movementController = transform.parent.parent.GetComponent<ExampleCharacterController>();
         stats = transform.parent.parent.GetComponent<PlayerStats>();
 
         currentState = PlayerState.Idle;
@@ -292,7 +293,7 @@ public class PlayerCombatController : MonoBehaviour
         }
         else if (name == "Dash")
         {
-            movementController.startDash();
+            //movementController.startDash();
             inDash = true;
             currentState = PlayerState.Dash;
         }
@@ -386,7 +387,7 @@ public class PlayerCombatController : MonoBehaviour
             rotationController.isFacingMouse = false;
         }
 
-        movementController.startDash();
+        //movementController.startDash();
 
         //playerAnim.ResetTrigger("Swing");
         //playerAnim.ResetTrigger("Thrust");
@@ -452,7 +453,7 @@ public class PlayerCombatController : MonoBehaviour
       }
       castingBubble = true;
 
-      Collider TyphisCollision = (movementController.gameObject).GetComponent<Collider>();
+      Collider TyphisCollision = (stats.gameObject).GetComponent<Collider>();
 
       Vector3 telekinesisSpellAnchor = transform.position + rotationController.GetRotationDirection() * 2f;
 

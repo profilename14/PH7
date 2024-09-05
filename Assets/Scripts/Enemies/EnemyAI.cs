@@ -4,7 +4,7 @@ using UnityEngine;
 using Pathfinding;
 using UnityEditor;
 
-using Patterns;
+using StateMachines;
 using UnityEngine.AI;
 using System.Linq.Expressions;
 using UnityEngine.UIElements;

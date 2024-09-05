@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Patterns;
+using StateMachines;
 
 public class StriderAI : EnemyAI
 {

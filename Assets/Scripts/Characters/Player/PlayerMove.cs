@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicCharacterController;
+using Animancer;
+using Animancer.FSM;
 
 public class PlayerMove : CharacterState
 {
+    [SerializeField]
+    private PlayerMovementController movementController;
+
     [SerializeField]
     private Vector2 moveDir;
 
@@ -13,8 +19,16 @@ public class PlayerMove : CharacterState
         
     }
 
-    public void UpdateMovement(Vector2 movement)
+    public void UpdateInputs(PlayerCharacterInputs input)
     {
-        moveDir = movement;
+        movementController.SetInputs(ref input);
     }
+
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+    }
+#endif
 }

@@ -11,8 +11,8 @@ public abstract class Character : MonoBehaviour
     private CharacterActionManager _ActionManager;
     public CharacterActionManager actionManager => _ActionManager;
     [SerializeField]
-    private CharacterMovementController _MovementController;
-    public CharacterMovementController movementController => _MovementController;
+    private ICharacterMovementController _MovementController;
+    public ICharacterMovementController movementController => _MovementController;
     [SerializeField]
     private CharacterStats _Stats;
     public CharacterStats stats => _Stats;

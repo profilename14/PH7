@@ -30,6 +30,9 @@ public class PlayerActionManager : CharacterActionManager
 
     private Vector2 moveDir;
 
+    private bool jumpThisFrame;
+    private bool dashThisFrame;
+
     protected override void Awake()
     {
         base.Awake();
@@ -42,6 +45,10 @@ public class PlayerActionManager : CharacterActionManager
         _MovementAction.Enable();
         controls.Typhis.Attack.Enable();
         controls.Typhis.Attack.performed += context => OnAttack(context);
+        controls.Typhis.Jump.Enable();
+        controls.Typhis.Jump.performed += context => OnJump(context);
+        controls.Typhis.Dash.Enable();
+        controls.Typhis.Dash.performed += context => OnDash(context);
     }
 
     private void OnDisable()
@@ -76,7 +83,15 @@ public class PlayerActionManager : CharacterActionManager
     {
         if(StateMachine.CurrentState == _Move)
         {
-            _Move.UpdateMovement(moveDir);
+            PlayerCharacterInputs input = new PlayerCharacterInputs();
+            input.MoveAxisForward = moveDir.y;
+            input.MoveAxisRight = moveDir.x;
+            input.JumpDown = jumpThisFrame;
+            input.Dash = dashThisFrame;
+            _Move.UpdateInputs(input);
+            
+            jumpThisFrame = false;
+            dashThisFrame = false;
         }
     }
 
@@ -96,5 +111,15 @@ public class PlayerActionManager : CharacterActionManager
         {
             Debug.Log("Attack [long press]");
         }
+    }
+
+    void OnJump(InputAction.CallbackContext context)
+    {
+        jumpThisFrame = true;
+    }
+
+    void OnDash(InputAction.CallbackContext context)
+    {
+        dashThisFrame = true;
     }
 }

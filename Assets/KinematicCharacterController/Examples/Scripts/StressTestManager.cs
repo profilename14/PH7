@@ -14,7 +14,7 @@ namespace KinematicCharacterController.Examples
         public Image RenderOn;
         public Image SimOn;
         public Image InterpOn;
-        public ExampleCharacterController CharacterPrefab;
+        public PlayerMovementController CharacterPrefab;
         public ExampleAIController AIController;
         public int SpawnCount = 100;
         public float SpawnDistance = 2f;
@@ -93,7 +93,7 @@ namespace KinematicCharacterController.Examples
                 int col = i % charsPerRow;
                 Vector3 pos = firstPos + (Vector3.right * row * SpawnDistance) + (Vector3.forward * col * SpawnDistance);
 
-                ExampleCharacterController newChar = Instantiate(CharacterPrefab);
+                PlayerMovementController newChar = Instantiate(CharacterPrefab);
                 newChar.Motor.SetPosition(pos);
 
                 AIController.Characters.Add(newChar);

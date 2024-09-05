@@ -8,7 +8,7 @@ public class PlayerCombatController : MonoBehaviour
 {
     Animator playerAnim;
     RotationController rotationController;
-    ExampleCharacterController movementController;
+    PlayerMovementController movementController;
     PlayerStats stats;
     [SerializeField] AudioSource soundEffects;
 
@@ -94,7 +94,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
-        movementController = transform.parent.parent.GetComponent<ExampleCharacterController>();
+        movementController = transform.parent.parent.GetComponent<PlayerMovementController>();
         stats = transform.parent.parent.GetComponent<PlayerStats>();
 
         currentState = PlayerState.Idle;
@@ -412,7 +412,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         rotationController.snapToCurrentMouseAngle();
         rotForThrust = rotationController.GetRotationDirection();
-        movementController.applyKnockback(transform.position - rotForThrust * 3, amount);
+        movementController.ApplyForce(transform.position - rotForThrust * 3, amount);
     }
 
     private void inRecoveryFrames()

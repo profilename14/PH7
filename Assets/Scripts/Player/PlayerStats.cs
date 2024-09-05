@@ -49,7 +49,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Material playerHitMaterial;
     [SerializeField] private AudioClip playerHitSound;
 
-    private ExampleCharacterController movementController;
+    private PlayerMovementController movementController;
     private RotationController rotation;
 
     public MusicClass music;
@@ -71,7 +71,7 @@ public class PlayerStats : MonoBehaviour
 
       healthBar.maxValue= maxHealth;
 
-      movementController = gameObject.GetComponent<ExampleCharacterController>();
+      movementController = gameObject.GetComponent<PlayerMovementController>();
       rotation = gameObject.transform.GetChild(0).GetComponent<RotationController>();
 
       audioSource = GameObject.FindGameObjectWithTag("Sound").GetComponent<AudioSource>();
@@ -209,7 +209,7 @@ public class PlayerStats : MonoBehaviour
         iFrameTimer = 0;
       }
 
-      movementController.applyKnockback(position, knockback);
+      movementController.ApplyForce(position, knockback);
 
       if (GameManager.isScreenshakeEnabled) {
         cam.GetComponent<screenShake>().ScreenShake(.1f);

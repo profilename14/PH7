@@ -7,7 +7,7 @@ namespace KinematicCharacterController.Examples
     public class ExampleAIController : MonoBehaviour
     {
         public float MovementPeriod = 1f;
-        public List<ExampleCharacterController> Characters = new List<ExampleCharacterController>();
+        public List<PlayerMovementController> Characters = new List<PlayerMovementController>();
 
         private bool _stepHandling;
         private bool _ledgeHandling;

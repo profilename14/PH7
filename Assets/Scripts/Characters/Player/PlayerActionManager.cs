@@ -25,6 +25,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private InputMaster controls;
 
+    // Need InputAction ref to use ReadValue for any continuous polling
     private InputAction _MovementAction;
 
     private Vector2 moveDir;
@@ -52,6 +53,7 @@ public class PlayerActionManager : CharacterActionManager
     {
         PassInput();
 
+        // As long as the enter/exit variables on the states are set correctly this should cause no problems
         if(moveDir != Vector2.zero)
         {
             StateMachine.TrySetState(_Move);
@@ -78,13 +80,18 @@ public class PlayerActionManager : CharacterActionManager
         }
     }
 
+    // Receives an attack action performed
     void OnAttack(InputAction.CallbackContext context)
     {
+        // If the button is released within 0.5s after being pressed
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             Debug.Log("Attack [short press]");
         }
 
+        // Should probably add one here to start charge attack after button is held for 0.5s
+
+        // If the button is released after being held for at least 0.5s
         if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
             Debug.Log("Attack [long press]");

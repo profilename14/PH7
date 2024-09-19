@@ -369,7 +369,7 @@ namespace Animancer.FSM
 
                     text.Append(" - This may be caused by the compiler incorrectly inferring the generic argument of the Get")
                         .Append(propertyName)
-                        .Append(" method, in which case it must be manually specified like so: state.Get")
+                        .Append(" method, in which case it must be manually specified like this: state.Get")
                         .Append(propertyName)
                         .Append('<')
                         .Append(baseStateType.FullName)

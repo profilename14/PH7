@@ -5,10 +5,10 @@ using System.Reflection;
 
 [assembly: AssemblyTitle("Kybernetik.Animancer")]
 [assembly: AssemblyDescription("An animation system for Unity which is based on the Playables API.")]
-[assembly: AssemblyProduct("Animancer Lite")]
+[assembly: AssemblyProduct("Animancer Pro")]
 [assembly: AssemblyCompany("Kybernetik")]
 [assembly: AssemblyCopyright("Copyright © Kybernetik 2018-2024")]
-[assembly: AssemblyVersion("8.0.0.27")]
+[assembly: AssemblyVersion("8.0.1.28")]
 
 #if UNITY_EDITOR
 

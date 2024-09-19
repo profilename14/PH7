@@ -7,10 +7,10 @@ using Animancer.FSM;
 public abstract class CharacterState : StateBehaviour
 {
     [SerializeField]
-    private Character character;
+    protected Character character;
 
     [SerializeField]
-    private CharacterActionManager actionManager;
+    protected CharacterActionManager actionManager;
 
     [SerializeField]
     private TransitionAsset _EnterAnim;
@@ -29,5 +29,10 @@ public abstract class CharacterState : StateBehaviour
     protected virtual void OnEnable()
     {
         actionManager.anim.Play(_EnterAnim);
+    }
+
+    protected virtual void OnDisable()
+    {
+        return;
     }
 }

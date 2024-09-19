@@ -33,9 +33,6 @@ namespace Animancer
     /// 
     /// https://kybernetik.com.au/animancer/api/Animancer/MixerChildFade
     /// 
-#if !UNITY_EDITOR
-    [System.Obsolete(Validate.ProOnlyMessage)]
-#endif
     public static class MixerChildFade
     {
         /************************************************************************************************************************/

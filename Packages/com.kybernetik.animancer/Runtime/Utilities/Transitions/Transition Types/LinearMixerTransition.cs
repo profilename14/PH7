@@ -8,9 +8,6 @@ namespace Animancer
     /// <inheritdoc/>
     /// https://kybernetik.com.au/animancer/api/Animancer/LinearMixerTransition
     [Serializable]
-#if ! UNITY_EDITOR
-    [System.Obsolete(Validate.ProOnlyMessage)]
-#endif
     public class LinearMixerTransition : MixerTransition<LinearMixerState, float>,
         ICopyable<LinearMixerTransition>
     {

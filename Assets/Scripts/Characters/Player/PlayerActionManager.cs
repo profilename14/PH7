@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Animancer.FSM;
+using Animancer;
 
 public class PlayerActionManager : CharacterActionManager
 {
@@ -33,10 +35,20 @@ public class PlayerActionManager : CharacterActionManager
     private bool jumpThisFrame;
     private bool dashThisFrame;
 
+    private StateMachine<CharacterState>.InputBuffer _InputBuffer;
+
+    [SerializeField]
+    private float inputTimeOut;
+
     protected override void Awake()
     {
         base.Awake();
         controls = new InputMaster();
+        _AllowedActions = new();
+        _AllowedActions.Add(_Move, true);
+        _AllowedActions.Add(_SwordAttack, true);
+        //_AllowedActions.Add(_Dash, true);
+        _InputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
     }
 
     private void OnEnable()
@@ -61,14 +73,16 @@ public class PlayerActionManager : CharacterActionManager
         PassInput();
 
         // As long as the enter/exit variables on the states are set correctly this should cause no problems
-        if(moveDir != Vector2.zero)
+        if(moveDir != Vector2.zero || jumpThisFrame)
         {
             StateMachine.TrySetState(_Move);
         }
         else
         {
-            StateMachine.TrySetDefaultState();
+            if(StateMachine.CurrentState == _Move) StateMachine.TrySetDefaultState();
         }
+
+        _InputBuffer.Update();
     }
 
     private void FixedUpdate()
@@ -101,7 +115,8 @@ public class PlayerActionManager : CharacterActionManager
         // If the button is released within 0.5s after being pressed
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
-            Debug.Log("Attack [short press]");
+            // If it fails to enter the SwordAttack state, buffer it.
+            if (!StateMachine.TryResetState(_SwordAttack)) _InputBuffer.Buffer(_SwordAttack, inputTimeOut);
         }
 
         // Should probably add one here to start charge attack after button is held for 0.5s

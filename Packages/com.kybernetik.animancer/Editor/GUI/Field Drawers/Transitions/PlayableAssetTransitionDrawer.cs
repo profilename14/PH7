@@ -15,9 +15,6 @@ namespace Animancer.Editor
     /// <inheritdoc/>
     /// https://kybernetik.com.au/animancer/api/Animancer.Editor/PlayableAssetTransitionDrawer
     [CustomPropertyDrawer(typeof(PlayableAssetTransition), true)]
-#if !UNITY_EDITOR
-    [System.Obsolete(Validate.ProOnlyMessage)]
-#endif
     public class PlayableAssetTransitionDrawer : TransitionDrawer
     {
         /************************************************************************************************************************/

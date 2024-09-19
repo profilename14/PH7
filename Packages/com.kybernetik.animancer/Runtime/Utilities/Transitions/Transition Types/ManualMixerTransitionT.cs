@@ -10,9 +10,6 @@ namespace Animancer
 {
     /// <inheritdoc/>
     /// https://kybernetik.com.au/animancer/api/Animancer/ManualMixerTransition_1
-#if !UNITY_EDITOR
-    [System.Obsolete(Validate.ProOnlyMessage)]
-#endif
     [Serializable]
     public abstract class ManualMixerTransition<TMixer> : Transition<TMixer>,
         IMotion,
@@ -186,11 +183,7 @@ namespace Animancer
                     if (_Animations[i] == null)
                         return false;
 
-#if UNITY_EDITOR
                 return true;
-#else
-                return false;
-#endif
             }
         }
 

@@ -1,10 +1,5 @@
 // Animancer // https://kybernetik.com.au/animancer // Copyright 2018-2024 Kybernetik //
 
-#if ! UNITY_EDITOR
-#pragma warning disable CS0612 // Type or member is obsolete (for Layers in Animancer Lite).
-#pragma warning disable CS0618 // Type or member is obsolete (for Layers in Animancer Lite).
-#endif
-
 using UnityEngine;
 
 namespace Animancer
@@ -41,10 +36,8 @@ namespace Animancer
         [System.Diagnostics.Conditional(Strings.Assertions)]
         public static void Assert(AnimancerGraph animancer)
         {
-#if UNITY_EDITOR
-            var warnings = OptionalWarning.ProOnly.DisableTemporarily();
+#if UNITY_ASSERTIONS
             animancer.RequirePreUpdate(new DontAllowFade());
-            warnings.Enable();
 #endif
         }
 

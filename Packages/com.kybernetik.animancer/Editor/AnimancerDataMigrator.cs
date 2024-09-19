@@ -695,6 +695,11 @@ namespace Animancer.Editor
             "5415cf2115901c345af7680b044d4604",// PlayableAssetTransitionAsset.
         };
 
+        /// <summary>[Animancer v8.0]
+        /// Removed the classes derived from <see cref="TransitionAssetBase"/>
+        /// for each individual transition type except <see cref="TransitionAsset"/>
+        /// since its [<see cref="SerializeReference"/>] can hold any of them without changing the asset type.
+        /// </summary>
         private void MigrateTransitionAssets(ref string fileText)
         {
             const string

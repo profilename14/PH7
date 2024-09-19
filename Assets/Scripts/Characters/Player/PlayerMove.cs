@@ -13,14 +13,17 @@ public class PlayerMove : CharacterState
     [SerializeField]
     private Vector2 moveDir;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public override bool CanEnterState
+        => actionManager.allowedActions[this];
 
     public void UpdateInputs(PlayerCharacterInputs input)
     {
+        movementController.SetInputs(ref input);
+    }
+
+    protected override void OnDisable()
+    {
+        PlayerCharacterInputs input = new();
         movementController.SetInputs(ref input);
     }
 

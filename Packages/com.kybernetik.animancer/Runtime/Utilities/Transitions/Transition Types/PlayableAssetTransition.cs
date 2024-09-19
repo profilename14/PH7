@@ -12,9 +12,6 @@ namespace Animancer
     /// <inheritdoc/>
     /// https://kybernetik.com.au/animancer/api/Animancer/PlayableAssetTransition
     [Serializable]
-#if ! UNITY_EDITOR
-    [System.Obsolete(Validate.ProOnlyMessage)]
-#endif
     public class PlayableAssetTransition : Transition<PlayableAssetState>,
         IAnimationClipCollection,
         ICopyable<PlayableAssetTransition>
@@ -73,11 +70,7 @@ namespace Animancer
 
         /// <inheritdoc/>
         public override bool IsValid
-#if UNITY_EDITOR
             => _Asset != null;
-#else
-            => false;
-#endif
 
         /************************************************************************************************************************/
 

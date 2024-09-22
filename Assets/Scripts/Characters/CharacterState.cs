@@ -12,10 +12,6 @@ public abstract class CharacterState : StateBehaviour
     [SerializeField]
     protected CharacterActionManager actionManager;
 
-    [SerializeField]
-    private TransitionAsset _EnterAnim;
-    public TransitionAsset enterAnim => _EnterAnim;
-
 #if UNITY_EDITOR
     protected override void OnValidate()
     {
@@ -28,7 +24,7 @@ public abstract class CharacterState : StateBehaviour
 
     protected virtual void OnEnable()
     {
-        actionManager.anim.Play(_EnterAnim);
+        return;
     }
 
     protected virtual void OnDisable()

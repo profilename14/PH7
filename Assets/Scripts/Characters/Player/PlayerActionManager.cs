@@ -13,7 +13,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private CharacterState _Interact;
     [SerializeField]
-    private AttackState _SwordAttack;
+    private PlayerSwordAttack _SwordAttack;
     [SerializeField]
     private CharacterState _Dash;
     [SerializeField]
@@ -21,7 +21,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private CharacterState _Bubble;
     [SerializeField]
-    private CharacterState _ChargeAttack;
+    private PlayerChargeAttack _ChargeAttack;
     [SerializeField]
     private CharacterState _SpellAttack;
 
@@ -44,9 +44,9 @@ public class PlayerActionManager : CharacterActionManager
     {
         base.Awake();
         controls = new InputMaster();
-        _AllowedActions = new();
         _AllowedActions.Add(_Move, true);
         _AllowedActions.Add(_SwordAttack, true);
+        _AllowedActions.Add(_ChargeAttack, true);
         //_AllowedActions.Add(_Dash, true);
         _InputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
     }
@@ -56,7 +56,8 @@ public class PlayerActionManager : CharacterActionManager
         _MovementAction = controls.Typhis.Movement;
         _MovementAction.Enable();
         controls.Typhis.Attack.Enable();
-        controls.Typhis.Attack.performed += context => OnAttack(context);
+        controls.Typhis.Attack.performed += context => OnAttackPerformed(context);
+        controls.Typhis.Attack.started += context => OnAttackStarted(context);
         controls.Typhis.Jump.Enable();
         controls.Typhis.Jump.performed += context => OnJump(context);
         controls.Typhis.Dash.Enable();
@@ -110,29 +111,40 @@ public class PlayerActionManager : CharacterActionManager
     }
 
     // Receives an attack action performed
-    void OnAttack(InputAction.CallbackContext context)
+    void OnAttackPerformed(InputAction.CallbackContext context)
     {
-        // If the button is released within 0.5s after being pressed
+        // If the button is released within 0.5s
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
             if (!StateMachine.TryResetState(_SwordAttack)) _InputBuffer.Buffer(_SwordAttack, inputTimeOut);
         }
 
-        // Should probably add one here to start charge attack after button is held for 0.5s
-
-        // If the button is released after being held for at least 0.5s
+        // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
         if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
-            Debug.Log("Attack [long press]");
+            if (StateMachine.CurrentState == _ChargeAttack) _ChargeAttack.ReleaseChargeAttack();
         }
     }
 
+    // Receives an attack action started
+    void OnAttackStarted(InputAction.CallbackContext context)
+    {
+        // If the button is held for at least 0.5s
+        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            // If it fails to enter the charge attack state, buffer it.
+            if (!StateMachine.TrySetState(_ChargeAttack)) _InputBuffer.Buffer(_ChargeAttack, inputTimeOut);
+        }
+    }
+
+    // Receives a jump button press
     void OnJump(InputAction.CallbackContext context)
     {
         jumpThisFrame = true;
     }
 
+    // Receives a dash button press
     void OnDash(InputAction.CallbackContext context)
     {
         dashThisFrame = true;

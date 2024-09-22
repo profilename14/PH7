@@ -13,12 +13,21 @@ public class PlayerMove : CharacterState
     [SerializeField]
     private Vector2 moveDir;
 
+    [SerializeField]
+    TransitionAsset moveAnimation;
+
     public override bool CanEnterState
         => actionManager.allowedActions[this];
 
     public void UpdateInputs(PlayerCharacterInputs input)
     {
         movementController.SetInputs(ref input);
+    }
+
+    protected override void OnEnable()
+    {
+        actionManager.SetAllActionsAllowed(true);
+        actionManager.anim.Play(moveAnimation);
     }
 
     protected override void OnDisable()

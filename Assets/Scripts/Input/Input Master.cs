@@ -42,7 +42,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""id"": ""409a11d4-5931-4786-bfb4-4ea75df50c63"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""SlowTap,Tap(duration=0.5)"",
+                    ""interactions"": ""Tap(duration=0.5),SlowTap(duration=0.5)"",
                     ""initialStateCheck"": false
                 },
                 {

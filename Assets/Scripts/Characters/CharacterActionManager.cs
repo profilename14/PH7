@@ -18,7 +18,7 @@ public abstract class CharacterActionManager : MonoBehaviour
 
     // A dictionary of which states are allowed to be entered, referenced by the states.
     // May want to refactor this so multiple similar states can be grouped together.
-    protected Dictionary<CharacterState, bool> _AllowedActions;
+    protected Dictionary<CharacterState, bool> _AllowedActions = new();
     public Dictionary<CharacterState, bool> allowedActions => _AllowedActions;
 
     protected virtual void Awake()

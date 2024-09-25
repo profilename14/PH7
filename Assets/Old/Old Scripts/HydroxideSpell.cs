@@ -9,7 +9,7 @@ public class HydroxideSpell : MonoBehaviour
     [SerializeField] private float maxLifespan = 0.10f;
     private float curLifespan;
     private float deltaPhysics = 0.02f; // on trigger stay is always called 50 times a second
-    public PlayerStats playerStats;
+    public PlayerStatsOLD playerStats;
 
 
     void Start() {

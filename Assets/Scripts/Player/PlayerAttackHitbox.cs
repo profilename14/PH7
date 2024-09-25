@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAttackHitbox : MonoBehaviour
 {
     PlayerCombatController controllerScript;
-    PlayerStats stats;
+    PlayerStatsOLD stats;
 
     private float slowdownRate = 0.14f;
     private float slowdownLength = 0.02f;
@@ -21,7 +21,7 @@ public class PlayerAttackHitbox : MonoBehaviour
     void Start()
     {
         controllerScript = GetComponentInParent<PlayerCombatController>();
-        stats = GetComponentInParent<PlayerStats>();
+        stats = GetComponentInParent<PlayerStatsOLD>();
         playerAnim = GetComponentInParent<Animator>();
     }
 

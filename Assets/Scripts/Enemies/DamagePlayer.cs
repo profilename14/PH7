@@ -16,7 +16,7 @@ public class DamagePlayer : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             //Debug.Log("Hit player!");
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(damage, phDamage, parent.transform.position, knockback);
+            other.gameObject.GetComponent<PlayerStatsOLD>().playerDamage(damage, phDamage, parent.transform.position, knockback);
         }
     }
 }

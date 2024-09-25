@@ -6,7 +6,21 @@ using Animancer.FSM;
 
 public class Player : Character
 {
-    // Methods that can be called / events that can be invoked
+    // Player singleton
+    public static Player instance;
 
-    // OnPlayerHitEnemy(Enemy enemyScript) <- Deal damage / knockback to enemy, give pH, do particle VFX or anything else
+    private void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(this);
+    }
+
+    public override void OnCharacterAttackHit(IHittable hit)
+    {
+        if(hit is Enemy)
+        {
+            Debug.Log("Player hit enemy!");
+            // _Stats.GainPH()
+        }
+    }
 }

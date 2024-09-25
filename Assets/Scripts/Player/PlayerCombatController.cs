@@ -9,7 +9,7 @@ public class PlayerCombatController : MonoBehaviour
     Animator playerAnim;
     RotationController rotationController;
     PlayerMovementController movementController;
-    PlayerStats stats;
+    PlayerStatsOLD stats;
     [SerializeField] AudioSource soundEffects;
 
     [Header("STATS")]
@@ -95,7 +95,7 @@ public class PlayerCombatController : MonoBehaviour
         playerAnim = GetComponent<Animator>();
         rotationController = transform.parent.gameObject.GetComponent<RotationController>();
         movementController = transform.parent.parent.GetComponent<PlayerMovementController>();
-        stats = transform.parent.parent.GetComponent<PlayerStats>();
+        stats = transform.parent.parent.GetComponent<PlayerStatsOLD>();
 
         currentState = PlayerState.Idle;
 

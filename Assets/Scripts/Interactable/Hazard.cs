@@ -67,11 +67,11 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
           if (changeInPH < 0) {
-            other.gameObject.GetComponent<PlayerStats>().inAcid = true;
-            other.gameObject.GetComponent<PlayerStats>().acidLink = this;
+            other.gameObject.GetComponent<PlayerStatsOLD>().inAcid = true;
+            other.gameObject.GetComponent<PlayerStatsOLD>().acidLink = this;
           } else {
-            other.gameObject.GetComponent<PlayerStats>().inAlkaline = true;
-            other.gameObject.GetComponent<PlayerStats>().alkalineLink = this;
+            other.gameObject.GetComponent<PlayerStatsOLD>().inAlkaline = true;
+            other.gameObject.GetComponent<PlayerStatsOLD>().alkalineLink = this;
           }
         }
     }
@@ -85,14 +85,14 @@ public class Hazard : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
           if (changeInPH < 0) {
-            other.gameObject.GetComponent<PlayerStats>().inAcid = false;
-            if (other.gameObject.GetComponent<PlayerStats>().acidLink == this) {
-              other.gameObject.GetComponent<PlayerStats>().acidLink = null;
+            other.gameObject.GetComponent<PlayerStatsOLD>().inAcid = false;
+            if (other.gameObject.GetComponent<PlayerStatsOLD>().acidLink == this) {
+              other.gameObject.GetComponent<PlayerStatsOLD>().acidLink = null;
             }
           } else {
-            other.gameObject.GetComponent<PlayerStats>().inAlkaline = false;
-            if (other.gameObject.GetComponent<PlayerStats>().alkalineLink == this) {
-              other.gameObject.GetComponent<PlayerStats>().alkalineLink = null;
+            other.gameObject.GetComponent<PlayerStatsOLD>().inAlkaline = false;
+            if (other.gameObject.GetComponent<PlayerStatsOLD>().alkalineLink == this) {
+              other.gameObject.GetComponent<PlayerStatsOLD>().alkalineLink = null;
             }
             
           }
@@ -114,8 +114,8 @@ public class Hazard : MonoBehaviour
               }
               //other.gameObject.GetComponent<PlayerStats>().ph += changeInPH * damageRate;
               if (damagesPlayer == true) {
-                if (other.gameObject.GetComponent<PlayerStats>().health > 1.1) {
-                  other.gameObject.GetComponent<PlayerStats>().health -= 1;
+                if (other.gameObject.GetComponent<PlayerStatsOLD>().health > 1.1) {
+                  other.gameObject.GetComponent<PlayerStatsOLD>().health -= 1;
                   playerDamageTimer = 0;
                 }
                 

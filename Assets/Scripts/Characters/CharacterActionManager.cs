@@ -8,11 +8,14 @@ public abstract class CharacterActionManager : MonoBehaviour
 {
     [Header("Base Action Manager Data")]
     [SerializeField]
-    private AnimancerComponent _Anim;
+    protected AnimancerComponent _Anim;
     public AnimancerComponent anim => _Anim;
 
     [SerializeField]
-    private CharacterState _Idle;
+    protected Character _Character;
+
+    [SerializeField]
+    protected CharacterState _Idle;
 
     public readonly StateMachine<CharacterState>.WithDefault StateMachine = new();
 
@@ -44,10 +47,13 @@ public abstract class CharacterActionManager : MonoBehaviour
         }
     }
 
+    public 
+
 #if UNITY_EDITOR
     void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref _Anim);
+        gameObject.GetComponentInParentOrChildren(ref _Character);
     }
 #endif
 }

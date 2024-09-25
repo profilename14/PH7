@@ -27,7 +27,7 @@ public class SceneSwitchTrigger : MonoBehaviour
         {
             if (locked == false) {
                 player.transform.position = spawnPosition;
-                player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
+                player.GetComponent<PlayerStatsOLD>().spawnpoint = spawnPosition;
                 SceneManager.LoadScene(sceneToLoad);
             }
         }
@@ -45,7 +45,7 @@ public class SceneSwitchTrigger : MonoBehaviour
             
             if(!isDoor)
             {
-                player.GetComponent<PlayerStats>().spawnpoint = spawnPosition;
+                player.GetComponent<PlayerStatsOLD>().spawnpoint = spawnPosition;
                 SceneManager.LoadScene(sceneToLoad);
             }
         }

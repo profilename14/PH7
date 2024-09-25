@@ -4,11 +4,26 @@ using UnityEngine;
 
 public abstract class AttackState : CharacterState
 {
-    // This state might be unnecessary, but later it may be useful for combat.
-
     [SerializeField]
-    private float _Damage;
-    public float damage => _Damage;
+    private AttackData _AttackData;
+    public AttackData attackData => _AttackData;
 
-    // Animation events for the attack?
+    private void OnTriggerEnter(Collider other)
+    {
+        // If this script is disabled, then the player is not in this attack state and nothing should happen.
+        if (this.enabled == false) return;
+
+        // Check if we have collided with a hittable object.
+        IHittable hittableScript = other.gameObject.GetComponent<IHittable>();
+        if (hittableScript == null) return;
+
+        // In the case of the player, you are hitting your own hitbox.
+        // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
+        if (character.GetType() == hittableScript.GetType()) return;
+
+        hittableScript.Hit(_AttackData);
+        character.OnCharacterAttackHit(hittableScript);
+    }
+
+    // A ranged attack should pass _AttackData to the projectile, which will handle OnTriggerEnter when it hits something.
 }

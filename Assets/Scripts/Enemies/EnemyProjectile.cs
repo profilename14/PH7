@@ -29,7 +29,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(1, 0, transform.position, 5f);
+            other.gameObject.GetComponent<PlayerStatsOLD>().playerDamage(1, 0, transform.position, 5f);
             Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             if (other.gameObject.GetComponent<Switch>() != null) {
@@ -47,7 +47,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerStats>().playerDamage(1, 0, transform.position, 5f);
+            other.gameObject.GetComponent<PlayerStatsOLD>().playerDamage(1, 0, transform.position, 5f);
             Destroy(gameObject);
         } else if (other.gameObject.CompareTag("Switch")) {
             if (other.gameObject.GetComponent<Switch>() != null) {

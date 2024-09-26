@@ -621,4 +621,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
         throw new NotImplementedException();
     }
+
+    public bool IsGrounded()
+    {
+        return Motor.GroundingStatus.IsStableOnGround;
+    }
 }

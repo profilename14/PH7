@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public override void OnCharacterAttackHit(IHittable hit)
+    public override void OnCharacterAttackHit(IHittable hit, AttackState attack)
     {
         if(hit is Player)
         {

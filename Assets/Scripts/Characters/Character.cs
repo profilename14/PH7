@@ -23,7 +23,7 @@ public abstract class Character : MonoBehaviour, IHittable
 
     // Should handle VFX or in case of the player, gaining pH.
     // Should maybe have some way to get the point of contact for hit VFX (this may be complicated to do with OnTriggerEnter though).
-    public abstract void OnCharacterAttackHit(IHittable hit);
+    public abstract void OnCharacterAttackHit(IHittable hit, AttackState attack);
 
     public virtual void Hit(AttackData attackData)
     {

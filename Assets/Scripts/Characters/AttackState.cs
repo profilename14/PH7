@@ -8,6 +8,11 @@ public abstract class AttackState : CharacterState
     private AttackData _AttackData;
     public AttackData attackData => _AttackData;
 
+    public virtual void OnAttackHit()
+    {
+        return;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // If this script is disabled, then the player is not in this attack state and nothing should happen.
@@ -22,7 +27,7 @@ public abstract class AttackState : CharacterState
         if (character.GetType() == hittableScript.GetType()) return;
 
         hittableScript.Hit(_AttackData);
-        character.OnCharacterAttackHit(hittableScript);
+        character.OnCharacterAttackHit(hittableScript, this);
     }
 
     // A ranged attack should pass _AttackData to the projectile, which will handle OnTriggerEnter when it hits something.

@@ -13,4 +13,6 @@ public interface ICharacterMovementController
     public void RemoveSpeedModifier(float modifier);
 
     public void ApplyForce(Vector3 source, float power);
+
+    public bool IsGrounded();
 }

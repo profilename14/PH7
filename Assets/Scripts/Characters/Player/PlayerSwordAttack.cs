@@ -7,7 +7,7 @@ using Animancer.FSM;
 public class PlayerSwordAttack : AttackState
 {
     [SerializeField]
-    private PlayerMovementController movementController;
+    private ICharacterMovementController movementController;
 
     [SerializeField]
     private RotationController rotationController;
@@ -18,12 +18,20 @@ public class PlayerSwordAttack : AttackState
     [SerializeReference]
     ClipTransition[] attackAnimations;
 
+    [SerializeReference]
+    ClipTransition downwardsSwingAnimation;
+
     [SerializeField]
     AudioClip swordSwingSFX;
 
-    // Forward force feels weird and makes you go woosh in the air
-    //[SerializeField]
-    //float forwardForce = 2f;
+    [SerializeField]
+    float swingForce = 2f;
+
+    [SerializeField]
+    float hitRecoilForce;
+
+    [SerializeField]
+    float pogoForce;
 
     private AnimancerState currentState;
 
@@ -40,22 +48,48 @@ public class PlayerSwordAttack : AttackState
 
         rotationController.snapToCurrentMouseAngle();
 
-        // Forward force was weird in the air so it's disabled for now.
-        // movementController.AddVelocity(rotationController.gameObject.transform.right * forwardForce);
-
-        if(currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
+        if (movementController.IsGrounded())
         {
-            currentSwing = 0;
+            // Swinging on the ground
+            movementController.AddVelocity(rotationController.gameObject.transform.right * swingForce);
+
+            if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
+            {
+                currentSwing = 0;
+            }
+            else
+            {
+                currentSwing++;
+            }
+
+            currentState = actionManager.anim.Play(attackAnimations[currentSwing]);
+
+            // Just sets to idle after this animation fully ends.
+            currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
         }
         else
         {
-            currentSwing++;
-        }
+            //movementController.AddVelocity(-rotationController.gameObject.transform.up * swingForce);
 
-        currentState = actionManager.anim.Play(attackAnimations[currentSwing]);
-        
-        // Just sets to idle after this animation fully ends.
-        currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+            // Swinging in the air performs a downwards swing.
+            currentState = actionManager.anim.Play(downwardsSwingAnimation);
+
+            // Just sets to idle after this animation fully ends.
+            currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+        }
+    }
+
+    public override void OnAttackHit()
+    {
+        if(currentState.Clip == downwardsSwingAnimation.Clip)
+        {
+            Debug.Log("Pogo!");
+            movementController.AddVelocity(rotationController.gameObject.transform.up * pogoForce);
+        }
+        else
+        {
+            //movementController.AddVelocity(-rotationController.gameObject.transform.right * hitRecoilForce);
+        }
     }
 
 #if UNITY_EDITOR

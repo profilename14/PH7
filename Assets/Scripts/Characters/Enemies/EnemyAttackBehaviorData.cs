@@ -5,11 +5,17 @@ using UnityEngine;
 [CreateAssetMenu]
 public class EnemyAttackBehaviorData : ScriptableObject
 {
-    // The minimum distance the enemy can be from the player for this attack to be performed.
-    public float minDistance;
-    
-    // The maximum distance the enemy can be from the player for this attack to be performed.
-    public float maxDistance;
+    // The min/max distance the enemy can be from the player for this attack to be performed.
+    public FloatMinMax distance;
+
+    // The min/max angle between the enemy's forward (+z) vector and the vector from the enemy to the player.
+    public FloatMinMax forwardAngle;
+
+    // The min/max angle between the enemy's up (+y) vector and the vector from the enemy to the player.
+    public FloatMinMax upAngle;
+
+    // The min/max angle between the enemy's right (+x) vector and the vector from the enemy to the player.
+    public FloatMinMax rightAngle;
     
     // Used if there are multiple attacks the enemy can choose at current range.
     // All attack frequencies are added together and normalized out of 1, and a behavior is randomly chosen.

@@ -412,7 +412,7 @@ public class PlayerCombatController : MonoBehaviour
     {
         rotationController.snapToCurrentMouseAngle();
         rotForThrust = rotationController.GetRotationDirection();
-        movementController.ApplyForce(transform.position - rotForThrust * 3, amount);
+        movementController.ApplyImpulseForce(transform.position - rotForThrust * 3, amount);
     }
 
     private void inRecoveryFrames()

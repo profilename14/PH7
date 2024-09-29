@@ -36,41 +36,42 @@ public class EnemyIdle : CharacterState
 
     private LayerMask lineOfSightMask;
 
-    private EnemyActionManager enemyActionManager;
-
     private Player player;
 
     private int currentPatrolIndex;
 
+    EnemyMovementController movementController;
+
     private void Awake()
     {
         lineOfSightMask = LayerMask.GetMask("Player", "Obstacles");
-        enemyActionManager = (EnemyActionManager)actionManager;
     }
 
     protected override void OnEnable()
     {
+        movementController = (EnemyMovementController)_Character.movementController;
+
         player = Player.instance;
 
         if (patrolTargets.Length > 0)
         {
             // This is a roaming enemy
-            enemyActionManager.pathfinding.isStopped = false;
-            enemyActionManager.pathfinding.enableRotation = true;
+            movementController.SetAllowMovement(true);
+            movementController.SetAllowRotation(true);
 
             StartCoroutine(Patrolling());
         }
         else
         {
             // This is a stationary enemy
-            enemyActionManager.pathfinding.isStopped = true;
-            enemyActionManager.pathfinding.enableRotation = false;
+            movementController.SetAllowMovement(false);
+            movementController.SetAllowRotation(false);
         }
     }
 
     private void Update()
     {
-        Vector3 toPlayer = (player.transform.position - character.transform.position).normalized;
+        Vector3 toPlayer = (player.transform.position - _Character.transform.position).normalized;
 
         Physics.Raycast(transform.position + eyeOffset, toPlayer, 
             out RaycastHit hit, sightDistance, lineOfSightMask);
@@ -79,9 +80,10 @@ public class EnemyIdle : CharacterState
 
         if (hit.collider != null && hit.collider.gameObject == player.gameObject)
         {
-            if (Vector3.Angle(character.transform.forward, toPlayer) < viewConeAngle / 2)
+            if (Vector3.Angle(_Character.transform.forward, toPlayer) < viewConeAngle / 2)
             {
                 StopAllCoroutines();
+                EnemyActionManager enemyActionManager = (EnemyActionManager)_ActionManager;
                 enemyActionManager.SpottedPlayer();
             }
         }
@@ -89,18 +91,20 @@ public class EnemyIdle : CharacterState
 
     private IEnumerator Patrolling()
     {
-        actionManager.anim.Play(MoveAnimation);
+        yield return null;
 
-        enemyActionManager.target.transform.position = patrolTargets[currentPatrolIndex].transform.position;
+        _ActionManager.anim.Play(MoveAnimation);
+
+        movementController.SetPathfindingDestination(patrolTargets[currentPatrolIndex].transform.position);
 
         yield return null;
 
-        while(!enemyActionManager.pathfinding.reachedDestination)
+        while(!movementController.ReachedDestination())
         {
             yield return null;
         }
 
-        actionManager.anim.Play(IdleAnimation);
+        _ActionManager.anim.Play(IdleAnimation);
 
         yield return new WaitForSeconds(patrolPauseTime);
 

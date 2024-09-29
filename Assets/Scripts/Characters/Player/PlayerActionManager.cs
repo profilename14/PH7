@@ -32,7 +32,8 @@ public class PlayerActionManager : CharacterActionManager
 
     private Vector2 moveDir;
 
-    private bool jumpThisFrame;
+    private bool jumpPressed;
+    private bool jumpHeld;
     private bool dashThisFrame;
 
     private StateMachine<CharacterState>.InputBuffer _InputBuffer;
@@ -44,9 +45,6 @@ public class PlayerActionManager : CharacterActionManager
     {
         base.Awake();
         controls = new InputMaster();
-        _AllowedActions.Add(_Move, true);
-        _AllowedActions.Add(_SwordAttack, true);
-        _AllowedActions.Add(_ChargeAttack, true);
         //_AllowedActions.Add(_Dash, true);
         _InputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
     }
@@ -59,7 +57,9 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Attack.performed += context => OnAttackPerformed(context);
         controls.Typhis.Attack.started += context => OnAttackStarted(context);
         controls.Typhis.Jump.Enable();
-        controls.Typhis.Jump.performed += context => OnJump(context);
+        controls.Typhis.Jump.started += context => { jumpPressed = true;  jumpHeld = true; };
+        controls.Typhis.Jump.performed += context => { jumpHeld = false; };
+        controls.Typhis.Jump.canceled += context => { jumpHeld = false; };
         controls.Typhis.Dash.Enable();
         controls.Typhis.Dash.performed += context => OnDash(context);
     }
@@ -74,7 +74,7 @@ public class PlayerActionManager : CharacterActionManager
         PassInput();
 
         // As long as the enter/exit variables on the states are set correctly this should cause no problems
-        if(moveDir != Vector2.zero || jumpThisFrame)
+        if(moveDir != Vector2.zero || jumpHeld)
         {
             StateMachine.TrySetState(_Move);
         }
@@ -101,12 +101,19 @@ public class PlayerActionManager : CharacterActionManager
             PlayerCharacterInputs input = new PlayerCharacterInputs();
             input.MoveAxisForward = moveDir.y;
             input.MoveAxisRight = moveDir.x;
-            input.JumpDown = jumpThisFrame;
+            input.jumpPressed = jumpPressed;
+            input.JumpHeld = jumpHeld;
             input.Dash = dashThisFrame;
             _Move.UpdateInputs(input);
-            
-            jumpThisFrame = false;
+            jumpPressed = false;
             dashThisFrame = false;
+        }
+        else if(StateMachine.CurrentState == _SwordAttack)
+        {
+            PlayerCharacterInputs input = new PlayerCharacterInputs();
+            input.MoveAxisForward = moveDir.y;
+            input.MoveAxisRight = moveDir.x;
+            _SwordAttack.UpdateInputs(input);
         }
     }
 
@@ -138,15 +145,19 @@ public class PlayerActionManager : CharacterActionManager
         }
     }
 
-    // Receives a jump button press
-    void OnJump(InputAction.CallbackContext context)
-    {
-        jumpThisFrame = true;
-    }
-
     // Receives a dash button press
     void OnDash(InputAction.CallbackContext context)
     {
         dashThisFrame = true;
+    }
+
+    public override void Hitstun()
+    {
+        return;
+    }
+
+    public override void EndHitStun()
+    {
+        return;
     }
 }

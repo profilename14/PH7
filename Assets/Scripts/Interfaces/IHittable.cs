@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IHittable
 {
-    public void Hit(AttackData attackData);
+    public void Hit(AttackState attack);
 }

@@ -24,10 +24,10 @@ public abstract class AttackState : CharacterState
 
         // In the case of the player, you are hitting your own hitbox.
         // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
-        if (character.GetType() == hittableScript.GetType()) return;
+        if (_Character.GetType() == hittableScript.GetType()) return;
 
-        hittableScript.Hit(_AttackData);
-        character.OnCharacterAttackHit(hittableScript, this);
+        hittableScript.Hit(this);
+        _Character.OnCharacterAttackHit(hittableScript, this);
     }
 
     // A ranged attack should pass _AttackData to the projectile, which will handle OnTriggerEnter when it hits something.

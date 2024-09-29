@@ -9,6 +9,7 @@ using Animancer.FSM;
 public struct EnemyAttack
 {
     public float cooldown;
+    public CharacterActionPriority priority;
     public CharacterState stateScript;
     public EnemyAttackBehaviorData behaviorData;
 }
@@ -19,8 +20,7 @@ public class EnemyActionManager : CharacterActionManager
     protected CharacterState _InitAggro;
 
     [SerializeField]
-    protected RichAI _Pathfinding;
-    public RichAI pathfinding => _Pathfinding;
+    protected CharacterState _HitStun;
 
     [SerializeField]
     // How often (in seconds) should this Enemy update attack behavior?
@@ -32,65 +32,69 @@ public class EnemyActionManager : CharacterActionManager
     [SerializeField]
     protected float noAttacksTimer;
 
+    [SerializeField]
+    protected bool isAggro;
+
     // For storing a reference to the Player singleton instance.
     protected Player player;
 
-    // GameObject created at runtime to visualize the Enemy's movement target.
-    public GameObject target;
-
-
     private List<EnemyAttack> attackCandidates = new();
+
+    private bool isStunned = false;
 
     protected override void Awake()
     {
-        // This needs to come first because the base.Awake() references these fields.
-        player = Player.instance;
-        target = new GameObject(_Character.gameObject.name + " AI Target");
-        
         base.Awake();
-        
-        pathfinding.maxSpeed = _Character.characterData.baseSpeed;
-        
+
+        if (isAggro) StateMachine.DefaultState = _InitAggro;
+
+        player = Player.instance;
+                
         // Set up everything for all the attack behaviors.
         for(int i = 0; i < attacks.Count; i++)
         {
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
-                _AllowedActions.Add(attacks[i].stateScript, false);
+                _AllowedStates.Add(attacks[i].stateScript, false);
                 EnemyAttack attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
             }
             else
             {
-                _AllowedActions.Add(attacks[i].stateScript, true);
+                _AllowedStates.Add(attacks[i].stateScript, true);
             }
         }
-    }
-
-    protected virtual void Update()
-    {
-        _Pathfinding.destination = target.transform.position;
     }
 
     public IEnumerator UpdateAttackStates()
     {
         yield return new WaitForSeconds(attackBehaviorUpdateInterval);
 
-        float distanceToPlayer = Vector3.Distance(_Character.transform.position, Player.instance.transform.position);
+        Vector3 vectorToPlayer = Player.instance.transform.position - _Character.transform.position;
+
+        float distanceToPlayer = vectorToPlayer.magnitude;
+        float angleToPlayerForward = Vector3.Angle(_Character.transform.forward, vectorToPlayer);
+        float angleToPlayerUp = Vector3.Angle(_Character.transform.up, vectorToPlayer);
+        float angleToPlayerRight = Vector3.Angle(_Character.transform.right, vectorToPlayer);
 
         float totalFrequencies = 0;
 
         attackCandidates.Clear();
 
-        for(int i = 0; i < attacks.Count; i++)
+        for (int i = 0; i < attacks.Count; i++)
         {
             EnemyAttackBehaviorData attackData = attacks[i].behaviorData;
+            
+            if (attackData.decrementCooldownOnlyWhenAllowed && !_AllowedStates[attacks[i].stateScript]) continue;
 
-            if(distanceToPlayer > attackData.minDistance && distanceToPlayer < attackData.maxDistance)
+            if (distanceToPlayer > attackData.distance.min && distanceToPlayer < attackData.distance.max
+                && angleToPlayerForward > attackData.forwardAngle.min && angleToPlayerForward < attackData.forwardAngle.max
+                && angleToPlayerUp > attackData.upAngle.min && angleToPlayerUp < attackData.upAngle.max
+                && angleToPlayerRight > attackData.rightAngle.min && angleToPlayerRight < attackData.rightAngle.max)
             {
                 // Within range of the attack.
-                if(attacks[i].cooldown <= 0 && _AllowedActions[attacks[i].stateScript])
+                if(attacks[i].cooldown <= 0 && _AllowedStates[attacks[i].stateScript])
                 {
                     // This is a possible candidate for an attack.
                     attackCandidates.Add(attacks[i]);
@@ -104,29 +108,31 @@ public class EnemyActionManager : CharacterActionManager
                 if (attackData.decrementCooldownOnlyInRange) continue;
             }
 
-            if (attackData.decrementCooldownOnlyWhenAllowed && !_AllowedActions[attacks[i].stateScript]) continue;
 
             // Handle decrementing cooldowns.
             EnemyAttack attackTemp = attacks[i];
             attackTemp.cooldown -= attackBehaviorUpdateInterval;
             attacks[i] = attackTemp;
 
-            if (attacks[i].cooldown <= 0) _AllowedActions[attacks[i].stateScript] = true;
-            else _AllowedActions[attacks[i].stateScript] = true;
+            if (!isStunned && attacks[i].cooldown <= 0) _AllowedStates[attacks[i].stateScript] = true;
+            else _AllowedStates[attacks[i].stateScript] = false;
         }
 
-        float randomNum = Random.Range(0, totalFrequencies);
-
-        for(int i = 0; i < attackCandidates.Count; i++)
+        if (!isStunned)
         {
-            if(randomNum <= attackCandidates[i].behaviorData.frequency)
-            {
-                if (StateMachine.TrySetState(attackCandidates[i].stateScript)) ResetCooldown(attackCandidates[i]);
-                //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
-                break;
-            }
+            float randomNum = Random.Range(0, totalFrequencies);
 
-            randomNum -= attackCandidates[i].behaviorData.frequency;
+            for (int i = 0; i < attackCandidates.Count; i++)
+            {
+                if (randomNum <= attackCandidates[i].behaviorData.frequency)
+                {
+                    if (StateMachine.TrySetState(attackCandidates[i].stateScript)) ResetCooldown(attackCandidates[i]);
+                    //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                    break;
+                }
+
+                randomNum -= attackCandidates[i].behaviorData.frequency;
+            }
         }
 
         StartCoroutine(UpdateAttackStates());
@@ -147,17 +153,32 @@ public class EnemyActionManager : CharacterActionManager
 
     public void SpottedPlayer()
     {
+        isAggro = true;
         //Debug.Log("Enemy spotted player!");
         StateMachine.ForceSetState(_InitAggro);
         StateMachine.DefaultState = _InitAggro;
         StartCoroutine(UpdateAttackStates());
     }
 
+    public override void Hitstun()
+    {
+        if (!isAggro) SpottedPlayer();
+        if (StateMachine.TryResetState(_HitStun))
+        {
+            Debug.Log("Hitstun!");
+            isStunned = true;
+        }
+    }
+
+    public override void EndHitStun()
+    {
+        isStunned = false;
+    }
+
 #if UNITY_EDITOR
     new void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref _Pathfinding);
     }
 #endif
 }

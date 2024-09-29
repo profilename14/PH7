@@ -11,33 +11,36 @@ public class StriderDash : AttackState
     [SerializeField]
     private float dashForce;
 
-    private EnemyActionManager enemyActionManager;
+    private EnemyMovementController movementController;
 
-    public override bool CanEnterState => actionManager.allowedActions[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this];
 
     private void Awake()
     {
-        enemyActionManager = (EnemyActionManager)actionManager;
+        movementController = (EnemyMovementController)_Character.movementController;
     }
 
     protected override void OnEnable()
     {
-        enemyActionManager.SetAllActionsAllowed(false);
+        _ActionManager.SetAllActionPriorityAllowed(false);
 
-        enemyActionManager.pathfinding.isStopped = true;
-        enemyActionManager.pathfinding.enableRotation = false;
-        // Should try allowing rotation until start of dash
+        movementController.SetAllowMovement(false);
+        movementController.SetAllowRotation(true);
+        movementController.SetForceManualRotation(true);
 
-        enemyActionManager.target.transform.position = Player.instance.transform.position;
+        AnimancerState currentState = _ActionManager.anim.Play(dashAttack);
+        currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
+    }
 
-        AnimancerState currentState = enemyActionManager.anim.Play(dashAttack);
-        currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+    private void Update()
+    {
+        movementController.SetPathfindingDestination(Player.instance.transform.position);
     }
 
     public void DashStart()
     {
         //Debug.Log("Dash start");
-        Rigidbody rb = character.gameObject.GetComponent<Rigidbody>();
-        rb.AddForce(character.transform.forward * dashForce, ForceMode.Impulse);
+        movementController.SetAllowRotation(false);
+        movementController.ApplyImpulseForce(_Character.transform.forward, dashForce);
     }
 }

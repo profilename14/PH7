@@ -19,7 +19,8 @@ public struct PlayerCharacterInputs
     public float MoveAxisForward;
     public float MoveAxisRight;
     public Quaternion CameraRotation;
-    public bool JumpDown;
+    public bool jumpPressed;
+    public bool JumpHeld;
     public bool Dash;
 }
 
@@ -53,6 +54,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     [Header("Jumping")]
     public bool AllowJumpingWhenSliding = false;
     public float JumpUpSpeed = 10f;
+    public float maxJumpTime = 2f;
     public float JumpScalableForwardSpeed = 10f;
     public float JumpPreGroundingGraceTime = 0f;
     public float JumpPostGroundingGraceTime = 0f;
@@ -71,11 +73,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     private RaycastHit[] _probedHits = new RaycastHit[8];
     private Vector3 _moveInputVector;
     private Vector3 _lookInputVector;
-    private bool _jumpRequested = false;
-    private bool _jumpConsumed = false;
+    private bool _jumpHeld = false;
+    private bool _jumpPressedThisFrame = false;
+    private bool _inJump = false;
     private bool _jumpedThisFrame = false;
     private float _timeSinceJumpRequested = Mathf.Infinity;
     private float _timeSinceLastAbleToJump = 0f;
+    private float jumpTime = 0f;
     private Vector3 _internalVelocityAdd = Vector3.zero;
 
     private Vector3 lastInnerNormal = Vector3.zero;
@@ -102,6 +106,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
 
+    bool velocityLocked = false;
+    private Vector3 lockedVelocity;
+
     private void Awake()
     {
         // Handle initial state
@@ -117,11 +124,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private void Update() // Handles all movement related input.
     {
+        if (_inJump) jumpTime += Time.deltaTime;
+
         if (DashTimer > 0) {
             DashTimer -= Time.deltaTime;
             if (DashTimer <= 0) {
                 canMove = true;
                 isDashing = false;
+                UnlockVelocity();
             }
         }
 
@@ -204,10 +214,19 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         _lookInputVector = cameraPlanarDirection;
 
         // Jumping input
-        if (inputs.JumpDown)
+        if (inputs.JumpHeld)
         {
             _timeSinceJumpRequested = 0f;
-            _jumpRequested = true;
+            _jumpHeld = true;
+        }
+        else
+        {
+            _jumpHeld = false;
+        }
+
+        if(inputs.jumpPressed)
+        {
+            _jumpPressedThisFrame = true;
         }
 
         if (inputs.Dash)
@@ -321,6 +340,20 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// </summary>
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
+        if(velocityLocked)
+        {
+            currentVelocity = lockedVelocity;
+            return;
+        }
+
+        // Moved this here so it can be differentiated from LockVelocity
+        if (setVelocity)
+        {
+            setVelocity = false;
+            currentVelocity = _internalVelocitySet;
+            _internalVelocitySet = Vector3.zero;
+        }
+
         // Ground movement
         if (Motor.GroundingStatus.IsStableOnGround || isDashing) // Ensures friction applies during dashes, making them brief midair
         {
@@ -378,6 +411,10 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 // Apply added velocity
                 currentVelocity += addedVelocity;
             }
+            else
+            {
+                currentVelocity -= new Vector3(currentVelocity.x, 0, currentVelocity.z);
+            }
 
             // Gravity
             currentVelocity += Gravity * deltaTime;
@@ -390,11 +427,19 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         // Handle jumping
         _jumpedThisFrame = false;
         _timeSinceJumpRequested += deltaTime;
-        if (_jumpRequested)
+
+        // Should only start a new jump if the button is pressed while on jumpable ground
+        // If the player is already in a jump for < maxJumpTime, then can continue gaining height
+        bool onJumpableGround = (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround); //|| _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime;        
+        if ((_jumpPressedThisFrame && onJumpableGround) || (_jumpHeld && _inJump))
         {
-            // See if we actually are allowed to jump
-            if (!_jumpConsumed && ((AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround) || _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime))
+            //if (_jumpPressedThisFrame && onJumpableGround) Debug.Log("Starting jump");
+
+            // See if we are allowed to continue increaing jump height
+            if (jumpTime < maxJumpTime)
             {
+                _inJump = true;
+                //Debug.Log("Jumping!");
                 // Calculate jump direction before ungrounding
                 Vector3 jumpDirection = Motor.CharacterUp;
                 if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
@@ -407,13 +452,22 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 Motor.ForceUnground();
 
                 // Add to the return velocity and reset jump state
-                currentVelocity += (jumpDirection * JumpUpSpeed) - Vector3.Project(currentVelocity, Motor.CharacterUp);
-                currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
-                _jumpRequested = false;
-                _jumpConsumed = true;
+                currentVelocity = new Vector3(currentVelocity.x, JumpUpSpeed, currentVelocity.z); //- Vector3.Project(currentVelocity, Motor.CharacterUp);
+                //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
                 _jumpedThisFrame = true;
             }
+            else
+            {
+                //Debug.Log("Ending jump");
+                _inJump = false;
+            }
         }
+        else
+        {
+            _inJump = false;
+        }
+
+        _jumpPressedThisFrame = false;
 
         // Take into account additive velocity
         if (_internalVelocityAdd.sqrMagnitude > 0f)
@@ -421,13 +475,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             currentVelocity += _internalVelocityAdd;
             _internalVelocityAdd = Vector3.zero;
         }
-
-        if (setVelocity) {
-            setVelocity = false;
-            currentVelocity = _internalVelocitySet;
-            _internalVelocitySet = Vector3.zero;
-        }
-
     }
 
     /// <summary>
@@ -438,9 +485,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
 
         // Handle jumping pre-ground grace period
-        if (_jumpRequested && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
+        if (_jumpHeld && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
         {
-            _jumpRequested = false;
+            _jumpHeld = false;
         }
 
         if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
@@ -448,7 +495,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             // If we're on a ground surface, reset jumping values
             if (!_jumpedThisFrame)
             {
-                _jumpConsumed = false;
+                jumpTime = 0f;
+                _inJump = false;
             }
             _timeSinceLastAbleToJump = 0f;
         }
@@ -504,6 +552,17 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
         setVelocity = true;
         _internalVelocitySet = velocity;
+    }
+
+    public void LockVelocity(Vector3 velocity)
+    {
+        velocityLocked = true;
+        lockedVelocity = velocity;
+    }
+
+    public void UnlockVelocity()
+    {
+        velocityLocked = false;
     }
 
     public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
@@ -590,7 +649,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             dashDirection = _moveInputVector;
         }
 
-        SetVelocity(dashDirection * dashPower);
+        LockVelocity(dashDirection * dashPower);
 
 
         
@@ -601,15 +660,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     }
 
-    public void ApplyForce(Vector3 source, float power) 
+    public void ApplyImpulseForce(Vector3 direction, float power)
     {
-
-        Vector3 direction = (transform.position - source);
-        direction.Normalize();
-
-        direction = direction * power * 30;
-
-        AddVelocity(-direction);
+        AddVelocity(direction.normalized * power);
     }
 
     public void AddSpeedModifier(float modifier)
@@ -625,5 +678,15 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     public bool IsGrounded()
     {
         return Motor.GroundingStatus.IsStableOnGround;
+    }
+
+    public void SetAllowMovement(bool isAllowed)
+    {
+        return;
+    }
+
+    public void SetAllowRotation(bool isAllowed)
+    {
+        return;
     }
 }

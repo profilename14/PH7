@@ -29,30 +29,30 @@ public class PlayerChargeAttack : AttackState
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => actionManager.allowedActions[this];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
 
     protected override void OnEnable()
     {
         attackCharged = false;
 
-        actionManager.SetAllActionsAllowed(false);
+        _ActionManager.SetAllActionPriorityAllowed(false);
 
         rotationController.snapToCurrentMouseAngle();
 
-        actionManager.anim.Play(chargingAnimation);
+        _ActionManager.anim.Play(chargingAnimation);
     }
 
     public void ReleaseChargeAttack()
     {
         if (attackCharged)
         {
-            actionManager.SetAllActionsAllowed(false);
+            _ActionManager.SetAllActionPriorityAllowed(false);
             // Do a charge attack, go back to idle at the end.
-            actionManager.anim.Play(chargeAttackAnimation).Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+            _ActionManager.anim.Play(chargeAttackAnimation).Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
         else
         {
-            actionManager.StateMachine.ForceSetDefaultState();
+            _ActionManager.StateMachine.ForceSetDefaultState();
         }
     }
 

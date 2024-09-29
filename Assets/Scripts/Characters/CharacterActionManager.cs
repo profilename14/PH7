@@ -4,6 +4,9 @@ using UnityEngine;
 using Animancer;
 using Animancer.FSM;
 
+[System.Serializable]
+public enum CharacterActionPriority { Movement, Low, Medium, High, Hitstun};
+
 public abstract class CharacterActionManager : MonoBehaviour
 {
     [Header("Base Action Manager Data")]
@@ -19,33 +22,70 @@ public abstract class CharacterActionManager : MonoBehaviour
 
     public readonly StateMachine<CharacterState>.WithDefault StateMachine = new();
 
-    // A dictionary of which states are allowed to be entered, referenced by the states.
-    // May want to refactor this so multiple similar states can be grouped together.
-    protected Dictionary<CharacterState, bool> _AllowedActions = new();
-    public Dictionary<CharacterState, bool> allowedActions => _AllowedActions;
+    // A set of different priorities that generic actions can fall under.
+    protected Dictionary<CharacterActionPriority, bool> _AllowedActionPriorities = new();
+    public Dictionary<CharacterActionPriority, bool> allowedActionPriorities => _AllowedActionPriorities;
+
+    // A set of different states that specific actions can fall under.
+    protected Dictionary<CharacterState, bool> _AllowedStates = new();
+    public Dictionary<CharacterState, bool> allowedStates => _AllowedStates;
 
     protected virtual void Awake()
     {
         StateMachine.DefaultState = _Idle;
+        _AllowedActionPriorities.Add(CharacterActionPriority.Hitstun, true);
+        _AllowedActionPriorities.Add(CharacterActionPriority.High, true);
+        _AllowedActionPriorities.Add(CharacterActionPriority.Medium, true);
+        _AllowedActionPriorities.Add(CharacterActionPriority.Low, true);
+        _AllowedActionPriorities.Add(CharacterActionPriority.Movement, true);
     }
 
-    public virtual void SetActionAllowed(CharacterState state)
+    public virtual void SetActionPriorityAllowed(CharacterActionPriority priority)
     {
-        _AllowedActions[state] = true;
+        _AllowedActionPriorities[priority] = true;
     }
 
-    public virtual void SetActionNotAllowed(CharacterState state)
+    public virtual void SetStateAllowed(CharacterState state)
     {
-        _AllowedActions[state] = false;
+        _AllowedStates[state] = true;
     }
 
-    public virtual void SetAllActionsAllowed(bool b)
+    public virtual void SetActionPriorityNotAllowed(CharacterActionPriority priority)
     {
-        foreach(var key in new List<CharacterState>(_AllowedActions.Keys))
+        _AllowedActionPriorities[priority] = false;
+    }
+
+    public virtual void SetStateNotAllowed(CharacterState state)
+    {
+        _AllowedStates[state] = false;
+    }
+
+    public virtual void SetAllActionPriorityAllowed(bool b)
+    {
+        foreach (var key in new List<CharacterActionPriority>(_AllowedActionPriorities.Keys))
         {
-            _AllowedActions[key] = b;
+            _AllowedActionPriorities[key] = b;
         }
     }
+
+    public virtual void SetAllStatesAllowed(bool b)
+    {
+        foreach (var key in new List<CharacterState>(_AllowedStates.Keys))
+        {
+            _AllowedStates[key] = b;
+        }
+    }
+    public virtual void SetAllActionPriorityAllowedExceptHitstun(bool b)
+    {
+        foreach (var key in new List<CharacterActionPriority>(_AllowedActionPriorities.Keys))
+        {
+            if (key != CharacterActionPriority.Hitstun) _AllowedActionPriorities[key] = b;
+        }
+    }
+
+    public abstract void Hitstun();
+
+    public abstract void EndHitStun();
 
     public 
 

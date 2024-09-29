@@ -17,7 +17,7 @@ public class PlayerMove : CharacterState
     TransitionAsset moveAnimation;
 
     public override bool CanEnterState
-        => actionManager.allowedActions[this];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Movement];
 
     public void UpdateInputs(PlayerCharacterInputs input)
     {
@@ -26,8 +26,8 @@ public class PlayerMove : CharacterState
 
     protected override void OnEnable()
     {
-        actionManager.SetAllActionsAllowed(true);
-        actionManager.anim.Play(moveAnimation);
+        _ActionManager.SetAllActionPriorityAllowed(true);
+        _ActionManager.anim.Play(moveAnimation);
     }
 
     protected override void OnDisable()

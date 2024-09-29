@@ -36,13 +36,8 @@ public abstract class CharacterStats : MonoBehaviour
 
         if (_Health <= 0)
         {
-            Die();
+            _Character.Die();
         }
-    }
-
-    protected virtual void Die()
-    {
-        Destroy(this.gameObject);
     }
 
 #if UNITY_EDITOR

@@ -13,41 +13,39 @@ public class EnemyFollow : CharacterState
     private float followDistance = 2f;
 
     [SerializeField]
-    private float stationaryRotationMultiplier = 5f;
+    private bool rotateToFaceMovementDirection = true;
 
-    private EnemyActionManager enemyActionManager;
+    private EnemyMovementController movementController;
 
-    private RichAI pathfinding;
+    private Vector3 playerPosition;
 
     private void Awake()
     {
-        enemyActionManager = (EnemyActionManager)actionManager;
-        pathfinding = enemyActionManager.pathfinding;
+        movementController = (EnemyMovementController)_Character.movementController;
     }
 
     protected override void OnEnable()
     {
-        actionManager.anim.Play(MoveAnimation);
-        pathfinding.isStopped = false;
-        pathfinding.enableRotation = true;
-        pathfinding.endReachedDistance = followDistance;
-        pathfinding.maxSpeed = character.characterData.baseSpeed;
+        _ActionManager.SetAllActionPriorityAllowed(true);
+        _ActionManager.anim.Play(MoveAnimation);
+        movementController.SetAllowMovement(true);
+        movementController.SetAllowRotation(true);
+        movementController.SetForceManualRotation(!rotateToFaceMovementDirection);
     }
 
     private void Update()
     {
-        enemyActionManager.target.transform.position = Player.instance.transform.position;
+        playerPosition = Player.instance.transform.position;
 
-        if(pathfinding.reachedEndOfPath)
+        movementController.SetPathfindingDestination(playerPosition);
+
+        if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)
         {
-            pathfinding.isStopped = true;
-            var direction = (enemyActionManager.target.transform.position - character.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            character.transform.rotation = Quaternion.Slerp(character.transform.rotation, lookRotation, Time.deltaTime * stationaryRotationMultiplier);
+            movementController.SetAllowMovement(false);
         }
         else
         {
-            pathfinding.isStopped = false;
+            movementController.SetAllowMovement(true);
         }
     }
 }

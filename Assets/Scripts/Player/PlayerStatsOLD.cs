@@ -209,7 +209,7 @@ public class PlayerStatsOLD : MonoBehaviour
         iFrameTimer = 0;
       }
 
-      movementController.ApplyForce(position, knockback);
+      movementController.ApplyImpulseForce(position, knockback);
 
       if (GameManager.isScreenshakeEnabled) {
         cam.GetComponent<screenShake>().ScreenShake(.1f);

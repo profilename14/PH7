@@ -7,7 +7,7 @@ using Animancer.FSM;
 public class PlayerSwordAttack : AttackState
 {
     [SerializeField]
-    private ICharacterMovementController movementController;
+    private PlayerMovementController movementController;
 
     [SerializeField]
     private RotationController rotationController;
@@ -38,13 +38,12 @@ public class PlayerSwordAttack : AttackState
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
-        => attackAnimations.Length > 0 && actionManager.allowedActions[this];
+        => attackAnimations.Length > 0 && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     protected override void OnEnable()
     {
         // Fully committed to an attack once you start it.
-        // May want to change this later so you can be hit out of attacks.
-        actionManager.SetAllActionsAllowed(false);
+        _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
         rotationController.snapToCurrentMouseAngle();
 
@@ -62,21 +61,26 @@ public class PlayerSwordAttack : AttackState
                 currentSwing++;
             }
 
-            currentState = actionManager.anim.Play(attackAnimations[currentSwing]);
+            currentState = _ActionManager.anim.Play(attackAnimations[currentSwing]);
 
             // Just sets to idle after this animation fully ends.
-            currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+            currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
         else
         {
             //movementController.AddVelocity(-rotationController.gameObject.transform.up * swingForce);
 
             // Swinging in the air performs a downwards swing.
-            currentState = actionManager.anim.Play(downwardsSwingAnimation);
+            currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
 
             // Just sets to idle after this animation fully ends.
-            currentState.Events(this).OnEnd ??= actionManager.StateMachine.ForceSetDefaultState;
+            currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
+    }
+
+    public void UpdateInputs(PlayerCharacterInputs input)
+    {
+        if (currentState.Clip == downwardsSwingAnimation.Clip) movementController.SetInputs(ref input);
     }
 
     public override void OnAttackHit()
@@ -84,6 +88,7 @@ public class PlayerSwordAttack : AttackState
         if(currentState.Clip == downwardsSwingAnimation.Clip)
         {
             Debug.Log("Pogo!");
+            movementController.SetVelocity(Vector3.zero);
             movementController.AddVelocity(rotationController.gameObject.transform.up * pogoForce);
         }
         else

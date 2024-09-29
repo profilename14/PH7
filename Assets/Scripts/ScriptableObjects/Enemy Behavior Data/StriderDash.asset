@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b162567d42480242be5c2d7faa7fc22, type: 3}
   m_Name: StriderDash
   m_EditorClassIdentifier: 
-  minDistance: 0
-  maxDistance: 10
+  distance:
+    min: 0
+    max: 10
+  forwardAngle:
+    min: 0
+    max: 45
+  upAngle:
+    min: 50
+    max: 180
+  rightAngle:
+    min: 0
+    max: 180
   frequency: 1
   cooldown: 2
   enemyCooldown: 0

@@ -7,18 +7,20 @@ using Animancer.FSM;
 public abstract class CharacterState : StateBehaviour
 {
     [SerializeField]
-    protected Character character;
+    protected Character _Character;
+    public Character character => _Character;
 
     [SerializeField]
-    protected CharacterActionManager actionManager;
+    protected CharacterActionManager _ActionManager;
+    public CharacterActionManager actionManager => _ActionManager;
 
 #if UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
 
-        gameObject.GetComponentInParentOrChildren(ref character);
-        gameObject.GetComponentInParentOrChildren(ref actionManager);
+        gameObject.GetComponentInParentOrChildren(ref _Character);
+        gameObject.GetComponentInParentOrChildren(ref _ActionManager);
     }
 #endif
 

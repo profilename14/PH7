@@ -14,7 +14,8 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
     RichAI pathfinding;
 
     [SerializeField]
-    Rigidbody rb;
+    protected Rigidbody _Rb;
+    public Rigidbody rb => _Rb;
 
     [SerializeField]
     BaseCharacterData enemyData;
@@ -134,6 +135,11 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         velocityLocked = false;
     }
 
+    public void SetDrag(float drag)
+    {
+        rb.drag = drag;
+    }
+
     void LateUpdate()
     {
         if (velocityLocked) rb.velocity = internalLockedVelocity;
@@ -143,7 +149,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
     void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
-        gameObject.GetComponentInParentOrChildren(ref rb);
+        gameObject.GetComponentInParentOrChildren(ref _Rb);
         gameObject.GetComponentInParentOrChildren(ref enemy);
         enemyData = enemy.characterData;
     }

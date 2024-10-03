@@ -40,6 +40,7 @@ public class EnemyActionManager : CharacterActionManager
 
     private List<EnemyAttack> attackCandidates = new();
 
+    [SerializeField]
     private bool isStunned = false;
 
     protected override void Awake()
@@ -155,8 +156,10 @@ public class EnemyActionManager : CharacterActionManager
     {
         isAggro = true;
         //Debug.Log("Enemy spotted player!");
+        _Idle.StopAllCoroutines();
         StateMachine.ForceSetState(_InitAggro);
         StateMachine.DefaultState = _InitAggro;
+        StopAllCoroutines();
         StartCoroutine(UpdateAttackStates());
     }
 
@@ -165,7 +168,7 @@ public class EnemyActionManager : CharacterActionManager
         if (!isAggro) SpottedPlayer();
         if (StateMachine.TryResetState(_HitStun))
         {
-            Debug.Log("Hitstun!");
+            //Debug.Log("Hitstun!");
             isStunned = true;
         }
     }

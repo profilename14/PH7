@@ -5,7 +5,7 @@ using Animancer;
 using Animancer.FSM;
 
 [System.Serializable]
-public enum CharacterActionPriority { Movement, Low, Medium, High, Hitstun};
+public enum CharacterActionPriority { Move, Low, Medium, High, Hitstun};
 
 public abstract class CharacterActionManager : MonoBehaviour
 {
@@ -37,27 +37,17 @@ public abstract class CharacterActionManager : MonoBehaviour
         _AllowedActionPriorities.Add(CharacterActionPriority.High, true);
         _AllowedActionPriorities.Add(CharacterActionPriority.Medium, true);
         _AllowedActionPriorities.Add(CharacterActionPriority.Low, true);
-        _AllowedActionPriorities.Add(CharacterActionPriority.Movement, true);
+        _AllowedActionPriorities.Add(CharacterActionPriority.Move, true);
     }
 
-    public virtual void SetActionPriorityAllowed(CharacterActionPriority priority)
+    public virtual void SetActionPriorityAllowed(CharacterActionPriority priority, bool isAllowed)
     {
-        _AllowedActionPriorities[priority] = true;
+        _AllowedActionPriorities[priority] = isAllowed;
     }
 
-    public virtual void SetStateAllowed(CharacterState state)
+    public virtual void SetStateAllowed(CharacterState state, bool isAllowed)
     {
-        _AllowedStates[state] = true;
-    }
-
-    public virtual void SetActionPriorityNotAllowed(CharacterActionPriority priority)
-    {
-        _AllowedActionPriorities[priority] = false;
-    }
-
-    public virtual void SetStateNotAllowed(CharacterState state)
-    {
-        _AllowedStates[state] = false;
+        _AllowedStates[state] = isAllowed;
     }
 
     public virtual void SetAllActionPriorityAllowed(bool b)
@@ -75,6 +65,7 @@ public abstract class CharacterActionManager : MonoBehaviour
             _AllowedStates[key] = b;
         }
     }
+
     public virtual void SetAllActionPriorityAllowedExceptHitstun(bool b)
     {
         foreach (var key in new List<CharacterActionPriority>(_AllowedActionPriorities.Keys))

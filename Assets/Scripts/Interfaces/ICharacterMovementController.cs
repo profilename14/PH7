@@ -23,4 +23,6 @@ public interface ICharacterMovementController
     public void SetAllowMovement(bool isAllowed);
 
     public void SetAllowRotation(bool isAllowed);
+
+    public void SetDrag(float drag);
 }

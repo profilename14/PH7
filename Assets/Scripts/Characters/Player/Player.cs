@@ -15,13 +15,11 @@ public class Player : Character
         else if (instance != this) Destroy(this);
     }
 
-    public override void OnCharacterAttackHit(IHittable hit, AttackState attack)
+    public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)
     {
-        attack.OnAttackHit();
-
         if(hit is Enemy)
         {
-            Debug.Log("Player hit enemy!");
+            //Debug.Log("Player hit enemy!");
             // _Stats.GainPH()
         }
     }

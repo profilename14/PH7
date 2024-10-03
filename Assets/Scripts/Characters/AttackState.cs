@@ -8,7 +8,7 @@ public abstract class AttackState : CharacterState
     private AttackData _AttackData;
     public AttackData attackData => _AttackData;
 
-    public virtual void OnAttackHit()
+    public virtual void OnAttackHit(Vector3 position)
     {
         return;
     }
@@ -26,8 +26,11 @@ public abstract class AttackState : CharacterState
         // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
         if (_Character.GetType() == hittableScript.GetType()) return;
 
-        hittableScript.Hit(this);
-        _Character.OnCharacterAttackHit(hittableScript, this);
+        Vector3 attackHitPosition = other.ClosestPointOnBounds(_Character.transform.position);
+
+        hittableScript.Hit(this, attackHitPosition);
+        OnAttackHit(attackHitPosition);
+        _Character.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
     }
 
     // A ranged attack should pass _AttackData to the projectile, which will handle OnTriggerEnter when it hits something.

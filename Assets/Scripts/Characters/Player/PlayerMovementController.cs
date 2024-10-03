@@ -689,4 +689,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
         return;
     }
+
+    public void SetDrag(float drag)
+    {
+        throw new NotImplementedException();
+    }
 }

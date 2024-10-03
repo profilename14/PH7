@@ -20,8 +20,6 @@ public abstract class CharacterStats : MonoBehaviour
     private Chemical _NaturalType;
     public Chemical naturalType => _NaturalType;
 
-    bool isInvincible;
-
     protected virtual void Awake()
     {
         _Health = _Character.characterData.maxHealth;
@@ -30,8 +28,6 @@ public abstract class CharacterStats : MonoBehaviour
 
     public virtual void TakeDamage(float damage)
     {
-        if (isInvincible) return;
-
         _Health -= damage;
 
         if (_Health <= 0)

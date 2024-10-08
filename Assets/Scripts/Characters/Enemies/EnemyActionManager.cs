@@ -9,7 +9,7 @@ using Animancer.FSM;
 public struct EnemyAttack
 {
     public float cooldown;
-    public CharacterActionPriority priority;
+    //public CharacterActionPriority priority;
     public CharacterState stateScript;
     public EnemyAttackBehaviorData behaviorData;
 }
@@ -70,8 +70,6 @@ public class EnemyActionManager : CharacterActionManager
 
     public IEnumerator UpdateAttackStates()
     {
-        yield return new WaitForSeconds(attackBehaviorUpdateInterval);
-
         Vector3 vectorToPlayer = Player.instance.transform.position - _Character.transform.position;
 
         float distanceToPlayer = vectorToPlayer.magnitude;
@@ -128,13 +126,15 @@ public class EnemyActionManager : CharacterActionManager
                 if (randomNum <= attackCandidates[i].behaviorData.frequency)
                 {
                     if (StateMachine.TrySetState(attackCandidates[i].stateScript)) ResetCooldown(attackCandidates[i]);
-                    //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                    Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
                     break;
                 }
 
                 randomNum -= attackCandidates[i].behaviorData.frequency;
             }
         }
+
+        yield return new WaitForSeconds(attackBehaviorUpdateInterval);
 
         StartCoroutine(UpdateAttackStates());
     }
@@ -155,7 +155,6 @@ public class EnemyActionManager : CharacterActionManager
     public void SpottedPlayer()
     {
         isAggro = true;
-        //Debug.Log("Enemy spotted player!");
         _Idle.StopAllCoroutines();
         StateMachine.ForceSetState(_InitAggro);
         StateMachine.DefaultState = _InitAggro;
@@ -168,7 +167,6 @@ public class EnemyActionManager : CharacterActionManager
         if (!isAggro) SpottedPlayer();
         if (StateMachine.TryResetState(_HitStun))
         {
-            //Debug.Log("Hitstun!");
             isStunned = true;
         }
     }
@@ -176,6 +174,7 @@ public class EnemyActionManager : CharacterActionManager
     public override void EndHitStun()
     {
         isStunned = false;
+        Debug.Log("End stun");
     }
 
 #if UNITY_EDITOR

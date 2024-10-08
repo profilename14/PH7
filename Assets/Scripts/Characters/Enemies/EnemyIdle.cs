@@ -47,17 +47,22 @@ public class EnemyIdle : CharacterState
         lineOfSightMask = LayerMask.GetMask("Player", "Obstacles");
     }
 
+    private void Start()
+    {
+        player = Player.instance;
+    }
+
     protected override void OnEnable()
     {
         movementController = (EnemyMovementController)_Character.movementController;
-
-        player = Player.instance;
 
         if (patrolTargets.Length > 0)
         {
             // This is a roaming enemy
             movementController.SetAllowMovement(true);
             movementController.SetAllowRotation(true);
+
+            if(randomlyChooseTargets) currentPatrolIndex = Random.Range(0, patrolTargets.Length);
 
             StartCoroutine(Patrolling());
         }

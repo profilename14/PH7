@@ -24,6 +24,8 @@ public class PlayerActionManager : CharacterActionManager
     private PlayerChargeAttack _ChargeAttack;
     [SerializeField]
     private CharacterState _SpellAttack;
+    [SerializeField]
+    private CharacterState _TakeDamage;
 
     private InputMaster controls;
 
@@ -40,6 +42,9 @@ public class PlayerActionManager : CharacterActionManager
 
     [SerializeField]
     private float inputTimeOut;
+
+    [SerializeField]
+    private float invincibilityTime = 1f;
 
     protected override void Awake()
     {
@@ -191,11 +196,18 @@ public class PlayerActionManager : CharacterActionManager
 
     public override void Hitstun()
     {
-        return;
+        StateMachine.ForceSetState(_TakeDamage);
+        _Character.SetIsInvincible(true);
     }
 
     public override void EndHitStun()
     {
-        return;
+        StartCoroutine(EndInvincibility());
+    }
+
+    public IEnumerator EndInvincibility()
+    {
+        yield return new WaitForSeconds(invincibilityTime);
+        _Character.SetIsInvincible(false);
     }
 }

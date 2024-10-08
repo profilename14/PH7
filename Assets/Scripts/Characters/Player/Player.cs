@@ -23,4 +23,9 @@ public class Player : Character
             // _Stats.GainPH()
         }
     }
+
+    public override void OnCharacterAttackHit(IHittable hit, MyProjectile attack, Vector3 hitPosition)
+    {
+        return;
+    }
 }

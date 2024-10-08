@@ -17,7 +17,7 @@ public class PlayerAcidArrow : CharacterSpell
 
 
     [SerializeField]
-    GameObject shieldPrefab;
+    GameObject projectilePrefab;
 
 
     private AnimancerState currentState;
@@ -50,7 +50,7 @@ public class PlayerAcidArrow : CharacterSpell
         Vector3 curRotation = transform.forward;
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
-        GameObject arrow = Instantiate(shieldPrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
+        GameObject arrow = Instantiate(projectilePrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
 
         Projectile projectileScript = arrow.GetComponent<Projectile>();
 

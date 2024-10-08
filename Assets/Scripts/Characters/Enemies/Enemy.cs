@@ -11,4 +11,9 @@ public class Enemy : Character
             Debug.Log("Enemy hit player!");
         }
     }
+
+    public override void OnCharacterAttackHit(IHittable hit, MyProjectile attack, Vector3 hitPosition)
+    {
+        return;
+    }
 }

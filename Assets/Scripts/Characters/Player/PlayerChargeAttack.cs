@@ -18,6 +18,9 @@ public class PlayerChargeAttack : AttackState
     [SerializeReference]
     ClipTransition chargeAttackAnimation;
 
+    private static readonly StringReference StartSwordSwingEvent = "StartSwordSwing";
+    private static readonly StringReference EndSwordSwingEvent = "EndSwordSwing";
+
     [SerializeField]
     AudioClip chargingSFX;
 
@@ -27,9 +30,20 @@ public class PlayerChargeAttack : AttackState
     [SerializeField]
     bool attackCharged;
 
+    private Player player;
+    private PlayerVFXManager vfx;
+
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+
+    protected virtual void Awake()
+    {
+        player = (Player)_Character;
+        vfx = (PlayerVFXManager)player.VFXManager;
+        chargeAttackAnimation.Events.SetCallback(StartSwordSwingEvent, this.StartSwordSwing);
+        chargeAttackAnimation.Events.SetCallback(EndSwordSwingEvent, this.EndSwordSwing);
+    }
 
     protected override void OnEnable()
     {
@@ -39,7 +53,7 @@ public class PlayerChargeAttack : AttackState
 
         rotationController.snapToCurrentMouseAngle();
 
-        _ActionManager.anim.Play(chargingAnimation);
+        _ActionManager.anim.Play(chargingAnimation).Events(this).OnEnd ??= ChargingDone;
     }
 
     public void ReleaseChargeAttack()
@@ -59,6 +73,16 @@ public class PlayerChargeAttack : AttackState
     public void ChargingDone()
     {
         attackCharged = true;
+    }
+
+    void StartSwordSwing()
+    {
+        vfx.SwordSwingVFX(SwordSwingType.ChargedSwing);
+    }
+
+    void EndSwordSwing()
+    {
+
     }
 
 #if UNITY_EDITOR

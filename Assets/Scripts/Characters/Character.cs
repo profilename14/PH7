@@ -36,7 +36,13 @@ public abstract class Character : MonoBehaviour, IHittable
     // For example, the Player hitting an Enemy results in gaining pH, while hitting something else might not.
     public abstract void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition);
 
+    public abstract void OnCharacterAttackHit(IHittable hit, MyProjectile attack, Vector3 hitPosition);
+
     // Should be called whenever this Character is hit by an attack.
+    //Hit(AttackData, Character)
+    //Hit(AttackData, Vector3)
+
+    
     public virtual void Hit(AttackState attack, Vector3 hitPoint)
     {
         if (!isInvincible)
@@ -56,11 +62,37 @@ public abstract class Character : MonoBehaviour, IHittable
 
         if (!isKnockbackImmune)
         {
-            Vector3 knockbackDir = -(attack.character.transform.position - transform.position);
+            Vector3 knockbackDir = new Vector3(-(hitPoint.x - transform.position.x), 0, -(hitPoint.z - transform.position.z));
             movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback);
         }
         
         actionManager.Hitstun();
+    }
+
+    public virtual void Hit(MyProjectile projectile, Vector3 hitPoint)
+    {
+        if (!isInvincible)
+        {
+            _Stats.TakeDamage(projectile.attackData.damage);
+
+            if (isDead)
+            {
+                _VFXManager.DeathVFX();
+                return;
+            }
+            else
+            {
+                _VFXManager.TookDamageVFX(hitPoint, projectile.transform.position);
+            }
+            actionManager.Hitstun();
+        }
+
+        if (!isKnockbackImmune)
+        {
+            Vector3 knockbackDir = -(projectile.transform.position - transform.position);
+            movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback);
+        }
+
     }
 
     public virtual void SetIsInvincible(bool isInvincible)

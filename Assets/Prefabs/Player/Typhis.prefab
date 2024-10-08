@@ -1341,7 +1341,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 8f4ffd5be8e58dc408c4eb5fc1068036, type: 2}
       - {fileID: 11400000, guid: 934d46ded12108049824738523ab2658, type: 2}
       - {fileID: 11400000, guid: c8b33f1c187db6642b809fad74505b41, type: 2}
-    _Clip: {fileID: 7400000, guid: 28848e597598f904c8fc1267ff84d01d, type: 2}
+    _Clip: {fileID: 7400000, guid: f886599aed411b545a9feb68e6a2ae1a, type: 2}
     _NormalizedStartTime: NaN
   - _FadeDuration: 0.033333335
     _Speed: 1
@@ -1362,7 +1362,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 8f4ffd5be8e58dc408c4eb5fc1068036, type: 2}
       - {fileID: 11400000, guid: 934d46ded12108049824738523ab2658, type: 2}
       - {fileID: 11400000, guid: c8b33f1c187db6642b809fad74505b41, type: 2}
-    _Clip: {fileID: 7400000, guid: 582203f8555a6bc43a4ef1041f3acbf3, type: 2}
+    _Clip: {fileID: 7400000, guid: 28848e597598f904c8fc1267ff84d01d, type: 2}
     _NormalizedStartTime: NaN
   - _FadeDuration: 0.033333335
     _Speed: 1
@@ -1383,7 +1383,7 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 934d46ded12108049824738523ab2658, type: 2}
       - {fileID: 11400000, guid: 8f4ffd5be8e58dc408c4eb5fc1068036, type: 2}
       - {fileID: 11400000, guid: c8b33f1c187db6642b809fad74505b41, type: 2}
-    _Clip: {fileID: 7400000, guid: c5367b4471c53c84084ddb97ff3bd812, type: 2}
+    _Clip: {fileID: 7400000, guid: 582203f8555a6bc43a4ef1041f3acbf3, type: 2}
     _NormalizedStartTime: NaN
   downwardsSwingAnimation:
     _FadeDuration: 0.25
@@ -9065,6 +9065,9 @@ MonoBehaviour:
   _Character: {fileID: 245888149672687329}
   _ActionManager: {fileID: 7405120194437197674}
   _Health: 0
+  _Armor: 0
+  _HealthMax: 10
+  _ArmorMax: 5
 --- !u!114 &8861641972916551980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9473,6 +9476,10 @@ GameObject:
   - component: {fileID: 6048296591459177436}
   - component: {fileID: 18115107059643342}
   - component: {fileID: 2626950072745051597}
+  - component: {fileID: 3961776923544703907}
+  - component: {fileID: 4604225106642929960}
+  - component: {fileID: 8434818430056664677}
+  - component: {fileID: 4103300956183637509}
   - component: {fileID: 5384558967175828608}
   m_Layer: 6
   m_Name: Action Manager
@@ -9526,10 +9533,10 @@ MonoBehaviour:
   _Interact: {fileID: 0}
   _SwordAttack: {fileID: 4761157854112944392}
   _Dash: {fileID: 0}
-  _Core: {fileID: 0}
-  _Bubble: {fileID: 0}
+  _Core: {fileID: 4103300956183637509}
+  _Bubble: {fileID: 3961776923544703907}
   _ChargeAttack: {fileID: 839047959703031316}
-  _SpellAttack: {fileID: 0}
+  _SpellAttack: {fileID: 3961776923544703907}
   inputTimeOut: 0.5
 --- !u!114 &1900408007507036724
 MonoBehaviour:
@@ -9606,6 +9613,323 @@ MonoBehaviour:
   _Animator: {fileID: 5384558967175828608}
   _Transitions: {fileID: 0}
   _ActionOnDisable: 0
+--- !u!114 &3961776923544703907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316508220721256647}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755d33befd30566429311522fa98638b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 245888149672687329}
+  _AcidCost: 0
+  _AlkalineCost: 0
+  playerStats: {fileID: 1194877477656416639}
+  rotationController: {fileID: 7511656270027849679}
+  focusAnimation:
+    rid: 1065476401624776709
+  shieldPrefab: {fileID: 5028151487594542329, guid: ec2a2482ad89349478d55213ad1d41f3, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1065476401624776709
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.8136581
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776712
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 1840425edcc12e84c88d56c8512ac095, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776712
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 3961776923544703907}
+            m_TargetAssemblyTypeName: PlayerAcidArrow, Assembly-CSharp
+            m_MethodName: OnFinishCast
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &4604225106642929960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316508220721256647}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1563855ec00c0e445873353224e9066b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 245888149672687329}
+  _AcidCost: 0
+  _AlkalineCost: 0
+  playerStats: {fileID: 1194877477656416639}
+  rotationController: {fileID: 7511656270027849679}
+  focusAnimation:
+    rid: 1065476401624776716
+  focusCastAnimation:
+    rid: 1065476401624776724
+  focusCharged: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1065476401624776716
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.73749757
+          - NaN
+          _Callbacks:
+          - rid: -2
+          - rid: 1065476401624776722
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 1840425edcc12e84c88d56c8512ac095, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776722
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4604225106642929960}
+            m_TargetAssemblyTypeName: PlayerFocusAlkaline, Assembly-CSharp
+            m_MethodName: FocusDone
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 1065476401624776724
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.654214
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776726
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 23affc246c208db4f9072736d0f1f032, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776726
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4604225106642929960}
+            m_TargetAssemblyTypeName: PlayerFocusAlkaline, Assembly-CSharp
+            m_MethodName: OnFinishFocus
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &8434818430056664677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316508220721256647}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f06a397fd9c14a42805cd57c85a2511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 245888149672687329}
+  _AcidCost: 0
+  _AlkalineCost: 0
+  playerStats: {fileID: 1194877477656416639}
+  rotationController: {fileID: 7511656270027849679}
+  focusAnimation:
+    rid: 1065476401624776733
+  focusCastAnimation:
+    rid: 1065476401624776736
+  shieldPrefab: {fileID: 5916526361613599430, guid: 7f645c17618d965488400c7974033c35, type: 3}
+  focusCharged: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1065476401624776733
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 3
+        _Events:
+          _NormalizedTimes:
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776735
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 1840425edcc12e84c88d56c8512ac095, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776735
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8434818430056664677}
+            m_TargetAssemblyTypeName: PlayerFocusSalt, Assembly-CSharp
+            m_MethodName: FocusDone
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 1065476401624776736
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.07122933
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776738
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 23affc246c208db4f9072736d0f1f032, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776738
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8434818430056664677}
+            m_TargetAssemblyTypeName: PlayerFocusSalt, Assembly-CSharp
+            m_MethodName: OnFinishFocus
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &4103300956183637509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316508220721256647}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c170183a30e0a24499c2c15fa976226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 245888149672687329}
+  _AcidCost: 0
+  _AlkalineCost: 0
+  playerStats: {fileID: 1194877477656416639}
+  rotationController: {fileID: 7511656270027849679}
+  focusAnimation:
+    rid: 1065476401624776739
+  focusCastAnimation:
+    rid: 1065476401624776740
+  focusCharged: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1065476401624776739
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776744
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 1840425edcc12e84c88d56c8512ac095, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776740
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.5
+          - NaN
+          _Callbacks:
+          - rid: 1065476401624776746
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 1840425edcc12e84c88d56c8512ac095, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 1065476401624776744
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4103300956183637509}
+            m_TargetAssemblyTypeName: PlayerFocusAcidic, Assembly-CSharp
+            m_MethodName: FocusDone
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 1065476401624776746
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4103300956183637509}
+            m_TargetAssemblyTypeName: PlayerFocusAcidic, Assembly-CSharp
+            m_MethodName: OnFinishFocus
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!95 &5384558967175828608
 Animator:
   serializedVersion: 5

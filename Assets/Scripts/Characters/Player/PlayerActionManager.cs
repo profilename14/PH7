@@ -17,7 +17,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private CharacterState _Dash;
     [SerializeField]
-    private CharacterState _Core;
+    private CharacterFocus _Core;
     [SerializeField]
     private CharacterState _Bubble;
     [SerializeField]
@@ -62,6 +62,11 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Jump.canceled += context => { jumpHeld = false; };
         controls.Typhis.Dash.Enable();
         controls.Typhis.Dash.performed += context => OnDash(context);
+        controls.Typhis.Bubble.Enable();
+        controls.Typhis.Bubble.performed += context => OnBubble(context);
+        controls.Typhis.CoreMagic.Enable();
+        controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
+        controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
     }
 
     private void OnDisable()
@@ -150,6 +155,39 @@ public class PlayerActionManager : CharacterActionManager
     {
         dashThisFrame = true;
     }
+
+    void OnBubble(InputAction.CallbackContext context)
+    {
+        StateMachine.TrySetState(_Bubble);
+    }
+
+    void OnCoreMagicPerformed(InputAction.CallbackContext context)
+    {
+        // If the button is released within 0.5s
+        if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
+        {
+            // If it fails to enter the SwordAttack state, buffer it.
+            if (!StateMachine.TryResetState(_SpellAttack)) _InputBuffer.Buffer(_SpellAttack, inputTimeOut);
+            StateMachine.TrySetState(_Bubble);
+        }
+
+        // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
+        if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            if (StateMachine.CurrentState == _Core) _Core.ReleaseFocus();
+        }
+    }
+
+    void OnCoreMagicStarted(InputAction.CallbackContext context)
+    {
+        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            // If it fails to enter the charge attack state, buffer it.
+            if (!StateMachine.TrySetState(_Core)) _InputBuffer.Buffer(_Core, inputTimeOut);
+        }
+    }
+
+
 
     public override void Hitstun()
     {

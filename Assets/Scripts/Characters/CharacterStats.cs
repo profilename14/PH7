@@ -16,6 +16,10 @@ public abstract class CharacterStats : MonoBehaviour
     [SerializeField]
     private float _Health;
     public float health => _Health;
+    
+    [SerializeField]
+    private float _Armor;
+    public float armor => _Armor;
 
     private Chemical _NaturalType;
     public Chemical naturalType => _NaturalType;
@@ -26,13 +30,53 @@ public abstract class CharacterStats : MonoBehaviour
         _NaturalType = _Character.characterData.naturalType;
     }
 
-    public virtual void TakeDamage(float damage)
+    // We should update this to account for special armor types and damage types some time in the future.
+    public virtual void TakeDamage(float damage) 
     {
-        _Health -= damage;
+        
+
+        if (_Armor > 0)
+        {
+            _Armor -= damage;
+            if (_Armor < 0)
+            {
+                _Health += _Armor; // Roll over damage (negative armor) to health
+                _Armor = 0;
+            }
+        }
+        else
+        {
+            _Health -= damage;
+        }
+
+        
+        Debug.Log("Damage event: new health: " + health + " and new armor: " + armor); // Delete on making healthbars
+        
+        if (_Health <= 0 && _Armor <= 0) // Enemies can survive if they have armor and no health.
+        {
+            _Character.Die();
+        }
+
+        
+    }
+
+    public virtual void SetHealth(float newHealth)
+    {
+        _Health = newHealth;
 
         if (_Health <= 0)
         {
             _Character.Die();
+        }
+    }
+
+    public virtual void SetArmor(float newArmor)
+    {
+        _Armor = newArmor;
+
+        if (_Armor <= 0)
+        {
+            _Armor = 0;
         }
     }
 

@@ -15,7 +15,5 @@ public class PlayerIdle : CharacterState
     protected override void OnEnable()
     {
         _ActionManager.anim.Play(idleAnimation);
-        _ActionManager.SetAllActionPriorityAllowed(true);
-        _ActionManager.SetAllStatesAllowed(true);
     }
 }

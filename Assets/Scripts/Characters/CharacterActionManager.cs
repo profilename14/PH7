@@ -45,6 +45,17 @@ public abstract class CharacterActionManager : MonoBehaviour
         _AllowedActionPriorities[priority] = isAllowed;
     }
 
+    public virtual void SetActionPriorityAllowed(CharacterActionPriority priority, float delay)
+    {
+        StartCoroutine(SetPriorityDelayed(priority, delay));
+    }
+
+    IEnumerator SetPriorityDelayed(CharacterActionPriority priority, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _AllowedActionPriorities[priority] = true;
+    }
+
     public virtual void SetStateAllowed(CharacterState state, bool isAllowed)
     {
         _AllowedStates[state] = isAllowed;
@@ -56,6 +67,17 @@ public abstract class CharacterActionManager : MonoBehaviour
         {
             _AllowedActionPriorities[key] = b;
         }
+    }
+
+    public virtual void SetAllActionPriorityAllowed(bool b, float delay)
+    {
+        StartCoroutine(SetAllPriorityDelayed(b, delay));
+    }
+
+    IEnumerator SetAllPriorityDelayed(bool b, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SetAllActionPriorityAllowed(b);
     }
 
     public virtual void SetAllStatesAllowed(bool b)

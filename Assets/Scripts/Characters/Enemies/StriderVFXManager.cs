@@ -17,11 +17,11 @@ public class StriderVFXManager : EnemyVFXManager
     {
         if(isGlowing)
         {
-            SetEmissionColor(dashColor * dashColorIntensity);
+            SetEmissionColor(baseRenderers, dashColor * dashColorIntensity);
         }
         else
         {
-            ResetEmissionColors();
+            ResetEmissionColors(baseRenderers);
         }
     }
 

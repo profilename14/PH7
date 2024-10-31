@@ -28,6 +28,7 @@ public class TakeDamageState : CharacterState
     {
         //Debug.Log("Ending hitstun");
         _ActionManager.EndHitStun();
+        _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
 }

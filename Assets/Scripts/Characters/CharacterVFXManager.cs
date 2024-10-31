@@ -6,25 +6,40 @@ using UnityEngine.VFX;
 public abstract class CharacterVFXManager : MonoBehaviour
 {
     [SerializeField]
-    protected Renderer[] renderers;
+    protected Renderer[] baseRenderers;
 
-    protected List<Color> defaultEmissionColors = new();
-    protected bool setDefaultEmissionColors = true;
+    protected Dictionary<Renderer[], List<Color>> defaultEmissionColors = new();
 
-    protected void SetEmissionColor(Color c)
+    protected virtual void Awake()
+    {
+        SetDefaultEmissionColors(baseRenderers);
+    }
+
+    protected void SetDefaultEmissionColors(Renderer[] renderers)
+    {
+        defaultEmissionColors.Add(renderers, new List<Color>());
+        foreach (Renderer m in renderers)
+        {
+            foreach (Material mat in m.materials)
+            {
+                defaultEmissionColors[renderers].Add(mat.GetColor("_EmissionColor"));
+            }
+        }
+    }
+
+    protected void SetEmissionColor(Renderer[] renderers, Color c)
     {
         foreach (Renderer m in renderers)
         {
             foreach (Material mat in m.materials)
             {
                 mat.EnableKeyword("_EMISSION");
-                if (setDefaultEmissionColors) defaultEmissionColors.Add(mat.GetColor("_EmissionColor"));
                 mat.SetColor("_EmissionColor", c);
             }
         }
     }
 
-    protected void ResetEmissionColors()
+    protected void ResetEmissionColors(Renderer[] renderers)
     {
         int i = 0;
 
@@ -33,7 +48,7 @@ public abstract class CharacterVFXManager : MonoBehaviour
             foreach (Material mat in m.materials)
             {
                 mat.EnableKeyword("_EMISSION");
-                mat.SetColor("_EmissionColor", defaultEmissionColors[i]);
+                mat.SetColor("_EmissionColor", defaultEmissionColors[renderers][i]);
                 i++;
             }
         }

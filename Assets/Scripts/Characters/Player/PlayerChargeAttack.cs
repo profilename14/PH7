@@ -53,7 +53,12 @@ public class PlayerChargeAttack : AttackState
 
         rotationController.snapToCurrentMouseAngle();
 
-        _ActionManager.anim.Play(chargingAnimation).Events(this).OnEnd ??= ChargingDone;
+        _ActionManager.anim.Play(chargingAnimation);
+    }
+
+    protected override void OnDisable()
+    {
+        _ActionManager.SetAllActionPriorityAllowed(true);
     }
 
     public void ReleaseChargeAttack()
@@ -61,8 +66,11 @@ public class PlayerChargeAttack : AttackState
         if (attackCharged)
         {
             _ActionManager.SetAllActionPriorityAllowed(false);
+
+            AnimancerState currentState = _ActionManager.anim.Play(chargeAttackAnimation);
+
             // Do a charge attack, go back to idle at the end.
-            _ActionManager.anim.Play(chargeAttackAnimation).Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
+            currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
         else
         {
@@ -73,6 +81,7 @@ public class PlayerChargeAttack : AttackState
     public void ChargingDone()
     {
         attackCharged = true;
+        vfx.FullyChargedVFX();
     }
 
     void StartSwordSwing()
@@ -82,7 +91,12 @@ public class PlayerChargeAttack : AttackState
 
     void EndSwordSwing()
     {
+        vfx.EndChargeVFX();
+    }
 
+    public override void OnAttackHit(Vector3 position)
+    {
+        vfx.SwordHitVFX(position);
     }
 
 #if UNITY_EDITOR

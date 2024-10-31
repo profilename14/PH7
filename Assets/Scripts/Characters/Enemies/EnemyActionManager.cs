@@ -24,7 +24,7 @@ public class EnemyActionManager : CharacterActionManager
 
     [SerializeField]
     // How often (in seconds) should this Enemy update attack behavior?
-    protected float attackBehaviorUpdateInterval = 0.25f;
+    protected float attackBehaviorUpdateInterval = 0.1f;
 
     [SerializeField]
     protected List<EnemyAttack> attacks = new();

@@ -26,7 +26,6 @@ public class PlayerMove : CharacterState
 
     protected override void OnEnable()
     {
-        _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.anim.Play(moveAnimation);
     }
 

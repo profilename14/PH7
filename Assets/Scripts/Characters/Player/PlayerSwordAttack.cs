@@ -103,6 +103,8 @@ public class PlayerSwordAttack : AttackState
 
             currentState = _ActionManager.anim.Play(attackAnimations[currentSwing]);
 
+            if(currentSwing == 2) _ActionManager.SetAllActionPriorityAllowed(true, currentState.Duration);
+
             // Just sets to idle after this animation fully ends.
             currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
@@ -114,6 +116,8 @@ public class PlayerSwordAttack : AttackState
 
             // Swinging in the air performs a downwards swing.
             currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
+
+            _ActionManager.SetAllActionPriorityAllowed(true, currentState.Duration);
 
             // Just sets to idle after this animation fully ends.
             currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;

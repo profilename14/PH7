@@ -27,6 +27,16 @@ public class EnemyActionManager : CharacterActionManager
     protected float attackBehaviorUpdateInterval = 0.1f;
 
     [SerializeField]
+    // Flag for enemy types such as the Urchid.
+    // Never goes into aggro state, always stays in patrol state.
+    protected bool nonFollowingEnemy;
+
+    [SerializeField]
+    // Flag for enemy types such as the Urchid.
+    // Enemy can attack in patrol state.
+    protected bool canAttackInPatrolState;
+
+    [SerializeField]
     protected List<EnemyAttack> attacks = new();
 
     [SerializeField]
@@ -164,7 +174,7 @@ public class EnemyActionManager : CharacterActionManager
 
     public override void Hitstun()
     {
-        if (!isAggro) SpottedPlayer();
+        if (!isAggro && !nonFollowingEnemy) SpottedPlayer();
         if (StateMachine.TryResetState(_HitStun))
         {
             isStunned = true;

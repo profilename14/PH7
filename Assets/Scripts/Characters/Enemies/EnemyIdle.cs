@@ -42,9 +42,12 @@ public class EnemyIdle : CharacterState
 
     EnemyMovementController movementController;
 
+    EnemyActionManager actionManager;
+
     private void Awake()
     {
         lineOfSightMask = LayerMask.GetMask("Player", "Obstacles");
+        //actionManager = (EnemyActionManager) 
     }
 
     private void Start()
@@ -76,6 +79,8 @@ public class EnemyIdle : CharacterState
 
     private void Update()
     {
+        //if(_ActionManager.)
+
         Vector3 toPlayer = (player.transform.position - _Character.transform.position).normalized;
 
         Physics.Raycast(transform.position + eyeOffset, toPlayer, 

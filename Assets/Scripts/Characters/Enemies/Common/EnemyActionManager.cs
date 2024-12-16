@@ -43,8 +43,6 @@ public class EnemyActionManager : CharacterActionManager
     protected override void Awake()
     {
         base.Awake();
-
-        player = Player.instance;
                 
         // Set up everything for all the attack behaviors.
         for(int i = 0; i < attacks.Count; i++)
@@ -61,7 +59,11 @@ public class EnemyActionManager : CharacterActionManager
                 _AllowedStates.Add(attacks[i].stateScript, true);
             }
         }
+    }
 
+    protected void Start()
+    {
+        player = Player.instance;
         if (canAttackInIdle) StartCoroutine(UpdateAttackStates());
     }
 

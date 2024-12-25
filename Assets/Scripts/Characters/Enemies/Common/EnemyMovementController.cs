@@ -20,17 +20,29 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
     [SerializeField]
     BaseCharacterData enemyData;
 
-    private bool velocityLocked = false;
-    private Vector3 internalLockedVelocity;
+    protected bool velocityLocked = false;
+    protected Vector3 internalLockedVelocity;
 
-    private bool rotationEnabled;
+    protected bool rotationEnabled;
 
-    private bool movementEnabled;
+    protected bool movementEnabled;
 
-    private bool forceManualRotation;
+    protected bool forceManualRotation;
 
     // GameObject created at runtime to visualize the Enemy's movement target.
-    private GameObject target;
+    protected GameObject target;
+
+    protected Vector3 groundNormal;
+
+    protected bool isGrounded;
+
+    protected LayerMask groundMask;
+
+    protected RaycastHit groundHit;
+
+    protected bool disablePathfinding = false;
+
+    protected EnemyActionManager actionManager;
 
     private void Awake()
     {
@@ -40,6 +52,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         target = new GameObject(enemy.gameObject.name + " AI Target");
         var iconContent = EditorGUIUtility.IconContent("sv_label_1");
         EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
+        groundMask = LayerMask.GetMask("Default", "Obstacles");
     }
 
     private void Update()
@@ -59,6 +72,26 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         else
         {
             pathfinding.enableRotation = rotationEnabled;
+        }
+
+        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.1f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 0.11f, groundMask))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        //actionManager.gameObject.transform.localRotation = Quaternion.FromToRotation(actionManager.gameObject.transform.up, groundHit.normal);
+
+        if(!disablePathfinding && isGrounded)
+        {
+            pathfinding.enabled = true;
+        }
+        else
+        {
+            pathfinding.enabled = false;
         }
     }
 
@@ -140,6 +173,11 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         rb.drag = drag;
     }
 
+    public void SetAIEnabled(bool isEnabled)
+    {
+        disablePathfinding = !isEnabled;
+    }
+
     void LateUpdate()
     {
         if (velocityLocked) rb.velocity = internalLockedVelocity;
@@ -151,6 +189,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
         gameObject.GetComponentInParentOrChildren(ref _Rb);
         gameObject.GetComponentInParentOrChildren(ref enemy);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
         enemyData = enemy.characterData;
     }
 #endif

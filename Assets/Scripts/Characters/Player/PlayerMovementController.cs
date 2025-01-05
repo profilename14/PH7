@@ -1,10 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
-using PixelCrushers.DialogueSystem;
-using UnityEditor.Experimental.GraphView;
 
 public enum PlayerRotationState
 {
@@ -108,6 +106,11 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     bool velocityLocked = false;
     private Vector3 lockedVelocity;
+    private bool isFacingMouse = false;
+    private Vector2 directionVec;
+    private Quaternion savedLockedRotation;
+    private Vector3 camForward;
+    private Vector3 camRight;
 
     private void Awake()
     {
@@ -119,7 +122,15 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
         CharacterCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
+        camForward = CharacterCamera.transform.forward;
+        camRight = CharacterCamera.transform.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
         rotationController = gameObject.GetComponentInChildren<RotationController>();
+
     }
 
     private void Update() // Handles all movement related input.
@@ -132,6 +143,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 canMove = true;
                 isDashing = false;
                 UnlockVelocity();
+                SetAllowRotation(true);
             }
         }
 
@@ -168,6 +180,15 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 {
                     break;
                 }
+            case PlayerRotationState.Mouse:
+                {
+                    break;
+                }
+            case PlayerRotationState.Locked:
+                {
+                    savedLockedRotation = transform.rotation;
+                    break;
+                }
         }
     }
 
@@ -179,6 +200,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         switch (state)
         {
             case PlayerRotationState.Default:
+                {
+                    break;
+                }
+            case PlayerRotationState.Mouse:
+                {
+                    break;
+                }
+            case PlayerRotationState.Locked:
                 {
                     break;
                 }
@@ -260,78 +289,50 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// This is where you tell your character what its rotation should be right now. 
     /// This is the ONLY place where you should set the character's rotation
     /// </summary>
-    public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
+    public void UpdateRotation(ref Quaternion rotation, float deltaTime)
     {
         // This function is disabled for now as reotation controller already works. However, if we ever move past said script,
         // there's a partial implementation here for rotation being done along movement.
 
-        /*
+        
         switch (CurrentRotationState)
         {
-            case CharacterState.Locked:
+            case PlayerRotationState.Locked:
                 {
+                    transform.rotation = savedLockedRotation;
                     break;
                 }
-            case CharacterState.Mouse:
+            case PlayerRotationState.Mouse:
                 {
-                    float h = Input.mousePosition.x - Screen.width / 2;
-                    float v = Input.mousePosition.y - Screen.height / 2;
-                    Vector3 mouseDirection = new Vector3(h, 0, v);
-                    mouseDirection.Normalize();
-                    mouseDirection = Quaternion.Euler(0, -45, 0) * mouseDirection;
-
-                    //Vector3 smoothedLookInputDirection = Vector3.Slerp(_lookInputVector, mouseDirection, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
-                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                    currentRotation = Quaternion.LookRotation(mouseDirection, Motor.CharacterUp);
+                    rotateToMouse();
                     break;
                 }
-            case CharacterState.Default:
+            case PlayerRotationState.Default:
                 {
-                    if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
+                    /*if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
                     {
                         // Smoothly interpolate from current to target look direction
                         Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, _moveInputVector, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
 
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                    }
-
-                    Vector3 currentUp = (currentRotation * Vector3.up);
-                    if (BonusOrientationMethod == BonusOrientationMethod.TowardsGravity)
-                    {
-                        // Rotate from current up to invert gravity
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                    }
-                    else if (BonusOrientationMethod == BonusOrientationMethod.TowardsGroundSlopeAndGravity)
-                    {
-                        if (Motor.GroundingStatus.IsStableOnGround)
-                        {
-                            Vector3 initialCharacterBottomHemiCenter = Motor.TransientPosition + (currentUp * Motor.Capsule.radius);
-
-                            Vector3 smoothedGroundNormal = Vector3.Slerp(Motor.CharacterUp, Motor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
-
-                            // Move the position to create a rotation around the bottom hemi center instead of around the pivot
-                            Motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * Motor.Capsule.radius));
-                        }
-                        else
-                        {
-                            Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                        }
-                    }
-                    else
-                    {
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                    }
+                        transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+                    }*/
+                    rotateToMovementAngle();
                     break;
                 }
         }
-        */
+
+        // THIS IS TEMPORARY!!!!!
+        // REPLACE THIS AS SOON AS STATES CAN BE READ FROM ACTION MANAGER
+        if (CurrentRotationState == PlayerRotationState.Locked) {
+            SetAllowRotation(true);
+        }
+
+        rotation = transform.rotation;
+        
     }
+
+
 
     /// <summary>
     /// (Called by KinematicCharacterMotor during its update cycle)
@@ -624,7 +625,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             return;
         }
 
-        rotationController.snapToCurrentMouseAngle();
         //combatController.bufferDash(); // Allows the dash animation to play
                                         // set flag in animator
         isDashing = true;
@@ -634,8 +634,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         var hDashIntent = Input.GetAxisRaw("Horizontal");
         var vDashIntent = Input.GetAxisRaw("Vertical");
 
+        SetAllowRotation(false);
+
         if (Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
         {
+            rotateToMouse();
+
             float h = Input.mousePosition.x - Screen.width / 2;
             float v = Input.mousePosition.y - Screen.height / 2;
             Vector3 mouseDirection = new Vector3(h, 0, v);
@@ -682,16 +686,98 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     public void SetAllowMovement(bool isAllowed)
     {
-        return;
-    }
-
-    public void SetAllowRotation(bool isAllowed)
-    {
-        return;
+        throw new NotImplementedException();
     }
 
     public void SetDrag(float drag)
     {
         throw new NotImplementedException();
+    }
+
+    public void SetAllowRotation(bool isAllowed)
+    {
+        if (!isAllowed) {
+            TransitionToState(PlayerRotationState.Locked);
+            return;
+        }
+
+        // else if isAllowed = true
+        if (CurrentRotationState == PlayerRotationState.Locked) {
+            if (isFacingMouse) {
+                TransitionToState(PlayerRotationState.Mouse);
+            } else {
+                TransitionToState(PlayerRotationState.Default);
+            }
+        }
+    }
+
+    // If false (ex moving), rotation is set to follow the movement keys. If true, (ex using the bubble), Typhis faces the mouse at all times.
+    public void SetMouseRotation(bool facingMouse)
+    {
+        if (facingMouse) {
+            isFacingMouse = true;
+
+            if (CurrentRotationState != PlayerRotationState.Locked) {
+                TransitionToState(PlayerRotationState.Mouse);
+            }
+        }
+        else {
+            isFacingMouse = false;
+
+            if (CurrentRotationState != PlayerRotationState.Locked) {
+                TransitionToState(PlayerRotationState.Default);
+            }
+        }
+    }
+
+    // Used by outside functions to set rotation to the mouse point (ex during sword swings) and then lock it.
+    public void rotateToMouse()
+    {
+        float h = Input.mousePosition.x - Screen.width / 2;
+        float v = Input.mousePosition.y - Screen.height / 2;
+        Vector3 mouseDirection = new Vector3(h, 0, v);
+        mouseDirection.Normalize();
+        mouseDirection = Quaternion.Euler(0, -135, 0) * mouseDirection;
+
+        // Vector3 smoothedLookInputDirection = Vector3.Slerp(_lookInputVector, mouseDirection, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+
+        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+        transform.rotation = Quaternion.LookRotation(mouseDirection, Motor.CharacterUp);
+    }
+
+    private void rotateToMovementAngle()
+    {
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        float angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+        directionVec = camForward * input.x + camRight * input.y;
+        directionVec.Normalize();
+
+        if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+        }
+
+        if (input.x != 0 || input.y != 0)
+        {
+            transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
+        }
+
+        //SetAllowRotation(false)
+    }
+
+    public Vector3 GetMouseDirection() {
+        Vector3 dir;
+        if (GameManager.isControllerUsed) {
+            dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            dir.Normalize();
+        } else {
+            float h = Input.mousePosition.x - Screen.width / 2;
+            float v = Input.mousePosition.y - Screen.height / 2;
+            dir = new Vector3(h, 0, v);
+            dir.Normalize();
+        }
+
+        dir = Quaternion.Euler(0, -45+180, 0) * dir;
+    return dir;
     }
 }

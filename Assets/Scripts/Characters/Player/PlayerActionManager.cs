@@ -5,6 +5,12 @@ using UnityEngine.InputSystem;
 using Animancer.FSM;
 using Animancer;
 
+public struct PlayerDirectionalInput
+{
+    public Vector3 moveDir;
+    public Vector3 lookDir;
+}
+
 public class PlayerActionManager : CharacterActionManager
 {
     [Header("Player States")]
@@ -106,7 +112,7 @@ public class PlayerActionManager : CharacterActionManager
     // This should be done here and not in the state, as all Input event handling is in this script.
     private void PassInput()
     {
-        if(StateMachine.CurrentState == _Move)
+        if(StateMachine.CurrentState is IPassPlayerDirectionalInput)
         {
             PlayerCharacterInputs input = new PlayerCharacterInputs();
             input.MoveAxisForward = moveDir.y;

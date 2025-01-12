@@ -113,10 +113,10 @@ public class PlayerActionManager : CharacterActionManager
             input.MoveAxisRight = moveDir.x;
             input.jumpPressed = jumpPressed;
             input.JumpHeld = jumpHeld;
-            input.Dash = dashThisFrame;
+            //input.Dash = dashThisFrame;
             _Move.UpdateInputs(input);
             jumpPressed = false;
-            dashThisFrame = false;
+            //dashThisFrame = false;
         }
         else if(StateMachine.CurrentState == _SwordAttack)
         {
@@ -158,7 +158,9 @@ public class PlayerActionManager : CharacterActionManager
     // Receives a dash button press
     void OnDash(InputAction.CallbackContext context)
     {
-        dashThisFrame = true;
+        //dashThisFrame = true;
+        if (!StateMachine.TryResetState(_Dash)) _InputBuffer.Buffer(_Dash, inputTimeOut);
+        StateMachine.TrySetState(_Dash);
     }
 
     void OnBubble(InputAction.CallbackContext context)

@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
+<<<<<<< Updated upstream
 using PixelCrushers.DialogueSystem;
 using UnityEditor.Experimental.GraphView;
+=======
+using UnityEngine.InputSystem.LowLevel;
+>>>>>>> Stashed changes
 
 public enum PlayerRotationState
 {
@@ -105,6 +109,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
+    
+    bool setPosition = false;
+    private Vector3 _internalPositionSet = Vector3.zero;
 
     bool velocityLocked = false;
     private Vector3 lockedVelocity;
@@ -253,6 +260,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// </summary>
     public void BeforeCharacterUpdate(float deltaTime)
     {
+        // Only place you can modify position!
+        if (setPosition == true)
+        {
+            transform.position = _internalPositionSet;
+        }
+        setPosition = false;
     }
 
     /// <summary>
@@ -552,6 +565,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
         setVelocity = true;
         _internalVelocitySet = velocity;
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        setPosition = true;
+        _internalPositionSet = position;
     }
 
     public void LockVelocity(Vector3 velocity)

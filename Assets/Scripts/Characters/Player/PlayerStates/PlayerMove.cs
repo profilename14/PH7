@@ -5,29 +5,20 @@ using KinematicCharacterController;
 using Animancer;
 using Animancer.FSM;
 
-public class PlayerMove : CharacterState, IPassPlayerDirectionalInput
+public class PlayerMove : CharacterState
 {
     [SerializeField]
     private PlayerMovementController movementController;
 
     [SerializeField]
-    private Vector2 moveDir;
-
-    [SerializeField]
     TransitionAsset moveAnimation;
+
+    private PlayerActionManager actionManager;
+
+    private PlayerDirectionalInput directionalInput;
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
-
-    public void PassPlayerDirectionalInput(PlayerDirectionalInput playerDirectionalInput)
-    {
-
-    }
-
-    public void UpdateInputs(PlayerCharacterInputs input)
-    {
-        movementController.SetInputs(ref input);
-    }
 
     protected override void OnEnable()
     {
@@ -36,13 +27,15 @@ public class PlayerMove : CharacterState, IPassPlayerDirectionalInput
 
     protected void Update()
     {
-        
+        directionalInput = actionManager.GetDirectionalInput();
+        movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
+        movementController.ProcessMoveInput(directionalInput.moveDir);
+        //Debug.Log("running move code: " + directionalInput.moveDir);
     }
 
     protected override void OnDisable()
     {
-        PlayerCharacterInputs input = new();
-        movementController.SetInputs(ref input);
+        
     }
 
 #if UNITY_EDITOR
@@ -50,6 +43,7 @@ public class PlayerMove : CharacterState, IPassPlayerDirectionalInput
     {
         base.OnValidate();
         gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

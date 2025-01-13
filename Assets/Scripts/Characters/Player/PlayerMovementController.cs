@@ -7,25 +7,7 @@ using System;
 public enum PlayerRotationState
 {
     Default,
-    Mouse,
     Locked
-}
-
-
-public struct PlayerCharacterInputs
-{
-    public float MoveAxisForward;
-    public float MoveAxisRight;
-    public Quaternion CameraRotation;
-    public bool jumpPressed;
-    public bool JumpHeld;
-    public bool Dash;
-}
-
-public struct AICharacterInputs
-{
-    public Vector3 MoveVector;
-    public Vector3 LookVector;
 }
 
 public enum BonusOrientationMethod
@@ -69,7 +51,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private Collider[] _probedColliders = new Collider[8];
     private RaycastHit[] _probedHits = new RaycastHit[8];
-    private Vector3 _moveInputVector;
+    private Vector3 moveInputVector;
     private Vector3 _lookInputVector;
     private bool _jumpHeld = false;
     private bool _jumpPressedThisFrame = false;
@@ -85,19 +67,22 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private GameObject CharacterCamera;
 
+    [SerializeField]
+    private GameObject rotationRoot;
+
     // Custom Variables Below:
 
         
-    private RotationController rotationController;
+    //private RotationController rotationController;
 
     public bool isDashing = false;
-    public ParticleSystem DashEffect;
+    /*public ParticleSystem DashEffect;
     public float dashPower = 50f;
     [SerializeField] private float dashDuration = 0.35f;
     [HideInInspector] public float DashTimer = 0.0f;
     [SerializeField] private float DashCooldown = 0.6f;
     [HideInInspector] public float dashCooldownTimer = 0.0f;
-    private bool dashOnCooldown = false;
+    private bool dashOnCooldown = false;*/
 
     bool canMove = true;
 
@@ -109,6 +94,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     private bool isFacingMouse = false;
     private Vector2 directionVec;
     private Quaternion savedLockedRotation;
+    private Quaternion savedUpdatedRotation;
+    private bool updateRotation;
     private Vector3 camForward;
     private Vector3 camRight;
 
@@ -128,16 +115,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         camRight.y = 0;
         camForward.Normalize();
         camRight.Normalize();
-
-        rotationController = gameObject.GetComponentInChildren<RotationController>();
-
     }
 
     private void Update() // Handles all movement related input.
     {
         if (_inJump) jumpTime += Time.deltaTime;
 
-        if (DashTimer > 0) {
+        /*if (DashTimer > 0) {
             DashTimer -= Time.deltaTime;
             if (DashTimer <= 0) {
                 canMove = true;
@@ -147,15 +131,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             }
         }
 
-        if (dashCooldownTimer > 0) {
+       if (dashCooldownTimer > 0) {
             dashCooldownTimer -= Time.deltaTime;
             if (dashCooldownTimer <= 0) {
                 dashOnCooldown = false;
             }
 
-        }
-
-            
+        }*/ 
     }
 
     /// <summary>
@@ -180,10 +162,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 {
                     break;
                 }
-            case PlayerRotationState.Mouse:
-                {
-                    break;
-                }
             case PlayerRotationState.Locked:
                 {
                     savedLockedRotation = transform.rotation;
@@ -203,10 +181,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 {
                     break;
                 }
-            case PlayerRotationState.Mouse:
-                {
-                    break;
-                }
             case PlayerRotationState.Locked:
                 {
                     break;
@@ -217,33 +191,30 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// <summary>
     /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
     /// </summary>
-    public void SetInputs(ref PlayerCharacterInputs playerInput)
+    public void ProcessMoveInput(Vector3 moveDir)
     {
-        PlayerCharacterInputs inputs = playerInput;
+        if (!canMove)
+        {
+            moveInputVector = new Vector3(0, 0, 0);
+            return;
+        }
 
-        inputs.CameraRotation = CharacterCamera.transform.rotation;
-
-        // Clamp input
-        Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
+        Quaternion cameraRotation = CharacterCamera.transform.rotation;
 
         // Calculate camera direction and rotation on the character plane
-        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
+        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
         if (cameraPlanarDirection.sqrMagnitude == 0f)
         {
-            cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.up, Motor.CharacterUp).normalized;
+            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, Motor.CharacterUp).normalized;
         }
         Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
         // Move and look inputs
-        _moveInputVector = cameraPlanarRotation * moveInputVector;
-        if (!canMove) {
-            _moveInputVector = new Vector3(0, 0, 0);
-        }
+        moveInputVector = cameraPlanarRotation * moveDir;
 
-        _lookInputVector = cameraPlanarDirection;
 
         // Jumping input
-        if (inputs.JumpHeld)
+        /*if (inputs.JumpHeld)
         {
             _timeSinceJumpRequested = 0f;
             _jumpHeld = true;
@@ -261,18 +232,18 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         if (inputs.Dash)
         {
             StartDash();
-        }
+        }*/
 
     }
 
     /// <summary>
     /// This is called every frame by the AI script in order to tell the character what its inputs are
     /// </summary>
-    public void SetInputs(ref AICharacterInputs inputs)
+    /*public void SetInputs(ref AICharacterInputs inputs)
     {
         _moveInputVector = inputs.MoveVector;
         _lookInputVector = inputs.LookVector;
-    }
+    }*/
 
     private Quaternion _tmpTransientRot;
 
@@ -302,11 +273,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                     transform.rotation = savedLockedRotation;
                     break;
                 }
-            case PlayerRotationState.Mouse:
-                {
-                    rotateToMouse();
-                    break;
-                }
             case PlayerRotationState.Default:
                 {
                     /*if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
@@ -317,15 +283,16 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
                     }*/
-                    rotateToMovementAngle();
+
+                    if (updateRotation)
+                    {
+                        //Debug.Log("Saved rotation: " + savedUpdatedRotation);
+                        transform.rotation = savedUpdatedRotation;
+                        updateRotation = false;
+                    }
+
                     break;
                 }
-        }
-
-        // THIS IS TEMPORARY!!!!!
-        // REPLACE THIS AS SOON AS STATES CAN BE READ FROM ACTION MANAGER
-        if (CurrentRotationState == PlayerRotationState.Locked) {
-            SetAllowRotation(true);
         }
 
         rotation = transform.rotation;
@@ -366,8 +333,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
 
             // Calculate target velocity
-            Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
-            Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
+            Vector3 inputRight = Vector3.Cross(moveInputVector, Motor.CharacterUp);
+            Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * moveInputVector.magnitude;
             Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
             // Smooth movement Velocity
@@ -377,9 +344,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         else
         {
             // Add move input
-            if (_moveInputVector.sqrMagnitude > 0f)
+            if (moveInputVector.sqrMagnitude > 0f)
             {
-                Vector3 addedVelocity = _moveInputVector * AirAccelerationSpeed * deltaTime;
+                Vector3 addedVelocity = moveInputVector * AirAccelerationSpeed * deltaTime;
 
                 Vector3 currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(currentVelocity, Motor.CharacterUp);
 
@@ -585,12 +552,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             GameObject enemy = other.gameObject;
 
 
+            // Note: phasing can be handled in this script, but should be controlled via method calls from the Dash State
+
             if (isDashing) { // Phase through gates, but only if dashing.
             //Debug.Log("DISABLINGCOLLISION");
             Physics.IgnoreCollision(
                 other,
                 GetComponent<Collider>(), true);
-                StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
+                //StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
             } else { // Can't bypass
             //Debug.Log("ENABLINGCOLLISION");
                 
@@ -619,7 +588,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
 
 
-    public void StartDash() {
+    /*public void StartDash() {
         if (isDashing || dashOnCooldown) 
         {
             return;
@@ -638,7 +607,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
         if (Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
         {
-            rotateToMouse();
+            RotateToDir();
 
             float h = Input.mousePosition.x - Screen.width / 2;
             float v = Input.mousePosition.y - Screen.height / 2;
@@ -650,7 +619,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         }
         else
         {
-            dashDirection = _moveInputVector;
+            dashDirection = moveInputVector;
         }
 
         LockVelocity(dashDirection * dashPower);
@@ -662,7 +631,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         dashCooldownTimer = DashCooldown;
         canMove = false;
 
-    }
+    }*/
 
     public void ApplyImpulseForce(Vector3 direction, float power)
     {
@@ -701,17 +670,18 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             return;
         }
 
-        // else if isAllowed = true
-        if (CurrentRotationState == PlayerRotationState.Locked) {
+        TransitionToState(PlayerRotationState.Default);
+
+        /*if (CurrentRotationState == PlayerRotationState.Locked) {
             if (isFacingMouse) {
                 TransitionToState(PlayerRotationState.Mouse);
             } else {
                 TransitionToState(PlayerRotationState.Default);
             }
-        }
+        }*/
     }
 
-    // If false (ex moving), rotation is set to follow the movement keys. If true, (ex using the bubble), Typhis faces the mouse at all times.
+    /*// If false (ex moving), rotation is set to follow the movement keys. If true, (ex using the bubble), Typhis faces the mouse at all times.
     public void SetMouseRotation(bool facingMouse)
     {
         if (facingMouse) {
@@ -728,24 +698,32 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 TransitionToState(PlayerRotationState.Default);
             }
         }
-    }
+    }*/
 
-    // Used by outside functions to set rotation to the mouse point (ex during sword swings) and then lock it.
-    public void rotateToMouse()
+    // Called by external scripts to set rotation.
+    public void RotateToDir(Vector3 dir)
     {
-        float h = Input.mousePosition.x - Screen.width / 2;
-        float v = Input.mousePosition.y - Screen.height / 2;
-        Vector3 mouseDirection = new Vector3(h, 0, v);
-        mouseDirection.Normalize();
-        mouseDirection = Quaternion.Euler(0, -135, 0) * mouseDirection;
+        updateRotation = true;
+        savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
 
-        // Vector3 smoothedLookInputDirection = Vector3.Slerp(_lookInputVector, mouseDirection, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+        /*transform.localRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
+        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        directionVec = camForward * dir.x + camRight * dir.z;
+        directionVec.Normalize();
 
-        // Set the current rotation (which will be used by the KinematicCharacterMotor)
-        transform.rotation = Quaternion.LookRotation(mouseDirection, Motor.CharacterUp);
+        if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, angle - 90 - 45, 0)) == 180f)
+        {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+        }
+
+        if (dir.x != 0 || dir.z != 0)
+        {
+            transform.rotation = Quaternion.Euler(0, angle - 90 - 45, 0);
+        }*/
     }
 
-    private void rotateToMovementAngle()
+    /*private void RotateToMovementAngle()
     {
         Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         float angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
@@ -763,21 +741,5 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         }
 
         //SetAllowRotation(false)
-    }
-
-    public Vector3 GetMouseDirection() {
-        Vector3 dir;
-        if (GameManager.isControllerUsed) {
-            dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            dir.Normalize();
-        } else {
-            float h = Input.mousePosition.x - Screen.width / 2;
-            float v = Input.mousePosition.y - Screen.height / 2;
-            dir = new Vector3(h, 0, v);
-            dir.Normalize();
-        }
-
-        dir = Quaternion.Euler(0, -45+180, 0) * dir;
-    return dir;
-    }
+    }*/
 }

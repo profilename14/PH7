@@ -5,46 +5,56 @@ using UnityEngine.InputSystem;
 using Animancer.FSM;
 using Animancer;
 
-public struct PlayerDirectionalInput
+[System.Serializable]
+public class PlayerDirectionalInput
 {
     public Vector3 moveDir;
     public Vector3 lookDir;
+    public bool usingController;
 }
 
 public class PlayerActionManager : CharacterActionManager
 {
     [Header("Player States")]
     [SerializeField]
-    private PlayerMove _Move;
+    private PlayerMove moveState;
     [SerializeField]
-    private CharacterState _Interact;
+    private CharacterState interactState;
     [SerializeField]
-    private PlayerSwordAttack _SwordAttack;
+    private PlayerSwordAttack attackState;
     [SerializeField]
-    private CharacterState _Dash;
+    private CharacterState dashState;
     [SerializeField]
-    private CharacterFocus _Core;
+    private CharacterFocus coreState;
     [SerializeField]
-    private CharacterState _Bubble;
+    private CharacterState bubbleState;
     [SerializeField]
-    private PlayerChargeAttack _ChargeAttack;
+    private PlayerChargeAttack chargeAttackState;
     [SerializeField]
-    private CharacterState _SpellAttack;
+    private CharacterState spellAttackState;
     [SerializeField]
-    private CharacterState _TakeDamage;
+    private TakeDamageState takeDamageState;
 
     private InputMaster controls;
+    private PlayerInput playerInput;
 
     // Need InputAction ref to use ReadValue for any continuous polling
-    private InputAction _MovementAction;
+    private InputAction movementAction;
+    private InputAction lookAction;
 
-    private Vector2 moveDir;
+    private Vector3 moveDir;
+    private Vector3 lookDir;
 
     private bool jumpPressed;
     private bool jumpHeld;
     private bool dashThisFrame;
 
-    private StateMachine<CharacterState>.InputBuffer _InputBuffer;
+    private StateMachine<CharacterState>.InputBuffer inputBuffer;
+
+    private bool usingController;
+
+    [SerializeField]
+    private PlayerDirectionalInput playerDirectionalInput = new PlayerDirectionalInput();
 
     [SerializeField]
     private float inputTimeOut;
@@ -52,29 +62,41 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private float invincibilityTime = 1f;
 
+    [SerializeField]
+    private Vector3 cameraAngle = new Vector3(0, 135, 0);
+
     protected override void Awake()
     {
         base.Awake();
         controls = new InputMaster();
-        //_AllowedActions.Add(_Dash, true);
-        _InputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
+        playerInput = GetComponent<PlayerInput>();
+        inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
     }
 
     private void OnEnable()
     {
-        _MovementAction = controls.Typhis.Movement;
-        _MovementAction.Enable();
+        // Continuous inputs
+        movementAction = controls.Typhis.Movement;
+        movementAction.Enable();
+        lookAction = controls.Typhis.Look;
+        lookAction.Enable();
+
+        // Discrete inputs
         controls.Typhis.Attack.Enable();
         controls.Typhis.Attack.performed += context => OnAttackPerformed(context);
         controls.Typhis.Attack.started += context => OnAttackStarted(context);
+
         controls.Typhis.Jump.Enable();
         controls.Typhis.Jump.started += context => { jumpPressed = true;  jumpHeld = true; };
         controls.Typhis.Jump.performed += context => { jumpHeld = false; };
         controls.Typhis.Jump.canceled += context => { jumpHeld = false; };
+
         controls.Typhis.Dash.Enable();
         controls.Typhis.Dash.performed += context => OnDash(context);
+
         controls.Typhis.Bubble.Enable();
         controls.Typhis.Bubble.performed += context => OnBubble(context);
+
         controls.Typhis.CoreMagic.Enable();
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
@@ -82,55 +104,45 @@ public class PlayerActionManager : CharacterActionManager
 
     private void OnDisable()
     {
-        // Fill in disabling
+        // Fill in disabling at some point
     }
 
     private void Update()
     {
-        PassInput();
+        moveDir = playerDirectionalInput.moveDir;
+        lookDir = playerDirectionalInput.lookDir;
 
         // As long as the enter/exit variables on the states are set correctly this should cause no problems
-        if(moveDir != Vector2.zero || jumpHeld)
+        if (moveDir != Vector3.zero || jumpHeld)
         {
-            StateMachine.TrySetState(_Move);
+            StateMachine.TrySetState(moveState);
         }
         else
         {
-            if(StateMachine.CurrentState == _Move) StateMachine.TrySetDefaultState();
+            if(StateMachine.CurrentState == moveState) StateMachine.TrySetDefaultState();
         }
 
-        _InputBuffer.Update();
+        inputBuffer.Update();
     }
 
     private void FixedUpdate()
     {
-        // Read movement input
-        moveDir = _MovementAction.ReadValue<Vector2>();
-    }
+        usingController = (playerInput.currentControlScheme == "Controller");
 
-    // This function is used to pass any sort of input to the currently active state.
-    // This should be done here and not in the state, as all Input event handling is in this script.
-    private void PassInput()
-    {
-        if(StateMachine.CurrentState is IPassPlayerDirectionalInput)
+        Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
+
+        // Read movement input
+        playerDirectionalInput.moveDir = new Vector3(moveInput.x, 0, moveInput.y);
+
+        if (usingController)
         {
-            PlayerCharacterInputs input = new PlayerCharacterInputs();
-            input.MoveAxisForward = moveDir.y;
-            input.MoveAxisRight = moveDir.x;
-            input.jumpPressed = jumpPressed;
-            input.JumpHeld = jumpHeld;
-            input.Dash = dashThisFrame;
-            _Move.UpdateInputs(input);
-            jumpPressed = false;
-            dashThisFrame = false;
+            // If the right stick has input, then it should override the left stick for determining look direction.
+            // Otherwise, controller usually uses left stick for lookDir.
+            Vector2 rightStick = lookAction.ReadValue<Vector2>().normalized;
+            if (rightStick != Vector2.zero) playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
+            else playerDirectionalInput.lookDir = GetDirRelativeToCamera(moveDir);
         }
-        else if(StateMachine.CurrentState == _SwordAttack)
-        {
-            PlayerCharacterInputs input = new PlayerCharacterInputs();
-            input.MoveAxisForward = moveDir.y;
-            input.MoveAxisRight = moveDir.x;
-            _SwordAttack.UpdateInputs(input);
-        }
+        else playerDirectionalInput.lookDir = GetMouseDirection();
     }
 
     // Receives an attack action performed
@@ -140,13 +152,13 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
-            if (!StateMachine.TryResetState(_SwordAttack)) _InputBuffer.Buffer(_SwordAttack, inputTimeOut);
+            if (!StateMachine.TryResetState(attackState)) inputBuffer.Buffer(attackState, inputTimeOut);
         }
 
         // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
         if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
-            if (StateMachine.CurrentState == _ChargeAttack) _ChargeAttack.ReleaseChargeAttack();
+            if (StateMachine.CurrentState == chargeAttackState) chargeAttackState.ReleaseChargeAttack();
         }
     }
 
@@ -157,7 +169,7 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
             // If it fails to enter the charge attack state, buffer it.
-            if (!StateMachine.TrySetState(_ChargeAttack)) _InputBuffer.Buffer(_ChargeAttack, inputTimeOut);
+            if (!StateMachine.TrySetState(chargeAttackState)) inputBuffer.Buffer(chargeAttackState, inputTimeOut);
         }
     }
 
@@ -169,7 +181,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnBubble(InputAction.CallbackContext context)
     {
-        StateMachine.TrySetState(_Bubble);
+        StateMachine.TrySetState(bubbleState);
     }
 
     void OnCoreMagicPerformed(InputAction.CallbackContext context)
@@ -178,14 +190,14 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
-            if (!StateMachine.TryResetState(_SpellAttack)) _InputBuffer.Buffer(_SpellAttack, inputTimeOut);
-            StateMachine.TrySetState(_Bubble);
+            if (!StateMachine.TryResetState(spellAttackState)) inputBuffer.Buffer(spellAttackState, inputTimeOut);
+            StateMachine.TrySetState(bubbleState);
         }
 
         // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
         if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
-            if (StateMachine.CurrentState == _Core) _Core.ReleaseFocus();
+            if (StateMachine.CurrentState == coreState) coreState.ReleaseFocus();
         }
     }
 
@@ -194,15 +206,13 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
             // If it fails to enter the charge attack state, buffer it.
-            if (!StateMachine.TrySetState(_Core)) _InputBuffer.Buffer(_Core, inputTimeOut);
+            if (!StateMachine.TrySetState(coreState)) inputBuffer.Buffer(coreState, inputTimeOut);
         }
     }
 
-
-
     public override void Hitstun()
     {
-        StateMachine.ForceSetState(_TakeDamage);
+        StateMachine.ForceSetState(takeDamageState);
         _Character.SetIsInvincible(true);
     }
 
@@ -216,4 +226,37 @@ public class PlayerActionManager : CharacterActionManager
         yield return new WaitForSeconds(invincibilityTime);
         _Character.SetIsInvincible(false);
     }
+
+    public PlayerDirectionalInput GetDirectionalInput()
+    {
+        return playerDirectionalInput;
+    }
+
+    public Vector3 GetMouseDirection()
+    {
+        Vector3 dir;
+        float h = Input.mousePosition.x - Screen.width / 2;
+        float v = Input.mousePosition.y - Screen.height / 2;
+        dir = new Vector3(h, 0, v);
+        dir.Normalize();
+
+        dir = GetDirRelativeToCamera(dir);
+        return dir;
+    }
+
+    public Vector3 GetDirRelativeToCamera(Vector3 dir)
+    {
+        return Quaternion.Euler(cameraAngle) * dir;
+    }
+
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        gameObject.GetComponentInParentOrChildren(ref moveState);
+        gameObject.GetComponentInParentOrChildren(ref attackState);
+        gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
+        gameObject.GetComponentInParentOrChildren(ref takeDamageState);
+    }
+#endif
 }

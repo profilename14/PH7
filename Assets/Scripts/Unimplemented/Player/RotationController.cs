@@ -64,13 +64,13 @@ public class RotationController : MonoBehaviour
   }
 
   public Vector3 GetRotationDirection() {
-    return movementController.GetMouseDirection();
+        return Vector3.zero;//movementController.GetMouseDirection();
   }
 
   public void snapToCurrentMouseAngle() {
     // THIS IS TEMPORARY!
     // Remove this and the rest of the script when all occurnces of snapToCurrentMouseAngle are replaced with rotateToMouse
-    movementController.rotateToMouse();
+    //movementController.RotateToDir();
     movementController.SetAllowRotation(false);
   }
 

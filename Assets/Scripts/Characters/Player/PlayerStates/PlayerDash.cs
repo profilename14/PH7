@@ -68,7 +68,7 @@ public class PlayerDash : DashState
             return;
         }
 
-        Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(Mathf.Sqrt(dashProgress)) );
+        Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(dashProgress) );
 
         movementController.SetPosition(newPos);
     }

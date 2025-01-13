@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
-<<<<<<< Updated upstream
 using PixelCrushers.DialogueSystem;
 using UnityEditor.Experimental.GraphView;
-=======
 using UnityEngine.InputSystem.LowLevel;
->>>>>>> Stashed changes
 
 public enum PlayerRotationState
 {

@@ -9,6 +9,9 @@ public class PlayerDash : DashState
 {
     [SerializeField]
     private PlayerMovementController movementController;
+    [SerializeField]
+    private RotationController rotationController;
+
 
     [SerializeField]
     private Vector3 moveDir;
@@ -34,9 +37,11 @@ public class PlayerDash : DashState
     {
         _ActionManager.SetAllActionPriorityAllowed(false);
 
-        movementController.rotateToMouse();
+        //movementController.rotateToMouse();
+        rotationController.snapToCurrentMouseAngle();
         movementController.SetAllowRotation(false);
-        moveDir = movementController.GetMouseDirection();
+        //moveDir = movementController.GetMouseDirection();
+        moveDir = rotationController.GetRotationDirection();
 
         startingPoint = movementController.gameObject.transform.position;
         destination = new Vector3(startingPoint.x - moveDir.x * distance, 

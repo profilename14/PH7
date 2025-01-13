@@ -176,7 +176,9 @@ public class PlayerActionManager : CharacterActionManager
     // Receives a dash button press
     void OnDash(InputAction.CallbackContext context)
     {
-        dashThisFrame = true;
+        //dashThisFrame = true;
+        if (!StateMachine.TryResetState(_Dash)) _InputBuffer.Buffer(_Dash, inputTimeOut);
+        StateMachine.TrySetState(_Dash);
     }
 
     void OnBubble(InputAction.CallbackContext context)

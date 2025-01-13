@@ -287,21 +287,16 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 }
             case PlayerRotationState.Default:
                 {
-                    /*if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
+                    if (OrientationSharpness > 0f)
                     {
                         // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, _moveInputVector, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, savedUpdatedRotation * Vector3.forward, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+                        
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
-                    }*/
-
-                    if (updateRotation)
-                    {
-                        //Debug.Log("Saved rotation: " + savedUpdatedRotation);
-                        transform.rotation = savedUpdatedRotation;
-                        updateRotation = false;
                     }
+
+                    
 
                     break;
                 }

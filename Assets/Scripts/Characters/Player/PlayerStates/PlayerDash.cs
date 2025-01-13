@@ -30,23 +30,28 @@ public class PlayerDash : DashState
 
     private AnimancerState currentState;
 
+    private PlayerActionManager actionManager;
+    private PlayerDirectionalInput directionalInput;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
 
     protected override void OnEnable()
     {
+        directionalInput = actionManager.GetDirectionalInput();
         _ActionManager.SetAllActionPriorityAllowed(false);
 
         //movementController.rotateToMouse();
-        rotationController.snapToCurrentMouseAngle();
-        movementController.SetAllowRotation(false);
+        //rotationController.snapToCurrentMouseAngle();
+        //movementController.SetAllowRotation(false);
         //moveDir = movementController.GetMouseDirection();
-        moveDir = rotationController.GetRotationDirection();
+        moveDir = actionManager.GetDirRelativeToCamera(directionalInput.moveDir);
+        movementController.RotateToDir(moveDir);
 
         startingPoint = movementController.gameObject.transform.position;
-        destination = new Vector3(startingPoint.x - moveDir.x * distance, 
+        destination = new Vector3(startingPoint.x + moveDir.x * distance, 
                                   startingPoint.y,
-                                  startingPoint.z - moveDir.z * distance);
+                                  startingPoint.z + moveDir.z * distance);
         
         // Just sets to idle after this animation fully ends.
         currentState = _ActionManager.anim.Play(dashAnimation);
@@ -83,8 +88,8 @@ public class PlayerDash : DashState
 
     protected override void OnDisable()
     {
-        PlayerCharacterInputs input = new();
-        movementController.SetInputs(ref input);
+        //PlayerCharacterInputs input = new();
+        //movementController.SetInputs(ref input);
     }
 
 #if UNITY_EDITOR
@@ -92,6 +97,7 @@ public class PlayerDash : DashState
     {
         base.OnValidate();
         gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

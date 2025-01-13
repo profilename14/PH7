@@ -177,8 +177,8 @@ public class PlayerActionManager : CharacterActionManager
     void OnDash(InputAction.CallbackContext context)
     {
         //dashThisFrame = true;
-        if (!StateMachine.TryResetState(_Dash)) _InputBuffer.Buffer(_Dash, inputTimeOut);
-        StateMachine.TrySetState(_Dash);
+        if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
+        StateMachine.TrySetState(dashState);
     }
 
     void OnBubble(InputAction.CallbackContext context)

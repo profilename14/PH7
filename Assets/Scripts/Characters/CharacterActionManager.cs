@@ -100,10 +100,8 @@ public abstract class CharacterActionManager : MonoBehaviour
 
     public abstract void EndHitStun();
 
-    public 
-
 #if UNITY_EDITOR
-    void OnValidate()
+    protected virtual void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref _Anim);
         gameObject.GetComponentInParentOrChildren(ref _Character);

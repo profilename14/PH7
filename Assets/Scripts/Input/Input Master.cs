@@ -37,6 +37,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""4effec00-50b4-4316-9eb2-1f477a31cf2e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone(max=1)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""409a11d4-5931-4786-bfb4-4ea75df50c63"",
@@ -382,6 +391,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Quick Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86490227-2ce7-415e-8729-d39aec405cfc"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -419,6 +439,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         // Typhis
         m_Typhis = asset.FindActionMap("Typhis", throwIfNotFound: true);
         m_Typhis_Movement = m_Typhis.FindAction("Movement", throwIfNotFound: true);
+        m_Typhis_Look = m_Typhis.FindAction("Look", throwIfNotFound: true);
         m_Typhis_Attack = m_Typhis.FindAction("Attack", throwIfNotFound: true);
         m_Typhis_Dash = m_Typhis.FindAction("Dash", throwIfNotFound: true);
         m_Typhis_Interact = m_Typhis.FindAction("Interact", throwIfNotFound: true);
@@ -490,6 +511,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Typhis;
     private List<ITyphisActions> m_TyphisActionsCallbackInterfaces = new List<ITyphisActions>();
     private readonly InputAction m_Typhis_Movement;
+    private readonly InputAction m_Typhis_Look;
     private readonly InputAction m_Typhis_Attack;
     private readonly InputAction m_Typhis_Dash;
     private readonly InputAction m_Typhis_Interact;
@@ -504,6 +526,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         private @InputMaster m_Wrapper;
         public TyphisActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Typhis_Movement;
+        public InputAction @Look => m_Wrapper.m_Typhis_Look;
         public InputAction @Attack => m_Wrapper.m_Typhis_Attack;
         public InputAction @Dash => m_Wrapper.m_Typhis_Dash;
         public InputAction @Interact => m_Wrapper.m_Typhis_Interact;
@@ -525,6 +548,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -559,6 +585,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -624,6 +653,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     public interface ITyphisActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);

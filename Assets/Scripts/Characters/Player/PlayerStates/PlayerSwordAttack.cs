@@ -44,7 +44,11 @@ public class PlayerSwordAttack : AttackState
 
     private Player player;
 
+    private PlayerActionManager actionManager;
+
     private SwordSwingType currentSwordSwing;
+
+    private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
 
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
@@ -80,10 +84,12 @@ public class PlayerSwordAttack : AttackState
 
     protected override void OnEnable()
     {
+        directionalInput = actionManager.GetDirectionalInput();
+
         // Fully committed to an attack once you start it.
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
-        rotationController.snapToCurrentMouseAngle();
+        movementController.RotateToDir(directionalInput.lookDir);
 
         if (movementController.IsGrounded())
         {
@@ -124,10 +130,15 @@ public class PlayerSwordAttack : AttackState
         }
     }
 
-    public void UpdateInputs(PlayerCharacterInputs input)
+    protected void Update()
+    {
+        movementController.ProcessMoveInput(directionalInput.moveDir);
+    }
+
+    /*public void UpdateInputs(PlayerCharacterInputs input)
     {
         if (currentSwordSwing == SwordSwingType.SwingDown) movementController.SetInputs(ref input);
-    }
+    }*/
 
     public override void OnAttackHit(Vector3 position)
     {
@@ -155,6 +166,7 @@ public class PlayerSwordAttack : AttackState
     public void EndSwordSwing()
     {
         //Debug.Log("Ending swing");
+        movementController.SetAllowRotation(true);
     }
 
 #if UNITY_EDITOR
@@ -163,6 +175,7 @@ public class PlayerSwordAttack : AttackState
         base.OnValidate();
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref rotationController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

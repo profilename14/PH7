@@ -40,6 +40,9 @@ public class EnemyActionManager : CharacterActionManager
     [SerializeField]
     protected bool isStunned = false;
 
+    [SerializeField]
+    protected EnemyMovementController movementController;
+
     protected override void Awake()
     {
         base.Awake();
@@ -65,6 +68,11 @@ public class EnemyActionManager : CharacterActionManager
     {
         player = Player.instance;
         if (canAttackInIdle) StartCoroutine(UpdateAttackStates());
+    }
+
+    protected void Update()
+    {
+        
     }
 
     public IEnumerator UpdateAttackStates()
@@ -157,6 +165,7 @@ public class EnemyActionManager : CharacterActionManager
         {
             //Debug.Log("Hitstun!");
             isStunned = true;
+            movementController.SetAIEnabled(false);
         }
     }
 
@@ -164,12 +173,14 @@ public class EnemyActionManager : CharacterActionManager
     {
         isStunned = false;
         //Debug.Log("End stun");
+        movementController.SetAIEnabled(true);
     }
 
 #if UNITY_EDITOR
     new void OnValidate()
     {
         base.OnValidate();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
     }
 #endif
 }

@@ -1,33 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
 using PixelCrushers.DialogueSystem;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.InputSystem.LowLevel;
 
 public enum PlayerRotationState
 {
     Default,
-    Mouse,
     Locked
-}
-
-
-public struct PlayerCharacterInputs
-{
-    public float MoveAxisForward;
-    public float MoveAxisRight;
-    public Quaternion CameraRotation;
-    public bool jumpPressed;
-    public bool JumpHeld;
-    public bool Dash;
-}
-
-public struct AICharacterInputs
-{
-    public Vector3 MoveVector;
-    public Vector3 LookVector;
 }
 
 public enum BonusOrientationMethod
@@ -71,7 +54,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private Collider[] _probedColliders = new Collider[8];
     private RaycastHit[] _probedHits = new RaycastHit[8];
-    private Vector3 _moveInputVector;
+    private Vector3 moveInputVector;
     private Vector3 _lookInputVector;
     private bool _jumpHeld = false;
     private bool _jumpPressedThisFrame = false;
@@ -87,27 +70,40 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private GameObject CharacterCamera;
 
+    [SerializeField]
+    private GameObject rotationRoot;
+
     // Custom Variables Below:
 
         
-    private RotationController rotationController;
+    //private RotationController rotationController;
 
     public bool isDashing = false;
-    public ParticleSystem DashEffect;
+    /*public ParticleSystem DashEffect;
     public float dashPower = 50f;
     [SerializeField] private float dashDuration = 0.35f;
     [HideInInspector] public float DashTimer = 0.0f;
     [SerializeField] private float DashCooldown = 0.6f;
     [HideInInspector] public float dashCooldownTimer = 0.0f;
-    private bool dashOnCooldown = false;
+    private bool dashOnCooldown = false;*/
 
     bool canMove = true;
 
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
+    
+    bool setPosition = false;
+    private Vector3 _internalPositionSet = Vector3.zero;
 
     bool velocityLocked = false;
     private Vector3 lockedVelocity;
+    private bool isFacingMouse = false;
+    private Vector2 directionVec;
+    private Quaternion savedLockedRotation;
+    private Quaternion savedUpdatedRotation;
+    private bool updateRotation;
+    private Vector3 camForward;
+    private Vector3 camRight;
 
     private void Awake()
     {
@@ -119,31 +115,35 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
         CharacterCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
-        rotationController = gameObject.GetComponentInChildren<RotationController>();
+        camForward = CharacterCamera.transform.forward;
+        camRight = CharacterCamera.transform.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
     }
 
     private void Update() // Handles all movement related input.
     {
         if (_inJump) jumpTime += Time.deltaTime;
 
-        if (DashTimer > 0) {
+        /*if (DashTimer > 0) {
             DashTimer -= Time.deltaTime;
             if (DashTimer <= 0) {
                 canMove = true;
                 isDashing = false;
                 UnlockVelocity();
+                SetAllowRotation(true);
             }
         }
 
-        if (dashCooldownTimer > 0) {
+       if (dashCooldownTimer > 0) {
             dashCooldownTimer -= Time.deltaTime;
             if (dashCooldownTimer <= 0) {
                 dashOnCooldown = false;
             }
 
-        }
-
-            
+        }*/ 
     }
 
     /// <summary>
@@ -168,6 +168,11 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 {
                     break;
                 }
+            case PlayerRotationState.Locked:
+                {
+                    savedLockedRotation = transform.rotation;
+                    break;
+                }
         }
     }
 
@@ -182,39 +187,40 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 {
                     break;
                 }
+            case PlayerRotationState.Locked:
+                {
+                    break;
+                }
         }
     }
 
     /// <summary>
     /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
     /// </summary>
-    public void SetInputs(ref PlayerCharacterInputs playerInput)
+    public void ProcessMoveInput(Vector3 moveDir)
     {
-        PlayerCharacterInputs inputs = playerInput;
+        if (!canMove)
+        {
+            moveInputVector = new Vector3(0, 0, 0);
+            return;
+        }
 
-        inputs.CameraRotation = CharacterCamera.transform.rotation;
-
-        // Clamp input
-        Vector3 moveInputVector = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0f, inputs.MoveAxisForward), 1f);
+        Quaternion cameraRotation = CharacterCamera.transform.rotation;
 
         // Calculate camera direction and rotation on the character plane
-        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
+        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
         if (cameraPlanarDirection.sqrMagnitude == 0f)
         {
-            cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.up, Motor.CharacterUp).normalized;
+            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, Motor.CharacterUp).normalized;
         }
         Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
 
         // Move and look inputs
-        _moveInputVector = cameraPlanarRotation * moveInputVector;
-        if (!canMove) {
-            _moveInputVector = new Vector3(0, 0, 0);
-        }
+        moveInputVector = cameraPlanarRotation * moveDir;
 
-        _lookInputVector = cameraPlanarDirection;
 
         // Jumping input
-        if (inputs.JumpHeld)
+        /*if (inputs.JumpHeld)
         {
             _timeSinceJumpRequested = 0f;
             _jumpHeld = true;
@@ -232,18 +238,18 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         if (inputs.Dash)
         {
             StartDash();
-        }
+        }*/
 
     }
 
     /// <summary>
     /// This is called every frame by the AI script in order to tell the character what its inputs are
     /// </summary>
-    public void SetInputs(ref AICharacterInputs inputs)
+    /*public void SetInputs(ref AICharacterInputs inputs)
     {
         _moveInputVector = inputs.MoveVector;
         _lookInputVector = inputs.LookVector;
-    }
+    }*/
 
     private Quaternion _tmpTransientRot;
 
@@ -253,6 +259,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// </summary>
     public void BeforeCharacterUpdate(float deltaTime)
     {
+        // Only place you can modify position!
+        if (setPosition == true)
+        {
+            transform.position = _internalPositionSet;
+        }
+        setPosition = false;
     }
 
     /// <summary>
@@ -260,78 +272,41 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// This is where you tell your character what its rotation should be right now. 
     /// This is the ONLY place where you should set the character's rotation
     /// </summary>
-    public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
+    public void UpdateRotation(ref Quaternion rotation, float deltaTime)
     {
         // This function is disabled for now as reotation controller already works. However, if we ever move past said script,
         // there's a partial implementation here for rotation being done along movement.
 
-        /*
+        
         switch (CurrentRotationState)
         {
-            case CharacterState.Locked:
+            case PlayerRotationState.Locked:
                 {
+                    transform.rotation = savedLockedRotation;
                     break;
                 }
-            case CharacterState.Mouse:
+            case PlayerRotationState.Default:
                 {
-                    float h = Input.mousePosition.x - Screen.width / 2;
-                    float v = Input.mousePosition.y - Screen.height / 2;
-                    Vector3 mouseDirection = new Vector3(h, 0, v);
-                    mouseDirection.Normalize();
-                    mouseDirection = Quaternion.Euler(0, -45, 0) * mouseDirection;
-
-                    //Vector3 smoothedLookInputDirection = Vector3.Slerp(_lookInputVector, mouseDirection, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
-                    // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                    currentRotation = Quaternion.LookRotation(mouseDirection, Motor.CharacterUp);
-                    break;
-                }
-            case CharacterState.Default:
-                {
-                    if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
+                    if (OrientationSharpness > 0f)
                     {
                         // Smoothly interpolate from current to target look direction
-                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, _moveInputVector, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
-
+                        Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, savedUpdatedRotation * Vector3.forward, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+                        
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
-                        currentRotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
+                        transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
                     }
 
-                    Vector3 currentUp = (currentRotation * Vector3.up);
-                    if (BonusOrientationMethod == BonusOrientationMethod.TowardsGravity)
-                    {
-                        // Rotate from current up to invert gravity
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                    }
-                    else if (BonusOrientationMethod == BonusOrientationMethod.TowardsGroundSlopeAndGravity)
-                    {
-                        if (Motor.GroundingStatus.IsStableOnGround)
-                        {
-                            Vector3 initialCharacterBottomHemiCenter = Motor.TransientPosition + (currentUp * Motor.Capsule.radius);
+                    
 
-                            Vector3 smoothedGroundNormal = Vector3.Slerp(Motor.CharacterUp, Motor.GroundingStatus.GroundNormal, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGroundNormal) * currentRotation;
-
-                            // Move the position to create a rotation around the bottom hemi center instead of around the pivot
-                            Motor.SetTransientPosition(initialCharacterBottomHemiCenter + (currentRotation * Vector3.down * Motor.Capsule.radius));
-                        }
-                        else
-                        {
-                            Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, -Gravity.normalized, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                            currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                        }
-                    }
-                    else
-                    {
-                        Vector3 smoothedGravityDir = Vector3.Slerp(currentUp, Vector3.up, 1 - Mathf.Exp(-BonusOrientationSharpness * deltaTime));
-                        currentRotation = Quaternion.FromToRotation(currentUp, smoothedGravityDir) * currentRotation;
-                    }
                     break;
                 }
         }
-        */
+
+        rotation = transform.rotation;
+        
     }
+
+
 
     /// <summary>
     /// (Called by KinematicCharacterMotor during its update cycle)
@@ -365,8 +340,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             currentVelocity = Motor.GetDirectionTangentToSurface(currentVelocity, effectiveGroundNormal) * currentVelocityMagnitude;
 
             // Calculate target velocity
-            Vector3 inputRight = Vector3.Cross(_moveInputVector, Motor.CharacterUp);
-            Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * _moveInputVector.magnitude;
+            Vector3 inputRight = Vector3.Cross(moveInputVector, Motor.CharacterUp);
+            Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * moveInputVector.magnitude;
             Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
             // Smooth movement Velocity
@@ -376,9 +351,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         else
         {
             // Add move input
-            if (_moveInputVector.sqrMagnitude > 0f)
+            if (moveInputVector.sqrMagnitude > 0f)
             {
-                Vector3 addedVelocity = _moveInputVector * AirAccelerationSpeed * deltaTime;
+                Vector3 addedVelocity = moveInputVector * AirAccelerationSpeed * deltaTime;
 
                 Vector3 currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(currentVelocity, Motor.CharacterUp);
 
@@ -554,6 +529,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         _internalVelocitySet = velocity;
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        setPosition = true;
+        _internalPositionSet = position;
+    }
+
     public void LockVelocity(Vector3 velocity)
     {
         velocityLocked = true;
@@ -584,12 +565,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             GameObject enemy = other.gameObject;
 
 
+            // Note: phasing can be handled in this script, but should be controlled via method calls from the Dash State
+
             if (isDashing) { // Phase through gates, but only if dashing.
             //Debug.Log("DISABLINGCOLLISION");
             Physics.IgnoreCollision(
                 other,
                 GetComponent<Collider>(), true);
-                StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
+                //StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
             } else { // Can't bypass
             //Debug.Log("ENABLINGCOLLISION");
                 
@@ -618,13 +601,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
 
 
-    public void StartDash() {
+    /*public void StartDash() {
         if (isDashing || dashOnCooldown) 
         {
             return;
         }
 
-        rotationController.snapToCurrentMouseAngle();
         //combatController.bufferDash(); // Allows the dash animation to play
                                         // set flag in animator
         isDashing = true;
@@ -634,8 +616,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         var hDashIntent = Input.GetAxisRaw("Horizontal");
         var vDashIntent = Input.GetAxisRaw("Vertical");
 
+        SetAllowRotation(false);
+
         if (Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
         {
+            RotateToDir();
+
             float h = Input.mousePosition.x - Screen.width / 2;
             float v = Input.mousePosition.y - Screen.height / 2;
             Vector3 mouseDirection = new Vector3(h, 0, v);
@@ -646,7 +632,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         }
         else
         {
-            dashDirection = _moveInputVector;
+            dashDirection = moveInputVector;
         }
 
         LockVelocity(dashDirection * dashPower);
@@ -658,7 +644,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         dashCooldownTimer = DashCooldown;
         canMove = false;
 
-    }
+    }*/
 
     public void ApplyImpulseForce(Vector3 direction, float power)
     {
@@ -682,16 +668,91 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     public void SetAllowMovement(bool isAllowed)
     {
-        return;
-    }
-
-    public void SetAllowRotation(bool isAllowed)
-    {
-        return;
+        throw new NotImplementedException();
     }
 
     public void SetDrag(float drag)
     {
         throw new NotImplementedException();
     }
+
+    public void SetAllowRotation(bool isAllowed)
+    {
+        if (!isAllowed) {
+            TransitionToState(PlayerRotationState.Locked);
+            return;
+        }
+
+        TransitionToState(PlayerRotationState.Default);
+
+        /*if (CurrentRotationState == PlayerRotationState.Locked) {
+            if (isFacingMouse) {
+                TransitionToState(PlayerRotationState.Mouse);
+            } else {
+                TransitionToState(PlayerRotationState.Default);
+            }
+        }*/
+    }
+
+    /*// If false (ex moving), rotation is set to follow the movement keys. If true, (ex using the bubble), Typhis faces the mouse at all times.
+    public void SetMouseRotation(bool facingMouse)
+    {
+        if (facingMouse) {
+            isFacingMouse = true;
+
+            if (CurrentRotationState != PlayerRotationState.Locked) {
+                TransitionToState(PlayerRotationState.Mouse);
+            }
+        }
+        else {
+            isFacingMouse = false;
+
+            if (CurrentRotationState != PlayerRotationState.Locked) {
+                TransitionToState(PlayerRotationState.Default);
+            }
+        }
+    }*/
+
+    // Called by external scripts to set rotation.
+    public void RotateToDir(Vector3 dir)
+    {
+        updateRotation = true;
+        savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
+
+        /*transform.localRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
+        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        directionVec = camForward * dir.x + camRight * dir.z;
+        directionVec.Normalize();
+
+        if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, angle - 90 - 45, 0)) == 180f)
+        {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+        }
+
+        if (dir.x != 0 || dir.z != 0)
+        {
+            transform.rotation = Quaternion.Euler(0, angle - 90 - 45, 0);
+        }*/
+    }
+
+    /*private void RotateToMovementAngle()
+    {
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        float angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
+        directionVec = camForward * input.x + camRight * input.y;
+        directionVec.Normalize();
+
+        if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
+            angle -= 90;
+            //Debug.Log ("1 frame Flip");
+        }
+
+        if (input.x != 0 || input.y != 0)
+        {
+            transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
+        }
+
+        //SetAllowRotation(false)
+    }*/
 }

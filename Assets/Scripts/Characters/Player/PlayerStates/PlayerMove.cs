@@ -11,28 +11,31 @@ public class PlayerMove : CharacterState
     private PlayerMovementController movementController;
 
     [SerializeField]
-    private Vector2 moveDir;
-
-    [SerializeField]
     TransitionAsset moveAnimation;
+
+    private PlayerActionManager actionManager;
+
+    private PlayerDirectionalInput directionalInput;
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
-
-    public void UpdateInputs(PlayerCharacterInputs input)
-    {
-        movementController.SetInputs(ref input);
-    }
 
     protected override void OnEnable()
     {
         _ActionManager.anim.Play(moveAnimation);
     }
 
+    protected void Update()
+    {
+        directionalInput = actionManager.GetDirectionalInput();
+        movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
+        movementController.ProcessMoveInput(directionalInput.moveDir);
+        //Debug.Log("running move code: " + directionalInput.moveDir);
+    }
+
     protected override void OnDisable()
     {
-        PlayerCharacterInputs input = new();
-        movementController.SetInputs(ref input);
+        
     }
 
 #if UNITY_EDITOR
@@ -40,6 +43,7 @@ public class PlayerMove : CharacterState
     {
         base.OnValidate();
         gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

@@ -34,6 +34,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
 
     protected Vector3 groundNormal;
 
+    [SerializeField]
     protected bool isGrounded;
 
     protected LayerMask groundMask;
@@ -74,7 +75,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
             pathfinding.enableRotation = rotationEnabled;
         }
 
-        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.1f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 0.11f, groundMask))
+        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.1f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 1f, groundMask))
         {
             isGrounded = true;
         }

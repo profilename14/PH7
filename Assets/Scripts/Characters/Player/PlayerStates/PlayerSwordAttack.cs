@@ -94,7 +94,7 @@ public class PlayerSwordAttack : AttackState
         if (movementController.IsGrounded())
         {
             // Swinging on the ground
-            movementController.AddVelocity(rotationController.gameObject.transform.right * swingForce);
+            //movementController.AddVelocity(rotationController.gameObject.transform.right * swingForce);
 
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
@@ -148,7 +148,7 @@ public class PlayerSwordAttack : AttackState
         {
             //Debug.Log("Pogo!");
             movementController.SetVelocity(Vector3.zero);
-            movementController.AddVelocity(rotationController.gameObject.transform.up * pogoForce);
+            movementController.AddVelocity(movementController.gameObject.transform.transform.up * pogoForce);
         }
         else
         {
@@ -158,7 +158,7 @@ public class PlayerSwordAttack : AttackState
 
     public void StartSwordSwing()
     {
-        movementController.AddVelocity(rotationController.gameObject.transform.right * swingForce);
+        movementController.AddVelocity(movementController.gameObject.transform.transform.forward * swingForce);
 
         vfx.SwordSwingVFX(currentSwordSwing);
     }

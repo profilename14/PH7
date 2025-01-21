@@ -94,8 +94,6 @@ public class PlayerSwordAttack : AttackState
         if (movementController.IsGrounded())
         {
             // Swinging on the ground
-            //movementController.AddVelocity(rotationController.gameObject.transform.right * swingForce);
-
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
                 currentSwing = 0;
@@ -118,8 +116,6 @@ public class PlayerSwordAttack : AttackState
         {
             currentSwordSwing = SwordSwingType.SwingDown;
 
-            //movementController.AddVelocity(-rotationController.gameObject.transform.up * swingForce);
-
             // Swinging in the air performs a downwards swing.
             currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
 
@@ -135,24 +131,14 @@ public class PlayerSwordAttack : AttackState
         movementController.ProcessMoveInput(directionalInput.moveDir);
     }
 
-    /*public void UpdateInputs(PlayerCharacterInputs input)
-    {
-        if (currentSwordSwing == SwordSwingType.SwingDown) movementController.SetInputs(ref input);
-    }*/
-
     public override void OnAttackHit(Vector3 position)
     {
         vfx.SwordHitVFX(position);
 
         if(currentSwordSwing == SwordSwingType.SwingDown)
         {
-            //Debug.Log("Pogo!");
             movementController.SetVelocity(Vector3.zero);
             movementController.AddVelocity(movementController.gameObject.transform.transform.up * pogoForce);
-        }
-        else
-        {
-            //movementController.AddVelocity(-rotationController.gameObject.transform.right * hitRecoilForce);
         }
     }
 
@@ -165,7 +151,6 @@ public class PlayerSwordAttack : AttackState
 
     public void EndSwordSwing()
     {
-        //Debug.Log("Ending swing");
         movementController.SetAllowRotation(true);
     }
 

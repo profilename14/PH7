@@ -52,14 +52,14 @@ public class EnemyActionManager : CharacterActionManager
         {
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
-                _AllowedStates.Add(attacks[i].stateScript, false);
+                allowedStates.Add(attacks[i].stateScript, false);
                 EnemyAttack attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
             }
             else
             {
-                _AllowedStates.Add(attacks[i].stateScript, true);
+                allowedStates.Add(attacks[i].stateScript, true);
             }
         }
     }
@@ -77,12 +77,12 @@ public class EnemyActionManager : CharacterActionManager
 
     public IEnumerator UpdateAttackStates()
     {
-        Vector3 vectorToPlayer = Player.instance.transform.position - _Character.transform.position;
+        Vector3 vectorToPlayer = Player.instance.transform.position - character.transform.position;
 
         float distanceToPlayer = vectorToPlayer.magnitude;
-        float angleToPlayerForward = Vector3.Angle(_Character.transform.forward, vectorToPlayer);
-        float angleToPlayerUp = Vector3.Angle(_Character.transform.up, vectorToPlayer);
-        float angleToPlayerRight = Vector3.Angle(_Character.transform.right, vectorToPlayer);
+        float angleToPlayerForward = Vector3.Angle(character.transform.forward, vectorToPlayer);
+        float angleToPlayerUp = Vector3.Angle(character.transform.up, vectorToPlayer);
+        float angleToPlayerRight = Vector3.Angle(character.transform.right, vectorToPlayer);
 
         float totalFrequencies = 0;
 
@@ -92,7 +92,7 @@ public class EnemyActionManager : CharacterActionManager
         {
             EnemyAttackBehaviorData attackData = attacks[i].behaviorData;
             
-            if (attackData.decrementCooldownOnlyWhenAllowed && !_AllowedStates[attacks[i].stateScript]) continue;
+            if (attackData.decrementCooldownOnlyWhenAllowed && !allowedStates[attacks[i].stateScript]) continue;
 
             if (distanceToPlayer > attackData.distance.min && distanceToPlayer < attackData.distance.max
                 && angleToPlayerForward > attackData.forwardAngle.min && angleToPlayerForward < attackData.forwardAngle.max
@@ -100,7 +100,7 @@ public class EnemyActionManager : CharacterActionManager
                 && angleToPlayerRight > attackData.rightAngle.min && angleToPlayerRight < attackData.rightAngle.max)
             {
                 // Within range of the attack.
-                if(attacks[i].cooldown <= 0 && _AllowedStates[attacks[i].stateScript])
+                if(attacks[i].cooldown <= 0 && allowedStates[attacks[i].stateScript])
                 {
                     // This is a possible candidate for an attack.
                     attackCandidates.Add(attacks[i]);
@@ -120,8 +120,8 @@ public class EnemyActionManager : CharacterActionManager
             attackTemp.cooldown -= attackBehaviorUpdateInterval;
             attacks[i] = attackTemp;
 
-            if (!isStunned && attacks[i].cooldown <= 0) _AllowedStates[attacks[i].stateScript] = true;
-            else _AllowedStates[attacks[i].stateScript] = false;
+            if (!isStunned && attacks[i].cooldown <= 0) allowedStates[attacks[i].stateScript] = true;
+            else allowedStates[attacks[i].stateScript] = false;
         }
 
         if (!isStunned)

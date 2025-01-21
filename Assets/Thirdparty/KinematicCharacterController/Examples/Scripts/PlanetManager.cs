@@ -47,19 +47,19 @@ namespace KinematicCharacterController.Examples
             // Apply gravity to characters
             foreach (PlayerMovementController cc in _characterControllersOnPlanet)
             {
-                cc.Gravity = (PlanetMover.transform.position - cc.transform.position).normalized * GravityStrength;
+                cc.gravity = (PlanetMover.transform.position - cc.transform.position).normalized * GravityStrength;
             }
         }
 
         void ControlGravity(PlayerMovementController cc)
         {
-            _savedGravity = cc.Gravity;
+            _savedGravity = cc.gravity;
             _characterControllersOnPlanet.Add(cc);
         }
 
         void UnControlGravity(PlayerMovementController cc)
         {
-            cc.Gravity = _savedGravity;
+            cc.gravity = _savedGravity;
             _characterControllersOnPlanet.Remove(cc);
         }
     }

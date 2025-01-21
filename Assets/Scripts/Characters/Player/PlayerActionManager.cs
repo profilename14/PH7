@@ -17,7 +17,7 @@ public class PlayerActionManager : CharacterActionManager
 {
     [Header("Player States")]
     [SerializeField]
-    private PlayerMove moveState;
+    private PlayerJump jumpState;
     [SerializeField]
     private CharacterState interactState;
     [SerializeField]
@@ -35,6 +35,8 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private TakeDamageState takeDamageState;
 
+    private PlayerMove moveState;
+
     private InputMaster controls;
     private PlayerInput playerInput;
 
@@ -45,9 +47,7 @@ public class PlayerActionManager : CharacterActionManager
     private Vector3 moveDir;
     private Vector3 lookDir;
 
-    private bool jumpPressed;
     private bool jumpHeld;
-    private bool dashThisFrame;
 
     private StateMachine<CharacterState>.InputBuffer inputBuffer;
 
@@ -68,6 +68,7 @@ public class PlayerActionManager : CharacterActionManager
     protected override void Awake()
     {
         base.Awake();
+        moveState = (PlayerMove) defaultState;
         controls = new InputMaster();
         playerInput = GetComponent<PlayerInput>();
         inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
@@ -83,13 +84,12 @@ public class PlayerActionManager : CharacterActionManager
 
         // Discrete inputs
         controls.Typhis.Attack.Enable();
-        controls.Typhis.Attack.performed += context => OnAttackPerformed(context);
         controls.Typhis.Attack.started += context => OnAttackStarted(context);
+        controls.Typhis.Attack.performed += context => OnAttackPerformed(context);
 
         controls.Typhis.Jump.Enable();
-        controls.Typhis.Jump.started += context => { jumpPressed = true;  jumpHeld = true; };
-        controls.Typhis.Jump.performed += context => { jumpHeld = false; };
-        controls.Typhis.Jump.canceled += context => { jumpHeld = false; };
+        controls.Typhis.Jump.started += context => OnJumpStarted(context);
+        controls.Typhis.Jump.performed += context => OnJumpPerformed(context);
 
         controls.Typhis.Dash.Enable();
         controls.Typhis.Dash.performed += context => OnDash(context);
@@ -98,8 +98,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Bubble.performed += context => OnBubble(context);
 
         controls.Typhis.CoreMagic.Enable();
-        controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
+        controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
     }
 
     private void OnDisable()
@@ -111,16 +111,6 @@ public class PlayerActionManager : CharacterActionManager
     {
         moveDir = playerDirectionalInput.moveDir;
         lookDir = playerDirectionalInput.lookDir;
-
-        // As long as the enter/exit variables on the states are set correctly this should cause no problems
-        if (moveDir != Vector3.zero || jumpHeld)
-        {
-            StateMachine.TrySetState(moveState);
-        }
-        else
-        {
-            if(StateMachine.CurrentState == moveState) StateMachine.TrySetDefaultState();
-        }
 
         inputBuffer.Update();
     }
@@ -145,7 +135,33 @@ public class PlayerActionManager : CharacterActionManager
         else playerDirectionalInput.lookDir = GetMouseDirection();
     }
 
-    // Receives an attack action performed
+    //
+    // INPUT ACTION METHODS
+    //
+
+    void OnJumpStarted(InputAction.CallbackContext context)
+    {
+        // Jump button is held
+        jumpHeld = true;
+        if (!StateMachine.TrySetState(jumpState)) inputBuffer.Buffer(jumpState, inputTimeOut);
+    }
+
+    void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        // Jump button is released
+        jumpHeld = false;
+    }
+
+    void OnAttackStarted(InputAction.CallbackContext context)
+    {
+        // If the button is held for at least 0.5s
+        if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            // If it fails to enter the charge attack state, buffer it.
+            if (!StateMachine.TrySetState(chargeAttackState)) inputBuffer.Buffer(chargeAttackState, inputTimeOut);
+        }
+    }
+
     void OnAttackPerformed(InputAction.CallbackContext context)
     {
         // If the button is released within 0.5s
@@ -162,18 +178,6 @@ public class PlayerActionManager : CharacterActionManager
         }
     }
 
-    // Receives an attack action started
-    void OnAttackStarted(InputAction.CallbackContext context)
-    {
-        // If the button is held for at least 0.5s
-        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
-        {
-            // If it fails to enter the charge attack state, buffer it.
-            if (!StateMachine.TrySetState(chargeAttackState)) inputBuffer.Buffer(chargeAttackState, inputTimeOut);
-        }
-    }
-
-    // Receives a dash button press
     void OnDash(InputAction.CallbackContext context)
     {
         //dashThisFrame = true;
@@ -186,10 +190,19 @@ public class PlayerActionManager : CharacterActionManager
         StateMachine.TrySetState(bubbleState);
     }
 
+    void OnCoreMagicStarted(InputAction.CallbackContext context)
+    {
+        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            // If it fails to enter the charge attack state, buffer it.
+            if (!StateMachine.TrySetState(coreState)) inputBuffer.Buffer(coreState, inputTimeOut);
+        }
+    }
+
     void OnCoreMagicPerformed(InputAction.CallbackContext context)
     {
         // If the button is released within 0.5s
-        if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
+        if (context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
             if (!StateMachine.TryResetState(spellAttackState)) inputBuffer.Buffer(spellAttackState, inputTimeOut);
@@ -203,19 +216,14 @@ public class PlayerActionManager : CharacterActionManager
         }
     }
 
-    void OnCoreMagicStarted(InputAction.CallbackContext context)
-    {
-        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
-        {
-            // If it fails to enter the charge attack state, buffer it.
-            if (!StateMachine.TrySetState(coreState)) inputBuffer.Buffer(coreState, inputTimeOut);
-        }
-    }
+    //
+    // STATE OVERRIDE METHODS
+    //
 
     public override void Hitstun()
     {
         StateMachine.ForceSetState(takeDamageState);
-        _Character.SetIsInvincible(true);
+        character.SetIsInvincible(true);
     }
 
     public override void EndHitStun()
@@ -226,7 +234,16 @@ public class PlayerActionManager : CharacterActionManager
     public IEnumerator EndInvincibility()
     {
         yield return new WaitForSeconds(invincibilityTime);
-        _Character.SetIsInvincible(false);
+        character.SetIsInvincible(false);
+    }
+
+    //
+    // INPUT HELPER METHODS
+    //
+
+    public bool IsJumpHeld()
+    {
+        return jumpHeld;
     }
 
     public PlayerDirectionalInput GetDirectionalInput()
@@ -255,7 +272,6 @@ public class PlayerActionManager : CharacterActionManager
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref moveState);
         gameObject.GetComponentInParentOrChildren(ref attackState);
         gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
         gameObject.GetComponentInParentOrChildren(ref takeDamageState);

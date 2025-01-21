@@ -46,6 +46,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""d22e0233-3d93-406b-b79f-6a96dcd5d43d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""409a11d4-5931-4786-bfb4-4ea75df50c63"",
@@ -79,15 +88,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Tap(duration=0.5),SlowTap(duration=0.5)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""d22e0233-3d93-406b-b79f-6a96dcd5d43d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""SlowTap(duration=0.01)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -284,28 +284,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a269855f-81b0-4dee-8da8-a0c9bb2271ea"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7ac11745-7176-496e-afc0-7dd58c53ef6f"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Controller"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""300f5d42-c19c-430a-9a02-3c3653d955cc"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -402,6 +380,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a269855f-81b0-4dee-8da8-a0c9bb2271ea"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ac11745-7176-496e-afc0-7dd58c53ef6f"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -440,11 +440,11 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Typhis = asset.FindActionMap("Typhis", throwIfNotFound: true);
         m_Typhis_Movement = m_Typhis.FindAction("Movement", throwIfNotFound: true);
         m_Typhis_Look = m_Typhis.FindAction("Look", throwIfNotFound: true);
+        m_Typhis_Jump = m_Typhis.FindAction("Jump", throwIfNotFound: true);
         m_Typhis_Attack = m_Typhis.FindAction("Attack", throwIfNotFound: true);
         m_Typhis_Dash = m_Typhis.FindAction("Dash", throwIfNotFound: true);
         m_Typhis_Interact = m_Typhis.FindAction("Interact", throwIfNotFound: true);
         m_Typhis_CoreMagic = m_Typhis.FindAction("Core / Magic", throwIfNotFound: true);
-        m_Typhis_Jump = m_Typhis.FindAction("Jump", throwIfNotFound: true);
         m_Typhis_Bubble = m_Typhis.FindAction("Bubble", throwIfNotFound: true);
         m_Typhis_OpenInventory = m_Typhis.FindAction("Open Inventory", throwIfNotFound: true);
         m_Typhis_Pause = m_Typhis.FindAction("Pause", throwIfNotFound: true);
@@ -512,11 +512,11 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private List<ITyphisActions> m_TyphisActionsCallbackInterfaces = new List<ITyphisActions>();
     private readonly InputAction m_Typhis_Movement;
     private readonly InputAction m_Typhis_Look;
+    private readonly InputAction m_Typhis_Jump;
     private readonly InputAction m_Typhis_Attack;
     private readonly InputAction m_Typhis_Dash;
     private readonly InputAction m_Typhis_Interact;
     private readonly InputAction m_Typhis_CoreMagic;
-    private readonly InputAction m_Typhis_Jump;
     private readonly InputAction m_Typhis_Bubble;
     private readonly InputAction m_Typhis_OpenInventory;
     private readonly InputAction m_Typhis_Pause;
@@ -527,11 +527,11 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public TyphisActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Typhis_Movement;
         public InputAction @Look => m_Wrapper.m_Typhis_Look;
+        public InputAction @Jump => m_Wrapper.m_Typhis_Jump;
         public InputAction @Attack => m_Wrapper.m_Typhis_Attack;
         public InputAction @Dash => m_Wrapper.m_Typhis_Dash;
         public InputAction @Interact => m_Wrapper.m_Typhis_Interact;
         public InputAction @CoreMagic => m_Wrapper.m_Typhis_CoreMagic;
-        public InputAction @Jump => m_Wrapper.m_Typhis_Jump;
         public InputAction @Bubble => m_Wrapper.m_Typhis_Bubble;
         public InputAction @OpenInventory => m_Wrapper.m_Typhis_OpenInventory;
         public InputAction @Pause => m_Wrapper.m_Typhis_Pause;
@@ -551,6 +551,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -563,9 +566,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @CoreMagic.started += instance.OnCoreMagic;
             @CoreMagic.performed += instance.OnCoreMagic;
             @CoreMagic.canceled += instance.OnCoreMagic;
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
             @Bubble.started += instance.OnBubble;
             @Bubble.performed += instance.OnBubble;
             @Bubble.canceled += instance.OnBubble;
@@ -588,6 +588,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -600,9 +603,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @CoreMagic.started -= instance.OnCoreMagic;
             @CoreMagic.performed -= instance.OnCoreMagic;
             @CoreMagic.canceled -= instance.OnCoreMagic;
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
             @Bubble.started -= instance.OnBubble;
             @Bubble.performed -= instance.OnBubble;
             @Bubble.canceled -= instance.OnBubble;
@@ -654,11 +654,11 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnCoreMagic(InputAction.CallbackContext context);
-        void OnJump(InputAction.CallbackContext context);
         void OnBubble(InputAction.CallbackContext context);
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);

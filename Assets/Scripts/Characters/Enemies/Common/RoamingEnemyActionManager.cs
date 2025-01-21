@@ -31,7 +31,7 @@ public class RoamingEnemyActionManager : EnemyActionManager
     public void SpottedPlayer()
     {
         isAggro = true;
-        _Idle.StopAllCoroutines();
+        defaultState.StopAllCoroutines();
         StateMachine.ForceSetState(_Aggro);
         StateMachine.DefaultState = _Aggro;
         StopAllCoroutines();

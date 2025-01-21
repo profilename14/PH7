@@ -1,0 +1,78 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Animancer;
+
+public class PlayerJump : CharacterState
+{
+    [SerializeField]
+    private PlayerMovementController movementController;
+
+    [SerializeField]
+    private PlayerActionManager actionManager;
+
+    [SerializeField]
+    TransitionAsset jumpAnimation;
+
+    private PlayerDirectionalInput directionalInput;
+
+    [Header("Jump Data")]
+    public float jumpUpSpeed = 10f;
+    public float maxJumpTime = 2f;
+    public float jumpPreGroundingGraceTime = 0f;
+    public float jumpPostGroundingGraceTime = 0f;
+    [SerializeField]
+    public AnimationCurve jumpSpeedCurve;
+    [SerializeField]
+    public AnimationCurve gravityCurve;
+
+    private float jumpTimer;
+
+    public override bool CanEnterState
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move] && movementController.IsAbleToJump();
+
+    private void Awake()
+    {
+        movementController.PassJumpData(jumpUpSpeed, jumpPreGroundingGraceTime, jumpPostGroundingGraceTime);
+    }
+
+    protected override void OnEnable()
+    {
+        _ActionManager.anim.Play(jumpAnimation);
+        movementController.StartJump();
+        jumpTimer = 0;
+    }
+
+    protected void Update()
+    {
+        directionalInput = actionManager.GetDirectionalInput();
+        movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
+        movementController.ProcessMoveInput(directionalInput.moveDir);
+
+        movementController.SetJumpVelocity(jumpUpSpeed * jumpSpeedCurve.Evaluate(jumpTimer / maxJumpTime));
+        movementController.SetGravityScale(gravityCurve.Evaluate(jumpTimer / maxJumpTime));
+
+        jumpTimer += Time.deltaTime;
+
+        if (!actionManager.IsJumpHeld() || jumpTimer > maxJumpTime)
+        {
+            movementController.StopJump();
+            _ActionManager.StateMachine.ForceSetDefaultState();
+        }
+    }
+
+    protected override void OnDisable()
+    {
+        movementController.SetGravityScale(1);
+        movementController.StopJump();
+    }
+
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
+    }
+#endif
+}

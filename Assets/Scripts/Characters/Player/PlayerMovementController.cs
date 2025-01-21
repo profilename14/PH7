@@ -34,19 +34,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     public float AirAccelerationSpeed = 15f;
     public float Drag = 0.1f;
 
-    [Header("Jumping")]
-    public bool AllowJumpingWhenSliding = false;
-    public float JumpUpSpeed = 10f;
-    public float maxJumpTime = 2f;
-    public float JumpScalableForwardSpeed = 10f;
-    public float JumpPreGroundingGraceTime = 0f;
-    public float JumpPostGroundingGraceTime = 0f;
-
     [Header("Misc")]
     public List<Collider> IgnoredColliders = new List<Collider>();
     public BonusOrientationMethod BonusOrientationMethod = BonusOrientationMethod.None;
     public float BonusOrientationSharpness = 10f;
-    public Vector3 Gravity = new Vector3(0, -30f, 0);
+    public Vector3 gravity;
+    public Vector3 defaultGravity = new Vector3(0, -30f, 0);
     public Transform MeshRoot;
     public Transform CameraFollowPoint;
 
@@ -54,15 +47,21 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private Collider[] _probedColliders = new Collider[8];
     private RaycastHit[] _probedHits = new RaycastHit[8];
+
     private Vector3 moveInputVector;
     private Vector3 _lookInputVector;
-    private bool _jumpHeld = false;
-    private bool _jumpPressedThisFrame = false;
-    private bool _inJump = false;
-    private bool _jumpedThisFrame = false;
-    private float _timeSinceJumpRequested = Mathf.Infinity;
-    private float _timeSinceLastAbleToJump = 0f;
-    private float jumpTime = 0f;
+
+    private bool AllowJumpingWhenSliding = false;
+    private float jumpUpSpeed = 10f;
+    private float jumpPreGroundingGraceTime = 0f;
+    private float jumpPostGroundingGraceTime = 0f;
+    private bool jumpHeld = false;
+    private bool jumpPressedThisFrame = false;
+    private bool inJump = false;
+    private bool jumpedThisFrame = false;
+    private float timeSinceJumpRequested = Mathf.Infinity;
+    private float timeSinceLastAbleToJump = 0f;
+
     private Vector3 _internalVelocityAdd = Vector3.zero;
 
     private Vector3 lastInnerNormal = Vector3.zero;
@@ -74,19 +73,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     private GameObject rotationRoot;
 
     // Custom Variables Below:
-
-        
-    //private RotationController rotationController;
-
     public bool isDashing = false;
-    /*public ParticleSystem DashEffect;
-    public float dashPower = 50f;
-    [SerializeField] private float dashDuration = 0.35f;
-    [HideInInspector] public float DashTimer = 0.0f;
-    [SerializeField] private float DashCooldown = 0.6f;
-    [HideInInspector] public float dashCooldownTimer = 0.0f;
-    private bool dashOnCooldown = false;*/
-
+    
     bool canMove = true;
 
     bool setVelocity = false;
@@ -97,11 +85,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     bool velocityLocked = false;
     private Vector3 lockedVelocity;
-    private bool isFacingMouse = false;
-    private Vector2 directionVec;
     private Quaternion savedLockedRotation;
     private Quaternion savedUpdatedRotation;
-    private bool updateRotation;
     private Vector3 camForward;
     private Vector3 camRight;
 
@@ -121,29 +106,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         camRight.y = 0;
         camForward.Normalize();
         camRight.Normalize();
+
+        gravity = defaultGravity;
     }
 
-    private void Update() // Handles all movement related input.
+    private void Update()
     {
-        if (_inJump) jumpTime += Time.deltaTime;
 
-        /*if (DashTimer > 0) {
-            DashTimer -= Time.deltaTime;
-            if (DashTimer <= 0) {
-                canMove = true;
-                isDashing = false;
-                UnlockVelocity();
-                SetAllowRotation(true);
-            }
-        }
-
-       if (dashCooldownTimer > 0) {
-            dashCooldownTimer -= Time.deltaTime;
-            if (dashCooldownTimer <= 0) {
-                dashOnCooldown = false;
-            }
-
-        }*/ 
     }
 
     /// <summary>
@@ -220,38 +189,11 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
 
         // Jumping input
-        /*if (inputs.JumpHeld)
+        if (jumpHeld)
         {
-            _timeSinceJumpRequested = 0f;
-            _jumpHeld = true;
+            timeSinceJumpRequested = 0f;
         }
-        else
-        {
-            _jumpHeld = false;
-        }
-
-        if(inputs.jumpPressed)
-        {
-            _jumpPressedThisFrame = true;
-        }
-
-        if (inputs.Dash)
-        {
-            StartDash();
-        }*/
-
     }
-
-    /// <summary>
-    /// This is called every frame by the AI script in order to tell the character what its inputs are
-    /// </summary>
-    /*public void SetInputs(ref AICharacterInputs inputs)
-    {
-        _moveInputVector = inputs.MoveVector;
-        _lookInputVector = inputs.LookVector;
-    }*/
-
-    private Quaternion _tmpTransientRot;
 
     /// <summary>
     /// (Called by KinematicCharacterMotor during its update cycle)
@@ -392,7 +334,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             }
 
             // Gravity
-            currentVelocity += Gravity * deltaTime;
+            currentVelocity += gravity * deltaTime;
 
             // Drag
             currentVelocity *= (1f / (1f + (Drag * deltaTime)));
@@ -400,49 +342,29 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         }
 
         // Handle jumping
-        _jumpedThisFrame = false;
-        _timeSinceJumpRequested += deltaTime;
+        jumpedThisFrame = false;
+        timeSinceJumpRequested += deltaTime;
 
         // Should only start a new jump if the button is pressed while on jumpable ground
         // If the player is already in a jump for < maxJumpTime, then can continue gaining height
-        bool onJumpableGround = (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround); //|| _timeSinceLastAbleToJump <= JumpPostGroundingGraceTime;        
-        if ((_jumpPressedThisFrame && onJumpableGround) || (_jumpHeld && _inJump))
+        if ((jumpPressedThisFrame && IsAbleToJump()) || (jumpHeld && inJump))
         {
-            //if (_jumpPressedThisFrame && onJumpableGround) Debug.Log("Starting jump");
+            inJump = true;
 
-            // See if we are allowed to continue increaing jump height
-            if (jumpTime < maxJumpTime)
-            {
-                _inJump = true;
-                //Debug.Log("Jumping!");
-                // Calculate jump direction before ungrounding
-                Vector3 jumpDirection = Motor.CharacterUp;
-                if (Motor.GroundingStatus.FoundAnyGround && !Motor.GroundingStatus.IsStableOnGround)
-                {
-                    jumpDirection = Motor.GroundingStatus.GroundNormal;
-                }
+            // Makes the character skip ground probing/snapping on its next update. 
+            // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+            Motor.ForceUnground();
 
-                // Makes the character skip ground probing/snapping on its next update. 
-                // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
-                Motor.ForceUnground();
-
-                // Add to the return velocity and reset jump state
-                currentVelocity = new Vector3(currentVelocity.x, JumpUpSpeed, currentVelocity.z); //- Vector3.Project(currentVelocity, Motor.CharacterUp);
-                //currentVelocity += (_moveInputVector * JumpScalableForwardSpeed);
-                _jumpedThisFrame = true;
-            }
-            else
-            {
-                //Debug.Log("Ending jump");
-                _inJump = false;
-            }
+            // Add to the return velocity and reset jump state
+            currentVelocity = new Vector3(currentVelocity.x, jumpUpSpeed, currentVelocity.z);
+            jumpedThisFrame = true;
         }
         else
         {
-            _inJump = false;
+            inJump = false;
         }
 
-        _jumpPressedThisFrame = false;
+        jumpPressedThisFrame = false;
 
         // Take into account additive velocity
         if (_internalVelocityAdd.sqrMagnitude > 0f)
@@ -460,27 +382,25 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
 
         // Handle jumping pre-ground grace period
-        if (_jumpHeld && _timeSinceJumpRequested > JumpPreGroundingGraceTime)
+        if (jumpHeld && timeSinceJumpRequested > jumpPreGroundingGraceTime)
         {
-            _jumpHeld = false;
+            jumpHeld = false;
         }
 
         if (AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : Motor.GroundingStatus.IsStableOnGround)
         {
             // If we're on a ground surface, reset jumping values
-            if (!_jumpedThisFrame)
+            if (!jumpedThisFrame)
             {
-                jumpTime = 0f;
-                _inJump = false;
+                inJump = false;
             }
-            _timeSinceLastAbleToJump = 0f;
+            timeSinceLastAbleToJump = 0f;
         }
         else
         {
             // Keep track of time since we were last able to jump (for grace period)
-            _timeSinceLastAbleToJump += deltaTime;
+            timeSinceLastAbleToJump += deltaTime;
         }
-
     }
 
     public void PostGroundingUpdate(float deltaTime)
@@ -589,62 +509,38 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                 GetComponent<Collider>(), false);
     }
 
+    //
+    // CUSTOM FUNCTIONS
+    //
 
+    public void PassJumpData(float jumpUpSpeed, float jumpPreGroundingGraceTime, float jumpPostGroundingGraceTime)
+    {
+        this.jumpUpSpeed = jumpUpSpeed;
+        this.jumpPreGroundingGraceTime = jumpPreGroundingGraceTime;
+        this.jumpPostGroundingGraceTime = jumpPostGroundingGraceTime;
+    }
 
+    public void SetJumpVelocity(float jumpUpSpeed)
+    {
+        this.jumpUpSpeed = jumpUpSpeed;
+    }
 
+    public void SetGravityScale(float gravityScale)
+    {
+        gravity = defaultGravity * gravityScale;
+    }
 
+    public void StartJump()
+    {
+        jumpHeld = true;
+        jumpPressedThisFrame = true;
+    }
 
-    // Custom Functions Below:
-
-
-
-
-
-
-    /*public void StartDash() {
-        if (isDashing || dashOnCooldown) 
-        {
-            return;
-        }
-
-        //combatController.bufferDash(); // Allows the dash animation to play
-                                        // set flag in animator
-        isDashing = true;
-
-        Vector3 dashDirection;
-
-        var hDashIntent = Input.GetAxisRaw("Horizontal");
-        var vDashIntent = Input.GetAxisRaw("Vertical");
-
-        SetAllowRotation(false);
-
-        if (Mathf.Abs(hDashIntent) + Mathf.Abs(vDashIntent) == 0f)
-        {
-            RotateToDir();
-
-            float h = Input.mousePosition.x - Screen.width / 2;
-            float v = Input.mousePosition.y - Screen.height / 2;
-            Vector3 mouseDirection = new Vector3(h, 0, v);
-            mouseDirection.Normalize();
-            mouseDirection = Quaternion.Euler(0, -45, 0) * mouseDirection;
-
-            dashDirection = mouseDirection;
-        }
-        else
-        {
-            dashDirection = moveInputVector;
-        }
-
-        LockVelocity(dashDirection * dashPower);
-
-
-        
-        DashTimer = dashDuration;
-        dashOnCooldown = true;
-        dashCooldownTimer = DashCooldown;
-        canMove = false;
-
-    }*/
+    public void StopJump()
+    {
+        //Debug.Log("stopping jump");
+        jumpHeld = false;
+    }
 
     public void ApplyImpulseForce(Vector3 direction, float power)
     {
@@ -666,6 +562,11 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         return Motor.GroundingStatus.IsStableOnGround;
     }
 
+    public bool IsAbleToJump()
+    {
+        return AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : IsGrounded() || timeSinceLastAbleToJump <= jumpPostGroundingGraceTime;
+    }
+
     public void SetAllowMovement(bool isAllowed)
     {
         throw new NotImplementedException();
@@ -684,75 +585,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         }
 
         TransitionToState(PlayerRotationState.Default);
-
-        /*if (CurrentRotationState == PlayerRotationState.Locked) {
-            if (isFacingMouse) {
-                TransitionToState(PlayerRotationState.Mouse);
-            } else {
-                TransitionToState(PlayerRotationState.Default);
-            }
-        }*/
     }
-
-    /*// If false (ex moving), rotation is set to follow the movement keys. If true, (ex using the bubble), Typhis faces the mouse at all times.
-    public void SetMouseRotation(bool facingMouse)
-    {
-        if (facingMouse) {
-            isFacingMouse = true;
-
-            if (CurrentRotationState != PlayerRotationState.Locked) {
-                TransitionToState(PlayerRotationState.Mouse);
-            }
-        }
-        else {
-            isFacingMouse = false;
-
-            if (CurrentRotationState != PlayerRotationState.Locked) {
-                TransitionToState(PlayerRotationState.Default);
-            }
-        }
-    }*/
 
     // Called by external scripts to set rotation.
     public void RotateToDir(Vector3 dir)
     {
-        updateRotation = true;
-        savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
-
-        /*transform.localRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
-        float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-        directionVec = camForward * dir.x + camRight * dir.z;
-        directionVec.Normalize();
-
-        if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, angle - 90 - 45, 0)) == 180f)
+        if (dir != Vector3.zero)
         {
-            angle -= 90;
-            //Debug.Log ("1 frame Flip");
+            savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
         }
-
-        if (dir.x != 0 || dir.z != 0)
-        {
-            transform.rotation = Quaternion.Euler(0, angle - 90 - 45, 0);
-        }*/
     }
-
-    /*private void RotateToMovementAngle()
-    {
-        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        float angle = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
-        directionVec = camForward * input.x + camRight * input.y;
-        directionVec.Normalize();
-
-        if ( Quaternion.Angle( transform.rotation, Quaternion.Euler(0, angle - 90 -45, 0) ) == 180f ) {
-            angle -= 90;
-            //Debug.Log ("1 frame Flip");
-        }
-
-        if (input.x != 0 || input.y != 0)
-        {
-            transform.rotation = Quaternion.Euler(0, angle - 90 -45, 0);
-        }
-
-        //SetAllowRotation(false)
-    }*/
 }

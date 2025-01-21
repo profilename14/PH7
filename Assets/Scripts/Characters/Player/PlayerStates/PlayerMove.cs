@@ -9,20 +9,34 @@ public class PlayerMove : CharacterState
 {
     [SerializeField]
     private PlayerMovementController movementController;
+    
+    [SerializeField]
+    private PlayerActionManager actionManager;
+
+    [SerializeField]
+    TransitionAsset idleAnimation;
 
     [SerializeField]
     TransitionAsset moveAnimation;
 
-    private PlayerActionManager actionManager;
+    [SerializeField]
+    TransitionAsset fallAnimation;
+
+    [SerializeField]
+    TransitionAsset landAnimation;
 
     private PlayerDirectionalInput directionalInput;
+
+    private bool wasGrounded;
+
+    private bool isLanding;
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
 
     protected override void OnEnable()
     {
-        _ActionManager.anim.Play(moveAnimation);
+
     }
 
     protected void Update()
@@ -30,7 +44,33 @@ public class PlayerMove : CharacterState
         directionalInput = actionManager.GetDirectionalInput();
         movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
         movementController.ProcessMoveInput(directionalInput.moveDir);
-        //Debug.Log("running move code: " + directionalInput.moveDir);
+
+        if (movementController.IsGrounded())
+        {
+            if (!wasGrounded)
+            {
+                isLanding = true;
+                _ActionManager.anim.Play(landAnimation).Events(this).OnEnd ??= () => { isLanding = false; };
+            }
+            else if(!isLanding)
+            {
+                if (directionalInput.moveDir.magnitude == 0)
+                {
+                    _ActionManager.anim.Play(idleAnimation);
+                }
+                else
+                {
+                    _ActionManager.anim.Play(moveAnimation);
+                }
+            }
+
+            wasGrounded = true;
+        }
+        else
+        {
+            wasGrounded = false;
+            _ActionManager.anim.Play(fallAnimation);
+        }
     }
 
     protected override void OnDisable()

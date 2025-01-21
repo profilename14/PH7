@@ -11,38 +11,35 @@ public abstract class CharacterActionManager : MonoBehaviour
 {
     [Header("Base Action Manager Data")]
     [SerializeField]
-    protected AnimancerComponent _Anim;
-    public AnimancerComponent anim => _Anim;
+    public AnimancerComponent anim;
 
     [SerializeField]
-    protected Character _Character;
+    public Character character;
 
     [SerializeField]
-    protected CharacterState _Idle;
+    protected CharacterState defaultState;
 
     public readonly StateMachine<CharacterState>.WithDefault StateMachine = new();
 
     // A set of different priorities that generic actions can fall under.
-    protected Dictionary<CharacterActionPriority, bool> _AllowedActionPriorities = new();
-    public Dictionary<CharacterActionPriority, bool> allowedActionPriorities => _AllowedActionPriorities;
+    public Dictionary<CharacterActionPriority, bool> allowedActionPriorities = new();
 
     // A set of different states that specific actions can fall under.
-    protected Dictionary<CharacterState, bool> _AllowedStates = new();
-    public Dictionary<CharacterState, bool> allowedStates => _AllowedStates;
+    public Dictionary<CharacterState, bool> allowedStates = new();
 
     protected virtual void Awake()
     {
-        StateMachine.DefaultState = _Idle;
-        _AllowedActionPriorities.Add(CharacterActionPriority.Hitstun, true);
-        _AllowedActionPriorities.Add(CharacterActionPriority.High, true);
-        _AllowedActionPriorities.Add(CharacterActionPriority.Medium, true);
-        _AllowedActionPriorities.Add(CharacterActionPriority.Low, true);
-        _AllowedActionPriorities.Add(CharacterActionPriority.Move, true);
+        StateMachine.DefaultState = defaultState;
+        allowedActionPriorities.Add(CharacterActionPriority.Hitstun, true);
+        allowedActionPriorities.Add(CharacterActionPriority.High, true);
+        allowedActionPriorities.Add(CharacterActionPriority.Medium, true);
+        allowedActionPriorities.Add(CharacterActionPriority.Low, true);
+        allowedActionPriorities.Add(CharacterActionPriority.Move, true);
     }
 
     public virtual void SetActionPriorityAllowed(CharacterActionPriority priority, bool isAllowed)
     {
-        _AllowedActionPriorities[priority] = isAllowed;
+        allowedActionPriorities[priority] = isAllowed;
     }
 
     public virtual void SetActionPriorityAllowed(CharacterActionPriority priority, float delay)
@@ -53,19 +50,19 @@ public abstract class CharacterActionManager : MonoBehaviour
     IEnumerator SetPriorityDelayed(CharacterActionPriority priority, float delay)
     {
         yield return new WaitForSeconds(delay);
-        _AllowedActionPriorities[priority] = true;
+        allowedActionPriorities[priority] = true;
     }
 
     public virtual void SetStateAllowed(CharacterState state, bool isAllowed)
     {
-        _AllowedStates[state] = isAllowed;
+        allowedStates[state] = isAllowed;
     }
 
     public virtual void SetAllActionPriorityAllowed(bool b)
     {
-        foreach (var key in new List<CharacterActionPriority>(_AllowedActionPriorities.Keys))
+        foreach (var key in new List<CharacterActionPriority>(allowedActionPriorities.Keys))
         {
-            _AllowedActionPriorities[key] = b;
+            allowedActionPriorities[key] = b;
         }
     }
 
@@ -82,17 +79,17 @@ public abstract class CharacterActionManager : MonoBehaviour
 
     public virtual void SetAllStatesAllowed(bool b)
     {
-        foreach (var key in new List<CharacterState>(_AllowedStates.Keys))
+        foreach (var key in new List<CharacterState>(allowedStates.Keys))
         {
-            _AllowedStates[key] = b;
+            allowedStates[key] = b;
         }
     }
 
     public virtual void SetAllActionPriorityAllowedExceptHitstun(bool b)
     {
-        foreach (var key in new List<CharacterActionPriority>(_AllowedActionPriorities.Keys))
+        foreach (var key in new List<CharacterActionPriority>(allowedActionPriorities.Keys))
         {
-            if (key != CharacterActionPriority.Hitstun) _AllowedActionPriorities[key] = b;
+            if (key != CharacterActionPriority.Hitstun) allowedActionPriorities[key] = b;
         }
     }
 
@@ -103,8 +100,8 @@ public abstract class CharacterActionManager : MonoBehaviour
 #if UNITY_EDITOR
     protected virtual void OnValidate()
     {
-        gameObject.GetComponentInParentOrChildren(ref _Anim);
-        gameObject.GetComponentInParentOrChildren(ref _Character);
+        gameObject.GetComponentInParentOrChildren(ref anim);
+        gameObject.GetComponentInParentOrChildren(ref character);
     }
 #endif
 }

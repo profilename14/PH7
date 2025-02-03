@@ -75,7 +75,7 @@ public class PlayerMove : CharacterState
 
     protected override void OnDisable()
     {
-        
+        isLanding = false;
     }
 
 #if UNITY_EDITOR

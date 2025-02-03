@@ -138,7 +138,9 @@ public class PlayerSwordAttack : AttackState
         if(currentSwordSwing == SwordSwingType.SwingDown)
         {
             movementController.SetVelocity(Vector3.zero);
-            movementController.AddVelocity(movementController.gameObject.transform.transform.up * pogoForce);
+            //if (movementController.)
+            movementController.SetVelocity(movementController.gameObject.transform.transform.up * pogoForce);
+            //movementController.getvelocity();
         }
     }
 

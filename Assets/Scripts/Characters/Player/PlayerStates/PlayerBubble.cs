@@ -4,7 +4,7 @@ using UnityEngine;
 using Animancer;
 using Animancer.FSM;
 
-public class PlayerAcidArrow : CharacterSpell
+public class PlayerBubble : CharacterSpell
 {
     [SerializeField]
     private PlayerStats playerStats;
@@ -21,7 +21,7 @@ public class PlayerAcidArrow : CharacterSpell
 
 
     [SerializeField]
-    GameObject projectilePrefab;
+    GameObject bubblePrefab;
 
 
     private AnimancerState currentState;
@@ -58,14 +58,18 @@ public class PlayerAcidArrow : CharacterSpell
         Vector3 curRotation = transform.forward;
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
-        GameObject arrow = Instantiate(projectilePrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
+        GameObject bubbleObject = Instantiate(bubblePrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
+        
+        FloatingBubble bubble = bubbleObject.GetComponent<FloatingBubble>();
 
-        Projectile projectileScript = arrow.GetComponent<Projectile>();
-
-        if (projectileScript != null)
+        if (bubble != null)
         {
-            projectileScript.sender = character;
+            bubble.force = 35;
+            bubble.direction = transform.forward;
         }
+
+
+
 
         
         movementController.SetAllowRotation(true);

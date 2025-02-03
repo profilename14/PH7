@@ -187,6 +187,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnBubble(InputAction.CallbackContext context)
     {
+        if (!StateMachine.TryResetState(bubbleState)) inputBuffer.Buffer(bubbleState, inputTimeOut);
         StateMachine.TrySetState(bubbleState);
     }
 

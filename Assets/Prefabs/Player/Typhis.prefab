@@ -289,7 +289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8501909468965602193
 Transform:
   m_ObjectHideFlags: 0
@@ -572,6 +572,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6021937396835884972}
+  - component: {fileID: 1890580171881578754}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -595,6 +596,21 @@ Transform:
   - {fileID: 8777093811441899195}
   m_Father: {fileID: 8318695365034537845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1890580171881578754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682257341274937760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1def914906f28944af20cd24fb4dd71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 280165432961842639}
+  AlkalineIndicator: {fileID: 8102723738731729784}
+  AcidIndicator: {fileID: 1436620122049230868}
 --- !u!1 &717279932167455098
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +769,7 @@ Transform:
   m_Children:
   - {fileID: 8256642501631432550}
   m_Father: {fileID: 6780814238316054337}
-  m_LocalEulerAnglesHint: {x: -55.688946, y: -179.99998, z: -0.000008886087}
+  m_LocalEulerAnglesHint: {x: -62.695927, y: -179.99998, z: -0.000010919599}
 --- !u!1 &1101893495743095604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1333,8 +1349,8 @@ MonoBehaviour:
     _Events:
       _NormalizedTimes:
       - 0.2631579
-      - 0.36842105
       - 0.47368422
+      - 0.5555556
       - 0.5555556
       - 0.5555556
       - 0.5555556
@@ -1342,8 +1358,8 @@ MonoBehaviour:
       _Callbacks: []
       _Names:
       - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
-      - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
       - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
+      - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
       - {fileID: 11400000, guid: 8f4ffd5be8e58dc408c4eb5fc1068036, type: 2}
       - {fileID: 11400000, guid: 934d46ded12108049824738523ab2658, type: 2}
       - {fileID: 11400000, guid: c8b33f1c187db6642b809fad74505b41, type: 2}
@@ -1354,8 +1370,8 @@ MonoBehaviour:
     _Events:
       _NormalizedTimes:
       - 0.26315787
-      - 0.36842102
       - 0.47368416
+      - 0.5789473
       - 0.5789473
       - 0.5882352
       - 0.625
@@ -1363,8 +1379,8 @@ MonoBehaviour:
       _Callbacks: []
       _Names:
       - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
-      - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
       - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
+      - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
       - {fileID: 11400000, guid: c8b33f1c187db6642b809fad74505b41, type: 2}
       - {fileID: 11400000, guid: 8f4ffd5be8e58dc408c4eb5fc1068036, type: 2}
       - {fileID: 11400000, guid: 934d46ded12108049824738523ab2658, type: 2}
@@ -1375,7 +1391,7 @@ MonoBehaviour:
     _Events:
       _NormalizedTimes:
       - 0.43478256
-      - 0.52173907
+      - 0.5652173
       - 0.5652173
       - 0.5652173
       - 0.5652173
@@ -1416,7 +1432,7 @@ MonoBehaviour:
   swordSwingSFX: {fileID: 0}
   swingForce: 6
   hitRecoilForce: 0
-  pogoForce: 20
+  pogoForce: 35
   references:
     version: 2
     RefIds: []
@@ -8075,27 +8091,17 @@ MonoBehaviour:
   MaxAirMoveSpeed: 20
   AirAccelerationSpeed: 200
   Drag: 0
-  AllowJumpingWhenSliding: 1
-  JumpUpSpeed: 15
-  maxJumpTime: 0.3
-  JumpScalableForwardSpeed: 0
-  JumpPreGroundingGraceTime: 0.1
-  JumpPostGroundingGraceTime: 0.1
   IgnoredColliders:
   - {fileID: 0}
   - {fileID: 0}
   BonusOrientationMethod: 1
   BonusOrientationSharpness: 20
-  Gravity: {x: 0, y: -60, z: 0}
+  gravity: {x: 0, y: 0, z: 0}
+  defaultGravity: {x: 0, y: -60, z: 0}
   MeshRoot: {fileID: 4931826009669931984}
   CameraFollowPoint: {fileID: 0}
+  rotationRoot: {fileID: 9165681918186698072}
   isDashing: 0
-  DashEffect: {fileID: 0}
-  dashPower: 80
-  dashDuration: 0.08
-  DashTimer: 0
-  DashCooldown: 0.8
-  dashCooldownTimer: 0
 --- !u!114 &7001688360752234840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9039,12 +9045,14 @@ GameObject:
   - component: {fileID: 4931826009669931984}
   - component: {fileID: 3473925023760633006}
   - component: {fileID: 559858547552153946}
-  - component: {fileID: 7280029973589696002}
   - component: {fileID: 4416736214720873981}
+  - component: {fileID: 1886238653499743396}
   - component: {fileID: 7112076822908980458}
   - component: {fileID: 205798082167925896}
   - component: {fileID: 3358740220479685139}
   - component: {fileID: 9156018158026596144}
+  - component: {fileID: 2035689476180297421}
+  - component: {fileID: 8378796926877255417}
   m_Layer: 6
   m_Name: Action Manager
   m_TagString: Untagged
@@ -9060,7 +9068,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5294022765042720002}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9080,7 +9088,7 @@ Transform:
   - {fileID: 8153076917593647558}
   - {fileID: 9099436196442449272}
   m_Father: {fileID: 2196118667983713294}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3473925023760633006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9093,20 +9101,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075bf3b33bf641041b12ce0ba04a3cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Anim: {fileID: 7112076822908980458}
-  _Character: {fileID: 5594428598334958641}
-  _Idle: {fileID: 7280029973589696002}
-  _Move: {fileID: 4416736214720873981}
-  _Interact: {fileID: 0}
-  _SwordAttack: {fileID: 5633728081867202212}
-  _Dash: {fileID: 0}
-  _Core: {fileID: 0}
-  _Bubble: {fileID: 9156018158026596144}
-  _ChargeAttack: {fileID: 5129742808374406057}
-  _SpellAttack: {fileID: 0}
-  _TakeDamage: {fileID: 3358740220479685139}
+  anim: {fileID: 7112076822908980458}
+  character: {fileID: 5594428598334958641}
+  defaultState: {fileID: 4416736214720873981}
+  jumpState: {fileID: 1886238653499743396}
+  interactState: {fileID: 0}
+  attackState: {fileID: 5633728081867202212}
+  dashState: {fileID: 2035689476180297421}
+  coreState: {fileID: 0}
+  bubbleState: {fileID: 8378796926877255417}
+  chargeAttackState: {fileID: 5129742808374406057}
+  spellAttackState: {fileID: 0}
+  takeDamageState: {fileID: 3358740220479685139}
+  playerDirectionalInput:
+    moveDir: {x: 0, y: 0, z: 0}
+    lookDir: {x: 0, y: 0, z: 0}
+    usingController: 0
   inputTimeOut: 0.5
   invincibilityTime: 1
+  cameraAngle: {x: 0, y: -45, z: 0}
 --- !u!114 &559858547552153946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9137,20 +9150,6 @@ MonoBehaviour:
   m_DefaultActionMap: Typhis
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7280029973589696002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5294022765042720002}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56a11a524cfedba4dbf9de1430638cd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 5594428598334958641}
-  idleAnimation: {fileID: 11400000, guid: 40d87733783a5b546acc26deb98cd0e6, type: 2}
 --- !u!114 &4416736214720873981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9165,8 +9164,106 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
   movementController: {fileID: 4630855019977460999}
-  moveDir: {x: 0, y: 0}
+  actionManager: {fileID: 3473925023760633006}
+  idleAnimation: {fileID: 11400000, guid: 40d87733783a5b546acc26deb98cd0e6, type: 2}
   moveAnimation: {fileID: 11400000, guid: 846a6fe84fb083b43abf634b69d9acb0, type: 2}
+  fallAnimation: {fileID: 11400000, guid: bf20fa431e7ddf845a58aafbcceba05d, type: 2}
+  landAnimation: {fileID: 11400000, guid: 73da74736908ea849aca26fe27739baa, type: 2}
+--- !u!114 &1886238653499743396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294022765042720002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba3d0c0fb25e2845ba3f3e7878eaaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5594428598334958641}
+  movementController: {fileID: 4630855019977460999}
+  actionManager: {fileID: 3473925023760633006}
+  jumpAnimation: {fileID: 11400000, guid: c73afca6c8c01bd4fa0e4b06747206ca, type: 2}
+  jumpUpSpeed: 20
+  maxJumpTime: 0.5
+  jumpPreGroundingGraceTime: 0.2
+  jumpPostGroundingGraceTime: 0.2
+  jumpSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00033208495
+      value: 0.9943679
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2173633
+      value: 0.9943678
+      inSlope: -0.026241137
+      outSlope: -0.026241137
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.17490552
+    - serializedVersion: 3
+      time: 1.0032959
+      value: -0.003753662
+      inSlope: -3.0523074
+      outSlope: -3.0523074
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06844107
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  gravityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0038022813
+      value: -0.015197569
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5018997
+      value: -0.012145996
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.742428
+      value: 0.99691427
+      inSlope: -0.03232694
+      outSlope: -0.03232694
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.9581721
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0037879
+      value: 0.9938286
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &7112076822908980458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9244,13 +9341,20 @@ MonoBehaviour:
   _AcidCost: 0
   _AlkalineCost: 0
   playerStats: {fileID: 280165432961842639}
+  movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
+  actionManager: {fileID: 3473925023760633006}
   focusAnimation:
     rid: 5932011652331077633
   projectilePrefab: {fileID: 5028151487594542329, guid: ec2a2482ad89349478d55213ad1d41f3, type: 3}
   references:
     version: 2
     RefIds:
+    - rid: 3771279872210763778
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls: []
     - rid: 5932011652331077633
       type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -9262,6 +9366,7 @@ MonoBehaviour:
           - NaN
           _Callbacks:
           - rid: 5932011652331077637
+          - rid: 3771279872210763778
           _Names: []
         _Clip: {fileID: 7400000, guid: ffca95c4a2e6d7840b646ba9cdac2669, type: 2}
         _NormalizedStartTime: NaN
@@ -9272,6 +9377,97 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 9156018158026596144}
             m_TargetAssemblyTypeName: PlayerAcidArrow, Assembly-CSharp
+            m_MethodName: OnFinishCast
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &2035689476180297421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294022765042720002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68401fdb4d21c94bbc08fd11829e686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5594428598334958641}
+  distance: 15
+  duration: 0.3
+  movementController: {fileID: 4630855019977460999}
+  rotationController: {fileID: 7370340048861875037}
+  moveDir: {x: 0, y: 0, z: 0}
+  dashAnimation:
+    rid: 7124630215963967495
+  dashTimer: 0
+  isDashing: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 7124630215963967495
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 4ce1c0582bde4d8459144aabb571a3c7, type: 2}
+        _NormalizedStartTime: NaN
+--- !u!114 &8378796926877255417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294022765042720002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3083470e34b33b44936590a4ba9da70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5594428598334958641}
+  _AcidCost: 0
+  _AlkalineCost: 0
+  playerStats: {fileID: 280165432961842639}
+  movementController: {fileID: 4630855019977460999}
+  rotationController: {fileID: 7370340048861875037}
+  actionManager: {fileID: 3473925023760633006}
+  focusAnimation:
+    rid: 3771279872210763776
+  bubblePrefab: {fileID: 7014600148762342256, guid: eb8b09a56938f7345bc9526767d15dd6, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 3771279872210763776
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.03333333
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.3333333
+          _Callbacks:
+          - rid: 3771279872210763780
+          _Names: []
+        _Clip: {fileID: 7400000, guid: ffca95c4a2e6d7840b646ba9cdac2669, type: 2}
+        _NormalizedStartTime: NaN
+    - rid: 3771279872210763780
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8378796926877255417}
+            m_TargetAssemblyTypeName: PlayerBubble, Assembly-CSharp
             m_MethodName: OnFinishCast
             m_Mode: 1
             m_Arguments:
@@ -9510,7 +9706,7 @@ Transform:
   - {fileID: 3907156750274459635}
   - {fileID: 3826248489875199350}
   m_Father: {fileID: 5998578133465816929}
-  m_LocalEulerAnglesHint: {x: -18.661224, y: -7.4593335e-12, z: 3.110083e-13}
+  m_LocalEulerAnglesHint: {x: -11.340229, y: -7.450503e-12, z: 5.1882435e-13}
 --- !u!1 &6007556264847991348
 GameObject:
   m_ObjectHideFlags: 0
@@ -14843,7 +15039,7 @@ Transform:
   - {fileID: 1826527888188617891}
   - {fileID: 2820683938217188339}
   m_Father: {fileID: 6780814238316054337}
-  m_LocalEulerAnglesHint: {x: -10.014849, y: -66.73478, z: 157.43462}
+  m_LocalEulerAnglesHint: {x: -30.0349, y: -91.69981, z: 125.42987}
 --- !u!1 &6557673858332398570
 GameObject:
   m_ObjectHideFlags: 0
@@ -15989,7 +16185,7 @@ Transform:
   - {fileID: 8889970281351745006}
   - {fileID: 1669984617755628041}
   m_Father: {fileID: 1400260880121998171}
-  m_LocalEulerAnglesHint: {x: -12.693213, y: -0.000005008958, z: 1.0432744e-13}
+  m_LocalEulerAnglesHint: {x: -7.783141, y: -0.0000050089584, z: 1.2840507e-13}
 --- !u!1 &7628965742685932136
 GameObject:
   m_ObjectHideFlags: 0
@@ -16592,7 +16788,7 @@ Transform:
   - {fileID: 8795197427221599801}
   - {fileID: 1400260880121998171}
   m_Father: {fileID: 9099436196442449272}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
+  m_LocalEulerAnglesHint: {x: -0, y: -0, z: -180}
 --- !u!1 &8494526995108780235
 GameObject:
   m_ObjectHideFlags: 0
@@ -17059,13 +17255,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9165681918186698072}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8545edd52af1904da163a758daa0e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle: 0
   directionVec: {x: 0, y: 0, z: 0}
-  canTurn: 1
   isFacingMouse: 0
   controllerBufferLock: 0

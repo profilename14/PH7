@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4195715595624884336}
   - component: {fileID: 5075805483462265569}
   - component: {fileID: 3350112447646034703}
+  - component: {fileID: 8456625775441057015}
+  - component: {fileID: 6646698885359556450}
   m_Layer: 0
   m_Name: Telekinesis
   m_TagString: AllowsBubble
@@ -100,8 +102,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -141,11 +143,37 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7014600148762342256}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 588107c9a898eed4395a0e2014f31c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   combatController: {fileID: 0}
   TyphisCollider: {fileID: 6843250840897825916, guid: dc878b4fbd1e0cb49b43dc68aa009f8e, type: 3}
-  throwEffect: {fileID: 5785804045456593802, guid: 9f1daf26c957a614d9041f08cfe3d1e6, type: 3}
+--- !u!114 &8456625775441057015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014600148762342256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39be1246f60b9a74dba7ab951ff40c13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: 0, y: 1, z: 0}
+  force: 35
+--- !u!114 &6646698885359556450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014600148762342256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e32f556ab63fc74abe0846ea3e65441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDestroyable: 1

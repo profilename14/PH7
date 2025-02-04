@@ -691,9 +691,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4769c765f3f6b4fbf4b7ee31855316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Anim: {fileID: 7952499759578350}
-  _Character: {fileID: 2898020883842843761}
-  _Idle: {fileID: 715456513316347987}
+  anim: {fileID: 7952499759578350}
+  character: {fileID: 2898020883842843761}
+  defaultState: {fileID: 715456513316347987}
   _HitStun: {fileID: 2778420119749201071}
   attackBehaviorUpdateInterval: 0.1
   canAttackInIdle: 0
@@ -703,6 +703,7 @@ MonoBehaviour:
     behaviorData: {fileID: 11400000, guid: 0585ce7d11596a4459a4618eccf2c85b, type: 2}
   noAttacksTimer: 0
   isStunned: 0
+  movementController: {fileID: 8955503680403876498}
   _Aggro: {fileID: 473879448141724443}
   isAggro: 0
 --- !u!114 &715456513316347987
@@ -1170,6 +1171,7 @@ MonoBehaviour:
   pathfinding: {fileID: 4159427908813979764}
   _Rb: {fileID: 4699728478831517558}
   enemyData: {fileID: 11400000, guid: 91a5dde2371112c439863686f1c0eac0, type: 2}
+  isGrounded: 0
 --- !u!114 &3248603864096777124
 MonoBehaviour:
   m_ObjectHideFlags: 0

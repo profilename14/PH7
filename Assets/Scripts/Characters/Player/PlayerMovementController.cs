@@ -595,4 +595,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
         }
     }
+
+    public void TeleportTo(Vector3 pos)
+    {
+        Motor.SetPosition(pos);
+    }
 }

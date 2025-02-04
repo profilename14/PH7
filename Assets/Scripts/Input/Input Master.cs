@@ -208,7 +208,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c329bec6-b872-49ec-ab92-a555021b0814"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<SwitchProControllerHID>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -230,7 +230,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""848ffec1-98c0-48e1-aee6-047648dad996"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<SwitchProControllerHID>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -395,7 +395,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7ac11745-7176-496e-afc0-7dd58c53ef6f"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",

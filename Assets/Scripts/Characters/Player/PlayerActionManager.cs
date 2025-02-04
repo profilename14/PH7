@@ -15,6 +15,9 @@ public class PlayerDirectionalInput
 
 public class PlayerActionManager : CharacterActionManager
 {
+    [SerializeField]
+    PlayerMovementController movementController;
+
     [Header("Player States")]
     [SerializeField]
     private PlayerJump jumpState;
@@ -223,6 +226,8 @@ public class PlayerActionManager : CharacterActionManager
 
     public override void Hitstun()
     {
+        playerDirectionalInput.moveDir = Vector3.zero;
+        movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
         StateMachine.ForceSetState(takeDamageState);
         character.SetIsInvincible(true);
     }
@@ -273,6 +278,7 @@ public class PlayerActionManager : CharacterActionManager
     protected override void OnValidate()
     {
         base.OnValidate();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref attackState);
         gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
         gameObject.GetComponentInParentOrChildren(ref takeDamageState);

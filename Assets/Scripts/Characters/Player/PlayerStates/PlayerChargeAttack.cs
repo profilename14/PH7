@@ -92,6 +92,7 @@ public class PlayerChargeAttack : AttackState
     void EndSwordSwing()
     {
         vfx.EndChargeVFX();
+        movementController.SetAllowRotation(true);
     }
 
     public override void OnAttackHit(Vector3 position)

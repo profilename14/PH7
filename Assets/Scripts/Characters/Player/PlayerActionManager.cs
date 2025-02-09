@@ -54,8 +54,6 @@ public class PlayerActionManager : CharacterActionManager
 
     private StateMachine<CharacterState>.InputBuffer inputBuffer;
 
-    private bool usingController;
-
     [SerializeField]
     private PlayerDirectionalInput playerDirectionalInput = new PlayerDirectionalInput();
 
@@ -120,22 +118,27 @@ public class PlayerActionManager : CharacterActionManager
 
     private void FixedUpdate()
     {
-        usingController = (playerInput.currentControlScheme == "Controller");
+        playerDirectionalInput.usingController = (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
 
         Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
 
         // Read movement input
         playerDirectionalInput.moveDir = new Vector3(moveInput.x, 0, moveInput.y);
 
-        if (usingController)
+        if (playerDirectionalInput.usingController)
         {
             // If the right stick has input, then it should override the left stick for determining look direction.
             // Otherwise, controller usually uses left stick for lookDir.
             Vector2 rightStick = lookAction.ReadValue<Vector2>().normalized;
-            if (rightStick != Vector2.zero) playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
+            if (rightStick != Vector2.zero)
+            {
+                playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
+            }
             else playerDirectionalInput.lookDir = GetDirRelativeToCamera(moveDir);
         }
         else playerDirectionalInput.lookDir = GetMouseDirection();
+
+        movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
     }
 
     //
@@ -260,8 +263,8 @@ public class PlayerActionManager : CharacterActionManager
     public Vector3 GetMouseDirection()
     {
         Vector3 dir;
-        float h = Input.mousePosition.x - Screen.width / 2;
-        float v = Input.mousePosition.y - Screen.height / 2;
+        float h = Mouse.current.position.ReadValue().x - Screen.width / 2;
+        float v = Mouse.current.position.ReadValue().y - Screen.height / 2;
         dir = new Vector3(h, 0, v);
         dir.Normalize();
 

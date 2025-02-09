@@ -41,17 +41,17 @@ public class PlayerUIManager : MonoBehaviour
 
 
       healthBar.value = playerStats.health;
-      PHBar.value = 4 + 80 * (playerStats.alkaline / PH_DEFAULT);
-      AcidBar.value = 16 + 80 * (playerStats.acid / PH_DEFAULT);
+      PHBar.value = 4 + 80 * ((float)playerStats.alkaline / PH_DEFAULT);
+      AcidBar.value = 16 + 80 * ((float)playerStats.acid / PH_DEFAULT);
 
       
       if (playerStats.alkaline > 7) {
         AlkalineIndicator.enabled = true;
         PHBar.value = 7;
-        PHBar2.value = (playerStats.alkaline-7) / 7;
+        PHBar2.value = ((float)playerStats.alkaline-7) / 7;
       } else {
         AlkalineIndicator.enabled = false;
-        PHBar.value = ((playerStats.alkaline) / 7);
+        PHBar.value = (((float)playerStats.alkaline) / 7);
         PHBar2.value = 0;
 
       }
@@ -59,10 +59,10 @@ public class PlayerUIManager : MonoBehaviour
       if (playerStats.acid > 7) {
         AcidIndicator.enabled = true;
         AcidBar.value = 7;
-        AcidBar2.value = (playerStats.acid-7) / 7;
+        AcidBar2.value = ((float)playerStats.acid-7) / 7;
       } else {
         AcidIndicator.enabled = false;
-        AcidBar.value = ((playerStats.acid) / 7);
+        AcidBar.value = (((float)playerStats.acid) / 7);
         AcidBar2.value = 0;
 
       }

@@ -18,7 +18,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
     public Rigidbody rb => _Rb;
 
     [SerializeField]
-    BaseCharacterData enemyData;
+    CharacterData enemyData;
 
     protected bool velocityLocked = false;
     protected Vector3 internalLockedVelocity;
@@ -51,8 +51,12 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         pathfinding.acceleration = enemyData.baseMoveAcceleration;
         pathfinding.rotationSpeed = enemyData.rotationSpeed;
         target = new GameObject(enemy.gameObject.name + " AI Target");
+
+#if UNITY_EDITOR
         var iconContent = EditorGUIUtility.IconContent("sv_label_1");
         EditorGUIUtility.SetIconForObject(target, (Texture2D)iconContent.image);
+#endif
+
         groundMask = LayerMask.GetMask("Default", "Obstacles");
     }
 

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    EnemyData enemyData;
+
+    private void Awake()
+    {
+        enemyData = (EnemyData) characterData;
+    }
+
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)
     {
         if(hit is Player)
@@ -15,5 +22,15 @@ public class Enemy : Character
     public override void OnCharacterAttackHit(IHittable hit, MyProjectile attack, Vector3 hitPosition)
     {
         return;
+    }
+
+    public double GetAlkalineOnHit()
+    {
+        return enemyData.alkalineOnHit;
+    }
+
+    public double GetAcidOnHit()
+    {
+        return enemyData.acidOnHit;
     }
 }

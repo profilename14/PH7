@@ -5,7 +5,7 @@ using UnityEngine;
 public class TestKillPlane : MonoBehaviour
 {
     [SerializeField]
-    Vector3 playerSpawnPoint;
+    public Transform playerSpawnPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +24,7 @@ public class TestKillPlane : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             PlayerMovementController mc = (PlayerMovementController) other.gameObject.GetComponent<Player>().movementController;
-            mc.TeleportTo(playerSpawnPoint);
+            mc.TeleportTo(playerSpawnPoint.position);
         }
     }
 }

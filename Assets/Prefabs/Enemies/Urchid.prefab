@@ -795,9 +795,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d416d967aef397d4fbbdfbb86d57128f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Anim: {fileID: 1023459689183942294}
-  _Character: {fileID: 8443472634582701643}
-  _Idle: {fileID: 1599064009919363821}
+  anim: {fileID: 1023459689183942294}
+  character: {fileID: 8443472634582701643}
+  defaultState: {fileID: 0}
   _HitStun: {fileID: 2344848992705999553}
   attackBehaviorUpdateInterval: 0.1
   canAttackInIdle: 1
@@ -807,6 +807,7 @@ MonoBehaviour:
     behaviorData: {fileID: 11400000, guid: 588b034f47944ae41b1f21c8555ccb7e, type: 2}
   noAttacksTimer: 0
   isStunned: 0
+  movementController: {fileID: 3654146885594487117}
 --- !u!114 &1599064009919363821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,8 +843,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 8443472634582701643}
-  takeDamageAnimation:
-    _FadeDuration: 0.041666668
+  flinchAnimation:
+    _FadeDuration: 0.25
     _Speed: 1
     _Events:
       _NormalizedTimes: []
@@ -851,6 +852,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 7400000, guid: 2154e66c498cf334b92d1624832ce2f8, type: 2}
     _NormalizedStartTime: NaN
+  canMoveWhileStunned: 0
+  canRotateWhileStunned: 0
   references:
     version: 2
     RefIds: []
@@ -2323,6 +2326,7 @@ MonoBehaviour:
   pathfinding: {fileID: 3029289388604136770}
   _Rb: {fileID: 7422807761995359173}
   enemyData: {fileID: 11400000, guid: 0b6d229440ea0c348be8eb5173da0436, type: 2}
+  isGrounded: 0
 --- !u!1 &6270250564127470477
 GameObject:
   m_ObjectHideFlags: 0

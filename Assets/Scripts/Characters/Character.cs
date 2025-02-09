@@ -7,8 +7,8 @@ using Animancer.FSM;
 public abstract class Character : MonoBehaviour, IHittable
 {
     [SerializeField]
-    protected BaseCharacterData _CharacterData;
-    public BaseCharacterData characterData => _CharacterData;
+    protected CharacterData _CharacterData;
+    public CharacterData characterData => _CharacterData;
 
     // References to other core components and scripts.
     [SerializeField]

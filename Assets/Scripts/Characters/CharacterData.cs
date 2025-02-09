@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class BaseCharacterData : ScriptableObject
+public class CharacterData : ScriptableObject
 {
     // In the case of the player, this should be their starting max health and not their current max health.
     public float maxHealth;

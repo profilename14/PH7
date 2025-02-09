@@ -50,6 +50,8 @@ public class PlayerSwordAttack : AttackState
 
     private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
 
+    private bool canRotate = false;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
@@ -93,6 +95,9 @@ public class PlayerSwordAttack : AttackState
 
         if (movementController.IsGrounded())
         {
+            movementController.SetAllowMovement(false);
+            movementController.SetAllowRotation(false);
+
             // Swinging on the ground
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
@@ -128,7 +133,8 @@ public class PlayerSwordAttack : AttackState
 
     protected void Update()
     {
-        movementController.ProcessMoveInput(directionalInput.moveDir);
+        //movementController.ProcessMoveInput(directionalInput.moveDir);
+        movementController.RotateToDir(directionalInput.lookDir);
     }
 
     public override void OnAttackHit(Vector3 position)
@@ -153,6 +159,7 @@ public class PlayerSwordAttack : AttackState
 
     public void EndSwordSwing()
     {
+        movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
     }
 

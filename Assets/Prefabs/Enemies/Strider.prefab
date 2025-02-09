@@ -759,15 +759,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
-  takeDamageAnimation:
-    _FadeDuration: 0.041666668
+  flinchAnimation:
+    _FadeDuration: 0.25
     _Speed: 1
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
-    _Clip: {fileID: 7400000, guid: 1a233d4c7804d244a9ca6e1980a50487, type: 2}
+    _Clip: {fileID: 7400000, guid: 426d529ebd792a24f9d43e839a41b596, type: 2}
     _NormalizedStartTime: NaN
+  canMoveWhileStunned: 0
+  canRotateWhileStunned: 0
   references:
     version: 2
     RefIds: []

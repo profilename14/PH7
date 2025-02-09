@@ -6,16 +6,28 @@ public class PlayerStats : CharacterStats
 {
     
     [SerializeField]
-    private float _HealthMax = 10;
-    public float healthMax => _HealthMax;
-    
-    [SerializeField]
-    private float _ArmorMax = 5;
-    public float armorMax => _ArmorMax;
+    private int _HealthMax = 10;
+    public int healthMax => _HealthMax;
 
-    private float _AcidResource = 5;
-    public float acid => _AcidResource;
+    private int _ArmorMax = 5;
+    public int armorMax => _ArmorMax;
+
+    private int _CurrentArmor = 0;
+    public int currentArmor => _CurrentArmor;
+
+    private double _AcidResource = 0;
+    public double acid => _AcidResource;
     
-    private float _AlkalineResource = 9;
-    public float alkaline => _AlkalineResource;
+    private double _AlkalineResource = 0;
+    public double alkaline => _AlkalineResource;
+
+    public void ModifyAlkaline(double alkaline)
+    {
+        _AlkalineResource += alkaline;
+    }
+
+    public void ModifyAcid(double acid)
+    {
+        _AcidResource += acid;
+    }
 }

@@ -7,9 +7,15 @@ using Animancer;
 public class TakeDamageState : CharacterState
 {
     [SerializeField]
-    ClipTransition takeDamageAnimation;
+    ClipTransition flinchAnimation;
 
     AnimancerState currentState;
+
+    [SerializeField]
+    bool canMoveWhileStunned;
+
+    [SerializeField]
+    bool canRotateWhileStunned;
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Hitstun];
@@ -19,7 +25,7 @@ public class TakeDamageState : CharacterState
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
         _ActionManager.SetAllStatesAllowed(false);
 
-        currentState = _ActionManager.anim.Play(takeDamageAnimation);
+        currentState = _ActionManager.anim.Play(flinchAnimation);
         currentState.Time = 0;
         currentState.Events(this).OnEnd ??= EndHitStun;
     }
@@ -27,6 +33,7 @@ public class TakeDamageState : CharacterState
     private void EndHitStun()
     {
         //Debug.Log("Ending hitstun");
+        
         _ActionManager.EndHitStun();
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();

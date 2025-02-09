@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2df0efeb28ea8d43acf983ecea3d3e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _CharacterData: {fileID: 11400000, guid: 09a55bec68efdc643b862142a3a68e51, type: 2}
+  _CharacterData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
   _ActionManager: {fileID: 8489805586315357941}
   _Stats: {fileID: 6778341233954487993}
   _VFXManager: {fileID: 5967026036674942662}
@@ -389,7 +389,8 @@ MonoBehaviour:
   enemy: {fileID: 8288573742154440887}
   pathfinding: {fileID: 2576367018769746851}
   _Rb: {fileID: 8100329641564207091}
-  enemyData: {fileID: 11400000, guid: 09a55bec68efdc643b862142a3a68e51, type: 2}
+  enemyData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
+  isGrounded: 0
 --- !u!114 &5967026036674942662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3319,9 +3320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4769c765f3f6b4fbf4b7ee31855316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Anim: {fileID: 6738063041000158410}
-  _Character: {fileID: 8288573742154440887}
-  _Idle: {fileID: 7881541243561481090}
+  anim: {fileID: 6738063041000158410}
+  character: {fileID: 8288573742154440887}
+  defaultState: {fileID: 0}
   _HitStun: {fileID: 1130322881915173464}
   attackBehaviorUpdateInterval: 0.1
   canAttackInIdle: 0
@@ -3331,6 +3332,7 @@ MonoBehaviour:
     behaviorData: {fileID: 11400000, guid: a54db682ba189b64aaee91191b58cf60, type: 2}
   noAttacksTimer: 0
   isStunned: 0
+  movementController: {fileID: 3175265939646523873}
   _Aggro: {fileID: 898727676511315704}
   isAggro: 0
 --- !u!114 &6738063041000158410
@@ -3419,8 +3421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 8288573742154440887}
-  takeDamageAnimation:
-    _FadeDuration: 0.041666668
+  flinchAnimation:
+    _FadeDuration: 0.25
     _Speed: 1
     _Events:
       _NormalizedTimes: []
@@ -3428,6 +3430,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 7400000, guid: 44ddb30e02bd6c5428e49229f58e962e, type: 2}
     _NormalizedStartTime: NaN
+  canMoveWhileStunned: 0
+  canRotateWhileStunned: 0
   references:
     version: 2
     RefIds: []

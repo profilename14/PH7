@@ -36,15 +36,23 @@ public class PlayerMove : CharacterState
 
     protected override void OnEnable()
     {
-
+        movementController.SetAllowMovement(true);
+        movementController.SetAllowRotation(true);
     }
 
     protected void Update()
     {
         directionalInput = actionManager.GetDirectionalInput();
-        movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
-        movementController.ProcessMoveInput(directionalInput.moveDir);
 
+        if(directionalInput.usingController)
+        {
+            movementController.RotateToDir(directionalInput.lookDir);
+        }
+        else
+        {
+            movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
+        }
+        
         if (movementController.IsGrounded())
         {
             if (!wasGrounded)

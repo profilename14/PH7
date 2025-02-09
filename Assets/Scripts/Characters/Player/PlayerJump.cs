@@ -47,7 +47,6 @@ public class PlayerJump : CharacterState
     {
         directionalInput = actionManager.GetDirectionalInput();
         movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
-        movementController.ProcessMoveInput(directionalInput.moveDir);
 
         movementController.SetJumpVelocity(jumpUpSpeed * jumpSpeedCurve.Evaluate(jumpTimer / maxJumpTime));
         movementController.SetGravityScale(gravityCurve.Evaluate(jumpTimer / maxJumpTime));

@@ -4,7 +4,6 @@ using UnityEngine;
 using KinematicCharacterController;
 using System;
 using PixelCrushers.DialogueSystem;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine.InputSystem.LowLevel;
 
 public enum PlayerRotationState
@@ -48,8 +47,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     private Collider[] _probedColliders = new Collider[8];
     private RaycastHit[] _probedHits = new RaycastHit[8];
 
+    [SerializeField]
     private Vector3 moveInputVector;
-    private Vector3 _lookInputVector;
+    private Vector3 lookInputVector;
 
     private bool AllowJumpingWhenSliding = false;
     private float jumpUpSpeed = 10f;
@@ -74,8 +74,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     // Custom Variables Below:
     public bool isDashing = false;
-    
-    bool canMove = true;
+
+    public bool canMove = true;
+    public bool canRotate = true;
 
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
@@ -92,9 +93,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     private void Awake()
     {
-        // Handle initial state
-        TransitionToState(PlayerRotationState.Default);
-
         // Assign the characterController to the motor
         Motor.CharacterController = this;
 
@@ -115,57 +113,6 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     }
 
-    /// <summary>
-    /// Handles movement state transitions and enter/exit callbacks
-    /// </summary>
-    public void TransitionToState(PlayerRotationState newState)
-    {
-        PlayerRotationState tmpInitialState = CurrentRotationState;
-        OnStateExit(tmpInitialState, newState);
-        CurrentRotationState = newState;
-        OnStateEnter(newState, tmpInitialState);
-    }
-
-    /// <summary>
-    /// Event when entering a state
-    /// </summary>
-    public void OnStateEnter(PlayerRotationState state, PlayerRotationState fromState)
-    {
-        switch (state)
-        {
-            case PlayerRotationState.Default:
-                {
-                    break;
-                }
-            case PlayerRotationState.Locked:
-                {
-                    savedLockedRotation = transform.rotation;
-                    break;
-                }
-        }
-    }
-
-    /// <summary>
-    /// Event when exiting a state
-    /// </summary>
-    public void OnStateExit(PlayerRotationState state, PlayerRotationState toState)
-    {
-        switch (state)
-        {
-            case PlayerRotationState.Default:
-                {
-                    break;
-                }
-            case PlayerRotationState.Locked:
-                {
-                    break;
-                }
-        }
-    }
-
-    /// <summary>
-    /// This is called every frame by ExamplePlayer in order to tell the character what its inputs are
-    /// </summary>
     public void ProcessMoveInput(Vector3 moveDir)
     {
         if (!canMove)
@@ -215,11 +162,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     /// This is the ONLY place where you should set the character's rotation
     /// </summary>
     public void UpdateRotation(ref Quaternion rotation, float deltaTime)
-    {
-        // This function is disabled for now as reotation controller already works. However, if we ever move past said script,
-        // there's a partial implementation here for rotation being done along movement.
-
-        
+    {        
         switch (CurrentRotationState)
         {
             case PlayerRotationState.Locked:
@@ -569,7 +512,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     public void SetAllowMovement(bool isAllowed)
     {
-        throw new NotImplementedException();
+        canMove = isAllowed;
     }
 
     public void SetDrag(float drag)
@@ -579,18 +522,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     public void SetAllowRotation(bool isAllowed)
     {
-        if (!isAllowed) {
-            TransitionToState(PlayerRotationState.Locked);
-            return;
-        }
-
-        TransitionToState(PlayerRotationState.Default);
+        canRotate = isAllowed;
     }
 
     // Called by external scripts to set rotation.
     public void RotateToDir(Vector3 dir)
     {
-        if (dir != Vector3.zero)
+        if (canRotate && dir != Vector3.zero)
         {
             savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
         }

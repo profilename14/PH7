@@ -22,14 +22,18 @@ public abstract class CharacterState : StateBehaviour
     protected static readonly StringReference AllowMovementEvent = "AllowMovement";
     protected static readonly StringReference AllowRotationEvent = "AllowRotation";
 
+    protected void Awake()
+    {
+        gameObject.GetComponentInParentOrChildren(ref _Character);
+        _ActionManager = _Character.actionManager;
+        _MovementController = _Character.movementController;
+    }
+
 #if UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
 
-        gameObject.GetComponentInParentOrChildren(ref _Character);
-        _ActionManager = _Character.actionManager;
-        _MovementController = _Character.movementController;
     }
 #endif
 

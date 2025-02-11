@@ -69,6 +69,10 @@ public class PlayerActionManager : CharacterActionManager
     protected override void Awake()
     {
         base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref attackState);
+        gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
+        gameObject.GetComponentInParentOrChildren(ref takeDamageState);
         moveState = (PlayerMove) defaultState;
         controls = new InputMaster();
         playerInput = GetComponent<PlayerInput>();
@@ -139,6 +143,8 @@ public class PlayerActionManager : CharacterActionManager
         else playerDirectionalInput.lookDir = GetMouseDirection();
 
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
+
+        SetActionPriorityAllowed(CharacterActionPriority.Jump, movementController.IsAbleToJump());
     }
 
     //
@@ -281,10 +287,6 @@ public class PlayerActionManager : CharacterActionManager
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
-        gameObject.GetComponentInParentOrChildren(ref attackState);
-        gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
-        gameObject.GetComponentInParentOrChildren(ref takeDamageState);
     }
 #endif
 }

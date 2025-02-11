@@ -23,7 +23,8 @@ public class StriderDashAttack : AttackState
 
     private void Awake()
     {
-        movementController = (EnemyMovementController)_Character.movementController;
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
         vfx = (StriderVFXManager)_Character.VFXManager;
         defaultDrag = movementController.rb.drag;
     }

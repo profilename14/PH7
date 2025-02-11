@@ -46,9 +46,11 @@ public class EnemyActionManager : CharacterActionManager
     protected override void Awake()
     {
         base.Awake();
-                
+
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+
         // Set up everything for all the attack behaviors.
-        for(int i = 0; i < attacks.Count; i++)
+        for (int i = 0; i < attacks.Count; i++)
         {
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
@@ -180,7 +182,6 @@ public class EnemyActionManager : CharacterActionManager
     new void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
     }
 #endif
 }

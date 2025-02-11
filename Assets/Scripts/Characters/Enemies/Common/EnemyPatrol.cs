@@ -28,9 +28,16 @@ public class EnemyPatrol : CharacterState
 
     EnemyMovementController movementController;
 
+    private void Awake()
+    {
+    }
+
     protected override void OnEnable()
     {
-        movementController = (EnemyMovementController)_Character.movementController;
+        gameObject.GetComponentInParentOrChildren(ref _Character);
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        _ActionManager = _Character.actionManager;
+        _MovementController = _Character.movementController;
 
         if (patrolTargets.Length > 0)
         {

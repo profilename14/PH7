@@ -21,11 +21,13 @@ public class EnemyFollow : CharacterState
 
     private void Awake()
     {
-        movementController = (EnemyMovementController)_Character.movementController;
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
     }
 
     protected override void OnEnable()
     {
+        playerPosition = Player.instance.transform.position;
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.anim.Play(MoveAnimation);
         movementController.SetAllowMovement(true);
@@ -35,8 +37,6 @@ public class EnemyFollow : CharacterState
 
     private void Update()
     {
-        playerPosition = Player.instance.transform.position;
-
         movementController.SetPathfindingDestination(playerPosition);
 
         if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)

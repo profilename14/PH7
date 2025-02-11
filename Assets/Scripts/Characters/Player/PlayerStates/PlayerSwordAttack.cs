@@ -59,6 +59,11 @@ public class PlayerSwordAttack : AttackState
 
     protected virtual void Awake()
     {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref rotationController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
+
         player = (Player)_Character;
         vfx = (PlayerVFXManager)player.VFXManager;
 
@@ -167,9 +172,6 @@ public class PlayerSwordAttack : AttackState
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
-        gameObject.GetComponentInParentOrChildren(ref rotationController);
-        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

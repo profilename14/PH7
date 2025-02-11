@@ -23,7 +23,7 @@ public class TestKillPlane : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            PlayerMovementController mc = (PlayerMovementController) other.gameObject.GetComponent<Player>().movementController;
+            PlayerMovementController mc = (PlayerMovementController)Player.instance.movementController;
             mc.TeleportTo(playerSpawnPoint.position);
         }
     }

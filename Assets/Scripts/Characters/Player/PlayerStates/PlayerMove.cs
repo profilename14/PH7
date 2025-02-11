@@ -34,6 +34,13 @@ public class PlayerMove : CharacterState
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
 
+
+    private void Awake()
+    {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
+    }
     protected override void OnEnable()
     {
         movementController.SetAllowMovement(true);
@@ -86,12 +93,12 @@ public class PlayerMove : CharacterState
         isLanding = false;
     }
 
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
-#endif
+#endif*/
 }

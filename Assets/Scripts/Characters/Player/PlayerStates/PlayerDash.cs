@@ -36,6 +36,13 @@ public class PlayerDash : DashState
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
 
+    private void Awake()
+    {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
+    }
+
     protected override void OnEnable()
     {
         directionalInput = actionManager.GetDirectionalInput();
@@ -96,8 +103,6 @@ public class PlayerDash : DashState
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
-        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

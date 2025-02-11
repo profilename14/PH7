@@ -14,9 +14,8 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     protected CharacterActionManager _ActionManager;
     public CharacterActionManager actionManager => _ActionManager;
-    [SerializeField]
-    protected ICharacterMovementController _MovementController;
-    public ICharacterMovementController movementController => _MovementController;
+
+    public ICharacterMovementController movementController;
     [SerializeField]
     protected CharacterStats _Stats;
     public CharacterStats stats => _Stats;
@@ -32,6 +31,14 @@ public abstract class Character : MonoBehaviour, IHittable
 
     private bool isDead = false;
 
+    protected void Awake()
+    {
+        gameObject.GetComponentInParentOrChildren(ref _ActionManager);
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref _Stats);
+        gameObject.GetComponentInParentOrChildren(ref _VFXManager);
+    }
+
     // Should be called when a hit should result in something different depending on what you hit.
     // For example, the Player hitting an Enemy results in gaining pH, while hitting something else might not.
     public abstract void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition);
@@ -45,6 +52,8 @@ public abstract class Character : MonoBehaviour, IHittable
     
     public virtual void Hit(AttackState attack, Vector3 hitPoint)
     {
+        if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
+
         if (!isInvincible)
         {
             _Stats.TakeDamage(attack.attackData.damage);
@@ -111,7 +120,7 @@ public abstract class Character : MonoBehaviour, IHittable
         Destroy(this.gameObject);
     }
 
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
     void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref _ActionManager);
@@ -119,5 +128,5 @@ public abstract class Character : MonoBehaviour, IHittable
         gameObject.GetComponentInParentOrChildren(ref _Stats);
         gameObject.GetComponentInParentOrChildren(ref _VFXManager);
     }
-#endif
+#endif*/
 }

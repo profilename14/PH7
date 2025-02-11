@@ -17,7 +17,8 @@ public class ScuttlerClawAttack : AttackState
 
     private void Awake()
     {
-        movementController = (EnemyMovementController)_Character.movementController;
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
         vfx = (ScuttlerVFXManager)_Character.VFXManager;
     }
 

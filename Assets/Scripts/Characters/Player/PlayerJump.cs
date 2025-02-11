@@ -28,11 +28,16 @@ public class PlayerJump : CharacterState
 
     private float jumpTimer;
 
+    private bool canJump = true;
+
     public override bool CanEnterState
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move] && movementController.IsAbleToJump();
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Jump];
 
     private void Awake()
     {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
         movementController.PassJumpData(jumpUpSpeed, jumpPreGroundingGraceTime, jumpPostGroundingGraceTime);
     }
 
@@ -70,8 +75,6 @@ public class PlayerJump : CharacterState
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
-        gameObject.GetComponentInParentOrChildren(ref actionManager);
     }
 #endif
 }

@@ -34,6 +34,13 @@ public class PlayerBubble : CharacterSpell
     public override bool CanEnterState 
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
 
+    private void Awake()
+    {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref playerStats);
+        gameObject.GetComponentInParentOrChildren(ref rotationController);
+    }
+
     protected override void OnEnable()
     {
         _ActionManager.SetAllActionPriorityAllowed(false);
@@ -83,8 +90,6 @@ public class PlayerBubble : CharacterSpell
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref playerStats);
-        gameObject.GetComponentInParentOrChildren(ref rotationController);
     }
 #endif
 }

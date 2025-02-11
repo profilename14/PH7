@@ -22,6 +22,7 @@ public class EnemyPatrolSearch : EnemyPatrol
 
     private void Awake()
     {
+        base.Awake();
         enemyActionManager = (RoamingEnemyActionManager)_ActionManager;
         lineOfSightMask = LayerMask.GetMask("Player", "Obstacles");
     }

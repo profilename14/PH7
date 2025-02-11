@@ -13,6 +13,7 @@ public class Player : Character
 
     private void Awake()
     {
+        base.Awake();
         if (instance == null) instance = this;
         else if (instance != this) Destroy(this);
 

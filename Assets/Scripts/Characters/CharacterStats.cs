@@ -26,6 +26,8 @@ public abstract class CharacterStats : MonoBehaviour
 
     protected virtual void Awake()
     {
+        gameObject.GetComponentInParentOrChildren(ref _ActionManager);
+        gameObject.GetComponentInParentOrChildren(ref _Character);
         _Health = _Character.characterData.maxHealth;
         _NaturalType = _Character.characterData.naturalType;
     }
@@ -80,11 +82,11 @@ public abstract class CharacterStats : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
     void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref _ActionManager);
         gameObject.GetComponentInParentOrChildren(ref _Character);
     }
-#endif
+#endif*/
 }

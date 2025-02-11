@@ -14,12 +14,15 @@ public class UrchidSpikesAttack : AttackState
 
     private void Awake()
     {
-        movementController = (EnemyMovementController)_Character.movementController;
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
         vfx = (EnemyVFXManager)_Character.VFXManager;
     }
 
     protected override void OnEnable()
     {
+        if(movementController == null) gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
+
         _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(false);

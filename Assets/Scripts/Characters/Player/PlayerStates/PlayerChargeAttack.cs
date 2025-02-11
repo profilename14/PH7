@@ -39,6 +39,9 @@ public class PlayerChargeAttack : AttackState
 
     protected virtual void Awake()
     {
+        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref movementController);
+        gameObject.GetComponentInParentOrChildren(ref rotationController);
         player = (Player)_Character;
         vfx = (PlayerVFXManager)player.VFXManager;
         chargeAttackAnimation.Events.SetCallback(StartSwordSwingEvent, this.StartSwordSwing);
@@ -104,8 +107,6 @@ public class PlayerChargeAttack : AttackState
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
-        gameObject.GetComponentInParentOrChildren(ref rotationController);
     }
 #endif
 }

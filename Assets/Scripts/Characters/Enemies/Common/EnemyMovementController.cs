@@ -47,6 +47,12 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
 
     private void Awake()
     {
+        gameObject.GetComponentInParentOrChildren(ref pathfinding);
+        gameObject.GetComponentInParentOrChildren(ref _Rb);
+        gameObject.GetComponentInParentOrChildren(ref enemy);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
+        enemyData = enemy.characterData;
+
         pathfinding.maxSpeed = enemyData.maxBaseMoveSpeed;
         pathfinding.acceleration = enemyData.baseMoveAcceleration;
         pathfinding.rotationSpeed = enemyData.rotationSpeed;
@@ -188,7 +194,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         if (velocityLocked) rb.velocity = internalLockedVelocity;
     }
 
-#if UNITY_EDITOR
+/*#if UNITY_EDITOR
     void OnValidate()
     {
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
@@ -197,5 +203,5 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         gameObject.GetComponentInParentOrChildren(ref actionManager);
         enemyData = enemy.characterData;
     }
-#endif
+#endif*/
 }

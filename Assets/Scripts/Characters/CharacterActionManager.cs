@@ -5,7 +5,7 @@ using Animancer;
 using Animancer.FSM;
 
 [System.Serializable]
-public enum CharacterActionPriority { Move, Low, Medium, High, Hitstun};
+public enum CharacterActionPriority { Move, Jump, Low, Medium, High, Hitstun};
 
 public abstract class CharacterActionManager : MonoBehaviour
 {
@@ -29,8 +29,12 @@ public abstract class CharacterActionManager : MonoBehaviour
 
     protected virtual void Awake()
     {
+
+        gameObject.GetComponentInParentOrChildren(ref anim);
+        gameObject.GetComponentInParentOrChildren(ref character);
         StateMachine.DefaultState = defaultState;
         allowedActionPriorities.Add(CharacterActionPriority.Hitstun, true);
+        allowedActionPriorities.Add(CharacterActionPriority.Jump, true);
         allowedActionPriorities.Add(CharacterActionPriority.High, true);
         allowedActionPriorities.Add(CharacterActionPriority.Medium, true);
         allowedActionPriorities.Add(CharacterActionPriority.Low, true);
@@ -100,8 +104,6 @@ public abstract class CharacterActionManager : MonoBehaviour
 #if UNITY_EDITOR
     protected virtual void OnValidate()
     {
-        gameObject.GetComponentInParentOrChildren(ref anim);
-        gameObject.GetComponentInParentOrChildren(ref character);
     }
 #endif
 }

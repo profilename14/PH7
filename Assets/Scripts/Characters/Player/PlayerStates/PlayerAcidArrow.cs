@@ -23,6 +23,8 @@ public class PlayerAcidArrow : CharacterSpell
     [SerializeField]
     GameObject projectilePrefab;
 
+    [SerializeField]
+    AttackData acidArrowStats;
 
     private AnimancerState currentState;
 
@@ -32,7 +34,7 @@ public class PlayerAcidArrow : CharacterSpell
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.acid >= acidCost;
 
     private void Awake()
     {
@@ -65,14 +67,16 @@ public class PlayerAcidArrow : CharacterSpell
         Vector3 curRotation = transform.forward;
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
-        GameObject arrow = Instantiate(projectilePrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
+        GameObject arrow = Instantiate(projectilePrefab, ArrowLocation, Quaternion.Euler(0, 0, 0) );
 
-        Projectile projectileScript = arrow.GetComponent<Projectile>();
+        MyProjectile projectileScript = arrow.GetComponent<MyProjectile>();
 
         if (projectileScript != null)
         {
-            projectileScript.sender = character;
+            projectileScript.InitProjectile(ArrowLocation, new Vector3(0, angle, 0), character, acidArrowStats);
         }
+
+        playerStats.ModifyAcid(-acidCost);
 
         
         movementController.SetAllowRotation(true);

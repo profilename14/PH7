@@ -96,7 +96,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""id"": ""3b0e8193-36de-4727-8f61-885ddc7344bd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Tap(duration=0.2),SlowTap(duration=0.2)"",
                     ""initialStateCheck"": false
                 },
                 {

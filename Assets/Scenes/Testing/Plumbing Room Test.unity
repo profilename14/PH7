@@ -30356,7 +30356,7 @@ PrefabInstance:
     - target: {fileID: 3473925023760633006, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: dashState
       value: 
-      objectReference: {fileID: 1467570907}
+      objectReference: {fileID: 1467570918}
     - target: {fileID: 3473925023760633006, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: jumpState
       value: 
@@ -31197,6 +31197,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 27.772753
       objectReference: {fileID: 0}
+    - target: {fileID: 9156018158026596144, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
+      propertyPath: _AcidCost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9156018158026596144, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
+      propertyPath: acidArrowStats
+      value: 
+      objectReference: {fileID: 11400000, guid: e76517c6ea7fd9c4d9f3dfc6eeccc663, type: 2}
     m_RemovedComponents:
     - {fileID: 7280029973589696002, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
     - {fileID: 2790284396075193425, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
@@ -31207,9 +31215,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5294022765042720002, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       insertIndex: 4
       addedObject: {fileID: 1467570900}
-    - targetCorrespondingSourceObject: {fileID: 5294022765042720002, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1467570907}
     - targetCorrespondingSourceObject: {fileID: 8881516221009475233, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1399971199}
@@ -48892,7 +48897,7 @@ MonoBehaviour:
   movementController: {fileID: 1598425278}
   actionManager: {fileID: 1467570892}
   jumpAnimation: {fileID: 11400000, guid: c73afca6c8c01bd4fa0e4b06747206ca, type: 2}
-  jumpUpSpeed: 20
+  jumpUpSpeed: 25
   maxJumpTime: 0.5
   jumpPreGroundingGraceTime: 0.2
   jumpPostGroundingGraceTime: 0.2
@@ -48962,42 +48967,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1467570907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467570890}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c68401fdb4d21c94bbc08fd11829e686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 1598425281}
-  distance: 15
-  duration: 0.3
-  movementController: {fileID: 1598425278}
-  rotationController: {fileID: 1906071158}
-  moveDir: {x: 0, y: 0, z: 0}
-  dashAnimation:
-    rid: 7124630215963967495
-  dashTimer: 0
-  isDashing: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 7124630215963967495
-      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
-      data:
-        _FadeDuration: 0.25
-        _Speed: 1
-        _Events:
-          _NormalizedTimes: []
-          _Callbacks: []
-          _Names: []
-        _Clip: {fileID: 7400000, guid: 4ce1c0582bde4d8459144aabb571a3c7, type: 2}
-        _NormalizedStartTime: NaN
 --- !u!114 &1467570913 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9156018158026596144, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
@@ -49007,6 +48976,17 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 755d33befd30566429311522fa98638b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1467570918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4310338966683291600, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
+  m_PrefabInstance: {fileID: 935846733}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467570890}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68401fdb4d21c94bbc08fd11829e686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1469028255
@@ -62972,17 +62952,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9165681918186698072, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
   m_PrefabInstance: {fileID: 935846733}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1906071158 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7370340048861875037, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-  m_PrefabInstance: {fileID: 935846733}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906071157}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8545edd52af1904da163a758daa0e84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1906296319
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -46,6 +46,8 @@ public class PlayerJump : CharacterState
         _ActionManager.anim.Play(jumpAnimation);
         movementController.StartJump();
         jumpTimer = 0;
+        
+        _ActionManager.SetAllActionPriorityAllowed(true, 0);
     }
 
     protected void Update()

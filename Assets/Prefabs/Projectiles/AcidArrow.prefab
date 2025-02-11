@@ -9673,7 +9673,7 @@ GameObject:
   - component: {fileID: 3382934586288436646}
   - component: {fileID: -8140826435473126232}
   - component: {fileID: 2282942844003458187}
-  - component: {fileID: 8420006656112421756}
+  - component: {fileID: 2355867012443116606}
   m_Layer: 0
   m_Name: AcidArrow
   m_TagString: Projectile
@@ -9797,7 +9797,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6802277
   m_Center: {x: -0.0015104567, y: 0.35, z: 0}
---- !u!114 &8420006656112421756
+--- !u!114 &2355867012443116606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9806,14 +9806,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5028151487594542329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b21881bef6ddd624f821976568f7d482, type: 3}
+  m_Script: {fileID: 11500000, guid: fa71b9c88bd27a34cb3eb4d97ec8c937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileIsActive: 0
   lifespan: 4.5
-  lifespanTimer: 0
   speed: 50
-  _AttackState: {fileID: 0}
-  sender: {fileID: 0}
 --- !u!1 &5722001939916543356
 GameObject:
   m_ObjectHideFlags: 0

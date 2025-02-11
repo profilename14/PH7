@@ -8071,7 +8071,6 @@ MonoBehaviour:
   _Health: 0
   _Armor: 0
   _HealthMax: 10
-  _ArmorMax: 5
 --- !u!114 &4630855019977460999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8100,8 +8099,11 @@ MonoBehaviour:
   defaultGravity: {x: 0, y: -60, z: 0}
   MeshRoot: {fileID: 4931826009669931984}
   CameraFollowPoint: {fileID: 0}
+  moveInputVector: {x: 0, y: 0, z: 0}
   rotationRoot: {fileID: 9165681918186698072}
   isDashing: 0
+  canMove: 1
+  canRotate: 1
 --- !u!114 &7001688360752234840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9051,8 +9053,8 @@ GameObject:
   - component: {fileID: 205798082167925896}
   - component: {fileID: 3358740220479685139}
   - component: {fileID: 9156018158026596144}
-  - component: {fileID: 2035689476180297421}
   - component: {fileID: 8378796926877255417}
+  - component: {fileID: 4310338966683291600}
   m_Layer: 6
   m_Name: Action Manager
   m_TagString: Untagged
@@ -9104,10 +9106,11 @@ MonoBehaviour:
   anim: {fileID: 7112076822908980458}
   character: {fileID: 5594428598334958641}
   defaultState: {fileID: 4416736214720873981}
+  movementController: {fileID: 4630855019977460999}
   jumpState: {fileID: 1886238653499743396}
   interactState: {fileID: 0}
   attackState: {fileID: 5633728081867202212}
-  dashState: {fileID: 2035689476180297421}
+  dashState: {fileID: 4310338966683291600}
   coreState: {fileID: 0}
   bubbleState: {fileID: 8378796926877255417}
   chargeAttackState: {fileID: 5129742808374406057}
@@ -9185,7 +9188,7 @@ MonoBehaviour:
   movementController: {fileID: 4630855019977460999}
   actionManager: {fileID: 3473925023760633006}
   jumpAnimation: {fileID: 11400000, guid: c73afca6c8c01bd4fa0e4b06747206ca, type: 2}
-  jumpUpSpeed: 20
+  jumpUpSpeed: 25
   maxJumpTime: 0.5
   jumpPreGroundingGraceTime: 0.2
   jumpPostGroundingGraceTime: 0.2
@@ -9313,15 +9316,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
-  takeDamageAnimation:
-    _FadeDuration: 0.06666667
+  flinchAnimation:
+    _FadeDuration: 0.25
     _Speed: 1
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
-    _Clip: {fileID: 7400000, guid: 9df904d7366b5b143948064a91e39137, type: 2}
+    _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  canMoveWhileStunned: 0
+  canRotateWhileStunned: 0
   references:
     version: 2
     RefIds: []
@@ -9387,42 +9392,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
---- !u!114 &2035689476180297421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5294022765042720002}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c68401fdb4d21c94bbc08fd11829e686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 5594428598334958641}
-  distance: 15
-  duration: 0.3
-  movementController: {fileID: 4630855019977460999}
-  rotationController: {fileID: 7370340048861875037}
-  moveDir: {x: 0, y: 0, z: 0}
-  dashAnimation:
-    rid: 7124630215963967495
-  dashTimer: 0
-  isDashing: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 7124630215963967495
-      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
-      data:
-        _FadeDuration: 0.25
-        _Speed: 1
-        _Events:
-          _NormalizedTimes: []
-          _Callbacks: []
-          _Names: []
-        _Clip: {fileID: 7400000, guid: 4ce1c0582bde4d8459144aabb571a3c7, type: 2}
-        _NormalizedStartTime: NaN
 --- !u!114 &8378796926877255417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9478,6 +9447,43 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+--- !u!114 &4310338966683291600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294022765042720002}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c68401fdb4d21c94bbc08fd11829e686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5594428598334958641}
+  distance: 15
+  duration: 0.3
+  movementController: {fileID: 4630855019977460999}
+  rotationController: {fileID: 7370340048861875037}
+  moveDir: {x: 0, y: 0, z: 0}
+  dashAnimation:
+    rid: 7124630215963967495
+  dashCooldown: 0.5
+  dashTimer: 0
+  isDashing: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 7124630215963967495
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Clip: {fileID: 7400000, guid: 4ce1c0582bde4d8459144aabb571a3c7, type: 2}
+        _NormalizedStartTime: NaN
 --- !u!1 &5394075866496785991
 GameObject:
   m_ObjectHideFlags: 0

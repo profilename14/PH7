@@ -24,6 +24,7 @@ public class PlayerDash : DashState
 
     // float distance
     // float duration
+    [SerializeField] private float dashCooldown = 0.5f;
     [SerializeField] private float dashTimer;
     public bool isDashing = false;
     
@@ -34,7 +35,7 @@ public class PlayerDash : DashState
     private PlayerDirectionalInput directionalInput;
 
     public override bool CanEnterState
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && actionManager.dashTimer <= 0;
 
     private void Awake()
     {
@@ -80,18 +81,31 @@ public class PlayerDash : DashState
             return;
         }
 
-        Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(dashProgress) );
+        if (!Physics.Raycast(transform.position, movementController.transform.forward, 1))
+        {
+            Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(dashProgress) );
 
-        movementController.SetPosition(newPos);
+            movementController.SetPosition(newPos);
+        }
+        else
+        {
+            isDashing = false;
+            endDash();
+        }
+        
     }
 
     public override void endDash()
     {
+        actionManager.EndDash(dashCooldown);
         isDashing = false;
         movementController.SetAllowRotation(true);
+        movementController.SetVelocity(new Vector3(0, 0, 0));
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
+
+
 
     protected override void OnDisable()
     {

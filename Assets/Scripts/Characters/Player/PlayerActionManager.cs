@@ -30,7 +30,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private CharacterFocus coreState;
     [SerializeField]
-    private CharacterState bubbleState;
+    private PlayerBubble bubbleState;
     [SerializeField]
     private PlayerChargeAttack chargeAttackState;
     [SerializeField]
@@ -62,6 +62,8 @@ public class PlayerActionManager : CharacterActionManager
 
     [SerializeField]
     private float invincibilityTime = 1f;
+    
+    public float dashTimer = 0f;
 
     [SerializeField]
     private Vector3 cameraAngle = new Vector3(0, 135, 0);
@@ -100,7 +102,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Dash.performed += context => OnDash(context);
 
         controls.Typhis.Bubble.Enable();
-        controls.Typhis.Bubble.performed += context => OnBubble(context);
+        controls.Typhis.Bubble.started += context => OnBubbleStarted(context);
+        controls.Typhis.Bubble.performed += context => OnBubblePerformed(context);
 
         controls.Typhis.CoreMagic.Enable();
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
@@ -118,6 +121,8 @@ public class PlayerActionManager : CharacterActionManager
         lookDir = playerDirectionalInput.lookDir;
 
         inputBuffer.Update();
+
+        dashTimer -= Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -192,15 +197,45 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnDash(InputAction.CallbackContext context)
     {
+        if (dashTimer > 0)
+        {
+            return;
+        }
         //dashThisFrame = true;
         if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
         StateMachine.TrySetState(dashState);
     }
 
-    void OnBubble(InputAction.CallbackContext context)
+    void OnBubbleStarted(InputAction.CallbackContext context)
     {
-        if (!StateMachine.TryResetState(bubbleState)) inputBuffer.Buffer(bubbleState, inputTimeOut);
-        StateMachine.TrySetState(bubbleState);
+        
+        if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            // If it fails to enter the charge attack state, buffer it.
+            if (!StateMachine.TrySetState(bubbleState)) inputBuffer.Buffer(bubbleState, inputTimeOut);
+        }
+    }
+
+    void OnBubblePerformed(InputAction.CallbackContext context)
+    {
+
+
+        // If the button is released within 0.2s
+        if (context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
+        {
+            // If it fails to enter the SwordAttack state, buffer it.
+            //if (!StateMachine.TryResetState(bubbleState)) inputBuffer.Buffer(bubbleState, inputTimeOut);
+            // If the above fails we must have no resources. Default to bubble
+            StateMachine.TrySetState(bubbleState);
+
+            if (StateMachine.CurrentState == bubbleState) bubbleState.StartThrow();
+        }
+
+        // If the button is released after 0.2s
+        if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
+        {
+            if (StateMachine.CurrentState == bubbleState) bubbleState.StartThrow();
+        }
     }
 
     void OnCoreMagicStarted(InputAction.CallbackContext context)
@@ -219,6 +254,7 @@ public class PlayerActionManager : CharacterActionManager
         {
             // If it fails to enter the SwordAttack state, buffer it.
             if (!StateMachine.TryResetState(spellAttackState)) inputBuffer.Buffer(spellAttackState, inputTimeOut);
+            // If the above fails we must have no resources. Default to bubble
             StateMachine.TrySetState(bubbleState);
         }
 
@@ -250,6 +286,11 @@ public class PlayerActionManager : CharacterActionManager
     {
         yield return new WaitForSeconds(invincibilityTime);
         character.SetIsInvincible(false);
+    }
+
+    public void EndDash(float dashCooldown)
+    {
+        dashTimer = dashCooldown;
     }
 
     //

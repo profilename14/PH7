@@ -12,6 +12,19 @@ public class MyProjectile : MonoBehaviour
 
     public bool projectileIsActive = false;
 
+    [SerializeField] private float lifespan = 4.5f;
+    private float lifespanTimer = 0f;
+    [SerializeField] private float speed = 50f;
+
+    void Update()
+    {
+        lifespanTimer += Time.deltaTime;
+        if (lifespanTimer > lifespan) {
+          Destroy(gameObject);
+        }
+        transform.position += this.transform.forward * Time.deltaTime * speed;
+    }
+
     public void InitProjectile(Vector3 position, Vector3 rotation, Character sender, AttackData data)
     {
         transform.position = position;

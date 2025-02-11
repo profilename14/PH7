@@ -9,17 +9,28 @@ public class FloatingBubble : MonoBehaviour
     public Vector3 direction = new Vector3(0, 1, 0);
     public float force;
 
+    [SerializeField] float lifespan = 10f;
+    float lifespanTimer = 0;
+
 
 
     void Start() {
       bubbleRigidbody = GetComponent<Rigidbody>();
 
       bubbleRigidbody.AddForce((direction).normalized * force, ForceMode.Impulse);
+
+      lifespanTimer = lifespan;
     }
 
     void Update()
     {
       bubbleRigidbody.velocity *= 0.98f;
+
+      lifespanTimer -= Time.deltaTime;
+      if (lifespanTimer <= 0)
+      {
+        Destroy(gameObject);
+      }
     }
 
 

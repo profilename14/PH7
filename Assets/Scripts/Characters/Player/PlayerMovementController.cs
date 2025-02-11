@@ -77,6 +77,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
     public bool canMove = true;
     public bool canRotate = true;
+    private bool ignoreSmoothRotation = false;
 
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
@@ -176,6 +177,11 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
                     {
                         // Smoothly interpolate from current to target look direction
                         Vector3 smoothedLookInputDirection = Vector3.Slerp(Motor.CharacterForward, savedUpdatedRotation * Vector3.forward, 1 - Mathf.Exp(-OrientationSharpness * deltaTime)).normalized;
+
+                        if (ignoreSmoothRotation)
+                        {
+                            smoothedLookInputDirection = savedUpdatedRotation * Vector3.forward;
+                        }
                         
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
@@ -530,6 +536,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
         if (canRotate && dir != Vector3.zero)
         {
+            ignoreSmoothRotation = true;
             savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
         }
     }

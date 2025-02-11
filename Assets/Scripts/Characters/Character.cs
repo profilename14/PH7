@@ -80,6 +80,8 @@ public abstract class Character : MonoBehaviour, IHittable
 
     public virtual void Hit(MyProjectile projectile, Vector3 hitPoint)
     {
+        if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
+
         if (!isInvincible)
         {
             _Stats.TakeDamage(projectile.attackData.damage);

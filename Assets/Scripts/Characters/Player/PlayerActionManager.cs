@@ -243,7 +243,7 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
             // If it fails to enter the charge attack state, buffer it.
-            if (!StateMachine.TrySetState(coreState)) inputBuffer.Buffer(coreState, inputTimeOut);
+            //if (!StateMachine.TrySetState(coreState)) inputBuffer.Buffer(coreState, inputTimeOut);
         }
     }
 
@@ -255,13 +255,13 @@ public class PlayerActionManager : CharacterActionManager
             // If it fails to enter the SwordAttack state, buffer it.
             if (!StateMachine.TryResetState(spellAttackState)) inputBuffer.Buffer(spellAttackState, inputTimeOut);
             // If the above fails we must have no resources. Default to bubble
-            StateMachine.TrySetState(bubbleState);
+            //StateMachine.TrySetState(bubbleState);
         }
 
         // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
         if (context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
-            if (StateMachine.CurrentState == coreState) coreState.ReleaseFocus();
+            //if (StateMachine.CurrentState == coreState) coreState.ReleaseFocus();
         }
     }
 

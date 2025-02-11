@@ -81,7 +81,7 @@ public class PlayerDash : DashState
             return;
         }
 
-        if (!Physics.Raycast(transform.position, movementController.transform.forward, 1))
+        if (!Physics.Raycast(transform.position, movementController.transform.forward, 2))
         {
             Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(dashProgress) );
 

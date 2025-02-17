@@ -19,6 +19,7 @@ public abstract class CharacterState : StateBehaviour
     protected static readonly StringReference AllowMediumPriorityEvent = "AllowMediumPriority";
     protected static readonly StringReference AllowLowPriorityEvent = "AllowLowPriority";
     protected static readonly StringReference AllowMoveStateEvent = "AllowMoveState";
+    protected static readonly StringReference AllowJumpStateEvent = "AllowJumpState";
     protected static readonly StringReference AllowMovementEvent = "AllowMovement";
     protected static readonly StringReference AllowRotationEvent = "AllowRotation";
 
@@ -70,6 +71,11 @@ public abstract class CharacterState : StateBehaviour
     public void AllowMove()
     {
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Move, true);
+    }
+
+    public void AllowJump()
+    {
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Jump, true);
     }
 
     /*public void AllowMovement(bool isAllowed)

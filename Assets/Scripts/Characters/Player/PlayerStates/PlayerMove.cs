@@ -49,6 +49,8 @@ public class PlayerMove : CharacterState
 
     protected void Update()
     {
+        actionManager.SetActionPriorityAllowed(CharacterActionPriority.Jump, movementController.IsAbleToJump());
+
         directionalInput = actionManager.GetDirectionalInput();
 
         if(directionalInput.usingController)

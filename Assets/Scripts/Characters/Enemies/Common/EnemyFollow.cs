@@ -27,7 +27,6 @@ public class EnemyFollow : CharacterState
 
     protected override void OnEnable()
     {
-        playerPosition = Player.instance.transform.position;
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.anim.Play(MoveAnimation);
         movementController.SetAllowMovement(true);
@@ -37,6 +36,7 @@ public class EnemyFollow : CharacterState
 
     private void Update()
     {
+        playerPosition = Player.instance.transform.position;
         movementController.SetPathfindingDestination(playerPosition);
 
         if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)

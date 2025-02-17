@@ -148,8 +148,6 @@ public class PlayerActionManager : CharacterActionManager
         else playerDirectionalInput.lookDir = GetMouseDirection();
 
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
-
-        SetActionPriorityAllowed(CharacterActionPriority.Jump, movementController.IsAbleToJump());
     }
 
     //

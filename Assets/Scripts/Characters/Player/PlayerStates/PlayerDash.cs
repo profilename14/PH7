@@ -35,7 +35,7 @@ public class PlayerDash : DashState
     private PlayerDirectionalInput directionalInput;
 
     public override bool CanEnterState
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && actionManager.dashTimer <= 0;
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
 
     private void Awake()
     {

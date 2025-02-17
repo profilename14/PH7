@@ -38,6 +38,11 @@ public class PlayerSwordAttack : AttackState
     [SerializeField]
     float pogoForce;
 
+    [SerializeField]
+    float startNewComboCooldown = 0.5f;
+
+    private bool isPogo;
+
     private AnimancerState currentState;
 
     private PlayerVFXManager vfx;
@@ -49,8 +54,6 @@ public class PlayerSwordAttack : AttackState
     private SwordSwingType currentSwordSwing;
 
     private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
-
-    private bool canRotate = false;
 
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
@@ -72,21 +75,11 @@ public class PlayerSwordAttack : AttackState
             attackAnimations[i].Events.SetCallback(StartSwordSwingEvent, this.StartSwordSwing);
             attackAnimations[i].Events.SetCallback(EndSwordSwingEvent, this.EndSwordSwing);
             attackAnimations[i].Events.SetCallback(AllowHighPriorityEvent, AllowHighPriority);
-            attackAnimations[i].Events.SetCallback(AllowMediumPriorityEvent, AllowMediumPriority);
-            attackAnimations[i].Events.SetCallback(AllowLowPriorityEvent, AllowLowPriority);
-            attackAnimations[i].Events.SetCallback(AllowMoveStateEvent, AllowMove);
-            //attackAnimations[i].Events.AddCallback<bool>(AllowMovementEvent, AllowMovement);
-            //attackAnimations[i].Events.AddCallback<bool>(AllowRotationEvent, AllowRotation);
         }
 
         downwardsSwingAnimation.Events.SetCallback(StartSwordSwingEvent, StartSwordSwing);
         downwardsSwingAnimation.Events.SetCallback(EndSwordSwingEvent, EndSwordSwing);
         downwardsSwingAnimation.Events.SetCallback(AllowHighPriorityEvent, AllowHighPriority);
-        downwardsSwingAnimation.Events.SetCallback(AllowMediumPriorityEvent, AllowMediumPriority);
-        downwardsSwingAnimation.Events.SetCallback(AllowLowPriorityEvent, AllowLowPriority);
-        downwardsSwingAnimation.Events.SetCallback(AllowMoveStateEvent, AllowMove);
-        //downwardsSwingAnimation.Events.AddCallback<bool>(AllowMovementEvent, AllowMovement);
-        //downwardsSwingAnimation.Events.AddCallback<bool>(AllowRotationEvent, AllowRotation);
     }
 
     protected override void OnEnable()
@@ -100,10 +93,11 @@ public class PlayerSwordAttack : AttackState
 
         if (movementController.IsGrounded())
         {
+            isPogo = false;
+
             movementController.SetAllowMovement(false);
             movementController.SetAllowRotation(false);
 
-            // Swinging on the ground
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
                 currentSwing = 0;
@@ -124,7 +118,10 @@ public class PlayerSwordAttack : AttackState
         }
         else
         {
+            isPogo = true;
+
             currentSwordSwing = SwordSwingType.SwingDown;
+            movementController.SetAllowRotation(true);
 
             // Swinging in the air performs a downwards swing.
             currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
@@ -136,9 +133,10 @@ public class PlayerSwordAttack : AttackState
         }
     }
 
+
+
     protected void Update()
     {
-        //movementController.ProcessMoveInput(directionalInput.moveDir);
         movementController.RotateToDir(directionalInput.lookDir);
     }
 
@@ -149,9 +147,7 @@ public class PlayerSwordAttack : AttackState
         if(currentSwordSwing == SwordSwingType.SwingDown)
         {
             movementController.SetVelocity(Vector3.zero);
-            //if (movementController.)
             movementController.SetVelocity(movementController.gameObject.transform.transform.up * pogoForce);
-            //movementController.getvelocity();
         }
     }
 
@@ -164,8 +160,22 @@ public class PlayerSwordAttack : AttackState
 
     public void EndSwordSwing()
     {
+        AllowMove();
+        AllowJump();
+        AllowLowPriority();
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
+
+        if(!isPogo && currentSwing >= attackAnimations.Length - 1)
+        {
+            currentSwing = -1;
+            // Doing it like this instead of events, more consistency if exiting state
+            actionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, startNewComboCooldown);
+        }
+        else
+        {
+            AllowMediumPriority();
+        }
     }
 
 #if UNITY_EDITOR

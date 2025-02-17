@@ -11,6 +11,7 @@ using UnityEngine;
         [SerializeField] private float constMove;
         [SerializeField] private float targetOffsetX;
         [SerializeField] private float targetOffsetZ;
+        [SerializeField] private float targetOffsetY = 42.5f;
         private Camera managedCamera;
         [SerializeField]
         private GameObject target;
@@ -29,6 +30,7 @@ using UnityEngine;
             var targetPosition = target.transform.position;
             targetPosition.x += targetOffsetX;
             targetPosition.z += targetOffsetZ;
+            targetPosition.y += targetOffsetY;
             var cameraPosition = managedCamera.transform.position;
 
             var speed = rotation.GetRotationDirection() * leadMaxDistance;
@@ -56,6 +58,16 @@ using UnityEngine;
                   cameraPosition.x = cameraPosition.x - (Mathf.Abs(targetPosition.x - cameraPosition.x)+constMove) * Time.deltaTime * idleDuration;
               }
 
+              if (targetPosition.y >= cameraPosition.y)
+              {
+                  cameraPosition.y = cameraPosition.y + (Mathf.Abs(targetPosition.y - cameraPosition.y)+constMove) * Time.deltaTime * 0.5f * idleDuration;
+              }
+
+              if (targetPosition.y <= cameraPosition.y)
+              {
+                  cameraPosition.y = cameraPosition.y - (Mathf.Abs(targetPosition.y - cameraPosition.y)+constMove) * Time.deltaTime * 0.5f * idleDuration;
+              }
+
             //}
 
             // This line of code allows the camera to smoothly jump ahead of the player in their direction at a high speed to
@@ -78,6 +90,14 @@ using UnityEngine;
             if (newPosition.x <= targetPosition.x - leadMaxDistance)
             {
                 newPosition.x = targetPosition.x - leadMaxDistance;
+            }
+            if (newPosition.y >= targetPosition.y + leadMaxDistance)
+            {
+                newPosition.y = targetPosition.y + leadMaxDistance;
+            }
+            if (newPosition.y <= targetPosition.y - leadMaxDistance)
+            {
+                newPosition.y = targetPosition.y - leadMaxDistance;
             }
 
 

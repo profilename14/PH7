@@ -705,6 +705,7 @@ MonoBehaviour:
   constMove: 0
   targetOffsetX: 23
   targetOffsetZ: -23
+  targetOffsetY: 42.5
   target: {fileID: 9165681918186698072}
 --- !u!114 &4338725361395566439
 MonoBehaviour:
@@ -10890,7 +10891,19 @@ MonoBehaviour:
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
       data:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 9156018158026596144}
+            m_TargetAssemblyTypeName: PlayerAcidArrow, Assembly-CSharp
+            m_MethodName: OnFinishCast
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - rid: 5932011652331077633
       type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -18703,6 +18716,7 @@ MonoBehaviour:
   constMove: 0
   targetOffsetX: 9.5
   targetOffsetZ: -9.5
+  targetOffsetY: 42.5
   target: {fileID: 9165681918186698072}
 --- !u!114 &7134022780356019936
 MonoBehaviour:

@@ -22,7 +22,7 @@ public class EnemyPatrol : CharacterState
 
     [SerializeField]
     // A list of GameObject targets the Enemy can visit while patrolling.
-    private GameObject[] patrolTargets;
+    public GameObject[] patrolTargets;
 
     private int currentPatrolIndex;
 
@@ -39,23 +39,14 @@ public class EnemyPatrol : CharacterState
         _ActionManager = _Character.actionManager;
         _MovementController = _Character.movementController;
 
-        if (patrolTargets.Length > 0)
-        {
-            // This is a roaming enemy
-            movementController.SetAllowMovement(true);
-            movementController.SetAllowRotation(true);
+        // This is a roaming enemy
+        movementController.SetAllowMovement(true);
+        movementController.SetAllowRotation(true);
 
-            if(randomlyChooseTargets) currentPatrolIndex = Random.Range(0, patrolTargets.Length);
+        if(randomlyChooseTargets) currentPatrolIndex = Random.Range(0, patrolTargets.Length);
 
-            StopAllCoroutines();
-            StartCoroutine(Patrolling());
-        }
-        else
-        {
-            // This is a stationary enemy
-            movementController.SetAllowMovement(false);
-            movementController.SetAllowRotation(false);
-        }
+        StopAllCoroutines();
+        StartCoroutine(Patrolling());
     }
 
     private IEnumerator Patrolling()
@@ -90,5 +81,14 @@ public class EnemyPatrol : CharacterState
         }
 
         StartCoroutine(Patrolling());
+    }
+
+    public void InitPatrolPoints(int length, GameObject[] points)
+    {
+        patrolTargets = new GameObject[length];
+        for(int i = 0; i < length; i++)
+        {
+            patrolTargets[i] = points[i];
+        }
     }
 }

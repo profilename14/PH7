@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animancer;
 
 public class EnemyArenaManager : MonoBehaviour
 {
@@ -16,9 +17,17 @@ public class EnemyArenaManager : MonoBehaviour
         public Transform[] spawnPoints;
     }
 
+    [System.Serializable]
+    public struct PatrolPoint
+    {
+        public GameObject[] patrolPoints;
+    }
+
     public List<GameObject> aliveEnemies = new List<GameObject>();
 
     public SpawnPoint[] spawnPoints;
+
+    public PatrolPoint[] patrolPoints;
 
     public EnemyWave[] enemiesToSpawn;
     
@@ -73,7 +82,7 @@ public class EnemyArenaManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.K) && true) {
+        /*if (Input.GetKey(KeyCode.K) && true) {
             for(int i = 0; i < aliveEnemies.Count; i++)
             {
                 //aliveEnemies.RemoveAt(i);
@@ -82,7 +91,7 @@ public class EnemyArenaManager : MonoBehaviour
                     Destroy(g);
                 }
             }
-        }
+        }*/
 
         if(aliveEnemies.Count == 0 && !spawningEnemies && activated)
         {
@@ -117,12 +126,15 @@ public class EnemyArenaManager : MonoBehaviour
             yield return new WaitForSeconds(waveSpawnDelay);
 
             GameObject enemy = Instantiate(enemiesToSpawn[waveNumber].enemies[i], spawnPoints[waveNumber].spawnPoints[i]);
-            enemy.GetComponent<EnemyAI>().AlertEnemy();
-            //enemy.GetComponent<EnemyAI>().target = player.transform;
+            EnemyPatrol enemyPatrol = enemy.GetComponentInParentOrChildren<EnemyPatrol>();
+            if (enemyPatrol != null)
+            {
+                enemyPatrol.InitPatrolPoints(patrolPoints[waveNumber].patrolPoints.Length, patrolPoints[waveNumber].patrolPoints);
+            }
             Vector3 location = new Vector3 (enemy.gameObject.transform.position.x, 0, enemy.gameObject.transform.position.z);
             enemy.gameObject.transform.position = spawnPoints[waveNumber].spawnPoints[i].transform.position;
-            //enemy.GetComponent<EnemyBehavior>().damageHitboxScript.SetPlayerStatsRef(player.GetComponent<PlayerStats>());
             aliveEnemies.Add(enemy);
+
         }
         spawningEnemies = false;
         currentWave++;
@@ -144,9 +156,8 @@ public class EnemyArenaManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player") && other.GetComponent<MovementController>() != null && spawnOnPlayerEnter)
+        if(other.gameObject.CompareTag("Player") && spawnOnPlayerEnter)
         {
-            //Debug.Log("Spawned from enter");
             activated = true;
             GetComponent<BoxCollider>().enabled = false;
             spawningEnemies = true;

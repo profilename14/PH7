@@ -8616,13 +8616,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 715456513316347987, guid: 0bff8aeec0f53d24fbbacc50f0418650, type: 3}
+      propertyPath: patrolTargets.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 715456513316347987, guid: 0bff8aeec0f53d24fbbacc50f0418650, type: 3}
       propertyPath: patrolTargets.Array.data[0]
       value: 
-      objectReference: {fileID: 976523793}
+      objectReference: {fileID: 1660151227}
     - target: {fileID: 715456513316347987, guid: 0bff8aeec0f53d24fbbacc50f0418650, type: 3}
       propertyPath: patrolTargets.Array.data[1]
       value: 
-      objectReference: {fileID: 1660151227}
+      objectReference: {fileID: 976523793}
     - target: {fileID: 715456513316347987, guid: 0bff8aeec0f53d24fbbacc50f0418650, type: 3}
       propertyPath: patrolTargets.Array.data[2]
       value: 
@@ -18221,8 +18225,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5386359370979381672, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
+      propertyPath: locked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386359370979381672, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5386359370979381672, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
+      propertyPath: sceneToLoad
+      value: Grand Hall
       objectReference: {fileID: 0}
     - target: {fileID: 5658615452905108328, guid: e79fc53d9091e18409a565d5607e2b00, type: 3}
       propertyPath: m_Name
@@ -38856,6 +38868,7 @@ MonoBehaviour:
   constMove: 0
   targetOffsetX: 30
   targetOffsetZ: -30
+  targetOffsetY: 42.5
   target: {fileID: 1906071157}
 --- !u!81 &1086341445
 AudioListener:
@@ -78814,9 +78827,6 @@ SceneRoots:
   - {fileID: 1957918738}
   - {fileID: 86977989}
   - {fileID: 257721992}
-  - {fileID: 1660151228}
-  - {fileID: 976523794}
-  - {fileID: 807318113}
   - {fileID: 728286560}
   - {fileID: 537174732}
   - {fileID: 1584077544}
@@ -78930,6 +78940,9 @@ SceneRoots:
   - {fileID: 1128774860}
   - {fileID: 1228395765}
   - {fileID: 673349395}
+  - {fileID: 1660151228}
+  - {fileID: 976523794}
+  - {fileID: 807318113}
   - {fileID: 1202529316}
   - {fileID: 1511467908}
   - {fileID: 1087739601}

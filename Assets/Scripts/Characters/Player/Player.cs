@@ -9,7 +9,9 @@ public class Player : Character
     // Player singleton
     public static Player instance;
 
-    private PlayerStats playerStats;
+    public PlayerStats playerStats;
+
+    public PlayerActionManager playerActionManager;
 
     private void Awake()
     {
@@ -18,6 +20,7 @@ public class Player : Character
         else if (instance != this) Destroy(this);
 
         playerStats = (PlayerStats)stats;
+        playerActionManager = (PlayerActionManager)actionManager;
     }
 
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)

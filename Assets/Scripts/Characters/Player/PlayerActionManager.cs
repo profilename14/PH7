@@ -68,6 +68,10 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private Vector3 cameraAngle = new Vector3(0, 135, 0);
 
+    public delegate void InteractDelegate();
+
+    public InteractDelegate interactCallback;
+
     protected override void Awake()
     {
         base.Awake();
@@ -108,11 +112,41 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.CoreMagic.Enable();
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
+
+        controls.Typhis.Interact.Enable();
+        controls.Typhis.Interact.performed += context => interactCallback();
     }
 
     private void OnDisable()
     {
-        // Fill in disabling at some point
+        // Continuous inputs
+        movementAction = controls.Typhis.Movement;
+        movementAction.Disable();
+        lookAction = controls.Typhis.Look;
+        lookAction.Disable();
+
+        // Discrete inputs
+        controls.Typhis.Attack.Disable();
+        controls.Typhis.Attack.started -= context => OnAttackStarted(context);
+        controls.Typhis.Attack.performed -= context => OnAttackPerformed(context);
+
+        controls.Typhis.Jump.Disable();
+        controls.Typhis.Jump.started -= context => OnJumpStarted(context);
+        controls.Typhis.Jump.performed -= context => OnJumpPerformed(context);
+
+        controls.Typhis.Dash.Disable();
+        controls.Typhis.Dash.performed -= context => OnDash(context);
+
+        controls.Typhis.Bubble.Disable();
+        controls.Typhis.Bubble.started -= context => OnBubbleStarted(context);
+        controls.Typhis.Bubble.performed -= context => OnBubblePerformed(context);
+
+        controls.Typhis.CoreMagic.Disable();
+        controls.Typhis.CoreMagic.started -= context => OnCoreMagicStarted(context);
+        controls.Typhis.CoreMagic.performed -= context => OnCoreMagicPerformed(context);
+
+        controls.Typhis.Interact.Disable();
+        controls.Typhis.Interact.performed -= context => interactCallback();
     }
 
     private void Update()

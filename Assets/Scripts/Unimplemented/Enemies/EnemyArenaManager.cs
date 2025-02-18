@@ -23,7 +23,7 @@ public class EnemyArenaManager : MonoBehaviour
         public GameObject[] patrolPoints;
     }
 
-    public List<GameObject> aliveEnemies = new List<GameObject>();
+    private List<GameObject> aliveEnemies = new List<GameObject>();
 
     public SpawnPoint[] spawnPoints;
 
@@ -74,13 +74,23 @@ public class EnemyArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i < aliveEnemies.Count; i++)
+        aliveEnemies.RemoveAll((GameObject g) => g == null);
+        /*if (aliveEnemies.Count > 0)
+        {
+            while (aliveEnemies.Count > 0 && aliveEnemies[0] == null)
+            {
+                aliveEnemies.RemoveAt(0);
+            }
+        }
+        */
+
+        /*for(int i = 0; i < aliveEnemies.Count; i++)
         {
             if(aliveEnemies[i] == null)
             {
                 aliveEnemies.RemoveAt(i);
             }
-        }
+        }*/
 
         /*if (Input.GetKey(KeyCode.K) && true) {
             for(int i = 0; i < aliveEnemies.Count; i++)

@@ -27,7 +27,7 @@ public class UrchidSpikesAttack : AttackState
 
         movementController.SetAllowMovement(false);
         movementController.SetAllowRotation(false);
-        _Character.SetIsKnockbackImmune(true);
+        //_Character.SetIsKnockbackImmune(true);
 
         AnimancerState currentState = _ActionManager.anim.Play(spikesAttack);
         currentState.Events(this).OnEnd ??= SpikesEnd;
@@ -40,7 +40,7 @@ public class UrchidSpikesAttack : AttackState
 
     public void SpikesEnd()
     {
-        _Character.SetIsKnockbackImmune(false);
+        //_Character.SetIsKnockbackImmune(false);
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }

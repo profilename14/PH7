@@ -72,7 +72,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4748231480779037539
 RectTransform:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251471261408592425}
   m_LocalRotation: {x: -0, y: -0.6973596, z: -0, w: 0.7167214}
-  m_LocalPosition: {x: 0, y: 0, z: 0.37}
+  m_LocalPosition: {x: 0, y: 0, z: 1.65}
   m_LocalScale: {x: 0.007999998, y: 0.007999999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -90,7 +90,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -88.431, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4.54, y: 7.06}
+  m_AnchoredPosition: {x: 7.84, y: 7.06}
   m_SizeDelta: {x: 444, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &208622140362078468
@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 3041528039825056609}
   - component: {fileID: 5386359370979381672}
   - component: {fileID: 2906207184484242982}
+  - component: {fileID: 4977421438937909868}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -216,9 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec77cd089848e745b4a193abefd9b75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Grand Hall
-  spawnPosition: {x: 12, y: 1, z: -82}
+  sceneToLoad: Plumbing Room
   isDoor: 1
+  locked: 1
 --- !u!65 &2906207184484242982
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -240,6 +241,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.8765526, y: 6, z: 5.092457}
   m_Center: {x: 1.1814046, y: 5, z: -0.056312084}
+--- !u!65 &4977421438937909868
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5658615452905108328}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 6, z: 4}
+  m_Center: {x: 2, y: 5, z: 0}
 --- !u!1 &6518381996980370554
 GameObject:
   m_ObjectHideFlags: 0

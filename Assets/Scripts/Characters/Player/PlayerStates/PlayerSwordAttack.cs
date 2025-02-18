@@ -149,6 +149,10 @@ public class PlayerSwordAttack : AttackState
             movementController.SetVelocity(Vector3.zero);
             movementController.SetVelocity(movementController.gameObject.transform.transform.up * pogoForce);
         }
+        else
+        {
+            movementController.SetVelocity(movementController.gameObject.transform.transform.forward * hitRecoilForce);
+        }
     }
 
     public void StartSwordSwing()

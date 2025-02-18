@@ -26,6 +26,10 @@ public class PlayerDash : DashState
     // float duration
     [SerializeField] private float dashCooldown = 0.5f;
     [SerializeField] private float dashTimer;
+    
+    [SerializeField]
+    public AnimationCurve movementCurve;
+
     public bool isDashing = false;
     
 

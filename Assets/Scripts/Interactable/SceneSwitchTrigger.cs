@@ -23,13 +23,17 @@ public class SceneSwitchTrigger : MonoBehaviour
 
     private void Update()
     {
-        if(touchingPlayer && isDoor && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump")))
+        if(touchingPlayer && isDoor ) // && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump"))
         {
             if (locked == false) {
                 player.transform.position = spawnPosition;
-                player.GetComponent<PlayerStatsOLD>().spawnpoint = spawnPosition;
+                //player.GetComponent<PlayerStatsOLD>().spawnpoint = spawnPosition;
                 SceneManager.LoadScene(sceneToLoad);
             }
+        }
+
+        if (locked == false && isDoor) {
+            activateableUI.showUI();
         }
     }
 
@@ -40,7 +44,8 @@ public class SceneSwitchTrigger : MonoBehaviour
             player = other.gameObject;
             touchingPlayer = true;
             if (locked == false && isDoor) {
-                activateableUI.showUI();
+                //player.GetComponent<PlayerStatsOLD>().spawnpoint = spawnPosition;
+                SceneManager.LoadScene(sceneToLoad);
             }
             
             if(!isDoor)

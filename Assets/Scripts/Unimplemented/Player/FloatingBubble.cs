@@ -12,6 +12,8 @@ public class FloatingBubble : MonoBehaviour
     [SerializeField] float lifespan = 10f;
     float lifespanTimer = 0;
 
+    [SerializeField] float slowdownRate = 0.9f;
+
 
 
     void Start() {
@@ -24,13 +26,16 @@ public class FloatingBubble : MonoBehaviour
 
     void Update()
     {
-      bubbleRigidbody.velocity *= 0.98f;
-
       lifespanTimer -= Time.deltaTime;
       if (lifespanTimer <= 0)
       {
         Destroy(gameObject);
       }
+    }
+
+    private void FixedUpdate()
+    {
+        bubbleRigidbody.velocity *= slowdownRate;
     }
 
 

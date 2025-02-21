@@ -111,18 +111,18 @@ public class PlayerBubble : CharacterSpell
 
     private float getBubbleForce()
     {
-        if (chargeTimer == 0) // <0.2 second
+        //if (chargeTimer == 0) // <0.2 second
+        //{
+            return 40;
+        //}
+        /*else if (chargeTimer < 2f)
         {
-            return 35;
-        }
-        else if (chargeTimer <= 0.4f)
-        {
-            return 40 + 60 * (chargeTimer / 0.4f); // 
+            return 100 * chargeTimer; // 
         }
         else // >0.6 seconds
         {
             return 100;
-        }
+        }*/
     }
 
 

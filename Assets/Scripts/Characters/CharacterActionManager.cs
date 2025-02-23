@@ -4,6 +4,11 @@ using UnityEngine;
 using Animancer;
 using Animancer.FSM;
 
+// Priorities determine if the action can interrupt the State's current action.
+// Use events to enable higher priority action types before an animation ends.
+// Low: Bubble, Ranged Attack, Focus, Charge Attack
+// Medium: Standard Attack
+// High: Dash
 [System.Serializable]
 public enum CharacterActionPriority { Move, Jump, Low, Medium, High, Hitstun};
 

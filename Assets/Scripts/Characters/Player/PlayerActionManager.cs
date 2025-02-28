@@ -21,8 +21,8 @@ public class PlayerActionManager : CharacterActionManager
     [Header("Player States")]
     [SerializeField]
     private PlayerJump jumpState;
-    [SerializeField]
-    private CharacterState interactState;
+    //[SerializeField]
+    //private CharacterState interactState;
     [SerializeField]
     private PlayerSwordAttack attackState;
     [SerializeField]
@@ -114,7 +114,11 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
 
         controls.Typhis.Interact.Enable();
-        controls.Typhis.Interact.performed += context => interactCallback();
+        controls.Typhis.Interact.performed += context => OnInteractPerformed(context);
+
+        controls.Typhis.QuickMap.Disable();
+        controls.Typhis.OpenInventory.Disable();
+        controls.Typhis.Pause.Disable();
     }
 
     private void OnDisable()
@@ -146,7 +150,7 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.CoreMagic.performed -= context => OnCoreMagicPerformed(context);
 
         controls.Typhis.Interact.Disable();
-        controls.Typhis.Interact.performed -= context => interactCallback();
+        controls.Typhis.Interact.performed -= context => OnInteractPerformed(context);
     }
 
     private void Update()
@@ -295,6 +299,11 @@ public class PlayerActionManager : CharacterActionManager
         {
             //if (StateMachine.CurrentState == coreState) coreState.ReleaseFocus();
         }
+    }
+
+    void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+        interactCallback?.Invoke();
     }
 
     //

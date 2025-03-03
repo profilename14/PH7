@@ -16,14 +16,17 @@ public class Readable : MonoBehaviour
     {
         dialogueSystemTrigger = gameObject.GetComponent<DialogueSystemTrigger>();
         activateableUI = transform.GetChild(0).gameObject.GetComponent<ActivateableUI>();
+        
+        activateableUI.showUI();
 
     }
 
     private void Update()
     {
-        if(nearPlayer && (Input.GetKeyDown(KeyCode.E) || Input.GetButton("Jump")))
+        if(nearPlayer)
         {
             dialogueSystemTrigger.OnUse();
+            nearPlayer = false;
             activateableUI.hideUI();
             
         }
@@ -34,7 +37,6 @@ public class Readable : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             nearPlayer = true;
-            activateableUI.showUI();
         }
     }
 
@@ -43,7 +45,6 @@ public class Readable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             nearPlayer = false;
-            activateableUI.hideUI();
         }
     }
 }

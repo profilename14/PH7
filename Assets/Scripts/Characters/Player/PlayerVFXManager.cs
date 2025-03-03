@@ -61,11 +61,18 @@ public class PlayerVFXManager : CharacterVFXManager
     [SerializeField]
     float swordGlowIntensity;
 
+    [SerializeField]
+    float hitEffectIntensity = 3; // lower is stronger
+    [SerializeField]
+    Material hitEffect;
+
     protected override void Awake()
     {
         base.Awake();
         bodyDefaultMaterial = bodyRenderer.material;
         SetDefaultEmissionColors(swordRenderers);
+        
+        hitEffect.SetFloat("_VignettePower", 30);
     }
 
     public override void DeathVFX()
@@ -78,7 +85,10 @@ public class PlayerVFXManager : CharacterVFXManager
         ResetEmissionColors(swordRenderers);
         StartCoroutine(FlashEmissionColor(damageFlashTime, damageFlashColor, baseRenderers));
         StartCoroutine(FlashBodyColor(damageFlashTime, damageFlashColor));
+        StartCoroutine(FlashHitVignette(damageFlashTime * 3, hitEffectIntensity));
         //Instantiate(bloodParticles, collisionPoint + Vector3.up, Quaternion.identity).transform.up = collisionPoint - sourcePos;
+
+
     }
 
     public void SwordSwingVFX(SwordSwingType vfx)
@@ -142,6 +152,21 @@ public class PlayerVFXManager : CharacterVFXManager
         yield return new WaitForSeconds(seconds);
 
         ResetBodyEmissionColor();
+    }
+
+    public IEnumerator FlashHitVignette(float seconds, float intensity)
+    {
+        float elapsedSeconds = 0f;
+
+        while (elapsedSeconds < seconds)
+        {
+            elapsedSeconds += Time.deltaTime;
+            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(intensity, 7.5f, elapsedSeconds/seconds));
+            yield return null;
+        }
+
+        
+            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(intensity, 30, elapsedSeconds/seconds));
     }
 
     public void SetBodyEmissionColor(Color color)

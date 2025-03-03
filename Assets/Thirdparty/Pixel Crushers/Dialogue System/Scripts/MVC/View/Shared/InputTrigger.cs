@@ -84,7 +84,7 @@ namespace PixelCrushers.DialogueSystem
             get
             {
                 if (DialogueManager.IsDialogueSystemInputDisabled()) return false;
-                return InputDeviceManager.IsKeyDown(key) ||
+                return false ||
                     (!string.IsNullOrEmpty(buttonName) && DialogueManager.getInputButtonDown(buttonName));
             }
         }

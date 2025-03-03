@@ -26,7 +26,7 @@ public class PlayerFocusAlkaline : CharacterFocus
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.alkaline >= alkalineCost;
 
     private void Awake()
     {
@@ -54,6 +54,10 @@ public class PlayerFocusAlkaline : CharacterFocus
     }
 
     public void OnFinishFocus() {
+        
+        _ActionManager.StateMachine.ForceSetDefaultState();
+        _ActionManager.SetAllActionPriorityAllowed(true, 0);
+
         if (playerStats.health >= playerStats.healthMax) {
             Debug.Log("Cannot heal past maximum HP");
             return;
@@ -61,6 +65,11 @@ public class PlayerFocusAlkaline : CharacterFocus
         
         playerStats.SetHealth(playerStats.health + 1); // Will ask about how to formally set health during the meeting, playerstats just changed recently.
         Debug.Log("Player health is now: " + playerStats.health);
+
+        
+        playerStats.ModifyAlkaline(-alkalineCost);
+
+        
     }
 
     public void FocusDone() {
@@ -71,13 +80,14 @@ public class PlayerFocusAlkaline : CharacterFocus
     {
         if (focusCharged)
         {
-            _ActionManager.SetAllActionPriorityAllowed(false);
+            //_ActionManager.SetAllActionPriorityAllowed(false);
             // Do a charge attack, go back to idle at the end.
             _ActionManager.anim.Play(focusCastAnimation).Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
         }
         else
         {
             _ActionManager.StateMachine.ForceSetDefaultState();
+            _ActionManager.SetAllActionPriorityAllowed(true, 0);
         }
     }
 

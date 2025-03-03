@@ -385,20 +385,7 @@ namespace PixelCrushers
         {
             try
             {
-                for (int i = 0; i < backKeyCodes.Length; i++)
-                {
-                    if (DefaultGetKeyDown(backKeyCodes[i]))
-                    {
-                        return true;
-                    }
-                }
-                for (int i = 0; i < backButtons.Length; i++)
-                {
-                    if (GetButtonDown(backButtons[i]))
-                    {
-                        return true;
-                    }
-                }
+                return false;
             }
             catch (System.ArgumentException e)
             {
@@ -526,7 +513,7 @@ namespace PixelCrushers
                 }
                 return false;
 #else
-                return string.IsNullOrEmpty(buttonName) ? false : Input.GetButtonDown(buttonName);
+                return false;
 #endif
             }
             catch (System.ArgumentException) // Input button not in setup.
@@ -607,7 +594,7 @@ namespace PixelCrushers
                 default: return false;
             }
 #else
-            return Input.GetMouseButtonDown(buttonNumber);
+            return false;
 #endif
         }
 

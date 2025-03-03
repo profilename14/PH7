@@ -38,6 +38,9 @@ public class PlayerDash : DashState
     private PlayerActionManager actionManager;
     private PlayerDirectionalInput directionalInput;
 
+    [SerializeField] GameObject dashVFX;
+    private GameObject instantiatedVFX;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
 
@@ -71,6 +74,11 @@ public class PlayerDash : DashState
 
         dashTimer = 0;
         isDashing = true;
+
+        if (dashVFX)
+        {
+            instantiatedVFX = Instantiate(dashVFX, transform);
+        }
     }
 
     protected void Update()
@@ -87,9 +95,10 @@ public class PlayerDash : DashState
 
         if (!Physics.Raycast(transform.position, movementController.transform.forward, 2))
         {
-            Vector3 newPos = Vector3.Lerp( startingPoint, destination, Mathf.Sqrt(dashProgress) );
+            Vector3 newPos = Vector3.Lerp( startingPoint, destination, movementCurve.Evaluate(dashProgress) );
 
             movementController.SetPosition(newPos);
+            
         }
         else
         {
@@ -101,10 +110,11 @@ public class PlayerDash : DashState
 
     public override void endDash()
     {
+
         actionManager.EndDash(dashCooldown);
         isDashing = false;
         movementController.SetAllowRotation(true);
-        movementController.SetVelocity(new Vector3(0, 0, 0));
+        movementController.SetVelocity(new Vector3(0, 10f, 0)); // Effectively very slightly reduces gravity for a moment
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
@@ -115,6 +125,8 @@ public class PlayerDash : DashState
     {
         //PlayerCharacterInputs input = new();
         //movementController.SetInputs(ref input);
+
+        Destroy(instantiatedVFX, 0.3f); // Give the vfx time to catch up to the player
     }
 
 #if UNITY_EDITOR

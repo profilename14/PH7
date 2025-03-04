@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 
-public class ScuttlerClawAttack : AttackState
+public class HalberdSwing : AttackState
 {
     [SerializeField]
-    private ClipTransition clawAttack;
+    private ClipTransition swingAttack;
 
     [SerializeField]
-    private float clawForwardForce;
+    private float swingForwardForce;
 
     private EnemyMovementController movementController;
     private ScuttlerVFXManager vfx;
@@ -27,13 +27,13 @@ public class ScuttlerClawAttack : AttackState
 
     protected override void OnEnable()
     {
-        _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+        _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
         movementController.SetForceManualRotation(false);
 
-        AnimancerState currentState = _ActionManager.anim.Play(clawAttack);
+        AnimancerState currentState = _ActionManager.anim.Play(swingAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
     }
 
@@ -42,20 +42,20 @@ public class ScuttlerClawAttack : AttackState
         movementController.SetPathfindingDestination(Player.instance.transform.position);
     }
 
-    public void ClawStart()
+    public void SwingStart()
     {
         movementController.SetGroundDrag(drag);
         movementController.SetAllowRotation(false);
         movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
-        movementController.ApplyImpulseForce(_Character.transform.forward, clawForwardForce);
+        movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
         vfx.PlayClawVFX();
     }
 
-    public void ClawEnd()
+    public void SwingEnd()
     {
         _Character.SetIsKnockbackImmune(false);
-        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
         movementController.ResetGroundDrag();
     }
 }
+

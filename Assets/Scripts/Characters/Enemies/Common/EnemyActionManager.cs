@@ -6,7 +6,7 @@ using Animancer;
 using Animancer.FSM;
 
 [System.Serializable]
-public struct EnemyAttack
+public struct EnemyActionBehavior
 {
     public float cooldown;
     //public CharacterActionPriority priority;
@@ -30,12 +30,12 @@ public class EnemyActionManager : CharacterActionManager
     protected bool canAttackInIdle;
 
     [SerializeField]
-    protected List<EnemyAttack> attacks = new();
+    protected List<EnemyActionBehavior> attacks = new();
 
     [SerializeField]
     protected float noAttacksTimer;
 
-    private List<EnemyAttack> attackCandidates = new();
+    private List<EnemyActionBehavior> attackCandidates = new();
 
     [SerializeField]
     protected bool isStunned = false;
@@ -55,7 +55,7 @@ public class EnemyActionManager : CharacterActionManager
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
                 allowedStates.Add(attacks[i].stateScript, false);
-                EnemyAttack attackTemp = attacks[i];
+                EnemyActionBehavior attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
             }
@@ -81,8 +81,10 @@ public class EnemyActionManager : CharacterActionManager
     {
         Vector3 vectorToPlayer = Player.instance.transform.position - character.transform.position;
 
+        Vector3 vectorToPlayerSameY = new Vector3(Player.instance.transform.position.x - character.transform.position.x, character.transform.forward.y, Player.instance.transform.position.z - character.transform.position.z);
+
         float distanceToPlayer = vectorToPlayer.magnitude;
-        float angleToPlayerForward = Vector3.Angle(character.transform.forward, vectorToPlayer);
+        float angleToPlayerForward = Vector3.Angle(character.transform.forward, vectorToPlayerSameY);
         float angleToPlayerUp = Vector3.Angle(character.transform.up, vectorToPlayer);
         float angleToPlayerRight = Vector3.Angle(character.transform.right, vectorToPlayer);
 
@@ -96,11 +98,21 @@ public class EnemyActionManager : CharacterActionManager
             
             if (attackData.decrementCooldownOnlyWhenAllowed && !allowedStates[attacks[i].stateScript]) continue;
 
-            if (distanceToPlayer > attackData.distance.min && distanceToPlayer < attackData.distance.max
-                && angleToPlayerForward > attackData.forwardAngle.min && angleToPlayerForward < attackData.forwardAngle.max
-                && angleToPlayerUp > attackData.upAngle.min && angleToPlayerUp < attackData.upAngle.max
-                && angleToPlayerRight > attackData.rightAngle.min && angleToPlayerRight < attackData.rightAngle.max)
+            //Debug.Log(distanceToPlayer + " : so distance is within range -- " + (distanceToPlayer >= attackData.distance.min && distanceToPlayer < attackData.distance.max));
+
+            //Debug.Log(angleToPlayerForward + " : so forward angle is within range -- " + (angleToPlayerForward >= attackData.forwardAngle.min && angleToPlayerForward < attackData.forwardAngle.max));
+
+            //Debug.Log(angleToPlayerUp + " : so up angle is within range -- " + (angleToPlayerUp >= attackData.upAngle.min && angleToPlayerUp < attackData.upAngle.max));
+
+            //Debug.Log(angleToPlayerRight + " : so right angle is within range -- " + (angleToPlayerRight >= attackData.rightAngle.min && angleToPlayerRight < attackData.rightAngle.max));
+
+            if (distanceToPlayer >= attackData.distance.min && distanceToPlayer < attackData.distance.max
+                && angleToPlayerForward >= attackData.forwardAngle.min && angleToPlayerForward < attackData.forwardAngle.max
+                && angleToPlayerUp >= attackData.upAngle.min && angleToPlayerUp < attackData.upAngle.max
+                && angleToPlayerRight >= attackData.rightAngle.min && angleToPlayerRight < attackData.rightAngle.max)
             {
+                //Debug.Log("Within attack range");
+
                 // Within range of the attack.
                 if(attacks[i].cooldown <= 0 && allowedStates[attacks[i].stateScript])
                 {
@@ -118,7 +130,7 @@ public class EnemyActionManager : CharacterActionManager
 
 
             // Handle decrementing cooldowns.
-            EnemyAttack attackTemp = attacks[i];
+            EnemyActionBehavior attackTemp = attacks[i];
             attackTemp.cooldown -= attackBehaviorUpdateInterval;
             attacks[i] = attackTemp;
 
@@ -148,13 +160,13 @@ public class EnemyActionManager : CharacterActionManager
         StartCoroutine(UpdateAttackStates());
     }
 
-    public void ResetCooldown(EnemyAttack behavior)
+    public void ResetCooldown(EnemyActionBehavior behavior)
     {
         for(int i = 0; i < attacks.Count; i++)
         {
             if(attacks[i].Equals(behavior))
             {
-                EnemyAttack attackTemp = attacks[i];
+                EnemyActionBehavior attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
             }

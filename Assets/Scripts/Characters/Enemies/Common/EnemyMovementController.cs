@@ -11,7 +11,7 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
     Enemy enemy;
 
     [SerializeField]
-    RichAI pathfinding;
+    public RichAI pathfinding;
 
     [SerializeField]
     protected Rigidbody _Rb;
@@ -45,6 +45,8 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
 
     protected EnemyActionManager actionManager;
 
+    private float defaultDrag;
+
     private void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
@@ -52,6 +54,8 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         gameObject.GetComponentInParentOrChildren(ref enemy);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
         enemyData = enemy.characterData;
+
+        defaultDrag = rb.drag;
 
         pathfinding.maxSpeed = enemyData.maxBaseMoveSpeed;
         pathfinding.acceleration = enemyData.baseMoveAcceleration;
@@ -179,9 +183,14 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         velocityLocked = false;
     }
 
-    public void SetDrag(float drag)
+    public void SetGroundDrag(float drag)
     {
         rb.drag = drag;
+    }
+
+    public void ResetGroundDrag()
+    {
+        rb.drag = defaultDrag;
     }
 
     public void SetAIEnabled(bool isEnabled)

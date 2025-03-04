@@ -39,7 +39,10 @@ public class PlayerSwordAttack : AttackState
     float pogoForce;
 
     [SerializeField]
-    float startNewComboCooldown = 0.5f;
+    float startNewComboCooldown = 0.2f;
+
+    [SerializeField]
+    float drag;
 
     private bool isPogo;
 
@@ -54,6 +57,8 @@ public class PlayerSwordAttack : AttackState
     private SwordSwingType currentSwordSwing;
 
     private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
+
+    private Vector3 moveDirAtStart; 
 
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
@@ -86,13 +91,19 @@ public class PlayerSwordAttack : AttackState
     {
         directionalInput = actionManager.GetDirectionalInput();
 
+        moveDirAtStart = directionalInput.moveDir;
+
         // Fully committed to an attack once you start it.
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, false);
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
         movementController.RotateToDir(directionalInput.lookDir);
 
         if (movementController.IsGrounded())
         {
+            movementController.SetGroundDrag(drag);
+            movementController.AddVelocity(actionManager.GetDirRelativeToCamera(moveDirAtStart) * swingForce);
+
             isPogo = false;
 
             movementController.SetAllowMovement(false);
@@ -106,6 +117,8 @@ public class PlayerSwordAttack : AttackState
             {
                 currentSwing++;
             }
+
+            //Debug.Log("Current swing: " + currentSwing);
 
             currentSwordSwing = (SwordSwingType)currentSwing;
 
@@ -157,8 +170,6 @@ public class PlayerSwordAttack : AttackState
 
     public void StartSwordSwing()
     {
-        movementController.AddVelocity(movementController.gameObject.transform.transform.forward * swingForce);
-
         vfx.SwordSwingVFX(currentSwordSwing);
     }
 
@@ -172,6 +183,7 @@ public class PlayerSwordAttack : AttackState
 
         if(!isPogo && currentSwing >= attackAnimations.Length - 1)
         {
+            //Debug.Log("resetting");
             currentSwing = -1;
             // Doing it like this instead of events, more consistency if exiting state
             actionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, startNewComboCooldown);
@@ -180,6 +192,12 @@ public class PlayerSwordAttack : AttackState
         {
             AllowMediumPriority();
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        movementController.ResetDrag();
     }
 
 #if UNITY_EDITOR

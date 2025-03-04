@@ -27,11 +27,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     public float MaxStableMoveSpeed = 10f;
     public float StableMovementSharpness = 15f;
     public float OrientationSharpness = 10f;
+    public float defaultGroundDrag = 1;
+    private float groundDrag = 1;
 
     [Header("Air Movement")]
     public float MaxAirMoveSpeed = 15f;
     public float AirAccelerationSpeed = 15f;
-    public float Drag = 0.1f;
+    public float defaultAirDrag = 0.1f;
+    private float airDrag = 0.1f;
 
     [Header("Misc")]
     public List<Collider> IgnoredColliders = new List<Collider>();
@@ -107,6 +110,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         camRight.Normalize();
 
         gravity = defaultGravity;
+        airDrag = defaultAirDrag;
+        groundDrag = defaultGroundDrag;
     }
 
     private void Update()
@@ -237,6 +242,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
             // Smooth movement Velocity
             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+
+            // Drag
+            currentVelocity *= (1f / (1f + (groundDrag * deltaTime)));
         }
         // Air movement
         else
@@ -286,7 +294,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             currentVelocity += gravity * deltaTime;
 
             // Drag
-            currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+            currentVelocity *= (1f / (1f + (airDrag * deltaTime)));
 
         }
 
@@ -521,9 +529,20 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         canMove = isAllowed;
     }
 
-    public void SetDrag(float drag)
+    public void SetGroundDrag(float drag)
     {
-        throw new NotImplementedException();
+        groundDrag = drag;
+    }
+
+    public void SetAirDrag(float drag)
+    {
+        airDrag = drag;
+    }
+
+    public void ResetDrag()
+    {
+        airDrag = defaultAirDrag;
+        groundDrag = defaultGroundDrag;
     }
 
     public void SetAllowRotation(bool isAllowed)

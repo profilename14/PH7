@@ -52,7 +52,7 @@ public abstract class CharacterStats : MonoBehaviour
         }
 
         
-        Debug.Log("Damage event: new health: " + health + " and new armor: " + armor); // Delete on making healthbars
+        //Debug.Log("Damage event: new health: " + health + " and new armor: " + armor); // Delete on making healthbars
         
         if (_Health <= 0 && _Armor <= 0) // Enemies can survive if they have armor and no health.
         {

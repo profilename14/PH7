@@ -31,11 +31,12 @@ public class StriderDashAttack : AttackState
 
     protected override void OnEnable()
     {
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+        _Character.SetIsKnockbackImmune(false);
 
         movementController.SetAllowMovement(false);
-        movementController.SetAllowRotation(true);
-        movementController.SetForceManualRotation(true);
+        movementController.SetAllowRotation(false);
+        movementController.SetForceManualRotation(false);
 
         AnimancerState currentState = _ActionManager.anim.Play(dashAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
@@ -48,9 +49,10 @@ public class StriderDashAttack : AttackState
 
     public void DashStart()
     {
+        _ActionManager.SetAllActionPriorityAllowed(false);
         movementController.SetAllowRotation(false);
         _Character.SetIsKnockbackImmune(true);
-        movementController.SetDrag(dashDrag);
+        movementController.SetGroundDrag(dashDrag);
         movementController.ApplyImpulseForce(_Character.transform.forward, dashForce);
         vfx.SetDashTrailEmission(true);
         vfx.SetIsDashGlowing(true);
@@ -59,7 +61,7 @@ public class StriderDashAttack : AttackState
     public void DashEnd()
     {
         _Character.SetIsKnockbackImmune(false);
-        movementController.SetDrag(defaultDrag);
+        movementController.SetGroundDrag(defaultDrag);
         vfx.SetIsDashGlowing(false);
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
     }

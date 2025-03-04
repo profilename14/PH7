@@ -1643,6 +1643,7 @@ MonoBehaviour:
   hitRecoilForce: 0
   pogoForce: 30
   startNewComboCooldown: 0.5
+  drag: 0
   references:
     version: 2
     RefIds: []
@@ -8778,9 +8779,10 @@ MonoBehaviour:
   MaxStableMoveSpeed: 22.5
   StableMovementSharpness: 15
   OrientationSharpness: 20
+  defaultGroundDrag: 1
   MaxAirMoveSpeed: 20
   AirAccelerationSpeed: 200
-  Drag: 0
+  defaultAirDrag: 0.1
   IgnoredColliders:
   - {fileID: 0}
   - {fileID: 0}
@@ -8896,6 +8898,8 @@ MonoBehaviour:
   algaeGlowIntensity: 3
   swordGlowColor: {r: 1, g: 1, b: 1, a: 0}
   swordGlowIntensity: 4
+  hitEffectIntensity: 3
+  hitEffect: {fileID: 2100000, guid: ce4ebef1a7400094f9b03dc7dab2fcf2, type: 2}
 --- !u!1 &4383613561033077319
 GameObject:
   m_ObjectHideFlags: 0
@@ -10630,6 +10634,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   isDashing: 0
+  dashVFX: {fileID: 0}
   references:
     version: 2
     RefIds:

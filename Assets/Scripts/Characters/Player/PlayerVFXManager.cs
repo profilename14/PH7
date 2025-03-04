@@ -44,6 +44,9 @@ public class PlayerVFXManager : CharacterVFXManager
     Color dashColor;
 
     [SerializeField]
+    private float dashGlowIntensity;
+
+    [SerializeField]
     Color damageFlashColor;
 
     [SerializeField]
@@ -133,6 +136,18 @@ public class PlayerVFXManager : CharacterVFXManager
     {
         ResetEmissionColors(baseRenderers);
         ResetEmissionColors(swordRenderers);
+        ResetBodyEmissionColor();
+    }
+
+    public void StartDashVFX()
+    {
+        SetEmissionColor(baseRenderers, dashColor * dashGlowIntensity);
+        SetBodyEmissionColor(dashColor * dashGlowIntensity);
+    }
+
+    public void EndDashVFX()
+    {
+        ResetEmissionColors(baseRenderers);
         ResetBodyEmissionColor();
     }
 

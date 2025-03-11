@@ -24,6 +24,8 @@ public class EnemyPatrol : CharacterState
     // A list of GameObject targets the Enemy can visit while patrolling.
     public GameObject[] patrolTargets;
 
+    public bool isPatrolling = true;
+
     private int currentPatrolIndex;
 
     EnemyMovementController movementController;
@@ -46,7 +48,11 @@ public class EnemyPatrol : CharacterState
         if(randomlyChooseTargets) currentPatrolIndex = Random.Range(0, patrolTargets.Length);
 
         StopAllCoroutines();
-        StartCoroutine(Patrolling());
+
+        if (isPatrolling)
+        {
+            StartCoroutine(Patrolling());
+        }
     }
 
     private IEnumerator Patrolling()

@@ -328,6 +328,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""37fc1b51-3e59-48d1-b511-9595d9f4963b"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Core / Magic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""300f5d42-c19c-430a-9a02-3c3653d955cc"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",

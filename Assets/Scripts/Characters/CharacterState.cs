@@ -12,7 +12,7 @@ public abstract class CharacterState : StateBehaviour
 
     protected CharacterActionManager _ActionManager;
 
-    protected ICharacterMovementController _MovementController;
+    protected CharacterMovementController _MovementController;
 
     protected static readonly StringReference AllowHitstunEvent = "AllowHitstun";
     protected static readonly StringReference AllowHighPriorityEvent = "AllowHighPriority";

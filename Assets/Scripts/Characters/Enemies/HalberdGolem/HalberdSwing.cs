@@ -18,6 +18,9 @@ public class HalberdSwing : AttackState
     [SerializeField]
     private float drag = 8;
 
+    [SerializeField]
+    private float preferredRange = 10;
+
     private void Awake()
     {
         base.Awake();
@@ -31,7 +34,8 @@ public class HalberdSwing : AttackState
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
-        movementController.SetForceManualRotation(false);
+        movementController.SetForceManualRotation(true);
+        movementController.SetForceLookAtPlayer(true);
 
         AnimancerState currentState = _ActionManager.anim.Play(swingAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
@@ -39,7 +43,8 @@ public class HalberdSwing : AttackState
 
     private void Update()
     {
-        movementController.SetPathfindingDestination(Player.instance.transform.position);
+        Vector3 dirToPlayer = (Player.instance.transform.position - _Character.transform.position).normalized;
+        movementController.SetPathfindingDestination(Player.instance.transform.position - (dirToPlayer * preferredRange));
     }
 
     public void SwingStart()
@@ -49,13 +54,21 @@ public class HalberdSwing : AttackState
         movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
-        vfx.PlayClawVFX();
     }
 
-    public void SwingEnd()
+    public void Recovery()
     {
         _Character.SetIsKnockbackImmune(false);
-        movementController.ResetGroundDrag();
+        movementController.SetAllowRotation(false);
+        movementController.SetAllowMovement(false);
+    }
+
+    public void EndAttack()
+    {
+        movementController.SetAllowRotation(true);
+        movementController.SetAllowMovement(true);
+        movementController.SetForceManualRotation(false);
+        movementController.SetForceLookAtPlayer(true);
     }
 }
 

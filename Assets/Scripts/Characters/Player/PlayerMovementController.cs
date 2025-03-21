@@ -19,7 +19,7 @@ public enum BonusOrientationMethod
     TowardsGroundSlopeAndGravity,
 }
 
-public class PlayerMovementController : MonoBehaviour, ICharacterController, ICharacterMovementController
+public class PlayerMovementController : CharacterMovementController, ICharacterController
 {
     public KinematicCharacterMotor Motor;
 
@@ -395,12 +395,17 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
     }
 
-    public void AddVelocity(Vector3 velocity)
+    public override Vector3 GetVelocity()
+    {
+        return Motor.Velocity;
+    }
+
+    public override void AddVelocity(Vector3 velocity)
     {
         _internalVelocityAdd += velocity;
     }
 
-    public void SetVelocity(Vector3 velocity)
+    public override void SetVelocity(Vector3 velocity)
     {
         setVelocity = true;
         _internalVelocitySet = velocity;
@@ -412,13 +417,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         _internalPositionSet = position;
     }
 
-    public void LockVelocity(Vector3 velocity)
+    public override void LockVelocity(Vector3 velocity)
     {
         velocityLocked = true;
         lockedVelocity = velocity;
     }
 
-    public void UnlockVelocity()
+    public override void UnlockVelocity()
     {
         velocityLocked = false;
     }
@@ -499,22 +504,22 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         jumpHeld = false;
     }
 
-    public void ApplyImpulseForce(Vector3 direction, float power)
+    public override void ApplyImpulseForce(Vector3 direction, float power)
     {
         AddVelocity(direction.normalized * power);
     }
 
-    public void AddSpeedModifier(float modifier)
+    public override void AddSpeedModifier(float modifier)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveSpeedModifier(float modifier)
+    public override void RemoveSpeedModifier(float modifier)
     {
         throw new NotImplementedException();
     }
 
-    public bool IsGrounded()
+    public override bool IsGrounded()
     {
         return Motor.GroundingStatus.IsStableOnGround;
     }
@@ -524,12 +529,12 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         return AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : IsGrounded() || timeSinceLastAbleToJump <= jumpPostGroundingGraceTime;
     }
 
-    public void SetAllowMovement(bool isAllowed)
+    public override void SetAllowMovement(bool isAllowed)
     {
         canMove = isAllowed;
     }
 
-    public void SetGroundDrag(float drag)
+    public override void SetGroundDrag(float drag)
     {
         groundDrag = drag;
     }
@@ -545,7 +550,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         groundDrag = defaultGroundDrag;
     }
 
-    public void SetAllowRotation(bool isAllowed)
+    public override void SetAllowRotation(bool isAllowed)
     {
         canRotate = isAllowed;
     }

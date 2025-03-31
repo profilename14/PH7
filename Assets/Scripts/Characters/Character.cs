@@ -15,7 +15,7 @@ public abstract class Character : MonoBehaviour, IHittable
     protected CharacterActionManager _ActionManager;
     public CharacterActionManager actionManager => _ActionManager;
 
-    public ICharacterMovementController movementController;
+    public CharacterMovementController movementController;
     [SerializeField]
     protected CharacterStats _Stats;
     public CharacterStats stats => _Stats;
@@ -28,6 +28,9 @@ public abstract class Character : MonoBehaviour, IHittable
 
     [SerializeField]
     protected bool isKnockbackImmune = false;
+
+    [SerializeField]
+    protected bool isHitstunImmune = false;
 
     private bool isDead = false;
 
@@ -65,6 +68,8 @@ public abstract class Character : MonoBehaviour, IHittable
             }
             else
             {
+                Debug.Log(attack.character);
+                Debug.Log(attack);
                 _VFXManager.TookDamageVFX(hitPoint, attack.character.transform.position);
             }
         }
@@ -75,7 +80,7 @@ public abstract class Character : MonoBehaviour, IHittable
             movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback);
         }
         
-        actionManager.Hitstun();
+        if(!isHitstunImmune) actionManager.Hitstun();
     }
 
     public virtual void Hit(MyProjectile projectile, Vector3 hitPoint)

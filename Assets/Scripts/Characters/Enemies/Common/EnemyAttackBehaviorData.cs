@@ -8,6 +8,9 @@ public class EnemyAttackBehaviorData : ScriptableObject
     // The min/max distance the enemy can be from the player for this attack to be performed.
     public FloatMinMax distance;
 
+    // The max distance for the player to be considered line of sight even if the angle measurements fail.
+    public float angleOverrideDistance = 2f;
+
     // The min/max angle between the enemy's forward (+z) vector and the vector from the enemy to the player.
     public FloatMinMax forwardAngle;
 

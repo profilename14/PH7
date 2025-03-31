@@ -41,6 +41,8 @@ public class PlayerDash : DashState
     [SerializeField] GameObject dashVFX;
     private GameObject instantiatedVFX;
 
+    private PlayerVFXManager vfx;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
 
@@ -49,6 +51,7 @@ public class PlayerDash : DashState
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
+        vfx = (PlayerVFXManager)character.VFXManager;
     }
 
     protected override void OnEnable()
@@ -78,6 +81,7 @@ public class PlayerDash : DashState
         if (dashVFX)
         {
             instantiatedVFX = Instantiate(dashVFX, transform);
+            vfx.StartDashVFX();
         }
     }
 
@@ -110,7 +114,7 @@ public class PlayerDash : DashState
 
     public override void endDash()
     {
-
+        vfx.EndDashVFX();
         actionManager.EndDash(dashCooldown);
         isDashing = false;
         movementController.SetAllowRotation(true);

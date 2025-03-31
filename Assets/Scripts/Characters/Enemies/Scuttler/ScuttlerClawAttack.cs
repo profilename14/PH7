@@ -11,9 +11,15 @@ public class ScuttlerClawAttack : AttackState
     [SerializeField]
     private float clawForwardForce;
 
+    [SerializeField]
+    private float playerTargetDistance;
+
     private EnemyMovementController movementController;
     private ScuttlerVFXManager vfx;
-    public override bool CanEnterState => _ActionManager.allowedStates[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
+
+    [SerializeField]
+    private float drag = 8;
 
     private void Awake()
     {
@@ -24,11 +30,12 @@ public class ScuttlerClawAttack : AttackState
 
     protected override void OnEnable()
     {
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
         movementController.SetForceManualRotation(true);
+        movementController.SetForceLookAtPlayer(true);
 
         AnimancerState currentState = _ActionManager.anim.Play(clawAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
@@ -36,11 +43,12 @@ public class ScuttlerClawAttack : AttackState
 
     private void Update()
     {
-        movementController.SetPathfindingDestination(Player.instance.transform.position);
+        movementController.SetPathfindingDestination((Player.instance.transform.position) + (character.transform.position - Player.instance.transform.position).normalized * playerTargetDistance);
     }
 
     public void ClawStart()
     {
+        movementController.SetGroundDrag(drag);
         movementController.SetAllowRotation(false);
         movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
@@ -52,5 +60,6 @@ public class ScuttlerClawAttack : AttackState
     {
         _Character.SetIsKnockbackImmune(false);
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
+        movementController.ResetGroundDrag();
     }
 }

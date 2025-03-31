@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animancer;
 
 public abstract class AttackState : CharacterState
 {
@@ -19,7 +20,7 @@ public abstract class AttackState : CharacterState
         if (this.enabled == false) return;
 
         // Check if we have collided with a hittable object.
-        IHittable hittableScript = other.gameObject.GetComponent<IHittable>();
+        IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript == null) return;
 
         // In the case of the player, you are hitting your own hitbox.
@@ -28,6 +29,7 @@ public abstract class AttackState : CharacterState
 
         Vector3 attackHitPosition = other.ClosestPointOnBounds(_Character.transform.position);
 
+        Debug.Log(hittableScript);
         hittableScript.Hit(this, attackHitPosition);
         OnAttackHit(attackHitPosition);
         _Character.OnCharacterAttackHit(hittableScript, this, attackHitPosition);

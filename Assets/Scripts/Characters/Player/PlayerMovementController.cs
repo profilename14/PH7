@@ -19,7 +19,7 @@ public enum BonusOrientationMethod
     TowardsGroundSlopeAndGravity,
 }
 
-public class PlayerMovementController : MonoBehaviour, ICharacterController, ICharacterMovementController
+public class PlayerMovementController : CharacterMovementController, ICharacterController
 {
     public KinematicCharacterMotor Motor;
 
@@ -27,11 +27,14 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     public float MaxStableMoveSpeed = 10f;
     public float StableMovementSharpness = 15f;
     public float OrientationSharpness = 10f;
+    public float defaultGroundDrag = 1;
+    private float groundDrag = 1;
 
     [Header("Air Movement")]
     public float MaxAirMoveSpeed = 15f;
     public float AirAccelerationSpeed = 15f;
-    public float Drag = 0.1f;
+    public float defaultAirDrag = 0.1f;
+    private float airDrag = 0.1f;
 
     [Header("Misc")]
     public List<Collider> IgnoredColliders = new List<Collider>();
@@ -107,6 +110,8 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         camRight.Normalize();
 
         gravity = defaultGravity;
+        airDrag = defaultAirDrag;
+        groundDrag = defaultGroundDrag;
     }
 
     private void Update()
@@ -237,6 +242,9 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
 
             // Smooth movement Velocity
             currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+
+            // Drag
+            currentVelocity *= (1f / (1f + (groundDrag * deltaTime)));
         }
         // Air movement
         else
@@ -286,7 +294,7 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
             currentVelocity += gravity * deltaTime;
 
             // Drag
-            currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+            currentVelocity *= (1f / (1f + (airDrag * deltaTime)));
 
         }
 
@@ -387,12 +395,17 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
     {
     }
 
-    public void AddVelocity(Vector3 velocity)
+    public override Vector3 GetVelocity()
+    {
+        return Motor.Velocity;
+    }
+
+    public override void AddVelocity(Vector3 velocity)
     {
         _internalVelocityAdd += velocity;
     }
 
-    public void SetVelocity(Vector3 velocity)
+    public override void SetVelocity(Vector3 velocity)
     {
         setVelocity = true;
         _internalVelocitySet = velocity;
@@ -404,13 +417,13 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         _internalPositionSet = position;
     }
 
-    public void LockVelocity(Vector3 velocity)
+    public override void LockVelocity(Vector3 velocity)
     {
         velocityLocked = true;
         lockedVelocity = velocity;
     }
 
-    public void UnlockVelocity()
+    public override void UnlockVelocity()
     {
         velocityLocked = false;
     }
@@ -491,22 +504,22 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         jumpHeld = false;
     }
 
-    public void ApplyImpulseForce(Vector3 direction, float power)
+    public override void ApplyImpulseForce(Vector3 direction, float power)
     {
         AddVelocity(direction.normalized * power);
     }
 
-    public void AddSpeedModifier(float modifier)
+    public override void AddSpeedModifier(float modifier)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveSpeedModifier(float modifier)
+    public override void RemoveSpeedModifier(float modifier)
     {
         throw new NotImplementedException();
     }
 
-    public bool IsGrounded()
+    public override bool IsGrounded()
     {
         return Motor.GroundingStatus.IsStableOnGround;
     }
@@ -516,17 +529,28 @@ public class PlayerMovementController : MonoBehaviour, ICharacterController, ICh
         return AllowJumpingWhenSliding ? Motor.GroundingStatus.FoundAnyGround : IsGrounded() || timeSinceLastAbleToJump <= jumpPostGroundingGraceTime;
     }
 
-    public void SetAllowMovement(bool isAllowed)
+    public override void SetAllowMovement(bool isAllowed)
     {
         canMove = isAllowed;
     }
 
-    public void SetDrag(float drag)
+    public override void SetGroundDrag(float drag)
     {
-        throw new NotImplementedException();
+        groundDrag = drag;
     }
 
-    public void SetAllowRotation(bool isAllowed)
+    public void SetAirDrag(float drag)
+    {
+        airDrag = drag;
+    }
+
+    public void ResetDrag()
+    {
+        airDrag = defaultAirDrag;
+        groundDrag = defaultGroundDrag;
+    }
+
+    public override void SetAllowRotation(bool isAllowed)
     {
         canRotate = isAllowed;
     }

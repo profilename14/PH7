@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a8877f26e7a6a43aaf06fade1a064a, type: 3}
+  m_Name: WalkAnimMixer
+  m_EditorClassIdentifier: 
+  _Transition:
+    rid: 445166256494739458
+  references:
+    version: 2
+    RefIds:
+    - rid: 445166256494739458
+      type: {class: MixerTransition2D, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.25
+        _Speed: 1
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Animations:
+        - {fileID: 7400000, guid: aba09d1f803662e49b6213e430da3b1c, type: 2}
+        - {fileID: 7400000, guid: 65fd1f0bc2539654e9ccca6578d102c9, type: 2}
+        - {fileID: 7400000, guid: 18046288a2d1eb749a8368809effa71b, type: 2}
+        - {fileID: 7400000, guid: 50d875a0218977546a34f3618817b2cd, type: 2}
+        - {fileID: 7400000, guid: a1271d04ed67baf4ebf5e3d59ace928f, type: 2}
+        _Speeds: []
+        _SynchronizeChildren: 00
+        _Thresholds:
+        - {x: 0, y: 0}
+        - {x: 0, y: 6}
+        - {x: 0, y: -6}
+        - {x: 6, y: 0}
+        - {x: -6, y: 0}
+        _DefaultParameter: {x: 0, y: 0}
+        _Type: 1
+        _ParameterNameX: {fileID: 11400000, guid: d02d01f8d491f924daead326dad8ff2e, type: 2}
+        _ParameterNameY: {fileID: 11400000, guid: f152c3df6be94624fbcfa44a40b0c4df, type: 2}

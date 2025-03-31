@@ -5,17 +5,16 @@ using Pathfinding;
 using Animancer;
 using UnityEditor;
 
-public class EnemyMovementController : MonoBehaviour, ICharacterMovementController
+public class EnemyMovementController : CharacterMovementController
 {
     [SerializeField]
     Enemy enemy;
 
     [SerializeField]
-    RichAI pathfinding;
+    public RichAI pathfinding;
 
     [SerializeField]
-    protected Rigidbody _Rb;
-    public Rigidbody rb => _Rb;
+    public Rigidbody rb;
 
     [SerializeField]
     CharacterData enemyData;
@@ -45,13 +44,19 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
 
     protected EnemyActionManager actionManager;
 
+    private float defaultDrag;
+
+    private bool forceLookAtPlayer = false;
+
     private void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
-        gameObject.GetComponentInParentOrChildren(ref _Rb);
+        gameObject.GetComponentInParentOrChildren(ref rb);
         gameObject.GetComponentInParentOrChildren(ref enemy);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
         enemyData = enemy.characterData;
+
+        defaultDrag = rb.drag;
 
         pathfinding.maxSpeed = enemyData.maxBaseMoveSpeed;
         pathfinding.acceleration = enemyData.baseMoveAcceleration;
@@ -76,8 +81,19 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         if (rotationEnabled && (!movementEnabled || forceManualRotation))
         {
             pathfinding.enableRotation = false;
-            Vector3 targetDirection = target.transform.position - enemy.transform.position;
-            float degrees = enemyData.rotationSpeed * Time.fixedDeltaTime;
+            Vector3 targetDirection;
+            float degrees;
+            if (!forceLookAtPlayer)
+            {
+                targetDirection = target.transform.position - enemy.transform.position;
+            }
+            else
+            {
+                targetDirection = Player.instance.transform.position - enemy.transform.position;
+            }
+
+            degrees = enemyData.rotationSpeed * Time.fixedDeltaTime;
+
             enemy.gameObject.transform.rotation = pathfinding.SimulateRotationTowards(targetDirection, degrees);
         }
         else
@@ -127,61 +143,76 @@ public class EnemyMovementController : MonoBehaviour, ICharacterMovementControll
         pathfinding.destination = position;
     }
 
-    public void SetAllowMovement(bool isAllowed)
+    public override void SetAllowMovement(bool isAllowed)
     {
         pathfinding.isStopped = !isAllowed;
         movementEnabled = isAllowed;
     }
 
-    public void SetAllowRotation(bool isAllowed)
+    public override void SetAllowRotation(bool isAllowed)
     {
         rotationEnabled = isAllowed;
     }
 
-    public void AddSpeedModifier(float modifier)
+    public void SetForceLookAtPlayer(bool lookAtPlayer)
+    {
+        forceLookAtPlayer = lookAtPlayer;
+    }
+
+    public override void AddSpeedModifier(float modifier)
     {
         throw new System.NotImplementedException();
     }
 
-    public void AddVelocity(Vector3 velocity)
+    public override Vector3 GetVelocity()
+    {
+        return pathfinding.velocity + rb.velocity;
+    }
+
+    public override void AddVelocity(Vector3 velocity)
     {
         rb.velocity += velocity;
     }
 
-    public void ApplyImpulseForce(Vector3 direction, float power)
+    public override void ApplyImpulseForce(Vector3 direction, float power)
     {
         rb.AddForce(direction.normalized * power, ForceMode.Impulse);
     }
 
-    public bool IsGrounded()
+    public override bool IsGrounded()
     {
         throw new System.NotImplementedException();
     }
 
-    public void LockVelocity(Vector3 velocity)
+    public override void LockVelocity(Vector3 velocity)
     {
         internalLockedVelocity = velocity;
         velocityLocked = true;
     }
 
-    public void RemoveSpeedModifier(float modifier)
+    public override void RemoveSpeedModifier(float modifier)
     {
         throw new System.NotImplementedException();
     }
 
-    public void SetVelocity(Vector3 velocity)
+    public override void SetVelocity(Vector3 velocity)
     {
         rb.velocity = velocity;
     }
 
-    public void UnlockVelocity()
+    public override void UnlockVelocity()
     {
         velocityLocked = false;
     }
 
-    public void SetDrag(float drag)
+    public override void SetGroundDrag(float drag)
     {
         rb.drag = drag;
+    }
+
+    public void ResetGroundDrag()
+    {
+        rb.drag = defaultDrag;
     }
 
     public void SetAIEnabled(bool isEnabled)

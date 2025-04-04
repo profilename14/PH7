@@ -826,6 +826,7 @@ MonoBehaviour:
   patrolPauseTime: 0
   randomlyChooseTargets: 0
   patrolTargets: []
+  isPatrolling: 1
 --- !u!114 &2344848992705999553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2123,10 +2124,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: 0b6d229440ea0c348be8eb5173da0436, type: 2}
   _ActionManager: {fileID: 6042688283997230385}
+  movementController: {fileID: 0}
   _Stats: {fileID: 4856611634706026665}
   _VFXManager: {fileID: 9111469660060195370}
   isInvincible: 0
   isKnockbackImmune: 0
+  isHitstunImmune: 0
 --- !u!114 &4856611634706026665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,7 +2323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 8443472634582701643}
   pathfinding: {fileID: 3029289388604136770}
-  _Rb: {fileID: 7422807761995359173}
+  rb: {fileID: 7422807761995359173}
   enemyData: {fileID: 11400000, guid: 0b6d229440ea0c348be8eb5173da0436, type: 2}
   isGrounded: 0
 --- !u!1 &6270250564127470477

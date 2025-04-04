@@ -354,10 +354,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
   _ActionManager: {fileID: 8489805586315357941}
+  movementController: {fileID: 0}
   _Stats: {fileID: 6778341233954487993}
   _VFXManager: {fileID: 5967026036674942662}
   isInvincible: 0
   isKnockbackImmune: 0
+  isHitstunImmune: 0
 --- !u!114 &6778341233954487993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 8288573742154440887}
   pathfinding: {fileID: 2576367018769746851}
-  _Rb: {fileID: 8100329641564207091}
+  rb: {fileID: 8100329641564207091}
   enemyData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
   isGrounded: 0
 --- !u!114 &5967026036674942662
@@ -3039,6 +3041,8 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: a48523ff1d6149341b179bd00058168e, type: 2}
     _NormalizedStartTime: NaN
   clawForwardForce: 30
+  playerTargetDistance: 0
+  drag: 8
   references:
     version: 2
     RefIds:
@@ -3389,6 +3393,7 @@ MonoBehaviour:
   patrolPauseTime: 2
   randomlyChooseTargets: 1
   patrolTargets: []
+  isPatrolling: 1
   eyeOffset: {x: 0, y: 1, z: 0}
   sightDistance: 20
   viewConeAngle: 90

@@ -1576,6 +1576,7 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: 69a2bfc54f9725247907704aa9dfa3f2, type: 2}
   movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
+  cinemachineManager: {fileID: 0}
   attackAnimations:
   - _FadeDuration: 0.033333335
     _Speed: 1
@@ -1623,7 +1624,7 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: 17a773497e3bc274c8acedaee73535d4, type: 2}
     _NormalizedStartTime: 0.086956516
   downwardsSwingAnimation:
-    _FadeDuration: 0.25
+    _FadeDuration: 0.033333335
     _Speed: 1
     _Events:
       _NormalizedTimes:
@@ -1637,12 +1638,14 @@ MonoBehaviour:
       - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
       - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
     _Clip: {fileID: 7400000, guid: 2137a23bef08b7b46abbf86f95164df0, type: 2}
-    _NormalizedStartTime: NaN
+    _NormalizedStartTime: 0.18181819
   swordSwingSFX: {fileID: 0}
   swingForce: 8
+  hitStopTime: 0.15
   hitRecoilForce: 0
   pogoForce: 30
   startNewComboCooldown: 0.5
+  drag: 0
   references:
     version: 2
     RefIds: []
@@ -8739,10 +8742,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: f9afc0b30bec4c5479f252168556f5c6, type: 2}
   _ActionManager: {fileID: 3473925023760633006}
+  movementController: {fileID: 0}
   _Stats: {fileID: 280165432961842639}
   _VFXManager: {fileID: 3352695721243177315}
   isInvincible: 0
   isKnockbackImmune: 0
+  isHitstunImmune: 0
   playerStats: {fileID: 280165432961842639}
   playerActionManager: {fileID: 3473925023760633006}
 --- !u!114 &280165432961842639
@@ -8778,9 +8783,10 @@ MonoBehaviour:
   MaxStableMoveSpeed: 22.5
   StableMovementSharpness: 15
   OrientationSharpness: 20
+  defaultGroundDrag: 1
   MaxAirMoveSpeed: 20
   AirAccelerationSpeed: 200
-  Drag: 0
+  defaultAirDrag: 0.1
   IgnoredColliders:
   - {fileID: 0}
   - {fileID: 0}
@@ -8811,16 +8817,16 @@ MonoBehaviour:
   CapsuleRadius: 0.6
   CapsuleHeight: 3
   CapsuleYOffset: 1
-  CapsulePhysicsMaterial: {fileID: 0}
+  CapsulePhysicsMaterial: {fileID: 13400000, guid: 4f46d2bf78001c04ca88c358d2150118, type: 2}
   GroundDetectionExtraDistance: 0
   MaxStableSlopeAngle: 60
   StableGroundLayers:
     serializedVersion: 2
     m_Bits: 4294967295
   DiscreteCollisionEvents: 0
-  StepHandling: 2
-  MaxStepHeight: 0.5
-  AllowSteppingWithoutStableGrounding: 0
+  StepHandling: 1
+  MaxStepHeight: 1
+  AllowSteppingWithoutStableGrounding: 1
   MinRequiredStepDepth: 0
   LedgeAndDenivelationHandling: 1
   MaxStableDistanceFromLedge: 0
@@ -8844,7 +8850,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4173532551381243189}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4f46d2bf78001c04ca88c358d2150118, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -8890,6 +8896,7 @@ MonoBehaviour:
   fullyChargedVFX: {fileID: 7523957628033821315}
   chargedSwingVFX: {fileID: 8295192807597792303}
   dashColor: {r: 0, g: 0, b: 0, a: 0}
+  dashGlowIntensity: 0
   damageFlashColor: {r: 1, g: 1, b: 1, a: 1}
   damageFlashTime: 0.2
   algaeGlowColor: {r: 0, g: 0.9898968, b: 1, a: 1}

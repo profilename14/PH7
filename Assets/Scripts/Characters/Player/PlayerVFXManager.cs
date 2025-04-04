@@ -118,6 +118,30 @@ public class PlayerVFXManager : CharacterVFXManager
         }
     }
 
+    public void PauseSwordSwingVFX(SwordSwingType vfx, float pauseTime)
+    {
+        switch (vfx)
+        {
+            case SwordSwingType.Swing0:
+                StartCoroutine(SwordSwingPause(swing0VFX, pauseTime));
+                break;
+            case SwordSwingType.Swing1:
+                StartCoroutine(SwordSwingPause(swing1VFX, pauseTime));
+                break;
+            case SwordSwingType.Swing2:
+                StartCoroutine(SwordSwingPause(swing2VFX, pauseTime));
+                break;
+            case SwordSwingType.SwingDown:
+                StartCoroutine(SwordSwingPause(swingDownVFX, pauseTime));
+                break;
+            case SwordSwingType.ChargedSwing:
+                StartCoroutine(SwordSwingPause(chargedSwingVFX, pauseTime));
+                break;
+            default:
+                break;
+        }
+    }
+
     public void SwordHitVFX(Vector3 hitPosition)
     {
         Instantiate(swordHitVFX, hitPosition + Vector3.up, Quaternion.identity);
@@ -149,6 +173,15 @@ public class PlayerVFXManager : CharacterVFXManager
     {
         ResetEmissionColors(baseRenderers);
         ResetBodyEmissionColor();
+    }
+
+    public IEnumerator SwordSwingPause(VisualEffect vfx, float seconds)
+    {
+        //vfx.pause = true;
+
+        yield return new WaitForSeconds(seconds);
+
+        //vfx.pause = false;
     }
 
     public IEnumerator FlashEmissionColor(float seconds, Color color, Renderer[] renderers)

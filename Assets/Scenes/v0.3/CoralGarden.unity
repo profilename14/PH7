@@ -1088,17 +1088,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5633728081867202212, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: downwardsSwingAnimation._FadeDuration
-      value: 0.033333335
-      objectReference: {fileID: 0}
-    - target: {fileID: 5633728081867202212, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: downwardsSwingAnimation._NormalizedStartTime
-      value: 0.18181819
-      objectReference: {fileID: 0}
-    - target: {fileID: 5975020904610433524, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: m_Material
+      propertyPath: cinemachineManager
       value: 
-      objectReference: {fileID: 13400000, guid: 4f46d2bf78001c04ca88c358d2150118, type: 2}
+      objectReference: {fileID: 2106033582}
     - target: {fileID: 6924254229489201860, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1106,22 +1098,6 @@ PrefabInstance:
     - target: {fileID: 6924254229489201860, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7001688360752234840, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: StepHandling
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7001688360752234840, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: MaxStepHeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7001688360752234840, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: CapsulePhysicsMaterial
-      value: 
-      objectReference: {fileID: 13400000, guid: 4f46d2bf78001c04ca88c358d2150118, type: 2}
-    - target: {fileID: 7001688360752234840, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: AllowSteppingWithoutStableGrounding
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8127060162804576988, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.x
@@ -6220,6 +6196,7 @@ GameObject:
   - component: {fileID: 825144756}
   - component: {fileID: 825144759}
   - component: {fileID: 825144760}
+  - component: {fileID: 825144761}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -6276,6 +6253,23 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!114 &825144761
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825144755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 20a705aea2d80e0478fb89b6f43d8530, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 25
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &834356079
 GameObject:
   m_ObjectHideFlags: 0
@@ -8198,7 +8192,6 @@ GameObject:
   - component: {fileID: 1168987648}
   - component: {fileID: 1168987647}
   - component: {fileID: 1168987646}
-  - component: {fileID: 1168987645}
   - component: {fileID: 1168987644}
   - component: {fileID: 1168987643}
   - component: {fileID: 1168987651}
@@ -8239,53 +8232,6 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: c093ab080b6c44424b2e4851c9011ba9, type: 2}
---- !u!114 &1168987645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1168987640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9b9a9ece271cf848a74a232a5372eea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 1
-  curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.2352184
-      value: 0.7503426
-      inSlope: 0.036730003
-      outSlope: 0.036730003
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.991272
-      value: -0.0077171326
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  start: 0
 --- !u!114 &1168987646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8337,7 +8283,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168987640}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6635676cf7fa613489da0ae157d60628, type: 3}
   m_Name: 
@@ -16641,6 +16587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2106033581}
   - component: {fileID: 2106033580}
+  - component: {fileID: 2106033582}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -16703,6 +16650,20 @@ Transform:
   - {fileID: 825144756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 47.131, y: -45, z: 0}
+--- !u!114 &2106033582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106033579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c77241ce432a5740b552fd087d2f385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakePower: 0.125
+  shakeDuration: 0.15
 --- !u!1 &2106789470
 GameObject:
   m_ObjectHideFlags: 0
@@ -16959,6 +16920,7 @@ SceneRoots:
   - {fileID: 1175976981}
   - {fileID: 1747931367}
   - {fileID: 1535652214}
+  - {fileID: 2106033581}
   - {fileID: 1168987650}
   - {fileID: 1432526433}
   - {fileID: 159028534}
@@ -16972,5 +16934,4 @@ SceneRoots:
   - {fileID: 1380397412}
   - {fileID: 512481299}
   - {fileID: 1149448359}
-  - {fileID: 2106033581}
   - {fileID: 54050428}

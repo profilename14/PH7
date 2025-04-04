@@ -18,6 +18,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     PlayerMovementController movementController;
 
+
     [Header("Player States")]
     [SerializeField]
     private PlayerJump jumpState;
@@ -233,13 +234,17 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnDash(InputAction.CallbackContext context)
     {
-        if (dashTimer > 0)
+
+        if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero)
         {
             return;
         }
         //dashThisFrame = true;
         if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
         StateMachine.TrySetState(dashState);
+
+        
+        character.SetIsInvincible(true);
     }
 
     void OnBubbleStarted(InputAction.CallbackContext context)
@@ -332,6 +337,7 @@ public class PlayerActionManager : CharacterActionManager
     public void EndDash(float dashCooldown)
     {
         dashTimer = dashCooldown;
+        character.SetIsInvincible(false);
     }
 
     //

@@ -26,8 +26,10 @@ public class TakeDamageState : CharacterState
         _ActionManager.SetAllStatesAllowed(false);
 
         currentState = _ActionManager.anim.Play(flinchAnimation);
-        currentState.Time = 0;
+        currentState.Time = 0.1f;
         currentState.Events(this).OnEnd ??= EndHitStun;
+
+        StartCoroutine(HitStopEnumerator(0.15f));
     }
 
     private void EndHitStun()
@@ -37,5 +39,12 @@ public class TakeDamageState : CharacterState
         _ActionManager.EndHitStun();
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();
+    }
+
+    private IEnumerator HitStopEnumerator(float duration)
+    {
+        currentState.IsPlaying = false;
+        yield return new WaitForSeconds(duration);
+        currentState.IsPlaying = true;
     }
 }

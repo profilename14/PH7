@@ -13,6 +13,9 @@ public class PlayerSwordAttack : AttackState
 
     [SerializeField]
     private RotationController rotationController;
+    
+    [SerializeField]
+    CinemachineManager cinemachineManager;
 
     // Just start at maxValue so it will always have first swing at 0.
     int currentSwing = int.MaxValue;
@@ -31,6 +34,9 @@ public class PlayerSwordAttack : AttackState
 
     [SerializeField]
     float swingForce = 2f;
+    
+    [SerializeField]
+    float hitStopTime = 0.15f;
 
     [SerializeField]
     float hitRecoilForce;
@@ -157,6 +163,13 @@ public class PlayerSwordAttack : AttackState
     {
         vfx.SwordHitVFX(position);
 
+        if (cinemachineManager)
+        {
+            cinemachineManager.ScreenShake();
+        }
+
+        vfx.PauseSwordSwingVFX(currentSwordSwing, hitStopTime);
+
         if(currentSwordSwing == SwordSwingType.SwingDown)
         {
             movementController.SetVelocity(Vector3.zero);
@@ -164,6 +177,8 @@ public class PlayerSwordAttack : AttackState
         }
         else
         {
+            StartCoroutine(HitStop(hitStopTime));
+
             movementController.SetVelocity(movementController.gameObject.transform.transform.forward * hitRecoilForce);
         }
     }
@@ -192,6 +207,13 @@ public class PlayerSwordAttack : AttackState
         {
             AllowMediumPriority();
         }
+    }
+
+    private IEnumerator HitStop(float duration)
+    {
+        currentState.IsPlaying = false;
+        yield return new WaitForSeconds(duration);
+        currentState.IsPlaying = true;
     }
 
     protected override void OnDisable()

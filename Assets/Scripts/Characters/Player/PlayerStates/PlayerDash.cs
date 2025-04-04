@@ -24,7 +24,7 @@ public class PlayerDash : DashState
 
     // float distance
     // float duration
-    [SerializeField] private float dashCooldown = 0.5f;
+    [SerializeField] private float dashCooldown = 0.75f;
     [SerializeField] private float dashTimer;
     
     [SerializeField]

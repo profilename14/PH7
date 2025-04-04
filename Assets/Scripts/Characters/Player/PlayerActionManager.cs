@@ -65,6 +65,7 @@ public class PlayerActionManager : CharacterActionManager
     private float invincibilityTime = 1f;
     
     public float dashTimer = 0f;
+    public bool hasDashedInAir = false;
 
     [SerializeField]
     private Vector3 cameraAngle = new Vector3(0, 135, 0);
@@ -187,6 +188,11 @@ public class PlayerActionManager : CharacterActionManager
         else playerDirectionalInput.lookDir = GetMouseDirection();
 
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
+
+        if (movementController.IsGrounded())
+        {
+            hasDashedInAir = false;
+        }
     }
 
     //
@@ -195,6 +201,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnJumpStarted(InputAction.CallbackContext context)
     {
+        hasDashedInAir = false;
         // Jump button is held
         jumpHeld = true;
         if (!StateMachine.TrySetState(jumpState)) inputBuffer.Buffer(jumpState, inputTimeOut);
@@ -234,11 +241,11 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnDash(InputAction.CallbackContext context)
     {
-
-        if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero)
+        if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero || hasDashedInAir)
         {
             return;
         }
+        hasDashedInAir = true;
         //dashThisFrame = true;
         if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
         StateMachine.TrySetState(dashState);

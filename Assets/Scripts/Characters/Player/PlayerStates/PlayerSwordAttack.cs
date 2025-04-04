@@ -180,6 +180,8 @@ public class PlayerSwordAttack : AttackState
             StartCoroutine(HitStop(hitStopTime));
 
             movementController.SetVelocity(movementController.gameObject.transform.transform.forward * hitRecoilForce);
+
+            actionManager.hasDashedInAir = false;
         }
     }
 

@@ -125,6 +125,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Lock On"",
+                    ""type"": ""Button"",
+                    ""id"": ""57c6957f-17bc-4cb4-9cbf-1ff84a6a3cc8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -490,6 +499,28 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cae1357-a2ae-455e-95f3-af809df71f00"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8846efe-568d-4b74-b310-e257f1886921"",
+                    ""path"": ""<SwitchProControllerHID>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Switch Pro Controller"",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -537,6 +568,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Typhis_OpenInventory = m_Typhis.FindAction("Open Inventory", throwIfNotFound: true);
         m_Typhis_Pause = m_Typhis.FindAction("Pause", throwIfNotFound: true);
         m_Typhis_QuickMap = m_Typhis.FindAction("Quick Map", throwIfNotFound: true);
+        m_Typhis_LockOn = m_Typhis.FindAction("Lock On", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -609,6 +641,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Typhis_OpenInventory;
     private readonly InputAction m_Typhis_Pause;
     private readonly InputAction m_Typhis_QuickMap;
+    private readonly InputAction m_Typhis_LockOn;
     public struct TyphisActions
     {
         private @InputMaster m_Wrapper;
@@ -624,6 +657,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @OpenInventory => m_Wrapper.m_Typhis_OpenInventory;
         public InputAction @Pause => m_Wrapper.m_Typhis_Pause;
         public InputAction @QuickMap => m_Wrapper.m_Typhis_QuickMap;
+        public InputAction @LockOn => m_Wrapper.m_Typhis_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_Typhis; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -666,6 +700,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @QuickMap.started += instance.OnQuickMap;
             @QuickMap.performed += instance.OnQuickMap;
             @QuickMap.canceled += instance.OnQuickMap;
+            @LockOn.started += instance.OnLockOn;
+            @LockOn.performed += instance.OnLockOn;
+            @LockOn.canceled += instance.OnLockOn;
         }
 
         private void UnregisterCallbacks(ITyphisActions instance)
@@ -703,6 +740,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @QuickMap.started -= instance.OnQuickMap;
             @QuickMap.performed -= instance.OnQuickMap;
             @QuickMap.canceled -= instance.OnQuickMap;
+            @LockOn.started -= instance.OnLockOn;
+            @LockOn.performed -= instance.OnLockOn;
+            @LockOn.canceled -= instance.OnLockOn;
         }
 
         public void RemoveCallbacks(ITyphisActions instance)
@@ -751,5 +791,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnQuickMap(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
 }

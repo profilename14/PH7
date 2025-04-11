@@ -63,6 +63,20 @@ public class PlayerActionManager : CharacterActionManager
 
     [SerializeField]
     private float invincibilityTime = 1f;
+
+    [SerializeField]
+    private bool lockedOn;
+
+    [SerializeField]
+    private GameObject lockOnTarget;
+
+    [SerializeField]
+    private float lockOnRange;
+
+    [SerializeField]
+    private GameObject lockOnIcon;
+
+    private LayerMask enemyLayerMask;
     
     public float dashTimer = 0f;
     public bool hasDashedInAir = false;
@@ -85,6 +99,8 @@ public class PlayerActionManager : CharacterActionManager
         controls = new InputMaster();
         playerInput = GetComponent<PlayerInput>();
         inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
+        enemyLayerMask = LayerMask.GetMask("Enemies");
+        lockOnIcon.GetComponent<Renderer>().material.renderQueue = 4000;
     }
 
     private void OnEnable()
@@ -115,8 +131,11 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
 
-        controls.Typhis.Interact.Enable();
-        controls.Typhis.Interact.performed += context => OnInteractPerformed(context);
+        controls.Typhis.LockOn.Enable();
+        controls.Typhis.LockOn.performed += context => OnLockOnPerformed(context);
+
+        controls.Typhis.Interact.Disable();
+        //controls.Typhis.Interact.performed += context => OnInteractPerformed(context);
 
         controls.Typhis.QuickMap.Disable();
         controls.Typhis.OpenInventory.Disable();
@@ -174,18 +193,30 @@ public class PlayerActionManager : CharacterActionManager
         // Read movement input
         playerDirectionalInput.moveDir = new Vector3(moveInput.x, 0, moveInput.y);
 
-        if (playerDirectionalInput.usingController)
+        if (lockedOn)
         {
-            // If the right stick has input, then it should override the left stick for determining look direction.
-            // Otherwise, controller usually uses left stick for lookDir.
-            Vector2 rightStick = lookAction.ReadValue<Vector2>().normalized;
-            if (rightStick != Vector2.zero)
-            {
-                playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
-            }
-            else playerDirectionalInput.lookDir = GetDirRelativeToCamera(moveDir);
+            lockOnIcon.SetActive(true);
+            lockOnIcon.transform.position = lockOnTarget.transform.position;
+            lockOnIcon.transform.LookAt(Camera.main.transform);
+            Vector3 lockOnDirHorizontal = (lockOnTarget.transform.position - character.transform.position).normalized;
+            playerDirectionalInput.lookDir = new Vector3(lockOnDirHorizontal.x, 0, lockOnDirHorizontal.z);
         }
-        else playerDirectionalInput.lookDir = GetMouseDirection();
+        else
+        {
+            lockOnIcon.SetActive(false);
+            if (playerDirectionalInput.usingController)
+            {
+                // If the right stick has input, then it should override the left stick for determining look direction.
+                // Otherwise, controller usually uses left stick for lookDir.
+                Vector2 rightStick = lookAction.ReadValue<Vector2>().normalized;
+                if (rightStick != Vector2.zero)
+                {
+                    playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
+                }
+                else playerDirectionalInput.lookDir = GetDirRelativeToCamera(moveDir);
+            }
+            else playerDirectionalInput.lookDir = GetMouseDirection();
+        }
 
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
 
@@ -316,6 +347,36 @@ public class PlayerActionManager : CharacterActionManager
     void OnInteractPerformed(InputAction.CallbackContext context)
     {
         interactCallback?.Invoke();
+    }
+
+    void OnLockOnPerformed(InputAction.CallbackContext context)
+    {
+        if (lockedOn)
+        {
+            lockedOn = false;
+            return;
+        }
+
+        Collider[] enemyColliders = Physics.OverlapSphere(character.transform.position, lockOnRange, enemyLayerMask);
+
+        if (enemyColliders.Length == 0) return;
+
+        GameObject closestEnemy = enemyColliders[0].gameObject;
+
+        float closestEnemyDistance = lockOnRange + 1;
+
+        foreach (Collider c in enemyColliders)
+        {
+            float dist = Vector3.Distance(character.transform.position, c.gameObject.transform.position);
+            if (dist < closestEnemyDistance)
+            {
+                closestEnemy = c.gameObject;
+                closestEnemyDistance = dist;
+            }
+        }
+
+        lockOnTarget = closestEnemy;
+        lockedOn = true;
     }
 
     //

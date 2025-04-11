@@ -56,11 +56,14 @@ public class PlayerChargeAttack : AttackState
 
         rotationController.snapToCurrentMouseAngle();
 
+        movementController.SetAllowMovement(false);
+
         _ActionManager.anim.Play(chargingAnimation);
     }
 
     protected override void OnDisable()
     {
+        movementController.SetAllowMovement(true);
         _ActionManager.SetAllActionPriorityAllowed(true);
     }
 

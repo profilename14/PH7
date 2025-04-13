@@ -354,6 +354,7 @@ public class PlayerActionManager : CharacterActionManager
         if (lockedOn)
         {
             lockedOn = false;
+            lockOnTarget.GetComponentInParentOrChildren<Enemy>().DisableLockOn();
             return;
         }
 
@@ -376,7 +377,14 @@ public class PlayerActionManager : CharacterActionManager
         }
 
         lockOnTarget = closestEnemy;
+        lockOnTarget.GetComponentInParentOrChildren<Enemy>().LockOn(OnLockOnTargetDie);
         lockedOn = true;
+    }
+
+    void OnLockOnTargetDie()
+    {
+        lockedOn = false;
+        lockOnTarget = null;
     }
 
     //

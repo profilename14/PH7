@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     protected bool isHitstunImmune = false;
 
-    private bool isDead = false;
+    protected bool isDead = false;
 
     protected void Awake()
     {

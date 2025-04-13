@@ -6,6 +6,12 @@ public class Enemy : Character
 {
     EnemyData enemyData;
 
+    private bool isLockedOn;
+
+    public delegate void OnDeathDelegate();
+
+    public OnDeathDelegate onDeath;
+
     private void Awake()
     {
         enemyData = (EnemyData) characterData;
@@ -32,5 +38,24 @@ public class Enemy : Character
     public double GetAcidOnHit()
     {
         return enemyData.acidOnHit;
+    }
+
+    public void LockOn(OnDeathDelegate disableLockOn)
+    {
+        isLockedOn = true;
+        onDeath += disableLockOn;
+    }
+
+    public void DisableLockOn()
+    {
+        isLockedOn = false;
+        onDeath = null;
+    }
+
+    public override void Die()
+    {
+        isDead = true;
+        if (isLockedOn) onDeath.Invoke();
+        Destroy(this.gameObject);
     }
 }

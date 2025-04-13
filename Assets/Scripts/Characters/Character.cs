@@ -68,16 +68,16 @@ public abstract class Character : MonoBehaviour, IHittable
             }
             else
             {
-                Debug.Log(attack.character);
-                Debug.Log(attack);
+                //Debug.Log(attack.character);
+                //Debug.Log(attack);
                 _VFXManager.TookDamageVFX(hitPoint, attack.character.transform.position);
             }
         }
 
-        if (!isKnockbackImmune)
+        if (!isKnockbackImmune && characterData.knockbackResistance != 0)
         {
             Vector3 knockbackDir = new Vector3(-(hitPoint.x - transform.position.x), 0, -(hitPoint.z - transform.position.z));
-            movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback);
+            movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback / characterData.knockbackResistance);
         }
         
         if(!isHitstunImmune) actionManager.Hitstun();
@@ -103,10 +103,10 @@ public abstract class Character : MonoBehaviour, IHittable
             actionManager.Hitstun();
         }
 
-        if (!isKnockbackImmune)
+        if (!isKnockbackImmune && characterData.knockbackResistance != 0)
         {
             Vector3 knockbackDir = -(projectile.transform.position - transform.position);
-            movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback);
+            movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback / characterData.knockbackResistance);
         }
 
     }

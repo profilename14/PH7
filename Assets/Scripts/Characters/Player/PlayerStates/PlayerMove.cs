@@ -14,6 +14,9 @@ public class PlayerMove : CharacterState
     private PlayerActionManager actionManager;
 
     [SerializeField]
+    private PlayerVFXManager playerVFXManager;
+
+    [SerializeField]
     TransitionAsset idleAnimation;
 
     [SerializeField]
@@ -25,6 +28,7 @@ public class PlayerMove : CharacterState
     [SerializeField]
     TransitionAsset landAnimation;
 
+
     private PlayerDirectionalInput directionalInput;
 
     private bool wasGrounded;
@@ -33,6 +37,8 @@ public class PlayerMove : CharacterState
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
+
+    private bool isPlayingRunVFX = false;
 
 
     private void Awake()
@@ -45,6 +51,9 @@ public class PlayerMove : CharacterState
     {
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
+
+        playerVFXManager.StartRunVFX(gameObject.transform);
+        isPlayingRunVFX = true;
     }
 
     protected void Update()
@@ -88,11 +97,31 @@ public class PlayerMove : CharacterState
             wasGrounded = false;
             _ActionManager.anim.Play(fallAnimation);
         }
+
+        if (!isPlayingRunVFX)
+        {
+            if (movementController.IsGrounded() && directionalInput.moveDir.magnitude > 0)
+            {
+                playerVFXManager.StartRunVFX(gameObject.transform);
+                isPlayingRunVFX = true;
+            }
+        }
+        else
+        {
+            if (!movementController.IsGrounded() || directionalInput.moveDir.magnitude <= 0)
+            {
+                playerVFXManager.StopRunVFX();
+                isPlayingRunVFX = false;
+            }
+        }
     }
 
     protected override void OnDisable()
     {
         isLanding = false;
+
+        playerVFXManager.StopRunVFX();
+        isPlayingRunVFX = false;
     }
 
 /*#if UNITY_EDITOR

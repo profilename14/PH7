@@ -74,6 +74,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     [SerializeField]
     private GameObject rotationRoot;
+    
+    [SerializeField]
+    private CinemachineManager cinemachineManager;
 
     // Custom Variables Below:
     public bool isDashing = false;
@@ -95,12 +98,18 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     private Vector3 camForward;
     private Vector3 camRight;
 
+    private PlayerVFXManager playerVFXManager;
+
+
+
     private void Awake()
     {
         // Assign the characterController to the motor
         Motor.CharacterController = this;
 
         CharacterCamera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        playerVFXManager = gameObject.GetComponent<PlayerVFXManager>();
 
         camForward = CharacterCamera.transform.forward;
         camRight = CharacterCamera.transform.right;
@@ -315,6 +324,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
             // Add to the return velocity and reset jump state
             currentVelocity = new Vector3(currentVelocity.x, jumpUpSpeed, currentVelocity.z);
             jumpedThisFrame = true;
+
         }
         else
         {
@@ -434,6 +444,11 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     protected void OnLanded()
     {
+        playerVFXManager.StartLandVFX(transform.position - Vector3.up / 2);
+        if (cinemachineManager)
+        {
+            cinemachineManager.ScreenShake(0.25f, 1.5f);
+        }
     }
 
     protected void OnLeaveStableGround()
@@ -496,6 +511,11 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     {
         jumpHeld = true;
         jumpPressedThisFrame = true;
+        playerVFXManager.StartJumpVFX(transform.position - Vector3.up / 2);
+        if (cinemachineManager)
+        {
+            cinemachineManager.ScreenShake(0.5f, 1.25f);
+        }
     }
 
     public void StopJump()

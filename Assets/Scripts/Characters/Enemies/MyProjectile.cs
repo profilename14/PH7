@@ -58,11 +58,11 @@ public class MyProjectile : MonoBehaviour
         Vector3 attackHitPosition = other.ClosestPointOnBounds(transform.position);
 
         hittableScript.Hit(this, attackHitPosition);
-        OnAttackHit(attackHitPosition);
+        OnAttackHit(attackHitPosition, other);
         sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
     }
 
-    protected virtual void OnAttackHit(Vector3 position)
+    protected virtual void OnAttackHit(Vector3 position, Collider other)
     {
         return;
     }

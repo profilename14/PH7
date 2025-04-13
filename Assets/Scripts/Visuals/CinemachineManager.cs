@@ -10,8 +10,8 @@ public class CinemachineManager : MonoBehaviour
     private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin perlinNoise;
 
-    [SerializeField] float shakePower = 0.5f;
-    [SerializeField] float shakeDuration = 0.5f;
+    [SerializeField] float shakePower = 0.125f;
+    [SerializeField] float shakeDuration = 0.15f;
 
 
     // Start is called before the first frame update
@@ -30,9 +30,9 @@ public class CinemachineManager : MonoBehaviour
 
     }
 
-    public void ScreenShake(float intensity, float duration)
+    public void ScreenShake(float intensityMult, float durationMult)
     {
-        StartCoroutine(ShakeRoutine(intensity, duration));
+        StartCoroutine(ShakeRoutine(shakePower * intensityMult, shakeDuration * durationMult));
     }
 
     public void ScreenShake()

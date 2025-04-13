@@ -66,12 +66,15 @@ public class PlayerSwordAttack : AttackState
 
     private Vector3 moveDirAtStart; 
 
+    private float baseKnockback;
+    private float baseFinisherKnockback;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
         => attackAnimations.Length > 0 && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
-    protected virtual void Awake()
+    protected void Awake()
     {
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
@@ -91,13 +94,19 @@ public class PlayerSwordAttack : AttackState
         downwardsSwingAnimation.Events.SetCallback(StartSwordSwingEvent, StartSwordSwing);
         downwardsSwingAnimation.Events.SetCallback(EndSwordSwingEvent, EndSwordSwing);
         downwardsSwingAnimation.Events.SetCallback(AllowHighPriorityEvent, AllowHighPriority);
+
+        baseKnockback = _AttackDataClone.knockback;
+        baseFinisherKnockback = _AttackDataClone.knockback * 1.15f; // Todo: raise this when the cooldown on swing 3 is increased
+
+        Debug.Log(baseKnockback);
     }
+
 
     protected override void OnEnable()
     {
         directionalInput = actionManager.GetDirectionalInput();
 
-        moveDirAtStart = directionalInput.moveDir;
+        moveDirAtStart = directionalInput.lookDir;
 
         // Fully committed to an attack once you start it.
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, false);
@@ -108,12 +117,13 @@ public class PlayerSwordAttack : AttackState
         if (movementController.IsGrounded())
         {
             movementController.SetGroundDrag(drag);
-            movementController.AddVelocity(actionManager.GetDirRelativeToCamera(moveDirAtStart) * swingForce);
+            movementController.SetVelocity(directionalInput.lookDir * swingForce);
+            movementController.SetAllowMovement(false);
 
             isPogo = false;
 
-            movementController.SetAllowMovement(false);
-            movementController.SetAllowRotation(false);
+            //movementController.SetAllowMovement(false);
+            //movementController.SetAllowRotation(false);
 
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
@@ -130,7 +140,17 @@ public class PlayerSwordAttack : AttackState
 
             currentState = _ActionManager.anim.Play(attackAnimations[currentSwing]);
 
-            if(currentSwing == 2) _ActionManager.SetAllActionPriorityAllowed(true, currentState.Duration);
+            if(currentSwing == 0 || currentSwing == 1) {
+                _AttackDataClone.knockback = baseKnockback;
+            }
+
+            if(currentSwing == 2) {
+                _ActionManager.SetAllActionPriorityAllowed(true, currentState.Duration);
+
+                _AttackDataClone.knockback = baseFinisherKnockback;
+            }
+
+
 
             // Just sets to idle after this animation fully ends.
             currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
@@ -159,7 +179,7 @@ public class PlayerSwordAttack : AttackState
         movementController.RotateToDir(directionalInput.lookDir);
     }
 
-    public override void OnAttackHit(Vector3 position)
+    public override void OnAttackHit(Vector3 position, Collider other)
     {
         vfx.SwordHitVFX(position);
 
@@ -173,7 +193,21 @@ public class PlayerSwordAttack : AttackState
         if(currentSwordSwing == SwordSwingType.SwingDown)
         {
             movementController.SetVelocity(Vector3.zero);
-            movementController.SetVelocity(movementController.gameObject.transform.transform.up * pogoForce);
+
+            float forceMod = 1;
+
+            
+            if (other.gameObject.GetComponentInParentOrChildren<Pogoable>())
+            {
+                
+                forceMod = other.gameObject.GetComponentInParentOrChildren<Pogoable>().bouncinessMod;
+            }
+            else if (other.gameObject.GetComponentInParentOrChildren<Enemy>())
+            {
+                forceMod = other.gameObject.GetComponentInParentOrChildren<Enemy>().GetBounciness();
+            }
+
+            movementController.SetVelocity(movementController.gameObject.transform.transform.up * pogoForce * forceMod);
         }
         else
         {
@@ -209,6 +243,34 @@ public class PlayerSwordAttack : AttackState
         {
             AllowMediumPriority();
         }
+    }
+
+    // Extra behavior right before/after hitting an enemy, calls AttackState's OnTriggerEnter.
+    protected void OnTriggerEnter(Collider other)
+    {
+        float distanceKnockbackMultiplier = 1;
+
+        // If an enemy is 3.5 units from Typhis, knockback is unchanged. If closer, its increased, if farther, its reduced. 
+        // A base knockback of 15 can range from about 7.5 to 22.5 with this.
+        distanceKnockbackMultiplier = ((transform.position - other.transform.position).magnitude - 3.5f) * 3f;
+
+        if (other.gameObject.tag == "Enemy")
+        {
+            Debug.Log(distanceKnockbackMultiplier);
+
+            _AttackDataClone.knockback = _AttackDataClone.knockback - distanceKnockbackMultiplier;
+        }
+
+        // Call AttackState's OnTriggerEnter
+        base.OnTriggerEnter(other);
+
+        // Change knockback back
+        if (other.gameObject.tag == "Enemy")
+        {
+            _AttackDataClone.knockback = _AttackDataClone.knockback + distanceKnockbackMultiplier;
+        }
+        
+
     }
 
     private IEnumerator HitStop(float duration)

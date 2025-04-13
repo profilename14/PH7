@@ -98,7 +98,7 @@ public class PlayerChargeAttack : AttackState
         movementController.SetAllowRotation(true);
     }
 
-    public override void OnAttackHit(Vector3 position)
+    public override void OnAttackHit(Vector3 position, Collider other)
     {
         vfx.SwordHitVFX(position);
     }

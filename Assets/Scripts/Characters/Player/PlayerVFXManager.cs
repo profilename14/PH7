@@ -41,6 +41,17 @@ public class PlayerVFXManager : CharacterVFXManager
     private VisualEffect chargedSwingVFX;
 
     [SerializeField]
+    private GameObject landVFX;
+    
+    [SerializeField]
+    private GameObject jumpVFX;
+
+    [SerializeField]
+    private ParticleSystem runVFX;
+    private ParticleSystem instantiatedRunVFX;
+
+
+    [SerializeField]
     Color dashColor;
 
     [SerializeField]
@@ -173,6 +184,32 @@ public class PlayerVFXManager : CharacterVFXManager
     {
         ResetEmissionColors(baseRenderers);
         ResetBodyEmissionColor();
+    }
+
+    public void StartLandVFX(Vector3 landPosition)
+    {
+        Instantiate(landVFX, landPosition, Quaternion.Euler(-90, 0, 0));
+    }
+
+    public void StartJumpVFX(Vector3 jumpPosition)
+    {
+        Instantiate(jumpVFX, jumpPosition, Quaternion.Euler(-90, 0, 0));
+    }
+
+    public void StartRunVFX(Transform transform)
+    {
+        if (!instantiatedRunVFX)
+        {
+            instantiatedRunVFX = Instantiate(runVFX, transform);
+        }
+
+        instantiatedRunVFX.Play();
+        
+    }
+
+    public void StopRunVFX()
+    {
+        instantiatedRunVFX.Stop();
     }
 
     public IEnumerator SwordSwingPause(VisualEffect vfx, float seconds)

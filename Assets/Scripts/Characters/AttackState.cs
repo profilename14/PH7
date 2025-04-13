@@ -7,14 +7,25 @@ public abstract class AttackState : CharacterState
 {
     [SerializeField]
     private AttackData _AttackData;
-    public AttackData attackData => _AttackData;
+    protected AttackData _AttackDataClone;
+    public AttackData attackData => _AttackDataClone;
 
-    public virtual void OnAttackHit(Vector3 position)
+    protected void Awake()
+    {
+        base.Awake();
+
+        if (_AttackDataClone == null)
+        {
+            _AttackDataClone = Instantiate(_AttackData); // Allow changing asset if needed (ex: custom knockback) without permanence
+        }
+    }
+
+    public virtual void OnAttackHit(Vector3 position, Collider other)
     {
         return;
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         // If this script is disabled, then the player is not in this attack state and nothing should happen.
         if (this.enabled == false) return;
@@ -31,9 +42,9 @@ public abstract class AttackState : CharacterState
 
         Vector3 attackHitPosition = other.ClosestPointOnBounds(_Character.transform.position);
 
-        Debug.Log(hittableScript);
+        //Debug.Log(hittableScript);
         hittableScript.Hit(this, attackHitPosition);
-        OnAttackHit(attackHitPosition);
+        OnAttackHit(attackHitPosition, other);
         _Character.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
     }
 

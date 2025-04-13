@@ -33,4 +33,9 @@ public class Enemy : Character
     {
         return enemyData.acidOnHit;
     }
+
+    public float GetBounciness()
+    {
+        return enemyData.bouncinessMod;
+    }
 }

@@ -58,4 +58,9 @@ public class Enemy : Character
         if (isLockedOn) onDeath.Invoke();
         Destroy(this.gameObject);
     }
+
+    public float GetBounciness()
+    {
+        return enemyData.bouncinessMod;
+    }
 }

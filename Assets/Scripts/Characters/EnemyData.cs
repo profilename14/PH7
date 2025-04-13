@@ -7,4 +7,5 @@ public class EnemyData : CharacterData
 {
     public double alkalineOnHit;
     public double acidOnHit;
+    public float bouncinessMod;
 }

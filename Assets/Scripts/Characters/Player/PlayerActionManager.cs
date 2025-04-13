@@ -186,7 +186,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private void FixedUpdate()
     {
-        playerDirectionalInput.usingController = true || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
+        playerDirectionalInput.usingController = false || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
 
         Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
 

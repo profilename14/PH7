@@ -1468,7 +1468,7 @@ GameObject:
   - component: {fileID: 5129742808374406057}
   m_Layer: 6
   m_Name: Sword Hitbox
-  m_TagString: Untagged
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1640,9 +1640,9 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: 2137a23bef08b7b46abbf86f95164df0, type: 2}
     _NormalizedStartTime: 0.18181819
   swordSwingSFX: {fileID: 0}
-  swingForce: 8
+  swingForce: 50
   hitStopTime: 0.15
-  hitRecoilForce: 0
+  hitRecoilForce: -10
   pogoForce: 30
   startNewComboCooldown: 0.5
   drag: 0
@@ -8742,7 +8742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: f9afc0b30bec4c5479f252168556f5c6, type: 2}
   _ActionManager: {fileID: 3473925023760633006}
-  movementController: {fileID: 0}
+  movementController: {fileID: 4630855019977460999}
   _Stats: {fileID: 280165432961842639}
   _VFXManager: {fileID: 3352695721243177315}
   isInvincible: 0
@@ -8798,6 +8798,7 @@ MonoBehaviour:
   CameraFollowPoint: {fileID: 0}
   moveInputVector: {x: 0, y: 0, z: 0}
   rotationRoot: {fileID: 9165681918186698072}
+  cinemachineManager: {fileID: 0}
   isDashing: 0
   canMove: 1
   canRotate: 1
@@ -8895,6 +8896,9 @@ MonoBehaviour:
   swingDownVFX: {fileID: 2302989203207870992}
   fullyChargedVFX: {fileID: 7523957628033821315}
   chargedSwingVFX: {fileID: 8295192807597792303}
+  landVFX: {fileID: 8819158578386018227, guid: 15c3908a6f1f22240a87d8275a4f6d5d, type: 3}
+  jumpVFX: {fileID: 8819158578386018227, guid: 075e87ca40de90e449ea4bef309d1391, type: 3}
+  runVFX: {fileID: 1845924386513714136, guid: dfc3baf2c73554445b47afaeb5978fca, type: 3}
   dashColor: {r: 0, g: 0, b: 0, a: 0}
   dashGlowIntensity: 0
   damageFlashColor: {r: 1, g: 1, b: 1, a: 1}
@@ -10277,7 +10281,12 @@ MonoBehaviour:
     usingController: 0
   inputTimeOut: 0.5
   invincibilityTime: 1
+  lockedOn: 0
+  lockOnTarget: {fileID: 0}
+  lockOnRange: 0
+  lockOnIcon: {fileID: 0}
   dashTimer: 0
+  hasDashedInAir: 0
   cameraAngle: {x: 0, y: -45, z: 0}
 --- !u!114 &559858547552153946
 MonoBehaviour:
@@ -10324,6 +10333,7 @@ MonoBehaviour:
   _Character: {fileID: 5594428598334958641}
   movementController: {fileID: 4630855019977460999}
   actionManager: {fileID: 3473925023760633006}
+  playerVFXManager: {fileID: 3352695721243177315}
   idleAnimation: {fileID: 11400000, guid: 40d87733783a5b546acc26deb98cd0e6, type: 2}
   moveAnimation: {fileID: 11400000, guid: 846a6fe84fb083b43abf634b69d9acb0, type: 2}
   fallAnimation: {fileID: 11400000, guid: bf20fa431e7ddf845a58aafbcceba05d, type: 2}

@@ -1067,10 +1067,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1493523779056607639, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: m_TagString
-      value: Hitbox
-      objectReference: {fileID: 0}
     - target: {fileID: 2448571570530612945, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1079,26 +1075,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3352695721243177315, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: runVFX
-      value: 
-      objectReference: {fileID: 1845924386513714136, guid: dfc3baf2c73554445b47afaeb5978fca, type: 3}
-    - target: {fileID: 3352695721243177315, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: jumpVFX
-      value: 
-      objectReference: {fileID: 8819158578386018227, guid: 075e87ca40de90e449ea4bef309d1391, type: 3}
-    - target: {fileID: 3352695721243177315, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: landVFX
-      value: 
-      objectReference: {fileID: 8819158578386018227, guid: 15c3908a6f1f22240a87d8275a4f6d5d, type: 3}
     - target: {fileID: 4173532551381243189, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_Name
       value: Typhis
       objectReference: {fileID: 0}
-    - target: {fileID: 4416736214720873981, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: playerVFXManager
-      value: 
-      objectReference: {fileID: 391725276}
     - target: {fileID: 4630855019977460999, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: cinemachineManager
       value: 
@@ -1110,18 +1090,6 @@ PrefabInstance:
     - target: {fileID: 5272072696214260434, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5594428598334958641, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: movementController
-      value: 
-      objectReference: {fileID: 391725272}
-    - target: {fileID: 5633728081867202212, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: swingForce
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 5633728081867202212, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: hitRecoilForce
-      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 5633728081867202212, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: cinemachineManager
@@ -3421,28 +3389,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3945392750975917770, guid: 711ee0d5c3ab8ba47a07c64b7a40777b, type: 3}
   m_PrefabInstance: {fileID: 1430850238}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &391725272 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4630855019977460999, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-  m_PrefabInstance: {fileID: 130841720}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76020eee813ed7844bcea94c5d5ce76a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &391725276 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3352695721243177315, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-  m_PrefabInstance: {fileID: 130841720}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0424a755740fde54fba12c9d9dd0d3cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &416827315
 GameObject:
   m_ObjectHideFlags: 0

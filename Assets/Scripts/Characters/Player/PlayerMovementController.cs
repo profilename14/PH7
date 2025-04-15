@@ -76,7 +76,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     private GameObject rotationRoot;
     
     [SerializeField]
-    public CinemachineManager cinemachineManager;
+    private CinemachineManager cinemachineManager;
 
     // Custom Variables Below:
     public bool isDashing = false;

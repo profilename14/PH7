@@ -80,8 +80,6 @@ public class PlayerActionManager : CharacterActionManager
     
     public float dashTimer = 0f;
     public bool hasDashedInAir = false;
-    
-    public bool hasBubbledInAir = false;
 
     [SerializeField]
     private Vector3 cameraAngle = new Vector3(0, 135, 0);
@@ -102,11 +100,7 @@ public class PlayerActionManager : CharacterActionManager
         playerInput = GetComponent<PlayerInput>();
         inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
         enemyLayerMask = LayerMask.GetMask("Enemies");
-        if (lockOnIcon)
-        {
-            lockOnIcon.GetComponent<Renderer>().material.renderQueue = 4000;
-        }
-        
+        lockOnIcon.GetComponent<Renderer>().material.renderQueue = 4000;
     }
 
     private void OnEnable()
@@ -209,11 +203,7 @@ public class PlayerActionManager : CharacterActionManager
         }
         else
         {
-            if (lockOnIcon)
-            {
-                lockOnIcon.SetActive(false);
-            }
-            
+            lockOnIcon.SetActive(false);
             if (playerDirectionalInput.usingController)
             {
                 // If the right stick has input, then it should override the left stick for determining look direction.
@@ -233,7 +223,6 @@ public class PlayerActionManager : CharacterActionManager
         if (movementController.IsGrounded())
         {
             hasDashedInAir = false;
-            hasBubbledInAir = false;
         }
     }
 
@@ -244,7 +233,6 @@ public class PlayerActionManager : CharacterActionManager
     void OnJumpStarted(InputAction.CallbackContext context)
     {
         hasDashedInAir = false;
-        hasBubbledInAir = false;
         // Jump button is held
         jumpHeld = true;
         if (!StateMachine.TrySetState(jumpState)) inputBuffer.Buffer(jumpState, inputTimeOut);
@@ -289,7 +277,6 @@ public class PlayerActionManager : CharacterActionManager
             return;
         }
         hasDashedInAir = true;
-        hasBubbledInAir = false;
         //dashThisFrame = true;
         if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
         StateMachine.TrySetState(dashState);
@@ -300,7 +287,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnBubbleStarted(InputAction.CallbackContext context)
     {
-
+        
         if(context.interaction is UnityEngine.InputSystem.Interactions.SlowTapInteraction)
         {
             // If it fails to enter the charge attack state, buffer it.
@@ -310,11 +297,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnBubblePerformed(InputAction.CallbackContext context)
     {
-        if (hasBubbledInAir)
-        {
-            return;
-        }
-        hasBubbledInAir = true;
+
 
         // If the button is released within 0.2s
         if (context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)

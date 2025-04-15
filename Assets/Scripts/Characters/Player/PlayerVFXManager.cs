@@ -214,11 +214,11 @@ public class PlayerVFXManager : CharacterVFXManager
 
     public IEnumerator SwordSwingPause(VisualEffect vfx, float seconds)
     {
-        //vfx.pause = true;
+        vfx.pause = true;
 
         yield return new WaitForSeconds(seconds);
 
-        //vfx.pause = false;
+        vfx.pause = false;
     }
 
     public IEnumerator FlashEmissionColor(float seconds, Color color, Renderer[] renderers)

@@ -104,6 +104,13 @@ public class PlayerChargeAttack : AttackState
     public override void OnAttackHit(Vector3 position, Collider other)
     {
         vfx.SwordHitVFX(position);
+
+        if (movementController.cinemachineManager)
+        {
+            movementController.cinemachineManager.ScreenShake();
+        }
+
+        vfx.PauseSwordSwingVFX(SwordSwingType.ChargedSwing, 0.25f);
     }
 
 #if UNITY_EDITOR

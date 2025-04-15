@@ -78,6 +78,11 @@ public class VitriclawFollow : CharacterState
         movementController.SetForceManualRotation(!rotateToFaceMovementDirection);
     }
 
+    protected override void OnDisable()
+    {
+        movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
+    }
+
     private void Update()
     {
         playerPosition = Player.instance.transform.position;
@@ -124,7 +129,8 @@ public class VitriclawFollow : CharacterState
                 // We can accomplish circling by getting the tangent of the vector to the player and offsetting it (for speed).
                 if (isCirclingRight)
                 {
-                    movementController.SetPathfindingDestination(movementController.pathfinding.destination + normal * midCirclingDistance + tangent * 4.5f);
+                    Vector3 destination = movementController.pathfinding.destination + normal * midCirclingDistance + tangent * 4.5f;
+                    movementController.SetPathfindingDestination(destination);
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animancer;
 
 public class MyProjectile : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class MyProjectile : MonoBehaviour
         if (this.enabled == false) return;
 
         // Check if we have collided with a hittable object.
-        IHittable hittableScript = other.gameObject.GetComponent<IHittable>();
+        IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript == null) return;
 
         // In the case of the player, you are hitting your own hitbox.

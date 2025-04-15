@@ -100,7 +100,7 @@ public abstract class Character : MonoBehaviour, IHittable
             {
                 _VFXManager.TookDamageVFX(hitPoint, projectile.transform.position);
             }
-            actionManager.Hitstun();
+            if(!isHitstunImmune) actionManager.Hitstun();
         }
 
         if (!isKnockbackImmune && characterData.knockbackResistance != 0)

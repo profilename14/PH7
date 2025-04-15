@@ -106,7 +106,16 @@ public abstract class Character : MonoBehaviour, IHittable
         if (!isKnockbackImmune && characterData.knockbackResistance != 0)
         {
             Vector3 knockbackDir = -(projectile.transform.position - transform.position);
-            movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback / characterData.knockbackResistance);
+            if (movementController.IsGrounded())
+            {
+                movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback / characterData.knockbackResistance);
+            }
+            else 
+            {
+                // Lessen frictionless knockback (we may have to find a better fraction later).
+                movementController.ApplyImpulseForce(knockbackDir, projectile.attackData.knockback / (2.5f * characterData.knockbackResistance));
+            }
+            
         }
 
     }

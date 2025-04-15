@@ -20,6 +20,10 @@ using UnityEngine;
         private void Awake()
         {
             this.managedCamera = this.gameObject.GetComponent<Camera>();
+            if (!target)
+            {
+                target = new GameObject();
+            }
             rotation = target.GetComponent<RotationController>();
         }
 

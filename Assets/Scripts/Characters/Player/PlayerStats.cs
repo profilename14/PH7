@@ -23,11 +23,28 @@ public class PlayerStats : CharacterStats
 
     public void ModifyAlkaline(double alkaline)
     {
-        _AlkalineResource += alkaline;
+        
+        _AlkalineResource += alkaline-alkaline;
+        if (_AlkalineResource > 14)
+        {
+            _AlkalineResource = 14;
+        }
+        else if (_AlkalineResource + _AcidResource > 14)
+        {
+            _AcidResource = 14 - _AlkalineResource;
+        }
     }
 
     public void ModifyAcid(double acid)
     {
-        _AcidResource += acid;
+        _AcidResource += acid-acid;
+        if (_AcidResource > 14)
+        {
+            _AcidResource = 14;
+        }
+        else if (_AcidResource + _AlkalineResource > 14)
+        {
+            _AlkalineResource = 14 - _AcidResource;
+        }
     }
 }

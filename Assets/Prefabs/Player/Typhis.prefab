@@ -1466,6 +1466,7 @@ GameObject:
   - component: {fileID: 2563543591561271970}
   - component: {fileID: 5633728081867202212}
   - component: {fileID: 5129742808374406057}
+  - component: {fileID: 8736535248586511101}
   m_Layer: 6
   m_Name: Sword Hitbox
   m_TagString: Hitbox
@@ -1722,6 +1723,47 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+--- !u!114 &8736535248586511101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493523779056607639}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d11c4d06a79d54cbbc7ef05bc98b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5594428598334958641}
+  _AttackData: {fileID: 11400000, guid: 8520fbf07ad9d9449931a1219bfbbd8c, type: 2}
+  movementController: {fileID: 4630855019977460999}
+  rotationController: {fileID: 7370340048861875037}
+  attackAnimation:
+    rid: 4025882232410603520
+  swordSwingSFX: {fileID: 0}
+  hitStopTime: 0.15
+  references:
+    version: 2
+    RefIds:
+    - rid: 4025882232410603520
+      type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0.033333335
+        _Speed: 1
+        _Events:
+          _NormalizedTimes:
+          - 0.2631579
+          - 0.3888889
+          - 0.6111111
+          - NaN
+          _Callbacks: []
+          _Names:
+          - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
+          - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
+          - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
+        _Clip: {fileID: 7400000, guid: f886599aed411b545a9feb68e6a2ae1a, type: 2}
+        _NormalizedStartTime: NaN
 --- !u!1 &1507217829476250764
 GameObject:
   m_ObjectHideFlags: 0
@@ -10273,6 +10315,7 @@ MonoBehaviour:
   coreState: {fileID: 3583126127604057544}
   bubbleState: {fileID: 8378796926877255417}
   chargeAttackState: {fileID: 5129742808374406057}
+  dashAttackState: {fileID: 8736535248586511101}
   spellAttackState: {fileID: 9156018158026596144}
   takeDamageState: {fileID: 3358740220479685139}
   playerDirectionalInput:
@@ -10287,6 +10330,7 @@ MonoBehaviour:
   lockOnIcon: {fileID: 0}
   dashTimer: 0
   hasDashedInAir: 0
+  hasBubbledInAir: 0
   cameraAngle: {x: 0, y: -45, z: 0}
 --- !u!114 &559858547552153946
 MonoBehaviour:

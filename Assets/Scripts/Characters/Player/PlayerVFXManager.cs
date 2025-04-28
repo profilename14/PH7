@@ -124,6 +124,9 @@ public class PlayerVFXManager : CharacterVFXManager
             case SwordSwingType.ChargedSwing:
                 chargedSwingVFX.Play();
                 break;
+            case SwordSwingType.DashSwing:
+                swing0VFX.Play();
+                break;
             default:
                 break;
         }
@@ -147,6 +150,9 @@ public class PlayerVFXManager : CharacterVFXManager
                 break;
             case SwordSwingType.ChargedSwing:
                 StartCoroutine(SwordSwingPause(chargedSwingVFX, pauseTime));
+                break;
+            case SwordSwingType.DashSwing:
+                StartCoroutine(SwordSwingPause(swing0VFX, pauseTime));
                 break;
             default:
                 break;

@@ -23,6 +23,9 @@ public abstract class CharacterState : StateBehaviour
     protected static readonly StringReference AllowMovementEvent = "AllowMovement";
     protected static readonly StringReference AllowRotationEvent = "AllowRotation";
 
+    public virtual string StateName {get; protected set;} = "Default";
+    
+
     protected void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref _Character);

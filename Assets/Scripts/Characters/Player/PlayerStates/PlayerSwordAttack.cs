@@ -4,7 +4,7 @@ using UnityEngine;
 using Animancer;
 using Animancer.FSM;
 
-public enum SwordSwingType { Swing0, Swing1, Swing2, SwingDown, ChargedSwing }
+public enum SwordSwingType { Swing0, Swing1, Swing2, SwingDown, ChargedSwing, DashSwing }
 
 public class PlayerSwordAttack : AttackState
 {
@@ -13,6 +13,9 @@ public class PlayerSwordAttack : AttackState
 
     [SerializeField]
     private RotationController rotationController;
+
+    
+    public override string StateName => "PlayerSwordAttack";
     
     [SerializeField]
     CinemachineManager cinemachineManager;
@@ -69,6 +72,8 @@ public class PlayerSwordAttack : AttackState
     private float baseKnockback;
     private float baseFinisherKnockback;
 
+    private bool canDashAttack = true;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
@@ -104,6 +109,8 @@ public class PlayerSwordAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+        
         directionalInput = actionManager.GetDirectionalInput();
 
         moveDirAtStart = directionalInput.lookDir;
@@ -111,6 +118,8 @@ public class PlayerSwordAttack : AttackState
         // Fully committed to an attack once you start it.
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, false);
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+
+        canDashAttack = true;
 
         movementController.RotateToDir(directionalInput.lookDir);
 
@@ -177,6 +186,18 @@ public class PlayerSwordAttack : AttackState
     protected void Update()
     {
         movementController.RotateToDir(directionalInput.lookDir);
+
+        if (actionManager.GetBufferedState() && (actionManager.GetBufferedState().StateName == "PlayerDash"
+                                             || actionManager.GetBufferedState().StateName == "PlayerDashAttack"))
+        {
+            if (canDashAttack)
+            {
+                print("DashAttackFromAttackState");
+                movementController.SetAllowRotation(true);
+                actionManager.ForceDashAttackState();
+            }
+
+        }
     }
 
     public override void OnAttackHit(Vector3 position, Collider other)
@@ -222,6 +243,8 @@ public class PlayerSwordAttack : AttackState
     public void StartSwordSwing()
     {
         vfx.SwordSwingVFX(currentSwordSwing);
+
+        canDashAttack = false;
     }
 
     public void EndSwordSwing()

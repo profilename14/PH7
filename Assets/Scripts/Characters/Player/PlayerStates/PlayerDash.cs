@@ -12,6 +12,9 @@ public class PlayerDash : DashState
     [SerializeField]
     private RotationController rotationController;
 
+    
+    public override string StateName => "PlayerDash";
+
 
     [SerializeField]
     private Vector3 moveDir;
@@ -92,7 +95,6 @@ public class PlayerDash : DashState
 
         if (dashProgress > 1)
         {
-            isDashing = false;
             endDash();
             return;
         }
@@ -106,8 +108,22 @@ public class PlayerDash : DashState
         }
         else
         {
-            isDashing = false;
             endDash();
+        }
+
+        if (actionManager.GetBufferedState() && actionManager.GetBufferedState().StateName == "PlayerSwordAttack")
+        {
+            if (dashProgress < 0.1f)
+            {
+                //Vector3 newPos = Vector3.Lerp( startingPoint, destination, movementCurve.Evaluate(dashProgress/2) ); // Go back slightly
+                //ller.SetPosition(newPos);
+                
+                vfx.EndDashVFX();
+                Destroy(instantiatedVFX, 0f);
+                movementController.SetAllowRotation(true);
+                _ActionManager.SetAllActionPriorityAllowed(true, 0);
+                actionManager.ForceDashAttackState();
+            }
         }
         
     }
@@ -130,7 +146,10 @@ public class PlayerDash : DashState
         //PlayerCharacterInputs input = new();
         //movementController.SetInputs(ref input);
 
-        Destroy(instantiatedVFX, 0.3f); // Give the vfx time to catch up to the player
+        if (instantiatedVFX)
+        {
+            Destroy(instantiatedVFX, 0.3f); // Give the vfx time to catch up to the player
+        }
     }
 
 #if UNITY_EDITOR

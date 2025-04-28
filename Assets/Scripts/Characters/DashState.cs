@@ -11,6 +11,6 @@ public abstract class DashState : CharacterState
     [SerializeField]
     protected float duration;
 
-    public abstract void endDash();
+    public abstract void endDash(); // 
 
 }

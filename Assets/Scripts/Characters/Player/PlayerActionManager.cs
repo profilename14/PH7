@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Animancer.FSM;
 using Animancer;
+using System;
 
 [System.Serializable]
 public class PlayerDirectionalInput
@@ -34,6 +35,9 @@ public class PlayerActionManager : CharacterActionManager
     private PlayerBubble bubbleState;
     [SerializeField]
     private PlayerChargeAttack chargeAttackState;
+    
+    [SerializeField]
+    private PlayerDashAttack dashAttackState;
     [SerializeField]
     private CharacterState spellAttackState;
     [SerializeField]
@@ -90,6 +94,8 @@ public class PlayerActionManager : CharacterActionManager
 
     public InteractDelegate interactCallback;
 
+    public bool isDashHeld = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -127,7 +133,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Jump.performed += context => OnJumpPerformed(context);
 
         controls.Typhis.Dash.Enable();
-        controls.Typhis.Dash.performed += context => OnDash(context);
+        controls.Typhis.Dash.started += context => OnDash(context);
+        controls.Typhis.Dash.canceled += context => OnDashReleased(context);
 
         controls.Typhis.Bubble.Enable();
         controls.Typhis.Bubble.started += context => OnBubbleStarted(context);
@@ -166,7 +173,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Jump.performed -= context => OnJumpPerformed(context);
 
         controls.Typhis.Dash.Disable();
-        controls.Typhis.Dash.performed -= context => OnDash(context);
+        controls.Typhis.Dash.started -= context => OnDash(context);
+        controls.Typhis.Dash.canceled -= context => OnDashReleased(context);
 
         controls.Typhis.Bubble.Disable();
         controls.Typhis.Bubble.started -= context => OnBubbleStarted(context);
@@ -192,7 +200,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private void FixedUpdate()
     {
-        playerDirectionalInput.usingController = true || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
+        playerDirectionalInput.usingController = false || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
 
         Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
 
@@ -272,7 +280,26 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
-            if (!StateMachine.TryResetState(attackState)) inputBuffer.Buffer(attackState, inputTimeOut);
+            if (isDashHeld == true)
+            {
+                ForceDashAttackState();
+            }
+            else if (!StateMachine.TryResetState(attackState))
+            {
+                /*if (inputBuffer.State != null && 
+                    (inputBuffer.State.StateName == "PlayerDash" || inputBuffer.State.StateName == "PlayerDashAttack"))
+                {
+                    print("dashAttacked");
+                    inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                }
+                else {
+                }*/
+
+
+                inputBuffer.Buffer(attackState, inputTimeOut);
+                
+                
+            }
         }
 
         // If the button is released after 0.5s [Note: a button released when the attack has not been fully charged will cancel it]
@@ -282,8 +309,30 @@ public class PlayerActionManager : CharacterActionManager
         }
     }
 
+    void OnDashReleased(InputAction.CallbackContext context)
+    {
+        isDashHeld = false;
+    }
+
     void OnDash(InputAction.CallbackContext context)
     {
+        isDashHeld = true;
+        if ((inputBuffer.State != null &&
+             inputBuffer.State.StateName == "PlayerSwordAttack") || StateMachine.CurrentState.StateName == "PlayerSwordAttack")
+        {
+            print("dashAttacked");
+            if (StateMachine.CurrentState.StateName == "PlayerSwordAttack")
+            {
+                inputBuffer.Buffer(dashAttackState, inputTimeOut);
+            }
+            else
+            {
+                inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                print(inputBuffer.State.StateName);
+            }
+            return;
+        }
+
         if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero || hasDashedInAir)
         {
             return;
@@ -291,11 +340,19 @@ public class PlayerActionManager : CharacterActionManager
         hasDashedInAir = true;
         hasBubbledInAir = false;
         //dashThisFrame = true;
-        if (!StateMachine.TryResetState(dashState)) inputBuffer.Buffer(dashState, inputTimeOut);
-        StateMachine.TrySetState(dashState);
+
+        if (!StateMachine.TryResetState(dashState))
+        {
+            inputBuffer.Buffer(dashState, inputTimeOut);
+            StateMachine.TrySetState(dashState);
+            character.SetIsInvincible(true);
+            
+        }
 
         
-        character.SetIsInvincible(true);
+
+        
+        
     }
 
     void OnBubbleStarted(InputAction.CallbackContext context)
@@ -416,6 +473,23 @@ public class PlayerActionManager : CharacterActionManager
         character.SetIsInvincible(true);
     }
 
+    public void ForceDashAttackState()
+    {
+        inputBuffer.Clear();
+
+        if (dashTimer <= 0 && !hasDashedInAir)
+        {
+            hasDashedInAir = true;
+            StateMachine.ForceSetState(dashAttackState);
+        }
+        else {
+            movementController.SetAllowMovement(true);
+            movementController.SetAllowRotation(true);
+            SetAllActionPriorityAllowed(true);
+            StateMachine.ForceSetDefaultState();
+        }
+    }
+
     public override void EndHitStun()
     {
         StartCoroutine(EndInvincibility());
@@ -462,6 +536,11 @@ public class PlayerActionManager : CharacterActionManager
     public Vector3 GetDirRelativeToCamera(Vector3 dir)
     {
         return Quaternion.Euler(cameraAngle) * dir;
+    }
+
+    public CharacterState GetBufferedState()
+    {
+        return inputBuffer.State;
     }
 
 #if UNITY_EDITOR

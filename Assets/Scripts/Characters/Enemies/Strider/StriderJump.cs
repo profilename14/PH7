@@ -27,7 +27,7 @@ public class StriderJump : CharacterState
 
     private Vector3 startPoint;
 
-    public override bool CanEnterState => _ActionManager.allowedStates[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     private void Awake()
     {
@@ -50,7 +50,7 @@ public class StriderJump : CharacterState
         movementController.SetAllowRotation(false);
         movementController.SetForceManualRotation(false);
 
-        RandomPath path = RandomPath.Construct(transform.position, (int) (1000 * jumpDistance));
+        RandomPath path = RandomPath.Construct(Player.instance.transform.position, (int) (1000 * jumpDistance));
         path.spread = 5000;
 
         seeker.StartPath(path, CalculateJump);

@@ -36,6 +36,16 @@ public class MyProjectile : MonoBehaviour
         OnProjectileActivate();
     }
 
+    public void InitProjectile(Vector3 position, Quaternion rotation, Character sender, AttackData data)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+        this._Sender = sender;
+        this._AttackData = data;
+        projectileIsActive = true;
+        OnProjectileActivate();
+    }
+
     public virtual void OnProjectileActivate()
     {
         return;

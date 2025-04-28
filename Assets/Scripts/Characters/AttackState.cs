@@ -10,6 +10,8 @@ public abstract class AttackState : CharacterState
     protected AttackData _AttackDataClone;
     public AttackData attackData => _AttackDataClone;
 
+    private List<IHittable> hitEntities = new List<IHittable>();
+
     protected void Awake()
     {
         base.Awake();
@@ -18,6 +20,12 @@ public abstract class AttackState : CharacterState
         {
             _AttackDataClone = Instantiate(_AttackData); // Allow changing asset if needed (ex: custom knockback) without permanence
         }
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        hitEntities.Clear();
     }
 
     public virtual void OnAttackHit(Vector3 position, Collider other)
@@ -39,6 +47,11 @@ public abstract class AttackState : CharacterState
         // In the case of the player, you are hitting your own hitbox.
         // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
         if (_Character.GetType() == hittableScript.GetType()) return;
+
+        // Hit an entity that we've already hit with this attack
+        if (hitEntities.Contains(hittableScript)) return;
+
+        hitEntities.Add(hittableScript);
 
         Vector3 attackHitPosition = other.ClosestPointOnBounds(_Character.transform.position);
 

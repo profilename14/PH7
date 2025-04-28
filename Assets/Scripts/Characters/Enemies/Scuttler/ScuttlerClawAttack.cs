@@ -25,11 +25,13 @@ public class ScuttlerClawAttack : AttackState
     {
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
-        vfx = (ScuttlerVFXManager)_Character.VFXManager;
+        //vfx = (ScuttlerVFXManager)_Character.VFXManager;
     }
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
         movementController.SetAllowMovement(true);
@@ -53,7 +55,7 @@ public class ScuttlerClawAttack : AttackState
         movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, clawForwardForce);
-        vfx.PlayClawVFX();
+        //vfx.PlayClawVFX();
     }
 
     public void ClawEnd()

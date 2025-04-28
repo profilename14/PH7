@@ -19,7 +19,7 @@ public class StriderDashAttack : AttackState
 
     private float defaultDrag;
 
-    public override bool CanEnterState => _ActionManager.allowedStates[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     private void Awake()
     {
@@ -31,6 +31,8 @@ public class StriderDashAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
         _Character.SetIsKnockbackImmune(false);
 

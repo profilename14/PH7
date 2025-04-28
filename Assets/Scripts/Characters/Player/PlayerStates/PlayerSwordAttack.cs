@@ -104,6 +104,8 @@ public class PlayerSwordAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         directionalInput = actionManager.GetDirectionalInput();
 
         moveDirAtStart = directionalInput.lookDir;
@@ -256,7 +258,7 @@ public class PlayerSwordAttack : AttackState
 
         if (other.gameObject.tag == "Enemy")
         {
-            Debug.Log(distanceKnockbackMultiplier);
+            //Debug.Log(distanceKnockbackMultiplier);
 
             _AttackDataClone.knockback = _AttackDataClone.knockback - distanceKnockbackMultiplier;
         }

@@ -4857,7 +4857,7 @@ Transform:
   m_GameObject: {fileID: 611904829361055166}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0, y: 0, z: 0.43346733}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9672,8 +9672,8 @@ GameObject:
   - component: {fileID: 4850413692853952097}
   - component: {fileID: 3382934586288436646}
   - component: {fileID: -8140826435473126232}
-  - component: {fileID: 2971322575136905614}
   - component: {fileID: 2282942844003458187}
+  - component: {fileID: 732972033639051154}
   m_Layer: 0
   m_Name: StriderVenom
   m_TagString: AllowsBubble
@@ -9689,9 +9689,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5028151487594542329}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.88, y: 0.97, z: 2.53}
-  m_LocalScale: {x: 0.4202633, y: 0.3705089, z: 1.08428}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6013894448075952724}
@@ -9776,21 +9776,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2971322575136905614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5028151487594542329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a7323c2180085843a3103ad7119c0c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifespan: 4.5
-  lifespanTimer: 0
-  speed: 25
 --- !u!135 &2282942844003458187
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9812,6 +9797,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6802277
   m_Center: {x: -0.0015104567, y: 0.35, z: 0}
+--- !u!114 &732972033639051154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028151487594542329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa71b9c88bd27a34cb3eb4d97ec8c937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileIsActive: 0
+  lifespan: 4.5
+  speed: 75
 --- !u!1 &5722001939916543356
 GameObject:
   m_ObjectHideFlags: 0
@@ -9839,7 +9839,7 @@ Transform:
   m_GameObject: {fileID: 5722001939916543356}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.0000029504295}
-  m_LocalPosition: {x: 0, y: 0, z: -0.25823587}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

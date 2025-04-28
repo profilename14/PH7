@@ -107,12 +107,11 @@ public class PlayerActionManager : CharacterActionManager
         controls = new InputMaster();
         playerInput = GetComponent<PlayerInput>();
         inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
-        enemyLayerMask = LayerMask.GetMask("Enemies");
+        enemyLayerMask = LayerMask.GetMask("LockOnTarget");
         if (lockOnIcon)
         {
             lockOnIcon.GetComponent<Renderer>().material.renderQueue = 4000;
         }
-        
     }
 
     private void OnEnable()

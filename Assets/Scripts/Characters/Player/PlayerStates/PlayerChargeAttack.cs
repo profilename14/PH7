@@ -50,6 +50,7 @@ public class PlayerChargeAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
         attackCharged = false;
 
         _ActionManager.SetAllActionPriorityAllowed(false);

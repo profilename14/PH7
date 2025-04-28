@@ -37,6 +37,8 @@ public class VitriclawJumpSlam : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         startJump = false;
         updateEndpoint = true;
 

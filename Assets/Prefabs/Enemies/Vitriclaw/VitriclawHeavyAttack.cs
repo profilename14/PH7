@@ -36,6 +36,8 @@ public class VitriclawHeavyAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
 
         movementController.SetAllowMovement(true);

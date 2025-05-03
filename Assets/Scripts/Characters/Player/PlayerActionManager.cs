@@ -281,7 +281,8 @@ public class PlayerActionManager : CharacterActionManager
             // If it fails to enter the SwordAttack state, buffer it.
             if (isDashHeld == true)
             {
-                ForceDashAttackState();
+                if (!StateMachine.TrySetState(dashAttackState)) inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                
             }
             else if (!StateMachine.TryResetState(attackState))
             {
@@ -319,7 +320,7 @@ public class PlayerActionManager : CharacterActionManager
         if ((inputBuffer.State != null &&
              inputBuffer.State.StateName == "PlayerSwordAttack") || StateMachine.CurrentState.StateName == "PlayerSwordAttack")
         {
-            print("dashAttacked");
+            /*print("dashAttacked");
             if (StateMachine.CurrentState.StateName == "PlayerSwordAttack")
             {
                 inputBuffer.Buffer(dashAttackState, inputTimeOut);
@@ -329,7 +330,7 @@ public class PlayerActionManager : CharacterActionManager
                 inputBuffer.Buffer(dashAttackState, inputTimeOut);
                 print(inputBuffer.State.StateName);
             }
-            return;
+            return;*/
         }
 
         if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero || hasDashedInAir)
@@ -482,10 +483,10 @@ public class PlayerActionManager : CharacterActionManager
             StateMachine.ForceSetState(dashAttackState);
         }
         else {
-            movementController.SetAllowMovement(true);
+            /*movementController.SetAllowMovement(true);
             movementController.SetAllowRotation(true);
             SetAllActionPriorityAllowed(true);
-            StateMachine.ForceSetDefaultState();
+            StateMachine.ForceSetDefaultState();*/
         }
     }
 

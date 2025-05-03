@@ -111,13 +111,12 @@ public class PlayerDash : DashState
             endDash();
         }
 
-        if (actionManager.GetBufferedState() && actionManager.GetBufferedState().StateName == "PlayerSwordAttack")
+        if (actionManager.GetBufferedState() && actionManager.GetBufferedState().StateName == "PlayerDashAttack")
         {
-            if (dashProgress < 0.1f)
+            if (dashProgress < 0.5f)
             {
-                //Vector3 newPos = Vector3.Lerp( startingPoint, destination, movementCurve.Evaluate(dashProgress/2) ); // Go back slightly
-                //ller.SetPosition(newPos);
-                
+                Vector3 newPos = Vector3.Lerp( startingPoint, destination, movementCurve.Evaluate(dashProgress/2) ); // Go back slightly
+                movementController.SetPosition(newPos);
                 vfx.EndDashVFX();
                 Destroy(instantiatedVFX, 0f);
                 movementController.SetAllowRotation(true);

@@ -281,7 +281,11 @@ public class PlayerActionManager : CharacterActionManager
             // If it fails to enter the SwordAttack state, buffer it.
             if (isDashHeld == true)
             {
-                if (!StateMachine.TrySetState(dashAttackState)) inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                if (!hasDashedInAir)
+                {
+                    if (!StateMachine.TrySetState(dashAttackState)) inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                }
+                
                 
             }
             else if (!StateMachine.TryResetState(attackState))

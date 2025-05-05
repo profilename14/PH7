@@ -190,8 +190,8 @@ public class PlayerDashAttack : AttackState
         vfx.EndDashVFX();
         isDashing = false;
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
-        _ActionManager.StateMachine.ForceSetDefaultState();
-        movementController.SetVelocity(new Vector3(0, 10f, 0)); // Effectively very slightly reduces gravity for a moment
+        //_ActionManager.StateMachine.ForceSetDefaultState();
+        movementController.SetVelocity(new Vector3(0, 1f, 0)); // Effectively very slightly reduces gravity for a moment
 
         AllowMediumPriority();
     }

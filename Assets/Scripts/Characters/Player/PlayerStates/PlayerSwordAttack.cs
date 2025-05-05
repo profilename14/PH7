@@ -186,7 +186,7 @@ public class PlayerSwordAttack : AttackState
     {
         movementController.RotateToDir(directionalInput.lookDir);
 
-        if (actionManager.GetBufferedState() && (actionManager.GetBufferedState().StateName == "PlayerDash"
+        /*if (actionManager.GetBufferedState() && (actionManager.GetBufferedState().StateName == "PlayerDash"
                                              || actionManager.GetBufferedState().StateName == "PlayerDashAttack"))
         {
             if (canDashAttack)
@@ -196,7 +196,7 @@ public class PlayerSwordAttack : AttackState
                 actionManager.ForceDashAttackState();
             }
 
-        }
+        }*/
     }
 
     public override void OnAttackHit(Vector3 position, Collider other)

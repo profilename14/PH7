@@ -570,7 +570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.39811313, g: 1, b: 0.92231876, a: 1}
+  m_Color: {r: 0.390566, g: 1, b: 0.8963558, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1743,6 +1743,36 @@ MonoBehaviour:
     rid: 4025882232410603520
   swordSwingSFX: {fileID: 0}
   hitStopTime: 0.15
+  dashCooldown: 0.1
+  dashTimer: 0
+  movementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.35078913
+      value: 0.00072343275
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5582327
+      value: 0.9944093
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  distance: 15
+  duration: 0.4
+  isDashing: 0
+  dashVFX: {fileID: 3182815549824842778, guid: c4b4de0fe39ec924c8151a04aca27a2d, type: 3}
   references:
     version: 2
     RefIds:
@@ -1762,7 +1792,7 @@ MonoBehaviour:
           - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
           - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
           - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
-        _Clip: {fileID: 7400000, guid: f886599aed411b545a9feb68e6a2ae1a, type: 2}
+        _Clip: {fileID: 7400000, guid: ceb4103fc5a585b4a99a92ea455648f0, type: 2}
         _NormalizedStartTime: NaN
 --- !u!1 &1507217829476250764
 GameObject:
@@ -8053,7 +8083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8037735, g: 0.8037735, b: 0.8037735, a: 1}
+  m_Color: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10332,6 +10362,7 @@ MonoBehaviour:
   hasDashedInAir: 0
   hasBubbledInAir: 0
   cameraAngle: {x: 0, y: -45, z: 0}
+  isDashHeld: 0
 --- !u!114 &559858547552153946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17447,7 +17478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.6981132, b: 0.5584905, a: 0.8509804}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

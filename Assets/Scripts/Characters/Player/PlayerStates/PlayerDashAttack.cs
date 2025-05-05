@@ -66,7 +66,7 @@ public class PlayerDashAttack : AttackState
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && actionManager.dashTimer <= -0.4f;
 
     protected void Awake()
     {
@@ -119,12 +119,14 @@ public class PlayerDashAttack : AttackState
 
         dashTimer = 0;
         isDashing = true;
-        if (dashVFX)
+        if (dashVFX && actionManager.dashTimer <= 0)
         {
             instantiatedVFX = Instantiate(dashVFX, transform);
             vfx.StartDashVFX();
         }
 
+
+        //Debug.Log("AAAA");
         //Time.timeScale = 0.2f;
     }
 
@@ -179,7 +181,6 @@ public class PlayerDashAttack : AttackState
     {
         AllowMove();
         AllowJump();
-        AllowLowPriority();
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
 
@@ -188,6 +189,9 @@ public class PlayerDashAttack : AttackState
         actionManager.EndDash(dashCooldown);
         vfx.EndDashVFX();
         isDashing = false;
+        _ActionManager.SetAllActionPriorityAllowed(true, 0);
+        //_ActionManager.StateMachine.ForceSetDefaultState();
+        movementController.SetVelocity(new Vector3(0, 1f, 0)); // Effectively very slightly reduces gravity for a moment
 
         AllowMediumPriority();
     }
@@ -216,7 +220,6 @@ public class PlayerDashAttack : AttackState
         base.OnDisable();
         movementController.ResetDrag();
 
-        Time.timeScale = 1f;
     }
 
 #if UNITY_EDITOR

@@ -120,6 +120,47 @@ public abstract class Character : MonoBehaviour, IHittable
 
     }
 
+    public virtual void Hit(ColliderEffectField effectField, float damage)
+    {
+        Debug.Log("Hit by effect field");
+        if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
+
+        if (!isInvincible)
+        {
+            _Stats.TakeDamage(damage);
+            
+            if (isDead)
+            {
+                _VFXManager.DeathVFX();
+                return;
+            }
+
+            if(effectField.causeHit)
+            {
+                _VFXManager.TookDamageVFX(this.transform.position, effectField.transform.position);
+                if (!isHitstunImmune) actionManager.Hitstun();
+            }
+        }
+
+        if (!isKnockbackImmune && characterData.knockbackResistance != 0)
+        {
+            Vector3 knockbackDir = -(effectField.transform.position - transform.position);
+            if (movementController.IsGrounded())
+            {
+                movementController.ApplyImpulseForce(knockbackDir, effectField.dynamicKnockback / characterData.knockbackResistance);
+                movementController.ApplyImpulseForce(effectField.staticKnockback, effectField.staticKnockback.magnitude / characterData.knockbackResistance);
+            }
+            else
+            {
+                // Lessen frictionless knockback (we may have to find a better fraction later).
+                movementController.ApplyImpulseForce(knockbackDir, effectField.dynamicKnockback / (2.5f * characterData.knockbackResistance));
+                movementController.ApplyImpulseForce(effectField.staticKnockback, effectField.staticKnockback.magnitude / (2.5f * characterData.knockbackResistance));
+            }
+
+        }
+
+    }
+
     public virtual void SetIsInvincible(bool isInvincible)
     {
         this.isInvincible = isInvincible;

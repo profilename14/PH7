@@ -29,6 +29,11 @@ public class Pogoable : MonoBehaviour, IHittable
         return; // Should a bubble pop if hit by projectile?
     }
 
+    public virtual void Hit(ColliderEffectField effectField, float damage)
+    {
+        return; // Should a bubble pop if hit by effect field?
+    }
+
     public virtual void Die()
     {
         Destroy(this.gameObject);

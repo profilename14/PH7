@@ -7,6 +7,9 @@ public class TestKillPlane : MonoBehaviour
     [SerializeField]
     public Transform playerSpawnPoint;
 
+    [SerializeField]
+    public ColliderEffectField effectField;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,7 @@ public class TestKillPlane : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
+            Player.instance.Hit(effectField, effectField.damageOnEnter);
             PlayerMovementController mc = (PlayerMovementController)Player.instance.movementController;
             mc.TeleportTo(playerSpawnPoint.position);
         }

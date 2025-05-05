@@ -21,7 +21,7 @@ public class MyProjectile : MonoBehaviour
     {
         lifespanTimer += Time.deltaTime;
         if (lifespanTimer > lifespan) {
-          Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         transform.position += this.transform.forward * Time.deltaTime * speed;
     }
@@ -60,17 +60,20 @@ public class MyProjectile : MonoBehaviour
 
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
-        if (hittableScript == null) return;
+        if (hittableScript != null)
+        {
+            // In the case of the player, you are hitting your own hitbox.
+            // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
+            if (_Sender.GetType() == hittableScript.GetType()) return;
 
-        // In the case of the player, you are hitting your own hitbox.
-        // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
-        if (_Sender.GetType() == hittableScript.GetType()) return;
+            Vector3 attackHitPosition = other.ClosestPointOnBounds(transform.position);
 
-        Vector3 attackHitPosition = other.ClosestPointOnBounds(transform.position);
-
-        hittableScript.Hit(this, attackHitPosition);
-        OnAttackHit(attackHitPosition, other);
-        sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
+            hittableScript.Hit(this, attackHitPosition);
+            OnAttackHit(attackHitPosition, other);
+            sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
+        }
+        
+        gameObject.SetActive(false);
     }
 
     protected virtual void OnAttackHit(Vector3 position, Collider other)

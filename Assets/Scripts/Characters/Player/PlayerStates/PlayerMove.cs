@@ -51,6 +51,7 @@ public class PlayerMove : CharacterState
     {
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
+        character.SetIsInvincible(false);
 
         playerVFXManager.StartRunVFX(gameObject.transform);
         isPlayingRunVFX = true;

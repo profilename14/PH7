@@ -65,6 +65,8 @@ public class ColliderEffectField : MonoBehaviour
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript == null) return;
 
+        if (hittableScript is Enemy) return;
+
         //Debug.Log("Hittable: " + other.gameObject.name);
 
         foreach(IHittable h in doTEntities)
@@ -83,7 +85,7 @@ public class ColliderEffectField : MonoBehaviour
 
         if (doTEntities.Count == 0) StopAllCoroutines();
 
-            foreach (IHittable h in doTEntities)
+        foreach (IHittable h in doTEntities)
         {
             h.Hit(this, damageOverTime);
         }

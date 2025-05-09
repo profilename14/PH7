@@ -21,6 +21,7 @@ public class UrchidSpikesAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
         if(movementController == null) gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
 
         _ActionManager.SetAllActionPriorityAllowed(false);

@@ -13,6 +13,9 @@ public class ChemicalSpillPipe : MonoBehaviour
     private float timeTurnedOn;
 
     [SerializeField]
+    private float delayForCollider;
+
+    [SerializeField]
     private ParticleSystem[] chemicalEffects;
 
     [SerializeField]
@@ -29,6 +32,8 @@ public class ChemicalSpillPipe : MonoBehaviour
         {
             p.Play();
         }
+
+        yield return new WaitForSeconds(delayForCollider);
 
         colliderObj.SetActive(true);
 

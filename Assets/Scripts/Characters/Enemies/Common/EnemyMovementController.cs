@@ -181,7 +181,7 @@ public class EnemyMovementController : CharacterMovementController
 
     public override bool IsGrounded()
     {
-        throw new System.NotImplementedException();
+        return true;
     }
 
     public override void LockVelocity(Vector3 velocity)

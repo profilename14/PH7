@@ -55,6 +55,8 @@ public abstract class Character : MonoBehaviour, IHittable
     
     public virtual void Hit(AttackState attack, Vector3 hitPoint)
     {
+        //Debug.Log("Hitbox collided");
+
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
 
         if (!isInvincible)
@@ -174,7 +176,7 @@ public abstract class Character : MonoBehaviour, IHittable
     public virtual void Die()
     {
         isDead = true;
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 
 /*#if UNITY_EDITOR

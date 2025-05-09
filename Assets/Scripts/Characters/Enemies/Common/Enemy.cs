@@ -56,7 +56,7 @@ public class Enemy : Character
     {
         isDead = true;
         if (isLockedOn) onDeath.Invoke();
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 
     public float GetBounciness()

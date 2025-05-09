@@ -13,7 +13,7 @@ public class HalberdSwing : AttackState
 
     private EnemyMovementController movementController;
     private ScuttlerVFXManager vfx;
-    public override bool CanEnterState => _ActionManager.allowedStates[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     [SerializeField]
     private float drag = 8;
@@ -30,6 +30,8 @@ public class HalberdSwing : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(true);

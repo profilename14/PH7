@@ -45,7 +45,13 @@ public class Player : Character
         return;
     }
 
-    public void WarpPlayerToDoor(Vector3 position)
+    public override void Die()
+    {
+        GameManager.instance.PlayerRespawn();
+        _Stats.SetHealth(characterData.maxHealth);
+    }
+
+    public void WarpPlayer(Vector3 position)
     {
         PlayerMovementController mc = (PlayerMovementController)movementController;
         mc.TeleportTo(position);

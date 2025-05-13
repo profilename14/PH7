@@ -450,6 +450,7 @@ GameObject:
   - component: {fileID: 1262194377396603660}
   - component: {fileID: 880454529841985992}
   - component: {fileID: 6057806237242619656}
+  - component: {fileID: 6708403602473340278}
   m_Layer: 9
   m_Name: Attack
   m_TagString: Untagged
@@ -540,7 +541,7 @@ MonoBehaviour:
   _Character: {fileID: 5393292168433560818}
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   swingAttack:
-    _FadeDuration: 0.25
+    _FadeDuration: 0.06666667
     _Speed: 0.8
     _Events:
       _NormalizedTimes:
@@ -639,6 +640,35 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6708403602473340278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921837423222065592}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ba994147110e340ac78613a59e4cf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 5393292168433560818}
+  _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
+  swingAttack:
+    _FadeDuration: 0.06666667
+    _Speed: 0.6
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 7400000, guid: cf21e2c519e3c794db4d440280bee6c1, type: 2}
+    _NormalizedStartTime: NaN
+  swingForwardForce: 5
+  drag: 2
+  preferredRange: 5
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1992313992366863292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,9 +1126,9 @@ GameObject:
   - component: {fileID: 4093099634400471781}
   - component: {fileID: 4522147072687767110}
   - component: {fileID: 8492285797626207020}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1306,15 +1336,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7212821539722893444}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6476668, z: -0, w: -0.76192373}
-  m_LocalPosition: {x: 10.43, y: 0, z: 36.47}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.99874943, z: -0, w: 0.049997166}
+  m_LocalPosition: {x: -2.1930063, y: 26, z: 94.69409}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2807909544449766801}
   - {fileID: 1280040270946492486}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -279.268, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -174.268, z: 0}
 --- !u!54 &4763372592381917917
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1361,7 +1391,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 4, z: 4}
+  m_Size: {x: 2, y: 4, z: 2}
   m_Center: {x: 0, y: 2, z: 0}
 --- !u!114 &5059667202396786954
 MonoBehaviour:
@@ -1566,7 +1596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: c8b76a131543c2741988040e6657cdb3, type: 2}
   _ActionManager: {fileID: 6505933991934331746}
-  movementController: {fileID: 0}
+  movementController: {fileID: 5849057255949956926}
   _Stats: {fileID: 7080912619551175276}
   _VFXManager: {fileID: 7669883750393468754}
   isInvincible: 0
@@ -1800,6 +1830,9 @@ MonoBehaviour:
   - cooldown: 0
     stateScript: {fileID: 880454529841985992}
     behaviorData: {fileID: 11400000, guid: e30525708ff6d0742868e6a189184e13, type: 2}
+  - cooldown: 0
+    stateScript: {fileID: 6708403602473340278}
+    behaviorData: {fileID: 11400000, guid: 6474c0a39363b754587a10aa7a0551aa, type: 2}
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 5849057255949956926}
@@ -1859,8 +1892,6 @@ MonoBehaviour:
   patrolPauseTime: 2
   randomlyChooseTargets: 1
   patrolTargets:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   isPatrolling: 1
   eyeOffset: {x: 0, y: 1, z: 0}

@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public string sceneToLoadOnRespawn;
+
+    public Vector3 respawnPosition;
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -38,8 +42,27 @@ public class GameManager : MonoBehaviour
             Door d = g.GetComponent<Door>();
             if (d != null && d.thisDoorId == destinationDoorId)
             {
-                Player.instance.WarpPlayerToDoor(d.typhisEntranceTransform.position);
+                Player.instance.WarpPlayer(d.typhisEntranceTransform.position);
             }
         }
+    }
+
+    public void PlayerRespawn()
+    {
+        StartCoroutine(LoadRespawnScene());
+    }
+
+    public IEnumerator LoadRespawnScene()
+    {
+        var asyncLoadLevel = SceneManager.LoadSceneAsync(sceneToLoadOnRespawn, LoadSceneMode.Single);
+
+        while (!asyncLoadLevel.isDone)
+        {
+            yield return null;
+        }
+
+        yield return null;
+
+        Player.instance.WarpPlayer(respawnPosition);
     }
 }

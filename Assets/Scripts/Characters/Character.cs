@@ -124,8 +124,10 @@ public abstract class Character : MonoBehaviour, IHittable
 
     public virtual void Hit(ColliderEffectField effectField, float damage)
     {
-        Debug.Log("Hit by effect field");
+        //Debug.Log("Hit by effect field");
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
+
+        if (characterData.naturalType == effectField.effectType) return;
 
         if (!isInvincible)
         {

@@ -26,7 +26,7 @@ public class TestKillPlane : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            Player.instance.Hit(effectField, effectField.damageOnEnter);
+            //Player.instance.Hit(effectField, effectField.damageOnEnter);
             PlayerMovementController mc = (PlayerMovementController)Player.instance.movementController;
             mc.TeleportTo(playerSpawnPoint.position);
         }

@@ -26,13 +26,13 @@ public class RotationController : MonoBehaviour
   {
     if (Input.GetKeyDown(KeyCode.C))
     {
-      if (!GameManager.isControllerUsed)
+      if (!GameManagerOLD.isControllerUsed)
       {
-        GameManager.isControllerUsed = true;
+        GameManagerOLD.isControllerUsed = true;
       }
       else
       {
-        GameManager.isControllerUsed = false;
+        GameManagerOLD.isControllerUsed = false;
       }
     }
 
@@ -42,22 +42,22 @@ public class RotationController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
     {
-      if (!GameManager.isScreenshakeEnabled)
+      if (!GameManagerOLD.isScreenshakeEnabled)
       {
-        GameManager.isScreenshakeEnabled = true;
+        GameManagerOLD.isScreenshakeEnabled = true;
       }
       else
       {
-        GameManager.isScreenshakeEnabled = false;
+        GameManagerOLD.isScreenshakeEnabled = false;
       }
     }
 
-    if (GameManager.slowTimer > 0)
+    if (GameManagerOLD.slowTimer > 0)
     {
-      GameManager.slowTimer -= Time.deltaTime;
+      GameManagerOLD.slowTimer -= Time.deltaTime;
 
     }
-    if (GameManager.slowTimer <= 0 && Time.timeScale < 1f)
+    if (GameManagerOLD.slowTimer <= 0 && Time.timeScale < 1f)
     {
       Time.timeScale = 1f;
     }

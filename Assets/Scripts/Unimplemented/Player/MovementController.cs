@@ -243,10 +243,10 @@ public class MovementController : MonoBehaviour
         horizontal = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
         vertical = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f);
 
-        if (GameManager.isControllerUsed) {
+        if (GameManagerOLD.isControllerUsed) {
           horizontal = Input.GetAxis("Horizontal");
         }
-        if (GameManager.isControllerUsed) {
+        if (GameManagerOLD.isControllerUsed) {
           vertical = Input.GetAxis("Vertical");
         }
     }

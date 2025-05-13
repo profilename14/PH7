@@ -418,7 +418,7 @@ public class PlayerCombatController : MonoBehaviour
     private void inRecoveryFrames()
     {
         inRecovery = true;
-        if (GameManager.isControllerUsed) {
+        if (GameManagerOLD.isControllerUsed) {
             rotationController.controllerBufferLock = true;
             controllerLockTimer = 0.03f;
         }

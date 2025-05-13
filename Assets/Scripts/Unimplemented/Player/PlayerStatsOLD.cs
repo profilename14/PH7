@@ -211,9 +211,9 @@ public class PlayerStatsOLD : MonoBehaviour
 
       movementController.ApplyImpulseForce(position, knockback);
 
-      if (GameManager.isScreenshakeEnabled) {
+      if (GameManagerOLD.isScreenshakeEnabled) {
         cam.GetComponent<screenShake>().ScreenShake(.1f);
-        GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
+        GameManagerOLD.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier);
         Color flashColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         playerHitMaterial.SetColor("_Color", flashColor);
       }
@@ -302,9 +302,9 @@ public class PlayerStatsOLD : MonoBehaviour
   }
 
   public void makeScreenshake() {
-    if (GameManager.isScreenshakeEnabled) {
+    if (GameManagerOLD.isScreenshakeEnabled) {
       cam.GetComponent<screenShake>().ScreenShake(0.05f);
-      GameManager.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier / 4f);
+      GameManagerOLD.slowdownTime(slowdownRate / slowdownRateMultiplier, slowdownLength * slowdownLengthMultiplier / 4f);
     }
         
   }

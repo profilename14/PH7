@@ -16,8 +16,14 @@ public class Player : Character
     private void Awake()
     {
         base.Awake();
-        if (instance == null) instance = this;
-        else if (instance != this) Destroy(this);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(this);
+        }
 
         playerStats = (PlayerStats)stats;
         playerActionManager = (PlayerActionManager)actionManager;
@@ -37,5 +43,11 @@ public class Player : Character
     public override void OnCharacterAttackHit(IHittable hit, MyProjectile attack, Vector3 hitPosition)
     {
         return;
+    }
+
+    public void WarpPlayerToDoor(Vector3 position)
+    {
+        PlayerMovementController mc = (PlayerMovementController)movementController;
+        mc.TeleportTo(position);
     }
 }

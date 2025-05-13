@@ -8,14 +8,14 @@ public class MusicClass : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        if (GameManager.isMusicPlaying) {
+        if (GameManagerOLD.isMusicPlaying) {
             
             if (audioSource != null) {
                 audioSource.Stop();
             }
             Destroy(gameObject);
         } else {
-            GameManager.isMusicPlaying = true;
+            GameManagerOLD.isMusicPlaying = true;
             DontDestroyOnLoad(this.gameObject);
         }
     }

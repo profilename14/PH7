@@ -146,8 +146,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.LockOn.Enable();
         controls.Typhis.LockOn.performed += context => OnLockOnPerformed(context);
 
-        controls.Typhis.Interact.Disable();
-        //controls.Typhis.Interact.performed += context => OnInteractPerformed(context);
+        controls.Typhis.Interact.Enable();
+        controls.Typhis.Interact.performed += context => OnInteractPerformed(context);
 
         controls.Typhis.QuickMap.Disable();
         controls.Typhis.OpenInventory.Disable();
@@ -424,6 +424,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnInteractPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("Interact");
         interactCallback?.Invoke();
     }
 

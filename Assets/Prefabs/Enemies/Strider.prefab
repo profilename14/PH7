@@ -653,7 +653,6 @@ GameObject:
   - component: {fileID: 2778420119749201071}
   - component: {fileID: 7952499759578350}
   - component: {fileID: 4497958558558022869}
-  - component: {fileID: 275955985374102923}
   m_Layer: 7
   m_Name: Action Manager
   m_TagString: Untagged
@@ -706,9 +705,6 @@ MonoBehaviour:
   - cooldown: 0
     stateScript: {fileID: 6320139625734481741}
     behaviorData: {fileID: 11400000, guid: 13e876058bb5db049ac6ad7621781331, type: 2}
-  - cooldown: 0
-    stateScript: {fileID: 275955985374102923}
-    behaviorData: {fileID: 11400000, guid: fafc3ef1f2b6a4b41919b1f7cbd10191, type: 2}
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 8955503680403876498}
@@ -818,53 +814,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &275955985374102923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854534218802753812}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a157f5b03ca00a947b900ea4ed0a7a91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 2898020883842843761}
-  jumpAnimation:
-    _FadeDuration: 0.083333336
-    _Speed: 1
-    _Events:
-      _NormalizedTimes:
-      - 0.14285715
-      - NaN
-      _Callbacks:
-      - rid: 445165935370174465
-      _Names: []
-    _Clip: {fileID: 7400000, guid: d9395ba7a692a9646b61632342d3cf41, type: 2}
-    _NormalizedStartTime: NaN
-  jumpDistance: 10
-  jumpDuration: 0.9
-  references:
-    version: 2
-    RefIds:
-    - rid: 445165935370174465
-      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
-      data:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 275955985374102923}
-            m_TargetAssemblyTypeName: StriderJump, Assembly-CSharp
-            m_MethodName: StartJump
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
 --- !u!1 &1864608566913013542
 GameObject:
   m_ObjectHideFlags: 0

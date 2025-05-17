@@ -8,7 +8,7 @@ public class Pogoable : MonoBehaviour, IHittable
 {
     public bool isDestroyable = true;
     private int health = 1;
-    public int bouncinessMod = 1;
+    public float bouncinessMod = 1;
 
     
     public void Hit(AttackState attack, Vector3 hitPoint)

@@ -457,7 +457,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     public void OnDiscreteCollisionDetected(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("PhaseableWallController"))
         {
             GameObject enemy = other.gameObject;
 

@@ -83,6 +83,8 @@ public class PlayerActionManager : CharacterActionManager
     private LayerMask enemyLayerMask;
     
     public float dashTimer = 0f;
+    public float pogoTimer = 0f;
+    public float pogoCooldown = 0.4f;
     public bool hasDashedInAir = false;
     
     public bool hasBubbledInAir = false;
@@ -195,6 +197,7 @@ public class PlayerActionManager : CharacterActionManager
         inputBuffer.Update();
 
         dashTimer -= Time.deltaTime;
+        pogoTimer -= Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -279,7 +282,7 @@ public class PlayerActionManager : CharacterActionManager
         if(context.interaction is UnityEngine.InputSystem.Interactions.TapInteraction)
         {
             // If it fails to enter the SwordAttack state, buffer it.
-            if (isDashHeld == true)
+            if (false && isDashHeld == true)
             {
                 if (!hasDashedInAir)
                 {
@@ -342,7 +345,6 @@ public class PlayerActionManager : CharacterActionManager
             return;
         }
         hasDashedInAir = true;
-        hasBubbledInAir = false;
         //dashThisFrame = true;
 
         if (!StateMachine.TryResetState(dashState))
@@ -510,6 +512,16 @@ public class PlayerActionManager : CharacterActionManager
     {
         dashTimer = dashCooldown;
         character.SetIsInvincible(false);
+    }
+
+    public void PogoCooldown()
+    {
+        pogoTimer = pogoCooldown;
+    }
+
+    public void RefreshDash()
+    {
+        hasDashedInAir = false;
     }
 
     //

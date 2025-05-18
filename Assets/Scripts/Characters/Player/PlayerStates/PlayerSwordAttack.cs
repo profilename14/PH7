@@ -77,7 +77,7 @@ public class PlayerSwordAttack : AttackState
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
-        => attackAnimations.Length > 0 && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
+        => attackAnimations.Length > 0 && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium] && !(actionManager.pogoTimer > 0 && !movementController.IsGrounded());
 
     protected void Awake()
     {
@@ -120,10 +120,13 @@ public class PlayerSwordAttack : AttackState
 
         canDashAttack = true;
 
-        movementController.RotateToDir(directionalInput.lookDir);
 
         if (movementController.IsGrounded())
         {
+            movementController.SetAllowRotation(true);
+            
+            movementController.RotateToDir(directionalInput.lookDir);
+
             movementController.SetGroundDrag(drag);
             movementController.SetVelocity(directionalInput.lookDir * swingForce);
             movementController.SetAllowMovement(false);
@@ -165,10 +168,14 @@ public class PlayerSwordAttack : AttackState
         }
         else
         {
+
+            actionManager.PogoCooldown();
             isPogo = true;
 
+            movementController.SetAllowRotation(false);
+            movementController.RotateToDir(directionalInput.moveDir);
+
             currentSwordSwing = SwordSwingType.SwingDown;
-            movementController.SetAllowRotation(true);
 
             // Swinging in the air performs a downwards swing.
             currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
@@ -216,10 +223,11 @@ public class PlayerSwordAttack : AttackState
 
             float forceMod = 1;
 
+            actionManager.RefreshDash();
             
             if (other.gameObject.GetComponentInParentOrChildren<Pogoable>())
             {
-                
+
                 forceMod = other.gameObject.GetComponentInParentOrChildren<Pogoable>().bouncinessMod;
             }
             else if (other.gameObject.GetComponentInParentOrChildren<Enemy>())

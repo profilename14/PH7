@@ -656,19 +656,77 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   swingAttack:
     _FadeDuration: 0.06666667
-    _Speed: 0.6
+    _Speed: 0.5
     _Events:
-      _NormalizedTimes: []
-      _Callbacks: []
+      _NormalizedTimes:
+      - 0.3529412
+      - 0.4509804
+      - 0.7058824
+      - NaN
+      _Callbacks:
+      - rid: 8535668606405967875
+      - rid: 8535668606405967877
+      - rid: 8535668606405967879
       _Names: []
     _Clip: {fileID: 7400000, guid: cf21e2c519e3c794db4d440280bee6c1, type: 2}
     _NormalizedStartTime: NaN
-  swingForwardForce: 5
+  swingForwardForce: 10
   drag: 2
   preferredRange: 5
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8535668606405967875
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 6708403602473340278}
+            m_TargetAssemblyTypeName: HalberdSwing, Assembly-CSharp
+            m_MethodName: SwingStart
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 8535668606405967877
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 6708403602473340278}
+            m_TargetAssemblyTypeName: HalberdSwing, Assembly-CSharp
+            m_MethodName: Recovery
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 8535668606405967879
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 6708403602473340278}
+            m_TargetAssemblyTypeName: HalberdSwing, Assembly-CSharp
+            m_MethodName: EndAttack
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!1 &1992313992366863292
 GameObject:
   m_ObjectHideFlags: 0

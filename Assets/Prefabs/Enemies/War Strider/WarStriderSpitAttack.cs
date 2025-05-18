@@ -57,7 +57,7 @@ public class WarStriderSpitAttack : CharacterState
 
     protected void Update()
     {
-        
+        movementController.SetPathfindingDestination(Player.instance.transform.position);
     }
 
     protected override void OnDisable()

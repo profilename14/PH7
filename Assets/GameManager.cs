@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         else if (instance != this) Destroy(this);
 
         DontDestroyOnLoad(this.gameObject);
+        sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)

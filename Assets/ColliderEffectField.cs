@@ -36,6 +36,8 @@ public class ColliderEffectField : MonoBehaviour
         // If this script is disabled, then the effect field is disabled
         if (this.enabled == false) return;
 
+        if (other.CompareTag("Hitbox")) return;
+
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript == null) return;

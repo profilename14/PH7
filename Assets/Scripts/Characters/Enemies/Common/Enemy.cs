@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animancer;
 
 public class Enemy : Character
 {
@@ -15,6 +16,16 @@ public class Enemy : Character
     private void Awake()
     {
         enemyData = (EnemyData) characterData;
+    }
+
+    public override void Hit(AttackState attack, Vector3 hitPoint)
+    {
+        base.Hit(attack, hitPoint);
+
+        if(_Stats.health <= 0) { return; }
+
+        RoamingEnemyActionManager r = gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>();
+        if (r != null && !r.isAggro) r.SpottedPlayer();
     }
 
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)

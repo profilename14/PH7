@@ -12,7 +12,7 @@ public class RoamingEnemyActionManager : EnemyActionManager
     protected CharacterState _Aggro;
 
     [SerializeField]
-    protected bool isAggro;
+    public bool isAggro;
 
     protected override void Awake()
     {

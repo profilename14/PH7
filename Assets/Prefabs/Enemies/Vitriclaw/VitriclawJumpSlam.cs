@@ -28,6 +28,8 @@ public class VitriclawJumpSlam : AttackState
 
     private Vector3 startPoint;
 
+    [SerializeField] GameObject puddle;
+
     private void Awake()
     {
         base.Awake();
@@ -99,5 +101,8 @@ public class VitriclawJumpSlam : AttackState
     public void JumpEnd()
     {
         _Character.SetIsKnockbackImmune(false);
+        movementController.SetAllowMovement(false);
+        movementController.SetAllowRotation(false);
+        Instantiate(puddle, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity);
     }
 }

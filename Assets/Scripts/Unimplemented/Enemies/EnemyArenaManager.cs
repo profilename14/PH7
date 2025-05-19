@@ -74,7 +74,7 @@ public class EnemyArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        aliveEnemies.RemoveAll((GameObject g) => g == null);
+        aliveEnemies.RemoveAll((GameObject g) => !g.activeInHierarchy);
         /*if (aliveEnemies.Count > 0)
         {
             while (aliveEnemies.Count > 0 && aliveEnemies[0] == null)
@@ -144,6 +144,10 @@ public class EnemyArenaManager : MonoBehaviour
             Vector3 location = new Vector3 (enemy.gameObject.transform.position.x, 0, enemy.gameObject.transform.position.z);
             enemy.gameObject.transform.position = spawnPoints[waveNumber].spawnPoints[i].transform.position;
             aliveEnemies.Add(enemy);
+            if(enemyPatrol.gameObject.GetComponent<RoamingEnemyActionManager>() != null)
+            {
+                enemyPatrol.gameObject.GetComponent<RoamingEnemyActionManager>().SpottedPlayer();
+            }
 
         }
         spawningEnemies = false;

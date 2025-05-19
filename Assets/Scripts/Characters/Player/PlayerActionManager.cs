@@ -98,6 +98,8 @@ public class PlayerActionManager : CharacterActionManager
 
     public bool isDashHeld = false;
 
+    public bool DEBUG_HASDASH = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -133,15 +135,16 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Jump.started += context => OnJumpStarted(context);
         controls.Typhis.Jump.performed += context => OnJumpPerformed(context);
 
-        controls.Typhis.Dash.Enable();
+        if(DEBUG_HASDASH)controls.Typhis.Dash.Enable();
+        else controls.Typhis.Dash.Disable();
         controls.Typhis.Dash.started += context => OnDash(context);
         controls.Typhis.Dash.canceled += context => OnDashReleased(context);
 
-        controls.Typhis.Bubble.Enable();
+        controls.Typhis.Bubble.Disable();
         controls.Typhis.Bubble.started += context => OnBubbleStarted(context);
         controls.Typhis.Bubble.performed += context => OnBubblePerformed(context);
 
-        controls.Typhis.CoreMagic.Enable();
+        controls.Typhis.CoreMagic.Disable();
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
 
@@ -187,6 +190,9 @@ public class PlayerActionManager : CharacterActionManager
 
         controls.Typhis.Interact.Disable();
         controls.Typhis.Interact.performed -= context => OnInteractPerformed(context);
+
+        controls.Typhis.LockOn.Disable();
+        controls.Typhis.LockOn.performed -= context => OnLockOnPerformed(context);
     }
 
     private void Update()
@@ -439,7 +445,7 @@ public class PlayerActionManager : CharacterActionManager
             return;
         }
 
-        Collider[] enemyColliders = Physics.OverlapSphere(character.transform.position, lockOnRange, enemyLayerMask);
+        Collider[] enemyColliders = Physics.OverlapSphere(Player.instance.transform.position, lockOnRange, enemyLayerMask);
 
         if (enemyColliders.Length == 0) return;
 
@@ -449,7 +455,7 @@ public class PlayerActionManager : CharacterActionManager
 
         foreach (Collider c in enemyColliders)
         {
-            float dist = Vector3.Distance(character.transform.position, c.gameObject.transform.position);
+            float dist = Vector3.Distance(Player.instance.transform.position, c.gameObject.transform.position);
             if (dist < closestEnemyDistance)
             {
                 closestEnemy = c.gameObject;

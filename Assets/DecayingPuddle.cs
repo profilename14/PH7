@@ -15,6 +15,6 @@ public class DecayingPuddle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position -= Vector3.up * decaySpeed * Time.deltaTime;
+        this.transform.parent.transform.position -= Vector3.up * decaySpeed * Time.deltaTime;
     }
 }

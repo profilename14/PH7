@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Animancer;
 
 public class PuddleMask : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class PuddleMask : MonoBehaviour
         if (other.gameObject.CompareTag("Puddle"))
         {
             Debug.Log("Puddle is masked");
-            other.gameObject.GetComponentInChildren<MeshRenderer>().material.renderQueue = 3002;
+            other.gameObject.GetComponentInParentOrChildren<MeshRenderer>().material.renderQueue = 3002;
         }
     }
 }

@@ -13,6 +13,7 @@ public class RespawnFountain : MonoBehaviour
         {
             Debug.Log("Respawn position set!");
             GameManager.instance.respawnPosition = typhisRespawnPosition.position;
+            Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
             GameManager.instance.sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
         }
     }

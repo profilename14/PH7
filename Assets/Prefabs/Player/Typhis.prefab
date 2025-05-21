@@ -1645,7 +1645,7 @@ MonoBehaviour:
   hitStopTime: 0.15
   hitRecoilForce: -10
   pogoForce: 30
-  startNewComboCooldown: 0.5
+  startNewComboCooldown: 1
   drag: 0
   references:
     version: 2
@@ -10359,10 +10359,13 @@ MonoBehaviour:
   lockOnRange: 50
   lockOnIcon: {fileID: 0}
   dashTimer: 0
+  pogoTimer: 0
+  pogoCooldown: 0.4
   hasDashedInAir: 0
   hasBubbledInAir: 0
   cameraAngle: {x: 0, y: -45, z: 0}
   isDashHeld: 0
+  DEBUG_HASDASH: 0
 --- !u!114 &559858547552153946
 MonoBehaviour:
   m_ObjectHideFlags: 0

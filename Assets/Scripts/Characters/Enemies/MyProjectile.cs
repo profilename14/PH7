@@ -58,6 +58,8 @@ public class MyProjectile : MonoBehaviour
         // If this script is disabled, then the player is not in this attack state and nothing should happen.
         if (this.enabled == false) return;
 
+        if (other.CompareTag("Trigger")) return;
+
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript != null)

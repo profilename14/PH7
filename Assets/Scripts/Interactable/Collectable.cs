@@ -13,7 +13,7 @@ public class Collectable : MonoBehaviour
         {
             if (healsPlayer)
             {
-                other.gameObject.GetComponentInParentOrChildren<PlayerStats>().SetHealth(10);
+                Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
             }
             Destroy(gameObject);
         } 

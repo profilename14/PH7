@@ -102,7 +102,7 @@ public class PlayerBubble : CharacterSpell
 
         chargeTimer = 0;
 
-
+        movementController.SetVelocity(new Vector3(0, 15f, 0));
         
         movementController.SetAllowRotation(true);
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
@@ -113,7 +113,7 @@ public class PlayerBubble : CharacterSpell
     {
         //if (chargeTimer == 0) // <0.2 second
         //{
-            return 40;
+            return 110;
         //}
         /*else if (chargeTimer < 2f)
         {

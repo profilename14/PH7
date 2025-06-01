@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
+using UnityEngine.SceneManagement;
 
 public class EnemyArenaManager : MonoBehaviour
 {
@@ -55,20 +56,40 @@ public class EnemyArenaManager : MonoBehaviour
     [SerializeField] private bool lockedDoor = false;
     [SerializeField] SceneSwitchTrigger doorPrefab;
 
+    [SerializeField] private int combatRoomID = 0; // must be unique
+    private int sceneID;
+
     // Start is called before the first frame update
     void Start()
     {
-        if(spawnOnStart)
+
+        sceneID = SceneManager.GetActiveScene().buildIndex;
+        if (GameManager.instance.clearedCombatRooms[sceneID].TryGetValue(combatRoomID, out bool isCleared))
+        {
+            if (isCleared == true)
+            {
+                spawnOnPlayerEnter = false;
+                spawnOnStart = false;
+            }
+        }
+        else // first load of this scene
+        {
+            GameManager.instance.collectablesObtained[sceneID][combatRoomID] = false;
+        }
+
+
+        if (spawnOnStart)
         {
             activated = true;
             spawningEnemies = true;
             StartCoroutine(EnableObjectSet(0, 0));
             StartCoroutine(SpawnEnemyWave(0, 0));
-            foreach(GameObject g in wallsToEnable)
+            foreach (GameObject g in wallsToEnable)
             {
                 g.SetActive(true);
             }
         }
+
     }
 
     // Update is called once per frame
@@ -120,9 +141,12 @@ public class EnemyArenaManager : MonoBehaviour
                     g.SetActive(false);
 
                 }
-                if (lockedDoor == true) {
+                if (lockedDoor == true)
+                {
                     doorPrefab.unlock();
                 }
+
+                GameManager.instance.collectablesObtained[sceneID][combatRoomID] = true;
             }
         }
     }

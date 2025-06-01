@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
 
     public Vector3 respawnPosition;
 
+    public List<Dictionary<int, bool>> collectablesObtained;
+    public List<Dictionary<int, bool>> clearedCombatRooms;
+    public int soapstones = 0;
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -18,6 +22,9 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
+
+
+        initializeSaveDataLists();
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)
@@ -29,7 +36,7 @@ public class GameManager : MonoBehaviour
     {
         var asyncLoadLevel = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
 
-        while(!asyncLoadLevel.isDone)
+        while (!asyncLoadLevel.isDone)
         {
             yield return null;
         }
@@ -65,5 +72,20 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         Player.instance.WarpPlayer(respawnPosition);
+    }
+
+    void initializeSaveDataLists()
+    {
+        collectablesObtained = new List<Dictionary<int, bool>>();
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            collectablesObtained.Add(new Dictionary<int, bool>()); // Add a row for every scene. Dependent on build order (breaks saves)
+        }
+
+        clearedCombatRooms = new List<Dictionary<int, bool>>();
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            clearedCombatRooms.Add(new Dictionary<int, bool>()); // Add a row for every scene. Dependent on build order (breaks saves)
+        }
     }
 }

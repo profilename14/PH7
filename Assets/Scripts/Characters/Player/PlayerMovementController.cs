@@ -385,9 +385,22 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     public bool IsColliderValidForCollisions(Collider coll)
     {
-        if (isDashing && coll.CompareTag("PhaseableWallController")) {
-            return false;
+        if (coll.CompareTag("PhaseableWallController"))
+        {
+            ColliderLink colliderLink = coll.gameObject.GetComponentInChildren<ColliderLink>();
+            if (colliderLink != null)
+            {
+                if (isDashing && colliderLink.isDashable)
+                {
+                    return false;
+                }
+                else if (colliderLink.usesSoapstones && (GameManager.instance.soapstones >= colliderLink.soapstonesRequired))
+                {
+                    return false;
+                }
+            }
         }
+
 
         if (IgnoredColliders.Contains(coll))
         {

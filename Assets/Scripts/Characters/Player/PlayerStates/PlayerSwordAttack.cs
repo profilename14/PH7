@@ -103,7 +103,7 @@ public class PlayerSwordAttack : AttackState
         baseKnockback = _AttackDataClone.knockback;
         baseFinisherKnockback = _AttackDataClone.knockback * 1.15f; // Todo: raise this when the cooldown on swing 3 is increased
 
-        Debug.Log(baseKnockback);
+        //Debug.Log(baseKnockback);
     }
 
 
@@ -172,8 +172,17 @@ public class PlayerSwordAttack : AttackState
             actionManager.PogoCooldown();
             isPogo = true;
 
-            movementController.SetAllowRotation(false);
-            movementController.RotateToDir(directionalInput.moveDir);
+            
+            if (!actionManager.lockedOn)
+            {
+                movementController.SetAllowRotation(false);
+                movementController.RotateToDir(directionalInput.moveDir);
+            }
+            else
+            {
+                movementController.RotateToDir(directionalInput.lookDir);
+            }
+            
 
             currentSwordSwing = SwordSwingType.SwingDown;
 

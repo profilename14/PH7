@@ -55,6 +55,7 @@ public abstract class Character : MonoBehaviour, IHittable
     
     public virtual void Hit(AttackState attack, Vector3 hitPoint)
     {
+        print("IsInvincible:" + isInvincible);
         //Debug.Log("Hitbox collided");
 
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);

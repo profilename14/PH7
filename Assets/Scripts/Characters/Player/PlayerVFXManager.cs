@@ -208,6 +208,11 @@ public class PlayerVFXManager : CharacterVFXManager
         {
             instantiatedRunVFX = Instantiate(runVFX, transform);
         }
+        else
+        {
+            Destroy(instantiatedRunVFX);
+            instantiatedRunVFX = Instantiate(runVFX, transform);
+        }
 
         instantiatedRunVFX.Play();
         

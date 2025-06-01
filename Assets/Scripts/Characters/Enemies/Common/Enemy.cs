@@ -32,7 +32,7 @@ public class Enemy : Character
     {
         if(hit is Player)
         {
-            Debug.Log("Enemy hit player!");
+            //Debug.Log("Enemy hit player!");
         }
     }
 

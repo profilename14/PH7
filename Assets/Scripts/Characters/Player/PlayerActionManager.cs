@@ -69,7 +69,7 @@ public class PlayerActionManager : CharacterActionManager
     private float invincibilityTime = 1f;
 
     [SerializeField]
-    private bool lockedOn;
+    public bool lockedOn;
 
     [SerializeField]
     private GameObject lockOnTarget;
@@ -99,6 +99,7 @@ public class PlayerActionManager : CharacterActionManager
     public bool isDashHeld = false;
 
     public bool DEBUG_HASDASH = false;
+    public bool DEBUG_HASBUBBLE = false;
 
     protected override void Awake()
     {
@@ -140,7 +141,8 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Dash.started += context => OnDash(context);
         controls.Typhis.Dash.canceled += context => OnDashReleased(context);
 
-        controls.Typhis.Bubble.Disable();
+        if(DEBUG_HASBUBBLE)controls.Typhis.Bubble.Enable();
+        else controls.Typhis.Bubble.Disable();
         controls.Typhis.Bubble.started += context => OnBubbleStarted(context);
         controls.Typhis.Bubble.performed += context => OnBubblePerformed(context);
 
@@ -357,9 +359,10 @@ public class PlayerActionManager : CharacterActionManager
         {
             inputBuffer.Buffer(dashState, inputTimeOut);
             StateMachine.TrySetState(dashState);
-            character.SetIsInvincible(true);
-            
+
         }
+        
+        character.SetIsInvincible(true);
 
         
 
@@ -432,7 +435,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Interact");
+        //Debug.Log("Interact");
         interactCallback?.Invoke();
     }
 
@@ -517,7 +520,8 @@ public class PlayerActionManager : CharacterActionManager
     public void EndDash(float dashCooldown)
     {
         dashTimer = dashCooldown;
-        character.SetIsInvincible(false);
+        //character.SetIsInvincible(true);
+        StartCoroutine(EndInvincibility());
     }
 
     public void PogoCooldown()

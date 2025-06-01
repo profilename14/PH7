@@ -270,9 +270,9 @@ public class MovementController : MonoBehaviour
         {
             ColliderLink wall = other.GetComponent<ColliderLink>();
             bool dashable = wall.isDashable;
-            bool phBased = wall.usesPH;
-            float minPH = wall.minPH;
-            float maxPH = wall.maxPH;
+            //bool phBased = wall.usesPH;
+            //float minPH = wall.minPH;
+            //float maxPH = wall.maxPH;
             //float playerPH = gameObject.GetComponent<PlayerStats>().ph;
 
 
@@ -281,7 +281,7 @@ public class MovementController : MonoBehaviour
               Physics.IgnoreCollision(
                 wall.linkedCollider,
                 GetComponent<Collider>(), true);
-            } else if (phBased
+            } else if (false
                        //&& playerPH <= maxPH + 0.1f
                        /*&& playerPH >= minPH - 0.1f*/) {
                    //Debug.Log("DISABLINGCOLLISION");

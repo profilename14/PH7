@@ -18,7 +18,7 @@ public class EnemyVFXManager : CharacterVFXManager
 
     public override void DeathVFX()
     {
-        Debug.Log("Enemy died!");
+        //Debug.Log("Enemy died!");
     }
 
     public override void TookDamageVFX(Vector3 collisionPoint, Vector3 sourcePos)

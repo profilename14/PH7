@@ -101,13 +101,16 @@ public class EnemyMovementController : CharacterMovementController
             pathfinding.enableRotation = rotationEnabled;
         }
 
-        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.5f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 1f, groundMask))
+        Debug.DrawRay(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0));
+
+        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 3f, groundMask))
         {
             isGrounded = true;
         }
         else
         {
             isGrounded = false;
+            rb.velocity += new Vector3(0, -0.4f, 0);
         }
 
         //actionManager.gameObject.transform.localRotation = Quaternion.FromToRotation(actionManager.gameObject.transform.up, groundHit.normal);
@@ -181,7 +184,7 @@ public class EnemyMovementController : CharacterMovementController
 
     public override bool IsGrounded()
     {
-        return true;
+        return isGrounded;
     }
 
     public override void LockVelocity(Vector3 velocity)

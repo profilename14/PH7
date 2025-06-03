@@ -12,11 +12,14 @@ public class Door : MonoBehaviour
 
     public Transform typhisEntranceTransform;
 
+    public GameObject tooltip;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Player.instance.playerActionManager.interactCallback += SwitchScene;
+            tooltip.SetActive(true);
         }
     }
 
@@ -25,6 +28,7 @@ public class Door : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Player.instance.playerActionManager.interactCallback -= SwitchScene;
+            tooltip.SetActive(false);
         }
     }
 

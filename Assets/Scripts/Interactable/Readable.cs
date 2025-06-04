@@ -15,28 +15,31 @@ public class Readable : MonoBehaviour
     private void Start()
     {
         dialogueSystemTrigger = gameObject.GetComponent<DialogueSystemTrigger>();
-        activateableUI = transform.GetChild(0).gameObject.GetComponent<ActivateableUI>();
-        
-        activateableUI.showUI();
+        activateableUI = gameObject.GetComponentInChildren<ActivateableUI>();
+
+        activateableUI.hideUI();
 
     }
 
     private void Update()
     {
-        if(nearPlayer)
+        /*if (nearPlayer)
         {
             dialogueSystemTrigger.OnUse();
             nearPlayer = false;
             activateableUI.hideUI();
-            
-        }
+
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             nearPlayer = true;
+            activateableUI.showUI();
+            Player.instance.playerActionManager.interactCallback += Activate;
+            //print("Player is NOW near readable");
         }
     }
 
@@ -45,6 +48,15 @@ public class Readable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             nearPlayer = false;
+            activateableUI.hideUI();
+            Player.instance.playerActionManager.interactCallback -= Activate;
+            //print("Player is NO LONGER near readable");
         }
+    }
+
+    private void Activate()
+    {
+        dialogueSystemTrigger.OnUse();
+        activateableUI.hideUI();
     }
 }

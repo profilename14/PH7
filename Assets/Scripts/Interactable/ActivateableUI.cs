@@ -15,7 +15,10 @@ public class ActivateableUI : MonoBehaviour
 
     void Start() {
         camTransform = GameObject.FindWithTag("MainCamera").transform;
-        gameObject.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        if (GameObject.Find("Main Camera"))
+        {
+            gameObject.GetComponent<Canvas>().worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        }
 
 
 

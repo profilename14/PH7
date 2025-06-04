@@ -43,6 +43,13 @@ public class PlayerJump : CharacterState
 
     protected override void OnEnable()
     {
+        /*if (!movementController.IsGrounded())
+        {
+            _ActionManager.StateMachine.ForceSetDefaultState();
+            return;
+        }*/
+
+        //Debug.Log(movementController.IsGrounded());
         _ActionManager.anim.Play(jumpAnimation);
         movementController.StartJump();
         jumpTimer = 0;

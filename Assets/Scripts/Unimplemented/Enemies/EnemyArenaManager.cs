@@ -66,6 +66,7 @@ public class EnemyArenaManager : MonoBehaviour
         sceneID = SceneManager.GetActiveScene().buildIndex;
         if (GameManager.instance.clearedCombatRooms[sceneID].TryGetValue(combatRoomID, out bool isCleared))
         {
+            Debug.Log("Checking: " + isCleared);
             if (isCleared == true)
             {
                 spawnOnPlayerEnter = false;
@@ -74,7 +75,7 @@ public class EnemyArenaManager : MonoBehaviour
         }
         else // first load of this scene
         {
-            GameManager.instance.collectablesObtained[sceneID][combatRoomID] = false;
+            GameManager.instance.clearedCombatRooms[sceneID][combatRoomID] = false;
         }
 
 
@@ -146,7 +147,7 @@ public class EnemyArenaManager : MonoBehaviour
                     doorPrefab.unlock();
                 }
 
-                GameManager.instance.collectablesObtained[sceneID][combatRoomID] = true;
+                GameManager.instance.clearedCombatRooms[sceneID][combatRoomID] = true;
             }
         }
     }

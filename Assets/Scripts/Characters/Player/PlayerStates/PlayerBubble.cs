@@ -84,7 +84,7 @@ public class PlayerBubble : CharacterSpell
 
     public void OnFinishCast() {
 
-        Vector3 ArrowLocation = transform.position + transform.forward;
+        Vector3 ArrowLocation = transform.position + transform.forward + transform.up * 0.5f;
 
         Vector3 curRotation = directionalInput.lookDir;
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
@@ -113,7 +113,7 @@ public class PlayerBubble : CharacterSpell
     {
         //if (chargeTimer == 0) // <0.2 second
         //{
-            return 110;
+            return 90;
         //}
         /*else if (chargeTimer < 2f)
         {

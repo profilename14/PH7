@@ -12,8 +12,9 @@ public class RespawnFountain : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player.instance.playerActionManager.interactCallback += UseFountain;
+            //Player.instance.playerActionManager.interactCallback += UseFountain;
             //tooltip.SetActive(true);
+            UseFountain();
         }
     }
 
@@ -21,7 +22,7 @@ public class RespawnFountain : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player.instance.playerActionManager.interactCallback -= UseFountain;
+            //Player.instance.playerActionManager.interactCallback -= UseFountain;
             //tooltip.SetActive(false);
         }
     }

@@ -197,6 +197,18 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.LockOn.performed -= context => OnLockOnPerformed(context);
     }
 
+    private void Start()
+    {
+        if (GameManager.instance.dashUnlocked)
+        {
+            UnlockDash();
+        }
+        if (GameManager.instance.bubbleUnlocked)
+        {
+            UnlockBubble();
+        }
+    }
+
     private void Update()
     {
         moveDir = playerDirectionalInput.moveDir;
@@ -558,6 +570,18 @@ public class PlayerActionManager : CharacterActionManager
 
         dir = GetDirRelativeToCamera(dir);
         return dir;
+    }
+
+    public void UnlockDash()
+    {
+        DEBUG_HASDASH = true;
+        controls.Typhis.Dash.Enable();
+    }
+
+    public void UnlockBubble()
+    {
+        DEBUG_HASBUBBLE = true;
+        controls.Typhis.Bubble.Enable();
     }
 
     public Vector3 GetDirRelativeToCamera(Vector3 dir)

@@ -12,8 +12,12 @@ public class GameManager : MonoBehaviour
     public Vector3 respawnPosition;
 
     public List<Dictionary<int, bool>> collectablesObtained;
+    public List<Dictionary<int, bool>> collectablesDamageObtained;
     public List<Dictionary<int, bool>> clearedCombatRooms;
     public int soapstones = 0;
+    public int damageUpgrade = 0; // Each point addes 33% damage rounded up
+    public bool dashUnlocked = false;
+    public bool bubbleUnlocked = false;
 
     private void Awake()
     {
@@ -80,6 +84,12 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             collectablesObtained.Add(new Dictionary<int, bool>()); // Add a row for every scene. Dependent on build order (breaks saves)
+        }
+
+        collectablesDamageObtained = new List<Dictionary<int, bool>>();
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            collectablesDamageObtained.Add(new Dictionary<int, bool>()); // Add a row for every scene. Dependent on build order (breaks saves)
         }
 
         clearedCombatRooms = new List<Dictionary<int, bool>>();

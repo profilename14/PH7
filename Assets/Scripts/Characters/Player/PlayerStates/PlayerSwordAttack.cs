@@ -288,25 +288,35 @@ public class PlayerSwordAttack : AttackState
     protected void OnTriggerEnter(Collider other)
     {
         float distanceKnockbackMultiplier = 1;
+        float damageMultiplier = 1;
 
         // If an enemy is 3.5 units from Typhis, knockback is unchanged. If closer, its increased, if farther, its reduced. 
         // A base knockback of 15 can range from about 7.5 to 22.5 with this.
         distanceKnockbackMultiplier = ((transform.position - other.transform.position).magnitude - 3.5f) * 3f;
+        damageMultiplier = 1 + 0.335f * GameManager.instance.damageUpgrade;
 
-        if (other.gameObject.tag == "Enemy")
+
+        if (other.gameObject.tag == "Enemy" || true)
         {
             //Debug.Log(distanceKnockbackMultiplier);
 
             _AttackDataClone.knockback = _AttackDataClone.knockback - distanceKnockbackMultiplier;
+            _AttackDataClone.damage = _AttackDataClone.damage * (damageMultiplier);
+
         }
+
+        Debug.Log(_AttackDataClone.damage);
+        
+        Debug.Log(damageMultiplier);
 
         // Call AttackState's OnTriggerEnter
         base.OnTriggerEnter(other);
 
         // Change knockback back
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" || true)
         {
             _AttackDataClone.knockback = _AttackDataClone.knockback + distanceKnockbackMultiplier;
+            _AttackDataClone.damage = _AttackDataClone.damage *= (1f/damageMultiplier);
         }
         
 

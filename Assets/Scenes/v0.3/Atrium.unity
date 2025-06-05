@@ -1157,7 +1157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3473925023760633006, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: DEBUG_HASBUBBLE
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4173532551381243189, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_Name
@@ -3035,6 +3035,63 @@ Transform:
   - {fileID: 1052264292}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &461819313
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2251780495713067367, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_Name
+      value: BubbleUnlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8660228
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.4075386
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0021252928
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.28967616
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 19.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865593725844206999, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 45
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e8d91a76e07ad44c8e3c4fa70cb7339, type: 3}
 --- !u!1 &464408390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3067,6 +3124,9 @@ MonoBehaviour:
   sceneToLoadOnRespawn: 
   respawnPosition: {x: 0, y: -3, z: -54}
   soapstones: 0
+  damageUpgrade: 0
+  dashUnlocked: 0
+  bubbleUnlocked: 0
 --- !u!4 &464408392
 Transform:
   m_ObjectHideFlags: 0
@@ -11834,3 +11894,4 @@ SceneRoots:
   - {fileID: 93800158}
   - {fileID: 207176695}
   - {fileID: 968646482}
+  - {fileID: 461819313}

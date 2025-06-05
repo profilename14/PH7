@@ -10366,6 +10366,7 @@ MonoBehaviour:
   cameraAngle: {x: 0, y: -45, z: 0}
   isDashHeld: 0
   DEBUG_HASDASH: 0
+  DEBUG_HASBUBBLE: 0
 --- !u!114 &559858547552153946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10434,8 +10435,8 @@ MonoBehaviour:
   jumpAnimation: {fileID: 11400000, guid: c73afca6c8c01bd4fa0e4b06747206ca, type: 2}
   jumpUpSpeed: 25
   maxJumpTime: 0.5
-  jumpPreGroundingGraceTime: 0.2
-  jumpPostGroundingGraceTime: 0.2
+  jumpPreGroundingGraceTime: 0.05
+  jumpPostGroundingGraceTime: 0.1
   jumpSpeedCurve:
     serializedVersion: 2
     m_Curve:

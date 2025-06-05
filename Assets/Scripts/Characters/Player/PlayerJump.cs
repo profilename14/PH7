@@ -19,8 +19,8 @@ public class PlayerJump : CharacterState
     [Header("Jump Data")]
     public float jumpUpSpeed = 10f;
     public float maxJumpTime = 2f;
-    public float jumpPreGroundingGraceTime = 0f;
-    public float jumpPostGroundingGraceTime = 0f;
+    public float jumpPreGroundingGraceTime = 0.2f;
+    public float jumpPostGroundingGraceTime = 0.2f;
     [SerializeField]
     public AnimationCurve jumpSpeedCurve;
     [SerializeField]

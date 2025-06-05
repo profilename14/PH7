@@ -17180,6 +17180,9 @@ MonoBehaviour:
   sceneToLoadOnRespawn: 
   respawnPosition: {x: 0, y: 0, z: 0}
   soapstones: 0
+  damageUpgrade: 0
+  dashUnlocked: 0
+  bubbleUnlocked: 0
 --- !u!4 &642020691
 Transform:
   m_ObjectHideFlags: 0
@@ -23344,7 +23347,7 @@ Transform:
   m_GameObject: {fileID: 937768841}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.11, y: 0, z: -6.35}
+  m_LocalPosition: {x: 11, y: 0, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54948,6 +54951,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2610760496039357934, guid: 56fb463d6a130d744a0b1e008be99aa5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2083210169}
+    - targetCorrespondingSourceObject: {fileID: 2610760496039357934, guid: 56fb463d6a130d744a0b1e008be99aa5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2083210170}
   m_SourcePrefab: {fileID: 100100000, guid: 56fb463d6a130d744a0b1e008be99aa5, type: 3}
 --- !u!1 &2083210167 stripped
 GameObject:
@@ -54972,7 +54978,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpawnPoint: {fileID: 937768842}
-  effectField: {fileID: 0}
+  effectField: {fileID: 2083210170}
+--- !u!114 &2083210170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2083210167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3cc857441d2a2409956f2804b4954a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
+  damageOnEnter: 1
+  enableDamageOverTime: 0
+  damageOverTime: 0
+  damageTickInterval: 0
+  staticKnockback: {x: 0, y: 0}
+  dynamicKnockback: 0
+  causeHit: 0
 --- !u!1001 &2085018064
 PrefabInstance:
   m_ObjectHideFlags: 0

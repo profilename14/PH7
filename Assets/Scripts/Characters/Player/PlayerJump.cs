@@ -39,6 +39,8 @@ public class PlayerJump : CharacterState
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
         movementController.PassJumpData(jumpUpSpeed, jumpPreGroundingGraceTime, jumpPostGroundingGraceTime);
+        jumpPreGroundingGraceTime = 0.1f;
+        jumpPostGroundingGraceTime = 0.1f;
     }
 
     protected override void OnEnable()

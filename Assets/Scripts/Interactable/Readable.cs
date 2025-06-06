@@ -38,8 +38,9 @@ public class Readable : MonoBehaviour
         {
             nearPlayer = true;
             activateableUI.showUI();
-            Player.instance.playerActionManager.interactCallback += Activate;
+            //Player.instance.playerActionManager.interactCallback += Activate;
             //print("Player is NOW near readable");
+            dialogueSystemTrigger.OnUse();
         }
     }
 
@@ -49,7 +50,7 @@ public class Readable : MonoBehaviour
         {
             nearPlayer = false;
             activateableUI.hideUI();
-            Player.instance.playerActionManager.interactCallback -= Activate;
+            //Player.instance.playerActionManager.interactCallback -= Activate;
             //print("Player is NO LONGER near readable");
         }
     }

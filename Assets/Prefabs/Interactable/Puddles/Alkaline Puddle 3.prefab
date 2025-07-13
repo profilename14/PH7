@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7060525221166323441}
   - component: {fileID: 6309366381063439580}
-  - component: {fileID: 926585967581959155}
   - component: {fileID: 1607194413326541372}
+  - component: {fileID: 8462321543248392517}
   m_Layer: 9
   m_Name: Collision
   m_TagString: Puddle
@@ -62,27 +62,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &926585967581959155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2888804982365532390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 371a582d78f69ad439a772d85ba57840, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  changeInPH: 10
-  damage: 0
-  maxLifespan: 0
-  curLifespan: 0
-  permanent: 1
-  shrinks: 0
-  damageSourceType: 3
-  damagesAlkaline: 0
-  damagesPlayer: 0
 --- !u!64 &1607194413326541372
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -105,6 +84,27 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6416302070336371891, guid: 5844fe03a8293b740ad423e67089f7bc, type: 3}
+--- !u!114 &8462321543248392517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2888804982365532390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3cc857441d2a2409956f2804b4954a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 1
+  damageOnEnter: 0
+  enableDamageOverTime: 0
+  damageOverTime: 0
+  damageTickInterval: 1
+  staticKnockback: {x: 0, y: 0}
+  dynamicKnockback: 0
+  causeHit: 0
+  notifyTarget: 1
 --- !u!1 &5048809570923366526
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,9 +129,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5048809570923366526}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.49, y: 0, z: -47.41}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7060525221166323441}

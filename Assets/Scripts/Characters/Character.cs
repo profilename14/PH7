@@ -32,6 +32,8 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     protected bool isHitstunImmune = false;
 
+    protected ColliderEffectField currentPuddle = null; // Can read currentPuddle.effectType
+
     protected bool isDead = false;
 
     protected void Awake()
@@ -174,6 +176,21 @@ public abstract class Character : MonoBehaviour, IHittable
     public virtual void SetIsKnockbackImmune(bool isKnockbackImmune)
     {
         this.isKnockbackImmune = isKnockbackImmune;
+    }
+
+    public virtual void SetCurrentPuddle(ColliderEffectField newPuddle)
+    {
+        this.currentPuddle = newPuddle; // set to null on leaving a puddle
+        Debug.Log("Currently in puddle of type " + currentPuddle);
+        if (currentPuddle != null)
+        {
+            Debug.Log(currentPuddle.effectType);
+        }
+    }
+
+    public ColliderEffectField getCurrentPuddle()
+    {
+        return currentPuddle;
     }
 
     public virtual void Die()

@@ -1641,7 +1641,7 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: 2137a23bef08b7b46abbf86f95164df0, type: 2}
     _NormalizedStartTime: 0.18181819
   swordSwingSFX: {fileID: 0}
-  swingForce: 50
+  swingForce: 40
   hitStopTime: 0.15
   hitRecoilForce: -10
   pogoForce: 25
@@ -10713,8 +10713,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
-  distance: 15
-  duration: 0.3
+  distance: 10
+  duration: 0.2
   movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
   moveDir: {x: 0, y: 0, z: 0}
@@ -10748,6 +10748,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   isDashing: 0
   dashVFX: {fileID: 3182815549824842778, guid: c4b4de0fe39ec924c8151a04aca27a2d, type: 3}
+  surfSpeed: 2
+  airDashMultiplier: 1.5
   references:
     version: 2
     RefIds:

@@ -36,7 +36,7 @@ public class PlayerSwordAttack : AttackState
     AudioClip swordSwingSFX;
 
     [SerializeField]
-    float swingForce = 2f;
+    float swingForce = 40f;
     
     [SerializeField]
     float hitStopTime = 0.15f;

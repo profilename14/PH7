@@ -46,6 +46,14 @@ public class PlayerDash : DashState
 
     private PlayerVFXManager vfx;
 
+    private bool puddleSurfMode = false;
+    [SerializeField] private float surfSpeed = 2f;
+    private Vector3 surfPosition;
+    private bool surfDisable = false; // toggled when manually exiting surf.
+
+    private bool airDash = false;
+    [SerializeField] private float airDashMultiplier = 1.5f;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
 
@@ -69,10 +77,23 @@ public class PlayerDash : DashState
         moveDir = actionManager.GetDirRelativeToCamera(directionalInput.moveDir);
         movementController.RotateToDir(moveDir);
 
+        airDash = !movementController.IsGrounded();
+
         startingPoint = movementController.gameObject.transform.position;
-        destination = new Vector3(startingPoint.x + moveDir.x * distance, 
-                                  startingPoint.y,
-                                  startingPoint.z + moveDir.z * distance);
+
+        if (airDash)
+        {
+            destination = new Vector3(startingPoint.x + moveDir.x * distance * airDashMultiplier, 
+                                      startingPoint.y,
+                                      startingPoint.z + moveDir.z * distance * airDashMultiplier);
+        }
+        else
+        {
+            destination = new Vector3(startingPoint.x + moveDir.x * distance, 
+                                      startingPoint.y,
+                                      startingPoint.z + moveDir.z * distance);
+        }
+        
         
         // Just sets to idle after this animation fully ends.
         currentState = _ActionManager.anim.Play(dashAnimation);
@@ -80,6 +101,9 @@ public class PlayerDash : DashState
 
         dashTimer = 0;
         isDashing = true;
+        surfPosition = movementController.transform.position;
+
+
 
         if (dashVFX)
         {
@@ -88,10 +112,19 @@ public class PlayerDash : DashState
         }
     }
 
-    protected void Update()
+    protected void FixedUpdate()
     {
         dashTimer += Time.deltaTime;
-        float dashProgress = dashTimer / duration;
+        float dashProgress;
+        if (airDash)
+        {
+            dashProgress = dashTimer / (duration * airDashMultiplier);
+        }
+        else
+        {
+            dashProgress = dashTimer / duration;
+        }
+        
 
         if (dashProgress > 1)
         {
@@ -101,9 +134,45 @@ public class PlayerDash : DashState
 
         if (!Physics.Raycast(transform.position, movementController.transform.forward, 2))
         {
-            Vector3 newPos = Vector3.Lerp( startingPoint, destination, movementCurve.Evaluate(dashProgress) );
+            if (!puddleSurfMode)
+            {
+                Vector3 newPos = Vector3.Lerp(startingPoint, destination, movementCurve.Evaluate(dashProgress));
 
-            movementController.SetPosition(newPos);
+                movementController.SetPosition(newPos);
+
+                if (actionManager.character.getCurrentPuddle() != null && isDashing)
+                {
+                    if (actionManager.character.getCurrentPuddle().effectType == Chemical.Alkaline && !surfDisable)
+                    {
+                        puddleSurfMode = true;
+                        surfPosition = movementController.transform.position;
+                    }
+                }
+            }
+            else
+            {
+                Vector3 newPos = surfPosition;
+
+                dashTimer -= Time.deltaTime;
+                
+
+                surfPosition += (destination - startingPoint).normalized * surfSpeed;
+
+                movementController.SetPosition(surfPosition);
+
+                if (actionManager.character.getCurrentPuddle() == null)
+                {
+                    puddleSurfMode = false;
+                    dashTimer = 0;
+
+                    Vector3 tempDirection = (destination - startingPoint).normalized;
+                    startingPoint = surfPosition;
+                    destination = new Vector3(startingPoint.x + tempDirection.x * distance * 0.2f, 
+                                              startingPoint.y,
+                                              startingPoint.z + tempDirection.z * distance * 0.2f);
+                }
+            }
+        
             
         }
         else
@@ -132,12 +201,30 @@ public class PlayerDash : DashState
         vfx.EndDashVFX();
         actionManager.EndDash(dashCooldown);
         isDashing = false;
+        surfDisable = false;
+        puddleSurfMode = false;
         movementController.SetAllowRotation(true);
         movementController.SetVelocity(new Vector3(0, 10f, 0)); // Effectively very slightly reduces gravity for a moment
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
 
+
+    public override void dashButtonHit()
+    {
+        if (puddleSurfMode)
+        {
+            puddleSurfMode = false;
+            surfDisable = true;
+            dashTimer = 0;
+
+            Vector3 tempDirection = (destination - startingPoint).normalized;
+            startingPoint = surfPosition;
+            destination = new Vector3(startingPoint.x + tempDirection.x * distance * 0.4f, 
+                                      startingPoint.y,
+                                      startingPoint.z + tempDirection.z * distance * 0.4f);
+        }
+    }
 
 
     protected override void OnDisable()

@@ -28,7 +28,7 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private PlayerSwordAttack attackState;
     [SerializeField]
-    private CharacterState dashState;
+    private DashState dashState;
     [SerializeField]
     private CharacterFocus coreState;
     [SerializeField]
@@ -222,7 +222,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private void FixedUpdate()
     {
-        playerDirectionalInput.usingController = true || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
+        playerDirectionalInput.usingController = false || (playerInput.currentControlScheme.Equals("Switch Pro Controller"));
 
         Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
 
@@ -344,21 +344,28 @@ public class PlayerActionManager : CharacterActionManager
     void OnDash(InputAction.CallbackContext context)
     {
         isDashHeld = true;
-        if ((inputBuffer.State != null &&
-             inputBuffer.State.StateName == "PlayerSwordAttack") || StateMachine.CurrentState.StateName == "PlayerSwordAttack")
+
+        if (StateMachine.CurrentState.StateName == "PlayerDash")
         {
-            /*print("dashAttacked");
-            if (StateMachine.CurrentState.StateName == "PlayerSwordAttack")
-            {
-                inputBuffer.Buffer(dashAttackState, inputTimeOut);
-            }
-            else
-            {
-                inputBuffer.Buffer(dashAttackState, inputTimeOut);
-                print(inputBuffer.State.StateName);
-            }
-            return;*/
+            dashState.dashButtonHit();
         }
+
+
+        if ((inputBuffer.State != null &&
+                 inputBuffer.State.StateName == "PlayerSwordAttack") || StateMachine.CurrentState.StateName == "PlayerSwordAttack")
+            {
+                /*print("dashAttacked");
+                if (StateMachine.CurrentState.StateName == "PlayerSwordAttack")
+                {
+                    inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                }
+                else
+                {
+                    inputBuffer.Buffer(dashAttackState, inputTimeOut);
+                    print(inputBuffer.State.StateName);
+                }
+                return;*/
+            }
 
         if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero || hasDashedInAir)
         {

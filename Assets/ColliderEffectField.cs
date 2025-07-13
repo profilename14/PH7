@@ -21,6 +21,8 @@ public class ColliderEffectField : MonoBehaviour
 
     public bool causeHit;
 
+    public bool notifyTarget;
+
     public List<IHittable> doTEntities = new();
 
     private void OnDisable()
@@ -40,28 +42,52 @@ public class ColliderEffectField : MonoBehaviour
 
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
-        if (hittableScript == null) return;
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
-        hittableScript.Hit(this, damageOnEnter);
+        if (causeHit && hittableScript != null)
+        {
+            hittableScript.Hit(this, damageOnEnter);
+        }
 
-        if (enableDamageOverTime)
+        if (enableDamageOverTime && hittableScript != null)
         {
             doTEntities.Add(hittableScript);
             StartCoroutine(DamageOverTimeTicks());
+        }
+
+        if (notifyTarget)
+        {
+            Character characterScript = other.gameObject.GetComponentInParentOrChildren<Character>();
+            if (characterScript != null)
+            {
+                characterScript.SetCurrentPuddle(this);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!enableDamageOverTime) return;
-
         //Debug.Log("Hit something");
         if (!gameObject.activeInHierarchy) return;
 
         // If this script is disabled, then the effect field is disabled
         if (this.enabled == false) return;
+
+        if (notifyTarget)
+        {
+            Character characterScript = other.gameObject.GetComponentInParentOrChildren<Character>();
+            if (characterScript != null)
+            {
+                if (characterScript.getCurrentPuddle() == this)
+                {
+                    characterScript.SetCurrentPuddle(null);
+                }
+
+            }
+        }
+
+        if (!enableDamageOverTime) return;
 
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
@@ -71,9 +97,9 @@ public class ColliderEffectField : MonoBehaviour
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
-        foreach(IHittable h in doTEntities)
+        foreach (IHittable h in doTEntities)
         {
-            if(h == hittableScript)
+            if (h == hittableScript)
             {
                 doTEntities.Remove(hittableScript);
                 return;

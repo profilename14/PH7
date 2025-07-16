@@ -27,6 +27,7 @@ Material:
   m_ValidKeywords:
   - DR_OUTLINE_ON
   - DR_RIM_ON
+  - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
   - _DETAILMAPBLENDINGMODE_MULTIPLY
   - _GRADIENTSPACE_WORLD
@@ -47,26 +48,30 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _FlatRimEdgeSmoothness: 0.407
-    - _FlatRimLightAlign: 0.67
-    - _FlatRimSize: 0.166
+    - _FlatRimEdgeSmoothness: 0.469
+    - _FlatRimLightAlign: 0.535
+    - _FlatRimSize: 0.048
     - _FlatSpecularEdgeSmoothness: 1
-    - _FlatSpecularSize: 0
+    - _FlatSpecularSize: 0.726
+    - _Flatness: 1
     - _Glossiness: 0
     - _GradientAngle: 0
     - _GradientEnabled: 0
     - _LightContribution: 0.8
     - _LightFalloffSize: 0.7
     - _Metallic: 0.883
-    - _ShadowEdgeSize: 0.053
+    - _OutlineEnabled: 1
+    - _RimEnabled: 1
+    - _SelfShadingSize: 0.497
+    - _ShadowEdgeSize: 0.182
     - _Smoothness: 0
-    - _SpecularEnabled: 0
+    - _SpecularEnabled: 1
     m_Colors:
-    - _BaseColor: {r: 0.08419358, g: 0.61194706, b: 0.8113208, a: 1}
+    - _BaseColor: {r: 0, g: 0.75686264, b: 1, a: 1}
     - _Color: {r: 0.3410021, g: 0.69927025, b: 0.9150943, a: 1}
-    - _ColorDim: {r: 0.1725525, g: 0.55233717, b: 0.6981132, a: 1}
+    - _ColorDim: {r: 0.042363837, g: 0.39412493, b: 0.5283019, a: 1}
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
-    - _FlatRimColor: {r: 0, g: 0.034814343, b: 0.04905659, a: 1}
-    - _FlatSpecularColor: {r: 0.18856838, g: 0.5407999, b: 0.676, a: 1}
+    - _FlatRimColor: {r: 0, g: 0.83862734, b: 1, a: 1}
+    - _FlatSpecularColor: {r: 0.2216981, g: 0.8317223, b: 1, a: 1}
   m_BuildTextureStacks: []

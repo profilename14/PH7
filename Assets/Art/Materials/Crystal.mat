@@ -26,7 +26,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - DR_OUTLINE_ON
-  - _BASEMAP_PREMULTIPLY
   - _DETAILMAPBLENDINGMODE_MULTIPLY
   - _GRADIENTSPACE_LOCAL
   - _OUTLINESPACE_SCREEN
@@ -34,6 +33,7 @@ Material:
   - _UNITYSHADOWMODE_MULTIPLY
   - _UNITYSHADOW_OCCLUSION
   m_InvalidKeywords:
+  - _ALPHAMODULATE_ON
   - _CELPRIMARYMODE_NONE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -119,7 +119,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BaseMapPremultiply: 1
+    - _BaseMapPremultiply: 0
     - _Blend: 2
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -183,7 +183,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 1
     - _TextureBlendingMode: 0
-    - _TextureImpact: 1
+    - _TextureImpact: 0
     - _UVSec: 0
     - _UnityShadowMode: 1
     - _UnityShadowOcclusion: 1
@@ -194,7 +194,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.7247988, b: 0.6179246, a: 1}
+    - _BaseColor: {r: 1, g: 0.59023577, b: 0.5019608, a: 0.54509807}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorDim: {r: 0.26415092, g: 0.19007087, b: 0.12833749, a: 1}
     - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}

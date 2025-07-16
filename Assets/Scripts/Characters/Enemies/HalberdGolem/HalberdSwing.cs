@@ -51,6 +51,7 @@ public class HalberdSwing : AttackState
 
     public void SwingStart()
     {
+        vfx.PlayClawVFX();
         movementController.SetGroundDrag(drag);
         movementController.SetAllowRotation(false);
         movementController.SetAllowMovement(false);

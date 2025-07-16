@@ -30,8 +30,10 @@ public class EnemyPatrol : CharacterState
 
     EnemyMovementController movementController;
 
-    private void Awake()
+    protected void Awake()
     {
+        base.Awake();
+        if (patrolTargets.Length <= 1) isPatrolling = false;
     }
 
     protected override void OnEnable()

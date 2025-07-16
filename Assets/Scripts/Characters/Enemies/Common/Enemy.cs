@@ -20,12 +20,19 @@ public class Enemy : Character
 
     public override void Hit(AttackState attack, Vector3 hitPoint)
     {
+        Debug.Log(this.gameObject.name + " took " + attack.attackData.damage + " damage from " + attack.name + "! Has " + _Stats.health + " health left!");
         base.Hit(attack, hitPoint);
 
         if(_Stats.health <= 0) { return; }
 
         RoamingEnemyActionManager r = gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>();
         if (r != null && !r.isAggro) r.SpottedPlayer();
+    }
+
+    public override void Hit(ColliderEffectField effectField, float damage)
+    {
+        base.Hit(effectField, damage);
+        Debug.Log(this.gameObject.name + " took " + effectField.damageOnEnter + " damage from " + effectField.name + "! Has " + _Stats.health + " health left!");
     }
 
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)

@@ -10599,19 +10599,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a81fb412d84f641af3631586bada5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Anim: {fileID: 7952499759578350}
-  _Character: {fileID: 2898020883842843761}
-  _Idle: {fileID: 3728756693185754977}
-  _InitAggro: {fileID: 473879448141724443}
+  anim: {fileID: 0}
+  character: {fileID: 0}
+  defaultState: {fileID: 0}
   _HitStun: {fileID: 2778420119749201071}
   attackBehaviorUpdateInterval: 0.25
+  canAttackInIdle: 0
   attacks:
   - cooldown: 0
     stateScript: {fileID: 8607325825142769744}
     behaviorData: {fileID: 11400000, guid: 57cbd2ba763872941ac25867f0834326, type: 2}
   noAttacksTimer: 0
-  isAggro: 0
   isStunned: 0
+  movementController: {fileID: 0}
 --- !u!114 &7952499759578350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10663,9 +10663,6 @@ MonoBehaviour:
   _Character: {fileID: 2898020883842843761}
   IdleAnimation: {fileID: 11400000, guid: 9f36c169b6eed06488f383ba047538d6, type: 2}
   MoveAnimation: {fileID: 11400000, guid: 06fd6d6da0770de4083e83641db69a6f, type: 2}
-  eyeOffset: {x: 0, y: 1, z: 0}
-  sightDistance: 20
-  viewConeAngle: 90
   patrolPauseTime: 1
   randomlyChooseTargets: 1
   patrolTargets:
@@ -10674,6 +10671,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  isPatrolling: 1
 --- !u!114 &473879448141724443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10703,15 +10701,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
-  takeDamageAnimation:
-    _FadeDuration: 0.041666668
+  flinchAnimation:
+    _FadeDuration: 0.25
     _Speed: 1
     _Events:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
-    _Clip: {fileID: 7400000, guid: 426d529ebd792a24f9d43e839a41b596, type: 2}
+    _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  canMoveWhileStunned: 0
+  canRotateWhileStunned: 0
   references:
     version: 2
     RefIds: []
@@ -10802,7 +10802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2600611272040119584
 Transform:
   m_ObjectHideFlags: 0
@@ -11086,10 +11086,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: 519de289d44d4734e9c0c1d21d780d0e, type: 2}
   _ActionManager: {fileID: 1360620514324653503}
+  movementController: {fileID: 0}
   _Stats: {fileID: 3564450361393284608}
   _VFXManager: {fileID: 3248603864096777124}
   isInvincible: 0
   isKnockbackImmune: 0
+  isHitstunImmune: 0
 --- !u!114 &3564450361393284608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11105,6 +11107,7 @@ MonoBehaviour:
   _Character: {fileID: 2898020883842843761}
   _ActionManager: {fileID: 1360620514324653503}
   _Health: 0
+  _Armor: 0
 --- !u!114 &8955503680403876498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11119,8 +11122,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 2898020883842843761}
   pathfinding: {fileID: 4159427908813979764}
-  _Rb: {fileID: 4699728478831517558}
+  rb: {fileID: 0}
   enemyData: {fileID: 11400000, guid: 519de289d44d4734e9c0c1d21d780d0e, type: 2}
+  isGrounded: 0
 --- !u!114 &3248603864096777124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11133,8 +11137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5bbeb2e690ba94b94f0bf9c487f558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 7691931766937260997}
+  baseRenderers: []
   damageFlashColor: {r: 1, g: 1, b: 1, a: 1}
   damageFlashIntensity: 1
   damageFlashTime: 0.2
@@ -27084,6 +27087,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileIsActive: 0
+  lifespan: 4.5
+  speed: 50
   damageCollider: {fileID: 1387554968673743742}
   warningParticles: {fileID: 1591808233549420726}
   aoEDelay: 1

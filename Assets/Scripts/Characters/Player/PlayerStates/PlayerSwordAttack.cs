@@ -74,6 +74,8 @@ public class PlayerSwordAttack : AttackState
 
     private bool canDashAttack = true;
 
+    private bool isDone;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
@@ -102,8 +104,6 @@ public class PlayerSwordAttack : AttackState
 
         baseKnockback = _AttackDataClone.knockback;
         baseFinisherKnockback = _AttackDataClone.knockback * 1.15f; // Todo: raise this when the cooldown on swing 3 is increased
-
-        //Debug.Log(baseKnockback);
     }
 
 
@@ -120,21 +120,18 @@ public class PlayerSwordAttack : AttackState
 
         canDashAttack = true;
 
+        isDone = false;
 
         if (movementController.IsGrounded())
         {
-            movementController.SetAllowRotation(true);
-            
-            movementController.RotateToDir(directionalInput.lookDir);
+            movementController.RotateToDir(moveDirAtStart);
+            movementController.SetAllowRotation(false);
 
             movementController.SetGroundDrag(drag);
             movementController.SetVelocity(directionalInput.lookDir * swingForce);
             movementController.SetAllowMovement(false);
 
             isPogo = false;
-
-            //movementController.SetAllowMovement(false);
-            //movementController.SetAllowRotation(false);
 
             if (currentSwing >= attackAnimations.Length - 1 || currentState == null || currentState.Weight == 0)
             {
@@ -168,20 +165,10 @@ public class PlayerSwordAttack : AttackState
         }
         else
         {
+            movementController.SetAllowRotation(true);
 
             actionManager.PogoCooldown();
             isPogo = true;
-
-            
-            if (!actionManager.lockedOn)
-            {
-                movementController.SetAllowRotation(false);
-                movementController.RotateToDir(directionalInput.moveDir);
-            }
-            else
-            {
-                movementController.RotateToDir(directionalInput.lookDir);
-            }
             
 
             currentSwordSwing = SwordSwingType.SwingDown;
@@ -200,7 +187,22 @@ public class PlayerSwordAttack : AttackState
 
     protected void Update()
     {
-        movementController.RotateToDir(directionalInput.lookDir);
+        if(currentSwordSwing == SwordSwingType.SwingDown)
+        {
+            if (!actionManager.lockedOn)
+            {
+                movementController.RotateToDir(directionalInput.moveDir);
+            }
+            else
+            {
+                movementController.RotateToDir(directionalInput.lookDir);
+            }
+        }
+
+        if(isDone)
+        {
+            movementController.RotateToDir(directionalInput.moveDir);
+        }
 
         /*if (actionManager.GetBufferedState() && (actionManager.GetBufferedState().StateName == "PlayerDash"
                                              || actionManager.GetBufferedState().StateName == "PlayerDashAttack"))
@@ -265,6 +267,8 @@ public class PlayerSwordAttack : AttackState
 
     public void EndSwordSwing()
     {
+        isDone = true;
+
         AllowMove();
         AllowJump();
         AllowLowPriority();

@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public Vector3 respawnPosition;
 
+    public Transform defaultSceneRespawn;
+
     public List<Dictionary<int, bool>> collectablesObtained;
     public List<Dictionary<int, bool>> collectablesDamageObtained;
     public List<Dictionary<int, bool>> clearedCombatRooms;
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     public bool dashUnlocked = false;
     public bool bubbleUnlocked = false;
 
+
     private void Awake()
     {
         if (instance == null) instance = this;
@@ -26,7 +29,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
         sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
-
+        if(defaultSceneRespawn != null) respawnPosition = defaultSceneRespawn.position;
 
         initializeSaveDataLists();
     }

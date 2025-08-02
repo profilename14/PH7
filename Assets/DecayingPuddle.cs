@@ -5,6 +5,7 @@ using UnityEngine;
 public class DecayingPuddle : MonoBehaviour
 {
     public float decaySpeed;
+    [SerializeField] GameObject parent;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +16,6 @@ public class DecayingPuddle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.parent.transform.position -= Vector3.up * decaySpeed * Time.deltaTime;
+        parent.transform.position -= Vector3.up * decaySpeed * Time.deltaTime;
     }
 }

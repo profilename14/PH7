@@ -177,6 +177,11 @@ public abstract class Character : MonoBehaviour, IHittable
     {
         this.isKnockbackImmune = isKnockbackImmune;
     }
+    
+    public virtual void SetIsHitstunImmune(bool isHitstunImmune)
+    {
+        this.isHitstunImmune = isHitstunImmune;
+    }
 
     public virtual void SetCurrentPuddle(ColliderEffectField newPuddle)
     {

@@ -382,11 +382,8 @@ public class PlayerActionManager : CharacterActionManager
         }
         
         character.SetIsInvincible(true);
-
-        
-
-        
-        
+        character.SetIsKnockbackImmune(true);
+        character.SetIsHitstunImmune(true);
     }
 
     void OnBubbleStarted(InputAction.CallbackContext context)
@@ -534,13 +531,16 @@ public class PlayerActionManager : CharacterActionManager
     {
         yield return new WaitForSeconds(invincibilityTime);
         character.SetIsInvincible(false);
+        //Debug.Log("Is end invincibility");
     }
 
     public void EndDash(float dashCooldown)
     {
         dashTimer = dashCooldown;
-        //character.SetIsInvincible(true);
-        StartCoroutine(EndInvincibility());
+        character.SetIsHitstunImmune(false);
+        character.SetIsKnockbackImmune(false);
+        //Debug.Log("Is end dash");
+        character.SetIsInvincible(false);
     }
 
     public void PogoCooldown()

@@ -61,7 +61,7 @@ public class EnemyActionManager : CharacterActionManager
             }
             else
             {
-                allowedStates.Add(attacks[i].stateScript, true);
+                if(!allowedStates.ContainsKey(attacks[i].stateScript)) allowedStates.Add(attacks[i].stateScript, true);
             }
         }
     }
@@ -95,7 +95,7 @@ public class EnemyActionManager : CharacterActionManager
         for (int i = 0; i < attacks.Count; i++)
         {
             EnemyAttackBehaviorData attackData = attacks[i].behaviorData;
-            
+
             if (attackData.decrementCooldownOnlyWhenAllowed && !allowedStates[attacks[i].stateScript]) continue;
 
             //Debug.Log(distanceToPlayer + " : so distance is within range -- " + (distanceToPlayer >= attackData.distance.min && distanceToPlayer < attackData.distance.max));
@@ -114,7 +114,7 @@ public class EnemyActionManager : CharacterActionManager
                 //Debug.Log("Within attack range");
 
                 // Within range of the attack.
-                if(attacks[i].cooldown <= 0 && allowedStates[attacks[i].stateScript])
+                if (attacks[i].cooldown <= 0 && allowedStates[attacks[i].stateScript])
                 {
                     // This is a possible candidate for an attack.
                     attackCandidates.Add(attacks[i]);

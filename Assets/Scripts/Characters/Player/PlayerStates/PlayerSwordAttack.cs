@@ -309,9 +309,9 @@ public class PlayerSwordAttack : AttackState
 
         }
 
-        Debug.Log(_AttackDataClone.damage);
+        //Debug.Log(_AttackDataClone.damage);
         
-        Debug.Log(damageMultiplier);
+        //Debug.Log(damageMultiplier);
 
         // Call AttackState's OnTriggerEnter
         base.OnTriggerEnter(other);

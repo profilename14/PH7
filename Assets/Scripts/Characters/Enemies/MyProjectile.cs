@@ -15,15 +15,34 @@ public class MyProjectile : MonoBehaviour
 
     [SerializeField] private float lifespan = 4.5f;
     private float lifespanTimer = 0f;
-    [SerializeField] private float speed = 50f;
+    [SerializeField] private float forwardSpeed = 50f;
+
+    [SerializeField] private float fallSpeed;
+
+    [SerializeField] private float initialForce;
+
+    [SerializeField] private UnityEvent projectileDestroyEvent;
+
+    [SerializeField] private float registerCollisionsDelay;
+
+    [SerializeField] private Rigidbody rb;
 
     void Update()
     {
-        lifespanTimer += Time.deltaTime;
-        if (lifespanTimer > lifespan) {
-            gameObject.SetActive(false);
+        if (projectileIsActive)
+        {
+            lifespanTimer += Time.deltaTime;
+            if (lifespanTimer > lifespan)
+            {
+                gameObject.SetActive(false);
+            }
+            transform.position += this.transform.forward * Time.deltaTime * forwardSpeed;
         }
-        transform.position += this.transform.forward * Time.deltaTime * speed;
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity -= new Vector3(0, fallSpeed, 0);
     }
 
     public void InitProjectile(Vector3 position, Vector3 rotation, Character sender, AttackData data)
@@ -32,7 +51,7 @@ public class MyProjectile : MonoBehaviour
         transform.eulerAngles = rotation;
         this._Sender = sender;
         this._AttackData = data;
-        projectileIsActive = true;
+        Invoke("SetProjectileActive", registerCollisionsDelay);
         OnProjectileActivate();
     }
 
@@ -42,13 +61,20 @@ public class MyProjectile : MonoBehaviour
         transform.rotation = rotation;
         this._Sender = sender;
         this._AttackData = data;
-        projectileIsActive = true;
+        Invoke("SetProjectileActive", registerCollisionsDelay);
         OnProjectileActivate();
     }
 
     public virtual void OnProjectileActivate()
     {
+        //Debug.Log("Projectile activate");
+        rb.AddForce(transform.forward * initialForce, ForceMode.Impulse);
         return;
+    }
+
+    public void SetProjectileActive()
+    {
+        projectileIsActive = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -74,7 +100,8 @@ public class MyProjectile : MonoBehaviour
             OnAttackHit(attackHitPosition, other);
             sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
         }
-        
+
+        projectileDestroyEvent?.Invoke();
         gameObject.SetActive(false);
     }
 

@@ -54,12 +54,15 @@ public class PlayerDash : DashState
     private bool airDash = false;
     [SerializeField] private float airDashMultiplier = 1.5f;
 
+    private LayerMask stopDashLayerMask;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
 
     private void Awake()
     {
         base.Awake();
+        stopDashLayerMask = LayerMask.GetMask("Default", "Obstacles");
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
         vfx = (PlayerVFXManager)character.VFXManager;
@@ -132,7 +135,7 @@ public class PlayerDash : DashState
             return;
         }
 
-        if (!Physics.Raycast(transform.position, movementController.transform.forward, 2))
+        if (!Physics.Raycast(transform.position, movementController.transform.forward, 2, stopDashLayerMask))
         {
             if (!puddleSurfMode)
             {
@@ -177,6 +180,7 @@ public class PlayerDash : DashState
         }
         else
         {
+            Debug.Log("End dash");
             endDash();
         }
 

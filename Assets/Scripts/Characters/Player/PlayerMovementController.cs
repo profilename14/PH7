@@ -74,7 +74,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     [SerializeField]
     private GameObject rotationRoot;
-    
+
     [SerializeField]
     public CinemachineManager cinemachineManager;
 
@@ -87,7 +87,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     bool setVelocity = false;
     private Vector3 _internalVelocitySet = Vector3.zero;
-    
+
     bool setPosition = false;
     private Vector3 _internalPositionSet = Vector3.zero;
 
@@ -100,6 +100,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     private PlayerVFXManager playerVFXManager;
 
+    private bool isSprinting = false;
+    private float sprintSpeedMult = 2f;
+    private float sprintSharpnessMult = 0.3f; // Lower numbers make movement slippier and more acceleration based
 
 
     private void Awake()
@@ -177,7 +180,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     /// This is the ONLY place where you should set the character's rotation
     /// </summary>
     public void UpdateRotation(ref Quaternion rotation, float deltaTime)
-    {        
+    {
         switch (CurrentRotationState)
         {
             case PlayerRotationState.Locked:
@@ -196,19 +199,19 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
                         {
                             smoothedLookInputDirection = savedUpdatedRotation * Vector3.forward;
                         }
-                        
+
                         // Set the current rotation (which will be used by the KinematicCharacterMotor)
                         transform.rotation = Quaternion.LookRotation(smoothedLookInputDirection, Motor.CharacterUp);
                     }
 
-                    
+
 
                     break;
                 }
         }
 
         rotation = transform.rotation;
-        
+
     }
 
 
@@ -220,7 +223,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     /// </summary>
     public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
-        if(velocityLocked)
+        if (velocityLocked)
         {
             currentVelocity = lockedVelocity;
             return;
@@ -247,10 +250,22 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
             // Calculate target velocity
             Vector3 inputRight = Vector3.Cross(moveInputVector, Motor.CharacterUp);
             Vector3 reorientedInput = Vector3.Cross(effectiveGroundNormal, inputRight).normalized * moveInputVector.magnitude;
-            Vector3 targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
 
-            // Smooth movement Velocity
-            currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+            Vector3 targetMovementVelocity;
+            if (isSprinting)
+            {
+                targetMovementVelocity = reorientedInput * MaxStableMoveSpeed * sprintSpeedMult;
+                // Smooth movement Velocity
+                currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime * sprintSharpnessMult));
+            }
+            else
+            {
+                targetMovementVelocity = reorientedInput * MaxStableMoveSpeed;
+                // Smooth movement Velocity
+                currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
+            }
+            
+
 
             // Drag
             currentVelocity *= (1f / (1f + (groundDrag * deltaTime)));
@@ -477,15 +492,18 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
             // Note: phasing can be handled in this script, but should be controlled via method calls from the Dash State
 
-            if (isDashing) { // Phase through gates, but only if dashing.
-            //Debug.Log("DISABLINGCOLLISION");
-            Physics.IgnoreCollision(
-                other,
-                GetComponent<Collider>(), true);
+            if (isDashing)
+            { // Phase through gates, but only if dashing.
+              //Debug.Log("DISABLINGCOLLISION");
+                Physics.IgnoreCollision(
+                    other,
+                    GetComponent<Collider>(), true);
                 //StartCoroutine(ReenableCollision(dashDuration - DashTimer, enemy.gameObject.GetComponent<Collider>()));
-            } else { // Can't bypass
-            //Debug.Log("ENABLINGCOLLISION");
-                
+            }
+            else
+            { // Can't bypass
+              //Debug.Log("ENABLINGCOLLISION");
+
             }
         }
     }
@@ -493,7 +511,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     private IEnumerator ReenableCollision(float waitTime, Collider collider)
     {
         yield return new WaitForSeconds(waitTime + 0.1f); // just to be safe
-            
+
         Physics.IgnoreCollision(
                 collider,
                 GetComponent<Collider>(), false);
@@ -601,5 +619,10 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     public void TeleportTo(Vector3 pos)
     {
         Motor.SetPosition(pos);
+    }
+    
+    public void SetSprinting(bool newSprintBool)
+    {
+        isSprinting = newSprintBool;
     }
 }

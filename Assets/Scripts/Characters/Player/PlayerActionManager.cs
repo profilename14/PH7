@@ -339,6 +339,10 @@ public class PlayerActionManager : CharacterActionManager
     void OnDashReleased(InputAction.CallbackContext context)
     {
         isDashHeld = false;
+        StateMachine.DefaultState = moveState;
+        movementController.SetSprinting(false);
+
+
     }
 
     void OnDash(InputAction.CallbackContext context)
@@ -367,8 +371,13 @@ public class PlayerActionManager : CharacterActionManager
                 return;*/
             }
 
-        if (dashTimer > 0 || playerDirectionalInput.moveDir == Vector3.zero || hasDashedInAir)
+        if (dashTimer > 0 || hasDashedInAir)
         {
+            return;
+        }
+        else if (playerDirectionalInput.moveDir == Vector3.zero)
+        {
+            movementController.SetSprinting(true);
             return;
         }
         hasDashedInAir = true;
@@ -541,6 +550,11 @@ public class PlayerActionManager : CharacterActionManager
         character.SetIsKnockbackImmune(false);
         //Debug.Log("Is end dash");
         character.SetIsInvincible(false);
+
+        if (isDashHeld)
+        {
+            movementController.SetSprinting(true);
+        }
     }
 
     public void PogoCooldown()

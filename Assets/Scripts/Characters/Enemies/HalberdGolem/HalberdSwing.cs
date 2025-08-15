@@ -12,7 +12,7 @@ public class HalberdSwing : AttackState
     private float swingForwardForce;
 
     private EnemyMovementController movementController;
-    private ScuttlerVFXManager vfx;
+    private SlashAttackVFXManager vfx;
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     [SerializeField]
@@ -25,7 +25,7 @@ public class HalberdSwing : AttackState
     {
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
-        vfx = (ScuttlerVFXManager)_Character.VFXManager;
+        vfx = (SlashAttackVFXManager)_Character.VFXManager;
     }
 
     protected override void OnEnable()
@@ -51,7 +51,7 @@ public class HalberdSwing : AttackState
 
     public void SwingStart()
     {
-        vfx.PlayClawVFX();
+        vfx.PlaySlashVFX();
         movementController.SetGroundDrag(drag);
         movementController.SetAllowRotation(false);
         movementController.SetAllowMovement(false);

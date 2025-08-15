@@ -100,8 +100,11 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     private PlayerVFXManager playerVFXManager;
 
+    [SerializeField]
     private bool isSprinting = false;
+    [SerializeField]
     private float sprintSpeedMult = 2f;
+    [SerializeField]
     private float sprintSharpnessMult = 0.3f; // Lower numbers make movement slippier and more acceleration based
 
 
@@ -128,7 +131,10 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     private void Update()
     {
-
+        if (!canMove)
+        {
+            moveInputVector = new Vector3(0, 0, 0);
+        }
     }
 
     public void ProcessMoveInput(Vector3 moveDir)

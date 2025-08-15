@@ -22,6 +22,8 @@ public class TakeDamageState : CharacterState
 
     protected override void OnEnable()
     {
+        _MovementController.SetAllowMovement(canMoveWhileStunned);
+        _MovementController.SetAllowRotation(canRotateWhileStunned);
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
         _ActionManager.SetAllStatesAllowed(false);
 
@@ -35,7 +37,9 @@ public class TakeDamageState : CharacterState
     private void EndHitStun()
     {
         //Debug.Log("Ending hitstun");
-        
+
+        _MovementController.SetAllowMovement(true);
+        _MovementController.SetAllowRotation(true);
         _ActionManager.EndHitStun();
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();

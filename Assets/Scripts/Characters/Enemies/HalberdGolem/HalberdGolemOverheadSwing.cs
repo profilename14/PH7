@@ -12,7 +12,7 @@ public class HalberdGolemOverheadSwing : AttackState
     private float swingForwardForce;
 
     private EnemyMovementController movementController;
-    private ScuttlerVFXManager vfx;
+    private SlashAttackVFXManager vfx;
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     [SerializeField]
@@ -31,7 +31,7 @@ public class HalberdGolemOverheadSwing : AttackState
     {
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
-        vfx = (ScuttlerVFXManager)_Character.VFXManager;
+        vfx = (SlashAttackVFXManager)_Character.VFXManager;
     }
 
     protected override void OnEnable()
@@ -62,7 +62,7 @@ public class HalberdGolemOverheadSwing : AttackState
         movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
-        vfx.PlayClawVFX();
+        vfx.PlaySlashVFX();
     }
 
     public void SpawnSaltShockwave()

@@ -12,10 +12,10 @@ public class ScuttlerClawAttack : AttackState
     private float clawForwardForce;
 
     [SerializeField]
-    private float playerTargetDistance;
+    private float playerTrackingDistance;
 
     private EnemyMovementController movementController;
-    private ScuttlerVFXManager vfx;
+    private SlashAttackVFXManager vfx;
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     [SerializeField]
@@ -45,7 +45,7 @@ public class ScuttlerClawAttack : AttackState
 
     private void Update()
     {
-        movementController.SetPathfindingDestination((Player.instance.transform.position) + (character.transform.position - Player.instance.transform.position).normalized * playerTargetDistance);
+        SetTrackingAtDistance(playerTrackingDistance);
     }
 
     public void ClawStart()
@@ -63,5 +63,13 @@ public class ScuttlerClawAttack : AttackState
         _Character.SetIsKnockbackImmune(false);
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
         movementController.ResetGroundDrag();
+    }
+
+    public void SetTrackingAtDistance(float targetDistance)
+    {
+        movementController.SetForceLookAtPlayer(true);
+        movementController.SetForceManualRotation(true);
+        movementController.SetPathfindingDestination((Player.instance.transform.position) +
+            (character.transform.position - Player.instance.transform.position).normalized * targetDistance);
     }
 }

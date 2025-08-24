@@ -32,7 +32,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     [Header("Air Movement")]
     public float MaxAirMoveSpeed = 15f;
-    public float AirAccelerationSpeed = 15f;
+    public float AirAccelerationSpeed = 10f;
     public float defaultAirDrag = 0.1f;
     private float airDrag = 0.1f;
 
@@ -106,6 +106,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     private float sprintSpeedMult = 2f;
     [SerializeField]
     private float sprintSharpnessMult = 0.3f; // Lower numbers make movement slippier and more acceleration based
+
+    [SerializeField]
+    private bool isSprintJump = false;
 
 
     private void Awake()
@@ -270,7 +273,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
                 // Smooth movement Velocity
                 currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-StableMovementSharpness * deltaTime));
             }
-            
+
 
 
             // Drag
@@ -342,10 +345,25 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
             // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
             Motor.ForceUnground();
 
-            // Add to the return velocity and reset jump state
-            currentVelocity = new Vector3(currentVelocity.x, jumpUpSpeed, currentVelocity.z);
-            jumpedThisFrame = true;
+            if (isSprinting)
+            {
+                isSprintJump = true;
+            }
 
+
+            // Change jump physics depending on the jump substate, reset yVel while adding to the return velocity
+            if (isSprintJump)
+            {
+                // Sprint jumps accelerate the player forward to a limit, have less height, and have weaker gravity
+                currentVelocity = CalcSprintJumpVelocity(currentVelocity);
+            }
+            else
+            {
+                currentVelocity = new Vector3(currentVelocity.x, jumpUpSpeed, currentVelocity.z);
+            }
+
+
+            jumpedThisFrame = true;
         }
         else
         {
@@ -357,7 +375,14 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
         // Take into account additive velocity
         if (_internalVelocityAdd.sqrMagnitude > 0f)
         {
-            currentVelocity += _internalVelocityAdd;
+            if (IsGrounded())
+            {
+                currentVelocity += _internalVelocityAdd;
+            }
+            else
+            {
+                currentVelocity += 0.5f * _internalVelocityAdd;
+            }
             _internalVelocityAdd = Vector3.zero;
         }
     }
@@ -381,6 +406,10 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
             if (!jumpedThisFrame)
             {
                 inJump = false;
+                if (isSprintJump)
+                {
+                    isSprintJump = false;
+                }
             }
             timeSinceLastAbleToJump = 0f;
         }
@@ -527,6 +556,22 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     // CUSTOM FUNCTIONS
     //
 
+    private Vector3 CalcSprintJumpVelocity(Vector3 currentVelocity)
+    {
+        float newVelocityX = currentVelocity.x * 1.15f;
+        float newVelocityY = currentVelocity.z * 1.15f;
+        Vector2 newVelocity = new Vector2(newVelocityX, newVelocityY);
+        if (newVelocity.magnitude > 0.9f * sprintSpeedMult * MaxStableMoveSpeed)
+        {
+            newVelocityX *= (0.925f * sprintSpeedMult * MaxStableMoveSpeed) / (newVelocity.magnitude);
+            newVelocityY *= (0.925f * sprintSpeedMult * MaxStableMoveSpeed) / (newVelocity.magnitude);
+        }
+
+        // magnitude of new velocities is reduced to that of max stable move speed * 1.2
+
+        return new Vector3(newVelocityX, jumpUpSpeed * 0.75f, newVelocityY);
+    }
+
     public void PassJumpData(float jumpUpSpeed, float jumpPreGroundingGraceTime, float jumpPostGroundingGraceTime)
     {
         this.jumpUpSpeed = jumpUpSpeed;
@@ -626,9 +671,23 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     {
         Motor.SetPosition(pos);
     }
-    
+
     public void SetSprinting(bool newSprintBool)
     {
         isSprinting = newSprintBool;
+    }
+
+    public bool GetSprinting()
+    {
+        return isSprinting;
+    }
+
+    public void SetSprintJump(bool newSprintJumpBool)
+    {
+        isSprintJump = newSprintJumpBool;
+    }
+    public bool GetSprintJump()
+    {
+        return isSprintJump;
     }
 }

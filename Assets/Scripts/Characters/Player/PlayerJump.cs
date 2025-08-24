@@ -25,6 +25,9 @@ public class PlayerJump : CharacterState
     public AnimationCurve jumpSpeedCurve;
     [SerializeField]
     public AnimationCurve gravityCurve;
+    
+    [SerializeField]
+    public AnimationCurve sprintJumpGravityCurve;
 
     private float jumpTimer;
 
@@ -66,7 +69,15 @@ public class PlayerJump : CharacterState
         movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
 
         movementController.SetJumpVelocity(jumpUpSpeed * jumpSpeedCurve.Evaluate(jumpTimer / maxJumpTime));
-        movementController.SetGravityScale(gravityCurve.Evaluate(jumpTimer / maxJumpTime));
+
+        if (movementController.GetSprintJump())
+        {
+            movementController.SetGravityScale(sprintJumpGravityCurve.Evaluate(jumpTimer / maxJumpTime));
+        }
+        else
+        {
+            movementController.SetGravityScale(gravityCurve.Evaluate(jumpTimer / maxJumpTime));
+        }
 
         jumpTimer += Time.deltaTime;
 

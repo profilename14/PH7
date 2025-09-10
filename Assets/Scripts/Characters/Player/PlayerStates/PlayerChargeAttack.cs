@@ -32,6 +32,9 @@ public class PlayerChargeAttack : AttackState
 
     private Player player;
     private PlayerVFXManager vfx;
+    private PlayerActionManager actionManager;
+
+    private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
@@ -42,6 +45,7 @@ public class PlayerChargeAttack : AttackState
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref rotationController);
+        gameObject.GetComponentInParentOrChildren(ref actionManager);
         player = (Player)_Character;
         vfx = (PlayerVFXManager)player.VFXManager;
         chargeAttackAnimation.Events.SetCallback(StartSwordSwingEvent, this.StartSwordSwing);
@@ -52,6 +56,8 @@ public class PlayerChargeAttack : AttackState
     {
         base.OnEnable();
         attackCharged = false;
+
+        directionalInput = actionManager.GetDirectionalInput();
 
         _ActionManager.SetAllActionPriorityAllowed(false);
 
@@ -100,6 +106,11 @@ public class PlayerChargeAttack : AttackState
     {
         vfx.EndChargeVFX();
         movementController.SetAllowRotation(true);
+    }
+
+    public Vector3 GetAttackingDirection()
+    {
+        return directionalInput.lookDir;
     }
 
     public override void OnAttackHit(Vector3 position, Collider other)

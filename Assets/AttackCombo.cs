@@ -15,7 +15,7 @@ public class AttackCombo : MonoBehaviour
     [SerializeField]
     EnemyMovementController movementController;
 
-    [SerializeField] AttackState currentAttack;
+    [SerializeField] CharacterState currentAttack;
 
     [SerializeField]
     protected List<EnemyActionBehavior> attacks = new();

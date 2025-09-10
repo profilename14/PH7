@@ -43,6 +43,9 @@ public class EnemyActionManager : CharacterActionManager
     [SerializeField]
     protected EnemyMovementController movementController;
 
+    [SerializeField]
+    private ClipTransition deathAnimation;
+
     protected override void Awake()
     {
         base.Awake();
@@ -188,6 +191,16 @@ public class EnemyActionManager : CharacterActionManager
         isStunned = false;
         //Debug.Log("End stun");
         movementController.SetAIEnabled(true);
+    }
+
+    public void OnDeath()
+    {
+        /*if (deathAnimation != null)
+        {
+            StateMachine.SetAllowNullStates(true);
+            StateMachine.ForceSetState(null);
+            anim.Play(deathAnimation);
+        }*/
     }
 
 #if UNITY_EDITOR

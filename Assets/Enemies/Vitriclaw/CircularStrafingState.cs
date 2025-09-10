@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 
-public class TargetFollowMoveState : CharacterState
+public class CircularStrafingState : CharacterState
 {
     [SerializeField]
     private ClipTransition followAnimation;
@@ -19,7 +19,16 @@ public class TargetFollowMoveState : CharacterState
     [SerializeField] float followSpeed;
     [SerializeField] float rotationSpeed;
 
-    [SerializeField] bool flipStrafeDirection;
+    [SerializeField] bool isStrafingRight;
+
+    [SerializeField] float playerFollowRate;
+
+    //[SerializeField] float minCirclingDistance;
+    //[SerializeField] float maxCirclingDistance;
+    [SerializeField] float desiredCirclingDistance;
+    private float currentCirclingDistance;
+    private float startCirclingDistance;
+    [SerializeField] float circlingSpeed;
 
     // Offset degrees from the forward vector that the enemy
     // will orient towards when moving towards target with
@@ -30,10 +39,10 @@ public class TargetFollowMoveState : CharacterState
 
     [SerializeField] AttackCombo combo;
     [SerializeField] float enableComboAtPercent;
-    
+
     private float moveTimer;
 
-    private Vector3 startDirection;
+    private Vector3 startPlayerPosition;
     private Vector3 startForward;
     private float startAngle;
 
@@ -67,9 +76,11 @@ public class TargetFollowMoveState : CharacterState
 
         playerDistanceOffset = Vector3.Distance(pos1, pos2);
         movementController.pathfinding.maxSpeed = followSpeed;
-        startDirection = flipStrafeDirection ? character.transform.right * -1 : character.transform.right;
+        startCirclingDistance = Vector3.Distance(character.transform.position, Player.instance.transform.position);
+        startPlayerPosition = Player.instance.transform.position;
         startForward = character.transform.forward;
         startAngle = character.transform.rotation.y;
+        movementController.SetPathfindingDestination(startPlayerPosition);
     }
 
     protected override void OnDisable()
@@ -85,27 +96,33 @@ public class TargetFollowMoveState : CharacterState
         moveTimer += Time.deltaTime;
         float progress = moveTimer / maxFollowTime;
 
-        if(progress > enableComboAtPercent) combo.SetAllowFollowup(true);
+        if (progress > enableComboAtPercent) combo.SetAllowFollowup(true);
 
+        currentCirclingDistance = Mathf.Lerp(startCirclingDistance, desiredCirclingDistance, progress);
 
         if (progress > 1)
         {
             _ActionManager.StateMachine.ForceSetDefaultState();
         }
 
-        //Debug.Log("Strafing progress " + progress);
+        Vector3 followPlayerVector = (Player.instance.transform.position - movementController.pathfinding.destination).normalized * playerFollowRate;
 
-        Vector3 nextTargetPos = startPoint + progress * targetMoveDistanceMultiplier * startDirection; //new Vector3(targetMoveXCurve.Evaluate(progress) * targetMoveDistanceMultiplier, 0, targetMoveYCurve.Evaluate(progress) * targetMoveDistanceMultiplier);
+        movementController.SetPathfindingDestination(startPlayerPosition + followPlayerVector * Time.deltaTime);
 
-        //nextTargetPos = Quaternion.Euler(new Vector3(0, startAngle + targetMoveCurveAngleOffset, 0)) * nextTargetPos;
+        var normal = (character.transform.position - movementController.pathfinding.destination).normalized;
+        var tangent = Vector3.Cross(normal, Player.instance.transform.up);
 
-        //Debug.Log(targetMoveXCurve.Evaluate(progress) + " " + targetMoveYCurve.Evaluate(progress));
+        // We can accomplish circling by getting the tangent of the vector to the player and offsetting it (for speed).
+        if (isStrafingRight)
+        {
+            Vector3 destination = movementController.pathfinding.destination + normal * currentCirclingDistance + tangent * circlingSpeed;
+            movementController.SetPathfindingDestination(destination);
+        }
+        else
+        {
+            movementController.SetPathfindingDestination(movementController.pathfinding.destination + normal * currentCirclingDistance + tangent * -circlingSpeed);
+        }
 
-        movementController.SetPathfindingDestination(nextTargetPos);
-
-        Vector3 dirToPlayer = (Player.instance.transform.position - character.transform.position).normalized;
-
-        if (Vector3.Angle(startForward, dirToPlayer) < Vector3.Angle(-startForward, dirToPlayer)) character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(startForward, rotationSpeed * Time.deltaTime);
-        else character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(-startForward, rotationSpeed * Time.deltaTime);
+        character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards((Player.instance.transform.position - character.transform.position), rotationSpeed * Time.deltaTime);
     }
 }

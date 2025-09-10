@@ -74,6 +74,8 @@ public class Enemy : Character
     {
         isDead = true;
         if (isLockedOn) onDeath.Invoke();
+        EnemyActionManager am = (EnemyActionManager)actionManager;
+        am.OnDeath();
         gameObject.SetActive(false);
     }
 

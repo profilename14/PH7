@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SaltShard
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
+      propertyPath: m_TagString
+      value: Projectile
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -151,7 +159,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileIsActive: 0
   lifespan: 4.5
-  speed: 65
+  forwardSpeed: 50
+  fallSpeed: 0
+  initialForce: 0
+  projectileDestroyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  registerCollisionsDelay: 0
+  rb: {fileID: 5483538860570345988}
+  ignoreOtherProjectiles: 1
 --- !u!136 &1045343489456222100
 CapsuleCollider:
   m_ObjectHideFlags: 0

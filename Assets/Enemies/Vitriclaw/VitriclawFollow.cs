@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
+using Pathfinding;
 
 enum VitriclawMovementState { CloseRangeFollow, MidRangeCircling, MidRangeStrafe, LongRangeStrafe};
 
@@ -61,6 +62,8 @@ public class VitriclawFollow : CharacterState
 
     private bool stopped;
 
+    
+
     private void Awake()
     {
         base.Awake();
@@ -91,6 +94,10 @@ public class VitriclawFollow : CharacterState
         {
             case VitriclawMovementState.CloseRangeFollow:
                 movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
+
+                // We should find some way to use randompath to make move patterns more random
+                // RandomPath path = RandomPath.Construct(character.transform.position, 0, )
+                
                 movementController.SetPathfindingDestination(playerPosition);
 
                 float distanceToPlayer = Vector3.Distance(_Character.transform.position, playerPosition);

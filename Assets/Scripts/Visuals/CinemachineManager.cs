@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Unity.IO.LowLevel.Unsafe;
-using UnityEditor.ShaderGraph.Internal;
 
 public class CinemachineManager : MonoBehaviour
 {

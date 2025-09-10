@@ -326,6 +326,11 @@ public class PlayerSwordAttack : AttackState
 
     }
 
+    public Vector3 GetAttackingDirection()
+    {
+        return directionalInput.lookDir;
+    }
+
     private IEnumerator HitStop(float duration)
     {
         currentState.IsPlaying = false;

@@ -36,6 +36,9 @@ public abstract class Character : MonoBehaviour, IHittable
 
     protected bool isDead = false;
 
+    [SerializeField]
+    private UnityEvent OnHitByAttack;
+
     protected void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref _ActionManager);
@@ -66,7 +69,10 @@ public abstract class Character : MonoBehaviour, IHittable
         {
             _Stats.TakeDamage(attack.attackData.damage);
 
-            if(isDead)
+
+            OnHitByAttack.Invoke();
+
+            if (isDead)
             {
                 _VFXManager.DeathVFX();
                 return;
@@ -95,6 +101,8 @@ public abstract class Character : MonoBehaviour, IHittable
         if (!isInvincible)
         {
             _Stats.TakeDamage(projectile.attackData.damage);
+
+            OnHitByAttack.Invoke();
 
             if (isDead)
             {
@@ -135,7 +143,9 @@ public abstract class Character : MonoBehaviour, IHittable
         if (!isInvincible)
         {
             _Stats.TakeDamage(damage);
-            
+
+            OnHitByAttack.Invoke();
+
             if (isDead)
             {
                 _VFXManager.DeathVFX();

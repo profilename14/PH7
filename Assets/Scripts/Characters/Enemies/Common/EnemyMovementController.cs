@@ -14,6 +14,9 @@ public class EnemyMovementController : CharacterMovementController
     public RichAI pathfinding;
 
     [SerializeField]
+    public Seeker seeker;
+
+    [SerializeField]
     public Rigidbody rb;
 
     [SerializeField]
@@ -51,6 +54,7 @@ public class EnemyMovementController : CharacterMovementController
     private void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref pathfinding);
+        gameObject.GetComponentInParentOrChildren(ref seeker);
         gameObject.GetComponentInParentOrChildren(ref rb);
         gameObject.GetComponentInParentOrChildren(ref enemy);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
@@ -221,6 +225,11 @@ public class EnemyMovementController : CharacterMovementController
     public void SetAIEnabled(bool isEnabled)
     {
         disablePathfinding = !isEnabled;
+    }
+
+    public void SetNewEnemyPath(Path p)
+    {
+        
     }
 
     void LateUpdate()

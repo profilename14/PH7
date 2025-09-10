@@ -4374,6 +4374,13 @@ MonoBehaviour:
     position: {x: 779, y: 1986}
     expandedSlots: []
     expanded: 0
+  - m_Id: 1
+    linkedSlots:
+    - outputSlot: {fileID: 8926484042661614794}
+      inputSlot: {fileID: 8926484042661614859}
+    position: {x: 1425, y: 1873}
+    expandedSlots: []
+    expanded: 0
 --- !u!114 &8926484042661614794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4413,6 +4420,7 @@ MonoBehaviour:
   m_Direction: 1
   m_LinkedSlots:
   - {fileID: 8926484042661614785}
+  - {fileID: 8926484042661614859}
 --- !u!114 &8926484042661614795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6035,7 +6043,8 @@ MonoBehaviour:
       m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   m_Direction: 0
-  m_LinkedSlots: []
+  m_LinkedSlots:
+  - {fileID: 8926484042661614794}
 --- !u!114 &8926484042661614860
 MonoBehaviour:
   m_ObjectHideFlags: 0

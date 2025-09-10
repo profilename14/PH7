@@ -27,6 +27,8 @@ public class MyProjectile : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
 
+    [SerializeField] private bool ignoreOtherProjectiles;
+
     void Update()
     {
         if (projectileIsActive)
@@ -42,7 +44,7 @@ public class MyProjectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity -= new Vector3(0, fallSpeed, 0);
+        if(fallSpeed > 0) rb.velocity -= new Vector3(0, fallSpeed, 0);
     }
 
     public void InitProjectile(Vector3 position, Vector3 rotation, Character sender, AttackData data)
@@ -86,6 +88,8 @@ public class MyProjectile : MonoBehaviour
 
         if (other.CompareTag("Trigger")) return;
 
+        if (ignoreOtherProjectiles && other.CompareTag("Projectile")) return;
+
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript != null)
@@ -100,6 +104,8 @@ public class MyProjectile : MonoBehaviour
             OnAttackHit(attackHitPosition, other);
             sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
         }
+
+        Debug.Log(other);
 
         projectileDestroyEvent?.Invoke();
         gameObject.SetActive(false);

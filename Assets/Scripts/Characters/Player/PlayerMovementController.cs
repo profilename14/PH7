@@ -556,6 +556,19 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     // CUSTOM FUNCTIONS
     //
 
+    public Quaternion GetCameraPlanarRotation()
+    {
+        Quaternion cameraRotation = CharacterCamera.transform.rotation;
+        Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
+        if (cameraPlanarDirection.sqrMagnitude == 0f)
+        {
+            cameraPlanarDirection = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, Motor.CharacterUp).normalized;
+        }
+        Quaternion cameraPlanarRotation = Quaternion.LookRotation(cameraPlanarDirection, Motor.CharacterUp);
+
+        return cameraPlanarRotation * Quaternion.Euler(0f, 45f, 0f);
+    }
+
     private Vector3 CalcSprintJumpVelocity(Vector3 currentVelocity)
     {
         float newVelocityX = currentVelocity.x * 1.15f;
@@ -663,7 +676,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
         if (canRotate && dir != Vector3.zero)
         {
             ignoreSmoothRotation = true;
-            savedUpdatedRotation = Quaternion.LookRotation(dir, Motor.CharacterUp);
+            
+            
+            savedUpdatedRotation = Quaternion.LookRotation(GetCameraPlanarRotation() * dir, Motor.CharacterUp);
         }
     }
 

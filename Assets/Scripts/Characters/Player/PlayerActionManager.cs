@@ -234,7 +234,7 @@ public class PlayerActionManager : CharacterActionManager
             lockOnIcon.SetActive(true);
             lockOnIcon.transform.position = lockOnTarget.transform.position;
             lockOnIcon.transform.LookAt(Camera.main.transform);
-            Vector3 lockOnDirHorizontal = (lockOnTarget.transform.position - character.transform.position).normalized;
+            Vector3 lockOnDirHorizontal = Quaternion.Inverse(movementController.GetCameraPlanarRotation()) * (lockOnTarget.transform.position - character.transform.position).normalized;
             playerDirectionalInput.lookDir = new Vector3(lockOnDirHorizontal.x, 0, lockOnDirHorizontal.z);
         }
         else
@@ -605,6 +605,7 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Bubble.Enable();
     }
 
+    // Old function, not always relative unless you multiply by movementController.GetCameraPlanarRotation()
     public Vector3 GetDirRelativeToCamera(Vector3 dir)
     {
         return Quaternion.Euler(cameraAngle) * dir;

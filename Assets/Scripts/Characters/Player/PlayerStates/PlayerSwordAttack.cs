@@ -128,7 +128,7 @@ public class PlayerSwordAttack : AttackState
             movementController.SetAllowRotation(false);
 
             movementController.SetGroundDrag(drag);
-            movementController.SetVelocity(directionalInput.lookDir * swingForce);
+            movementController.SetVelocity(movementController.GetCameraPlanarRotation() * directionalInput.lookDir * swingForce);
             movementController.SetAllowMovement(false);
 
             isPogo = false;
@@ -191,7 +191,7 @@ public class PlayerSwordAttack : AttackState
         {
             if (!actionManager.lockedOn)
             {
-                movementController.RotateToDir(directionalInput.moveDir);
+                movementController.RotateToDir(Quaternion.Euler(0f, -45f, 0f) * directionalInput.moveDir);
             }
             else
             {

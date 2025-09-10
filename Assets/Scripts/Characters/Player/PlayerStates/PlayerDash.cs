@@ -77,8 +77,9 @@ public class PlayerDash : DashState
         //rotationController.snapToCurrentMouseAngle();
         //movementController.SetAllowRotation(false);
         //moveDir = movementController.GetMouseDirection();
-        moveDir = actionManager.GetDirRelativeToCamera(directionalInput.moveDir);
-        movementController.RotateToDir(moveDir);
+        movementController.RotateToDir(actionManager.GetDirRelativeToCamera(directionalInput.moveDir));
+        
+        moveDir = movementController.GetCameraPlanarRotation() * actionManager.GetDirRelativeToCamera(directionalInput.moveDir);
 
         airDash = !movementController.IsGrounded();
 

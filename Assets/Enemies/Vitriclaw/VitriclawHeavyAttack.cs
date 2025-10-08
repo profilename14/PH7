@@ -36,7 +36,7 @@ public class VitriclawHeavyAttack : AttackState
     {
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref movementController);
-        vfx = (SlashAttackVFXManager)_Character.VFXManager;
+        //vfx = (SlashAttackVFXManager)_Character.VFXManager;
     }
 
     protected override void OnEnable()

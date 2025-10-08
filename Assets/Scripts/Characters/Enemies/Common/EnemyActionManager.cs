@@ -41,7 +41,7 @@ public class EnemyActionManager : CharacterActionManager
     protected bool isStunned = false;
 
     [SerializeField]
-    protected EnemyMovementController movementController;
+    protected CharacterMovementController movementController;
 
     [SerializeField]
     private ClipTransition deathAnimation;
@@ -182,7 +182,7 @@ public class EnemyActionManager : CharacterActionManager
         {
             //Debug.Log("Hitstun!");
             isStunned = true;
-            movementController.SetAIEnabled(false);
+            //movementController.SetAIEnabled(false);
         }
     }
 
@@ -190,7 +190,7 @@ public class EnemyActionManager : CharacterActionManager
     {
         isStunned = false;
         //Debug.Log("End stun");
-        movementController.SetAIEnabled(true);
+        //movementController.SetAIEnabled(true);
     }
 
     public void OnDeath()

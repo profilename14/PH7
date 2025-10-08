@@ -1,5 +1,60 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2587436840209391629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8636992712615024413}
+  - component: {fileID: 1598875778045931366}
+  m_Layer: 0
+  m_Name: BlobEmitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8636992712615024413
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587436840209391629}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7638553, y: -0, z: -0, w: 0.64538765}
+  m_LocalPosition: {x: 0, y: 0.105, z: 0.314}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3063457658317564899}
+  m_LocalEulerAnglesHint: {x: -99.61, y: 0, z: 0}
+--- !u!114 &1598875778045931366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587436840209391629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fbb7f906d40114da36d871da071617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chemicalBlob: {fileID: 8302372839395969698, guid: 53c69a2be227e3f4ba920cde0e954395, type: 3}
+  canSpawnBlobs: 0
+  angleRandomSpread: 180
+  velocityMin: 20
+  velocityMax: 40
+  spawnRepeating: 0
+  spawnDelay: 0
+  blobCountPerInterval: 12
+  useGlobalEmitAngle: 1
+  globalEmitVector: {x: -90, y: 0, z: 0}
+  offset: {x: 0, y: 6, z: 0}
 --- !u!1 &5338533814694487321
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,6 +269,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0790a0312df629d49aa49c6e9c38ce9b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2132304071946953303}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0790a0312df629d49aa49c6e9c38ce9b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8636992712615024413}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0790a0312df629d49aa49c6e9c38ce9b, type: 3}
       insertIndex: -1
@@ -305,9 +363,9 @@ MonoBehaviour:
   projectileDestroyEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 875555941549182893}
-        m_TargetAssemblyTypeName: PrefabSpawner, Assembly-CSharp
-        m_MethodName: SpawnPrefab
+      - m_Target: {fileID: 1598875778045931366}
+        m_TargetAssemblyTypeName: ChemicalBlobEmitter, Assembly-CSharp
+        m_MethodName: SpawnBlobs
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -331,6 +389,7 @@ MonoBehaviour:
         m_CallState: 2
   registerCollisionsDelay: 0.2
   rb: {fileID: 2741029149713521921}
+  ignoreOtherProjectiles: 0
 --- !u!114 &875555941549182893
 MonoBehaviour:
   m_ObjectHideFlags: 0

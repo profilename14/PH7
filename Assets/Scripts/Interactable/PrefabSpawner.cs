@@ -7,11 +7,8 @@ using UnityEngine.UIElements;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using static UnityEngine.GraphicsBuffer;
 
-
-
 public class PrefabSpawner : MonoBehaviour
 {
-
     public GameObject objectToMake;
     public bool objectIsAlive = false;
     public bool spawnRepeating = true;

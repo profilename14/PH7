@@ -71,12 +71,12 @@ public class SaltCrystal : MonoBehaviour, IHittable
 
     public void Hit(MyProjectile projectile, Vector3 hitPoint)
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     public void Hit(ColliderEffectField colliderEffectField, float damage)
     {
-        throw new System.NotImplementedException();
+        return;
     }
 
     public void Shatter(Vector3 targetDir, Character sender)

@@ -33,6 +33,8 @@ public class EnemyVFXManager : CharacterVFXManager
 
         yield return new WaitForSeconds(seconds);
 
+        Debug.Log("Resetting emission colors");
+
         ResetEmissionColors(baseRenderers);
     }
 }

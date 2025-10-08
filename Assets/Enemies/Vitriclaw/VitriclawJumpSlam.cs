@@ -105,6 +105,6 @@ public class VitriclawJumpSlam : AttackState
         _Character.SetIsKnockbackImmune(false);
         movementController.SetAllowMovement(false);
         movementController.SetAllowRotation(false);
-        Instantiate(puddle, new Vector3(transform.position.x, groundY, transform.position.z), Quaternion.identity);
+        //Instantiate(puddle, new Vector3(transform.position.x, groundY, transform.position.z), Quaternion.identity);
     }
 }

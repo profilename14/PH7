@@ -11,11 +11,7 @@ public class CircularStrafingState : CharacterState
     private EnemyMovementController movementController;
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
-    private Vector3 startPoint;
-    private float playerDistanceOffset;
-
     [SerializeField] float maxFollowTime;
-    [SerializeField] float followDistance;
     [SerializeField] float followSpeed;
     [SerializeField] float rotationSpeed;
 
@@ -30,15 +26,11 @@ public class CircularStrafingState : CharacterState
     private float startCirclingDistance;
     [SerializeField] float circlingSpeed;
 
-    // Offset degrees from the forward vector that the enemy
-    // will orient towards when moving towards target with
-    // rotateTowardsTarget enabled.
-    [SerializeField] float followForwardDirectionOffset;
-
-    [SerializeField] float targetMoveDistanceMultiplier;
-
     [SerializeField] AttackCombo combo;
     [SerializeField] float enableComboAtPercent;
+
+    [SerializeField]
+    bool enableOverwritingState;
 
     private float moveTimer;
 
@@ -56,16 +48,13 @@ public class CircularStrafingState : CharacterState
     {
         base.OnEnable();
 
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        if(!enableOverwritingState) _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(false);
         movementController.SetForceManualRotation(false);
 
         AnimancerState currentState = _ActionManager.anim.Play(followAnimation);
-        //currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
-
-        startPoint = character.transform.position;
 
         Vector3 pos1 = Player.instance.transform.position;
         pos1.y = 0;
@@ -74,7 +63,6 @@ public class CircularStrafingState : CharacterState
 
         moveTimer = 0;
 
-        playerDistanceOffset = Vector3.Distance(pos1, pos2);
         movementController.pathfinding.maxSpeed = followSpeed;
         startCirclingDistance = Vector3.Distance(character.transform.position, Player.instance.transform.position);
         startPlayerPosition = Player.instance.transform.position;
@@ -88,7 +76,7 @@ public class CircularStrafingState : CharacterState
         movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
         movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;
         movementController.SetAllowRotation(true);
-        combo.SetAllowFollowup(false);
+        if(combo != null) combo.SetAllowFollowup(false);
     }
 
     private void Update()
@@ -96,7 +84,7 @@ public class CircularStrafingState : CharacterState
         moveTimer += Time.deltaTime;
         float progress = moveTimer / maxFollowTime;
 
-        if (progress > enableComboAtPercent) combo.SetAllowFollowup(true);
+        if (progress > enableComboAtPercent && combo != null) combo.SetAllowFollowup(true);
 
         currentCirclingDistance = Mathf.Lerp(startCirclingDistance, desiredCirclingDistance, progress);
 

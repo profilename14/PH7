@@ -808,6 +808,18 @@ MonoBehaviour:
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 3654146885594487117}
+  deathAnimation:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 0}
+    _NormalizedStartTime: NaN
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1599064009919363821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2247,6 +2259,9 @@ MonoBehaviour:
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 0
+  OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4856611634706026665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2417,6 +2432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 8443472634582701643}
   pathfinding: {fileID: 3029289388604136770}
+  seeker: {fileID: 0}
   rb: {fileID: 7422807761995359173}
   enemyData: {fileID: 11400000, guid: 0b6d229440ea0c348be8eb5173da0436, type: 2}
   isGrounded: 0

@@ -107,7 +107,7 @@ public class EnemyMovementController : CharacterMovementController
 
         Debug.DrawRay(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0));
 
-        if(Physics.Raycast(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 3f, groundMask))
+        if (Physics.Raycast(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 3f, groundMask))
         {
             isGrounded = true;
         }
@@ -119,7 +119,7 @@ public class EnemyMovementController : CharacterMovementController
 
         //actionManager.gameObject.transform.localRotation = Quaternion.FromToRotation(actionManager.gameObject.transform.up, groundHit.normal);
 
-        if(!disablePathfinding && isGrounded)
+        if (!disablePathfinding && isGrounded)
         {
             pathfinding.enabled = true;
         }

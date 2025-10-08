@@ -9,11 +9,11 @@ public class ColliderEffectField : MonoBehaviour
 
     public float damageOnEnter;
 
-    public bool enableDamageOverTime;
+    public bool applyEffect;
 
-    public float damageOverTime;
+    //public float damageOverTime;
 
-    public float damageTickInterval;
+    //public float damageTickInterval;
 
     public Vector2 staticKnockback;
 
@@ -23,7 +23,13 @@ public class ColliderEffectField : MonoBehaviour
 
     public bool notifyTarget;
 
+    public bool cancelTriggeringHits;
+
     public List<IHittable> doTEntities = new();
+
+    public bool useHeightLimit;
+
+    public float height;
 
     private void OnDisable()
     {
@@ -32,92 +38,62 @@ public class ColliderEffectField : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Hit something");
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
         if (!gameObject.activeInHierarchy) return;
 
-        // If this script is disabled, then the effect field is disabled
         if (this.enabled == false) return;
 
         if (other.CompareTag("Hitbox")) return;
 
-        // Check if we have collided with a hittable object.
-        IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
-
-        //Debug.Log("Hittable: " + other.gameObject.name);
-
-        if (causeHit && hittableScript != null)
+        int collLayer = other.gameObject.layer;
+        if (collLayer == 17)
         {
-            hittableScript.Hit(this, damageOnEnter);
-        }
+            ColliderEffectField effectField = other.gameObject.GetComponentInParentOrChildren<ColliderEffectField>();
 
-        if (enableDamageOverTime && hittableScript != null)
-        {
-            doTEntities.Add(hittableScript);
-            StartCoroutine(DamageOverTimeTicks());
-        }
-
-        if (notifyTarget)
-        {
-            Character characterScript = other.gameObject.GetComponentInParentOrChildren<Character>();
-            if (characterScript != null)
+            if (effectField is ColliderEffectField e && effectType != e.effectType)
             {
-                characterScript.SetCurrentPuddle(this);
+                Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
+                ChemicalReactionManager.instance.DoReaction(effectType, e.effectType, (transform.position + e.transform.position) / 2);
+                this.transform.parent.gameObject.SetActive(false);
+            }
+        }
+        else if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        {
+            // Should only need to get hittable if this is a new character to apply an effect to
+
+            if (cancelTriggeringHits) return;
+
+            if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
+
+            // Check if we have collided with a hittable object.
+            IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
+
+            if (hittableScript is Character c)
+            {
+                ApplyEffectTo(c);
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void ApplyEffectTo(Character character)
     {
-        //Debug.Log("Hit something");
-        if (!gameObject.activeInHierarchy) return;
-
-        // If this script is disabled, then the effect field is disabled
-        if (this.enabled == false) return;
-
-        if (notifyTarget)
-        {
-            Character characterScript = other.gameObject.GetComponentInParentOrChildren<Character>();
-            if (characterScript != null)
-            {
-                if (characterScript.getCurrentPuddle() == this)
-                {
-                    characterScript.SetCurrentPuddle(null);
-                }
-
-            }
-        }
-
-        if (!enableDamageOverTime) return;
-
-        // Check if we have collided with a hittable object.
-        IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
-        if (hittableScript == null) return;
-
-        if (hittableScript is Enemy) return;
+        Debug.Log("Hit something");
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
-        foreach (IHittable h in doTEntities)
+        if (causeHit && character != null)
         {
-            if (h == hittableScript)
-            {
-                doTEntities.Remove(hittableScript);
-                return;
-            }
-        }
-    }
-
-    public IEnumerator DamageOverTimeTicks()
-    {
-        yield return new WaitForSeconds(damageTickInterval);
-
-        if (doTEntities.Count == 0) StopAllCoroutines();
-
-        foreach (IHittable h in doTEntities)
-        {
-            h.Hit(this, damageOverTime);
+            character.Hit(this, damageOnEnter);
         }
 
-        StartCoroutine(DamageOverTimeTicks());
+        if (applyEffect && character != null)
+        {
+            Debug.Log("Applying effect to " + character);
+            //character.ApplyEffect()
+        }
     }
 }

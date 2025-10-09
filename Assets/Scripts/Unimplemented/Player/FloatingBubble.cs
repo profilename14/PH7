@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class FloatingBubble : MonoBehaviour
@@ -14,7 +15,7 @@ public class FloatingBubble : MonoBehaviour
 
     [SerializeField] float slowdownRate = 0.9f;
 
-
+    [SerializeField] UnityEvent onPop;
 
     void Start() {
       bubbleRigidbody = GetComponent<Rigidbody>();
@@ -29,16 +30,22 @@ public class FloatingBubble : MonoBehaviour
       lifespanTimer -= Time.deltaTime;
       if (lifespanTimer <= 0)
       {
-        Destroy(gameObject);
+            onPop.Invoke();
+            gameObject.SetActive(false);
       }
     }
 
     private void FixedUpdate()
     {
-        bubbleRigidbody.velocity *= slowdownRate;
+        if(bubbleRigidbody.velocity.magnitude > 0) bubbleRigidbody.velocity *= slowdownRate;
     }
 
-
-
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == 10 || other.gameObject.layer == 18)
+        {
+            onPop.Invoke();
+            gameObject.SetActive(false);
+        }
+    }
 }

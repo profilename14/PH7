@@ -22,7 +22,7 @@ public class ChemicalReactionManager : MonoBehaviour
         else if (instance != this) Destroy(this);
 
         chemicalMask = LayerMask.GetMask("EffectFields");
-        floorMask = LayerMask.GetMask("Default", "Obstacles");
+        floorMask = LayerMask.GetMask("Default", "Obstacles", "Ground");
     }
 
     public void DoReaction(Chemical c1, Chemical c2, Vector3 point)

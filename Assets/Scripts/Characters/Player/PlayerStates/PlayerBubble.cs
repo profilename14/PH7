@@ -25,6 +25,9 @@ public class PlayerBubble : CharacterSpell
     [SerializeField]
     GameObject bubblePrefab;
 
+    [SerializeField]
+    Vector3 spawnOffset;
+
 
     private AnimancerState currentState;
 
@@ -89,7 +92,7 @@ public class PlayerBubble : CharacterSpell
         Vector3 curRotation = directionalInput.lookDir;
         float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
 
-        GameObject bubbleObject = Instantiate(bubblePrefab, ArrowLocation, Quaternion.Euler(0, angle, 0) );
+        GameObject bubbleObject = Instantiate(bubblePrefab, ArrowLocation + spawnOffset, Quaternion.Euler(0, angle, 0) );
         
         FloatingBubble bubble = bubbleObject.GetComponent<FloatingBubble>();
 

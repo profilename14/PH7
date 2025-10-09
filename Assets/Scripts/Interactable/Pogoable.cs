@@ -9,7 +9,12 @@ public class Pogoable : MonoBehaviour, IHittable
     public bool isDestroyable = true;
     private int health = 1;
     public float bouncinessMod = 1;
-
+    [SerializeField]
+    Rigidbody rb;
+    [SerializeField]
+    private bool applyForceOnHit;
+    [SerializeField]
+    private float forceMultiplier;
     
     public void Hit(AttackState attack, Vector3 hitPoint)
     {
@@ -21,6 +26,14 @@ public class Pogoable : MonoBehaviour, IHittable
         if (health <= 0)
         {
             Die();
+        }
+
+        if (attack is PlayerSwordAttack)
+        {
+            Debug.Log("hit by " + attack);
+            PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
+
+            rb.AddForce(swordScript.GetAttackingDirection() * forceMultiplier, ForceMode.Impulse);
         }
     }
 

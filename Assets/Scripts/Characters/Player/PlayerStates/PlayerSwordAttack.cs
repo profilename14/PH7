@@ -328,7 +328,14 @@ public class PlayerSwordAttack : AttackState
 
     public Vector3 GetAttackingDirection()
     {
-        return directionalInput.lookDir;
+        if (currentSwordSwing == SwordSwingType.SwingDown)
+        {
+            return Vector3.down;
+        }
+        else
+        {
+            return directionalInput.lookDir;
+        }
     }
 
     private IEnumerator HitStop(float duration)

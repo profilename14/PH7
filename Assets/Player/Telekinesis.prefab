@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3350112447646034703}
   - component: {fileID: 8456625775441057015}
   - component: {fileID: 6646698885359556450}
+  - component: {fileID: 3087539450877617812}
   m_Layer: 4
   m_Name: Telekinesis
   m_TagString: AllowsBubble
@@ -166,6 +167,21 @@ MonoBehaviour:
   force: 35
   lifespan: 10
   slowdownRate: 0.9
+  onPop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3087539450877617812}
+        m_TargetAssemblyTypeName: ChemicalBlobEmitter, Assembly-CSharp
+        m_MethodName: SpawnBlobs
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6646698885359556450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,5 +194,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e32f556ab63fc74abe0846ea3e65441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDestroyable: 1
+  isDestroyable: 0
   bouncinessMod: 1.5
+  rb: {fileID: 3656549914451551735}
+  applyForceOnHit: 1
+  forceMultiplier: 80
+--- !u!114 &3087539450877617812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014600148762342256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fbb7f906d40114da36d871da071617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chemicalBlob: {fileID: 8302372839395969698, guid: 496077ebd69e55c4e9076ef335b622d7, type: 3}
+  canSpawnBlobs: 0
+  angleRandomSpread: 45
+  velocityMin: 10
+  velocityMax: 30
+  spawnRepeating: 0
+  spawnDelay: 0
+  blobCountPerInterval: 8
+  useGlobalEmitAngle: 1
+  globalEmitAngle: {x: -90, y: 0, z: 0}
+  offset: {x: 0, y: 6, z: 0}

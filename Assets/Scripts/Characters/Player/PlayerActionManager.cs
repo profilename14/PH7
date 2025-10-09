@@ -253,7 +253,7 @@ public class PlayerActionManager : CharacterActionManager
                 {
                     playerDirectionalInput.lookDir = GetDirRelativeToCamera(new Vector3(rightStick.x, 0, rightStick.y));
                 }
-                else playerDirectionalInput.lookDir = GetDirRelativeToCamera(moveDir);
+                else if (moveDir != Vector3.zero) playerDirectionalInput.lookDir = (Quaternion.Euler(0f, -45f, 0f) * moveDir).normalized;
             }
             else playerDirectionalInput.lookDir = GetMouseDirection();
         }

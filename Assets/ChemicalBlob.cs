@@ -88,7 +88,7 @@ public class ChemicalBlob : MonoBehaviour
         if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
 
         int collLayer = other.gameObject.layer;
-        if(collLayer == 0 || collLayer == 10 && (flattenTimer <= 0 && rb.velocity.y >= 0))
+        if(collLayer == 18 || collLayer == 10 && (flattenTimer <= 0 && rb.velocity.y >= 0))
         {
             anim.Play("BlobFlatten");
             rb.isKinematic = true;

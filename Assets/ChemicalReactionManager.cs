@@ -10,6 +10,9 @@ public class ChemicalReactionManager : MonoBehaviour
     GameObject saltCrystal;
 
     [SerializeField]
+    GameObject saltPlatform;
+
+    [SerializeField]
     float reactionRadius;
 
     private LayerMask chemicalMask;
@@ -45,5 +48,20 @@ public class ChemicalReactionManager : MonoBehaviour
 
             Instantiate(saltCrystal, hit.point, Quaternion.identity);
         }
+    }
+
+    public void CreateSaltPlatform(Vector3 point)
+    {
+        Collider[] chemicalsInRadius = Physics.OverlapSphere(point, reactionRadius, chemicalMask, QueryTriggerInteraction.Collide);
+        if (chemicalsInRadius.Length != 0)
+        {
+            for (int i = 0; i < chemicalsInRadius.Length; i++)
+            {
+                Debug.Log("Chemicals to delete: " + chemicalsInRadius[i]);
+                if(!chemicalsInRadius[i].CompareTag("ChemicalPool")) chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
+            }
+        }
+
+        Instantiate(saltPlatform, point, Quaternion.identity);
     }
 }

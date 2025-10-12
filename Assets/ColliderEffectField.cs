@@ -31,6 +31,8 @@ public class ColliderEffectField : MonoBehaviour
 
     public float height;
 
+    public bool generateSaltPlatforms;
+
     private void OnDisable()
     {
         doTEntities.Clear();
@@ -52,13 +54,27 @@ public class ColliderEffectField : MonoBehaviour
         int collLayer = other.gameObject.layer;
         if (collLayer == 17)
         {
-            ColliderEffectField effectField = other.gameObject.GetComponentInParentOrChildren<ColliderEffectField>();
-
-            if (effectField is ColliderEffectField e && effectType != e.effectType)
+            if (!generateSaltPlatforms)
             {
-                Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
-                ChemicalReactionManager.instance.DoReaction(effectType, e.effectType, (transform.position + e.transform.position) / 2);
-                this.transform.parent.gameObject.SetActive(false);
+                ColliderEffectField effectField = other.gameObject.GetComponentInParentOrChildren<ColliderEffectField>();
+
+                if (effectField is ColliderEffectField e && effectType != e.effectType && !effectField.generateSaltPlatforms)
+                {
+                    Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
+                    ChemicalReactionManager.instance.DoReaction(effectType, e.effectType, (transform.position + e.transform.position) / 2);
+                    this.transform.parent.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                ColliderEffectField effectField = other.gameObject.GetComponentInParentOrChildren<ColliderEffectField>();
+
+                if (effectField is ColliderEffectField e && effectType != e.effectType)
+                {
+                    Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
+                    effectField.transform.parent.gameObject.SetActive(false);
+                    ChemicalReactionManager.instance.CreateSaltPlatform(effectField.transform.parent.transform.position);
+                }
             }
         }
         else if (other.CompareTag("Player") || other.CompareTag("Enemy"))

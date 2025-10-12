@@ -42,7 +42,7 @@ public class FloatingBubble : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == 10 || other.gameObject.layer == 18)
+        if(other.gameObject.layer == 10 || /*other.gameObject.layer == 17 ||*/ other.gameObject.layer == 18)
         {
             onPop.Invoke();
             gameObject.SetActive(false);

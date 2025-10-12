@@ -330,7 +330,7 @@ public class PlayerSwordAttack : AttackState
     {
         if (currentSwordSwing == SwordSwingType.SwingDown)
         {
-            return Vector3.down;
+            return Vector3.down;//directionalInput.lookDir;
         }
         else
         {

@@ -33,6 +33,10 @@ public class ColliderEffectField : MonoBehaviour
 
     public bool generateSaltPlatforms;
 
+    public bool triggerDebuff = false;
+
+    public bool triggerReactions = false;
+
     private void OnDisable()
     {
         doTEntities.Clear();
@@ -80,7 +84,7 @@ public class ColliderEffectField : MonoBehaviour
         else if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
             // Should only need to get hittable if this is a new character to apply an effect to
-
+            Debug.Log(other);
             if (cancelTriggeringHits) return;
 
             if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
@@ -97,7 +101,9 @@ public class ColliderEffectField : MonoBehaviour
 
     public void ApplyEffectTo(Character character)
     {
-        Debug.Log("Hit something");
+        if (doTEntities.Contains(character)) return;
+
+        Debug.Log("Hit something" + character);
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
@@ -111,5 +117,7 @@ public class ColliderEffectField : MonoBehaviour
             Debug.Log("Applying effect to " + character);
             //character.ApplyEffect()
         }
+
+        doTEntities.Add(character);
     }
 }

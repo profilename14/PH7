@@ -11,10 +11,17 @@ public class CinemachineManager : MonoBehaviour
     private CinemachineBasicMultiChannelPerlin perlinNoise;
     private CinemachineTransposer transposer;
 
+    const float baseYaw = -48.3f;
+    const float basePitch = 47.3f;
+    const float baseRoll = 0f;
+
     [SerializeField] float shakePower = 0.125f;
     [SerializeField] float shakeDuration = 0.15f;
-    [SerializeField] float curAngle = 0;
+    [SerializeField] float yaw = 0;
+    [SerializeField] float pitch = 0;
+    [SerializeField] float roll = 0;
     [SerializeField] float zoomOutMultiplier = 1;
+    [SerializeField] Vector3 transposeVector = Vector3.zero;
 
 
     // Start is called before the first frame update
@@ -31,7 +38,7 @@ public class CinemachineManager : MonoBehaviour
     void Update()
     {
 
-        rotateCamera(curAngle);
+        rotateCamera(yaw);
     }
 
     public void ScreenShake(float intensityMult, float durationMult)
@@ -51,36 +58,39 @@ public class CinemachineManager : MonoBehaviour
         perlinNoise.m_AmplitudeGain = 0f;  // Reset shake
     }
 
-    public void rotateCamera(float angleDegrees)
+    public void rotateCamera(float yaw)
     {
 
-        transposer.m_FollowOffset = GetCameraPosition(angleDegrees, zoomOutMultiplier);
+        transposer.m_FollowOffset = GetCameraPosition(yaw, pitch, zoomOutMultiplier);
 
-        virtualCamera.transform.rotation = GetCameraRotation(angleDegrees);
+        virtualCamera.transform.rotation = GetCameraRotation(yaw, pitch, roll);
 
     }
 
 
-    // angle = 0 for south (default), 90 for east, 180 for north, 270 for west
+    // angle = 0 for south (default), 90 for east, 180 for north, 270 for west of player
     // Set position to expected angle and rotation to expected angle to camera transition.
-    public Vector3 GetCameraPosition(float angleDegrees = 0, float zoomOutMultiplier = 1, float radius = 28.28427f)
+    public Vector3 GetCameraPosition(float yaw = 0, float pitch = 0, float zoomOutMultiplier = 1, float radius = 42.5f)
     {
-        float height = 30;
+        //float height = 30;
         Vector3 center = new Vector3(0, 0, 0);
 
-        float angleRad = (angleDegrees + 135) * Mathf.Deg2Rad;
+        float angleRad = (yaw + (180 + baseYaw)) * Mathf.Deg2Rad;
+        float pitchRad = (pitch + basePitch) * Mathf.Deg2Rad;
 
-        float x = center.x + radius * Mathf.Sin(angleRad);
-        float z = center.z + radius * Mathf.Cos(angleRad);
-        float y = height;
+        float x = center.x + radius * Mathf.Sin(angleRad) * Mathf.Cos(pitchRad);
+        float z = center.z + radius * Mathf.Cos(angleRad) * Mathf.Cos(pitchRad);
+        float y = center.z + radius * Mathf.Sin(pitchRad);
 
-        return new Vector3(x, y, z) * zoomOutMultiplier;
+        return (new Vector3(x, y, z) + transposeVector) * zoomOutMultiplier;
     }
 
-    // Pitch is the looking down angle, baseyaw is what changes as the camera orbits the player.
-    public static Quaternion GetCameraRotation(float angleDegrees, float basePitch = 47f, float baseYaw = -48.3f)
+    // Yaw is what changes as the camera orbits the player, Pitch is the looking up/down angle, roll is tilting the camera left/right.
+    public static Quaternion GetCameraRotation(float yawOffset = 0f, float pitchOffset = 0f, float rollOffset = 0f)
     {
-        float yaw = baseYaw + (angleDegrees);
-        return Quaternion.Euler(basePitch, yaw, 0f);
+        float yaw = baseYaw + yawOffset;
+        float pitch = basePitch + pitchOffset;
+        float roll = baseRoll + rollOffset;
+        return Quaternion.Euler(pitch, yaw, roll);
     }
 }

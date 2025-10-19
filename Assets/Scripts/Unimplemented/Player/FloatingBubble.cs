@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class FloatingBubble : MonoBehaviour
 {
-  Rigidbody bubbleRigidbody;
+    Rigidbody bubbleRigidbody;
     public Vector3 direction = new Vector3(0, 1, 0);
     public float force;
 
@@ -16,6 +16,8 @@ public class FloatingBubble : MonoBehaviour
     [SerializeField] float slowdownRate = 0.9f;
 
     [SerializeField] UnityEvent onPop;
+
+    public ICanPickup item;
 
     void Start() {
       bubbleRigidbody = GetComponent<Rigidbody>();
@@ -30,8 +32,7 @@ public class FloatingBubble : MonoBehaviour
       lifespanTimer -= Time.deltaTime;
       if (lifespanTimer <= 0)
       {
-            onPop.Invoke();
-            gameObject.SetActive(false);
+        Pop();
       }
     }
 
@@ -40,12 +41,32 @@ public class FloatingBubble : MonoBehaviour
         if(bubbleRigidbody.velocity.magnitude > 0) bubbleRigidbody.velocity *= slowdownRate;
     }
 
-    private void OnTriggerEnter(Collider other)
+  private void OnTriggerEnter(Collider other)
+  {
+    if (other.gameObject.layer == 10 || /*other.gameObject.layer == 17 ||*/ other.gameObject.layer == 18)
     {
-        if(other.gameObject.layer == 10 || /*other.gameObject.layer == 17 ||*/ other.gameObject.layer == 18)
-        {
-            onPop.Invoke();
-            gameObject.SetActive(false);
-        }
+      onPop.Invoke();
+      gameObject.SetActive(false);
     }
+
+    ICanPickup newItem = other.GetComponent<ICanPickup>();
+
+    if (newItem != null && item == null)
+    {
+      newItem.Pickup(this);
+      item = newItem;
+    }
+
+  }
+
+  public Vector3 getCurSpeed()
+  {
+    return bubbleRigidbody.velocity;
+  }
+    
+  public void Pop()
+  {
+    onPop.Invoke();
+    gameObject.SetActive(false);
+  }
 }

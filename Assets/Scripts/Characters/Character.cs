@@ -39,6 +39,8 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     private UnityEvent OnHitByAttack;
 
+    public Chemical currentDebuff = Chemical.None;
+
     protected void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref _ActionManager);
@@ -64,6 +66,8 @@ public abstract class Character : MonoBehaviour, IHittable
         //Debug.Log("Hitbox collided");
 
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
+
+        
 
         if (!isInvincible)
         {
@@ -138,7 +142,23 @@ public abstract class Character : MonoBehaviour, IHittable
         //Debug.Log("Hit by effect field");
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
 
-        if (characterData.naturalType == effectField.effectType) return;
+        if (characterData.naturalType == effectField.effectType)
+        {
+            // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
+            if (effectField.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )
+            {
+                currentDebuff = effectField.effectType;
+                return;
+            }
+            else
+            {
+                // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
+                if (!effectField.triggerReactions)
+                {
+                    return;
+                }
+            }
+        }
 
         if (!isInvincible)
         {
@@ -152,10 +172,56 @@ public abstract class Character : MonoBehaviour, IHittable
                 return;
             }
 
-            if(effectField.causeHit)
+            if (effectField.causeHit)
             {
                 _VFXManager.TookDamageVFX(this.transform.position, effectField.transform.position);
                 if (!isHitstunImmune) actionManager.Hitstun();
+            }
+
+
+            if (effectField.triggerReactions)
+            {
+
+                if (currentDebuff == Chemical.None || currentDebuff == effectField.effectType)
+                {
+                    // Ex Acid against a dry or acidified strider = freeze
+                    if (characterData.naturalType != effectField.effectType)
+                    {
+                        Debug.Log("Triggered Reaction: " + characterData.naturalType + " " + effectField.effectType);
+                        StartCoroutine(ChemicalReactionFreeze());
+                    }
+                }
+                else
+                {
+                    // Ex Alkaline against an acidified strider = freeze
+                    if (currentDebuff != effectField.effectType)
+                    {
+                        Debug.Log("Triggered Reaction: " + currentDebuff + " " + effectField.effectType);
+                        StartCoroutine(ChemicalReactionFreeze());
+                    }
+                }
+            }
+
+            if (effectField.triggerDebuff)
+            {
+                if (currentDebuff == Chemical.None)
+                {
+                    currentDebuff = effectField.effectType;
+                }
+                else
+                {
+                    // Leave target dry if a reaction occured, if this cant do reactions replace debuff
+                    if (currentDebuff != effectField.effectType)
+                    {
+                        currentDebuff = Chemical.None;
+                        
+                        if (!effectField.triggerReactions)
+                        {
+                            currentDebuff = effectField.effectType;
+                        }
+                    }
+                }
+                
             }
         }
 
@@ -187,7 +253,7 @@ public abstract class Character : MonoBehaviour, IHittable
     {
         this.isKnockbackImmune = isKnockbackImmune;
     }
-    
+
     public virtual void SetIsHitstunImmune(bool isHitstunImmune)
     {
         this.isHitstunImmune = isHitstunImmune;
@@ -212,6 +278,23 @@ public abstract class Character : MonoBehaviour, IHittable
     {
         isDead = true;
         gameObject.SetActive(false);
+    }
+
+    public IEnumerator ChemicalReactionFreeze()
+    {
+        //movementController.SetAllowMovement(false);
+        _ActionManager.Hitstun();
+        Debug.Log("A");
+        movementController.LockVelocity(Vector3.zero);
+        movementController.SetVelocity(Vector3.zero);
+
+        yield return new WaitForSeconds(4);
+
+        Debug.Log("E");
+        _ActionManager.EndHitStun();
+        Debug.Log("R");
+        movementController.UnlockVelocity();
+        //smovementController.SetAllowMovement(true);
     }
 
 /*#if UNITY_EDITOR

@@ -81,7 +81,7 @@ public class ColliderEffectField : MonoBehaviour
                 }
             }
         }
-        else if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        else if (false&&other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
             // Should only need to get hittable if this is a new character to apply an effect to
             Debug.Log(other);

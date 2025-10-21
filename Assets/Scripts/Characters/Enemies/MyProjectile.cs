@@ -29,6 +29,10 @@ public class MyProjectile : MonoBehaviour
 
     [SerializeField] private bool ignoreOtherProjectiles;
 
+    [SerializeField] public bool triggerDebuff = true;
+    
+    [SerializeField] public bool triggerReactions = true;
+
     void Update()
     {
         if (projectileIsActive)

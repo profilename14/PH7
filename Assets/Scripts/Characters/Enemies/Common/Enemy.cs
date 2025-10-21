@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
+using UnityEditor.Callbacks;
 
 public class Enemy : Character
 {
@@ -13,15 +14,37 @@ public class Enemy : Character
 
     public OnDeathDelegate onDeath;
 
+    EnemyMovementController enemyMovementController;
+
+    private float originalMaxSpeed = 0;
+
+    private RigidbodyConstraints originalRestraints;
+    protected GameObject SaltCrystalPrefab;
+    protected GameObject curSaltCrystal = null;
+    protected SaltCrystal curSaltCrystalScript = null;
+
+
     private void Awake()
     {
-        enemyData = (EnemyData) characterData;
+        enemyData = (EnemyData)characterData;
+        enemyMovementController = GetComponent<EnemyMovementController>();
+        SaltCrystalPrefab = Resources.Load<GameObject>("Enemy Reaction Salt Crystal");
     }
 
     public override void Hit(AttackState attack, Vector3 hitPoint)
     {
         //Debug.Log(this.gameObject.name + " took " + attack.attackData.damage + " damage from " + attack.name + "! Has " + _Stats.health + " health left!");
         base.Hit(attack, hitPoint);
+
+        if(curSaltCrystal)
+        {
+            // the reaction salt crystal lacks collision, and instead has the enemy collider redirect damage to it
+            curSaltCrystalScript.Hit(attack, hitPoint); 
+            if (curSaltCrystalScript.GetHealth() <= 0)
+            {
+                ChemicalReactionFreezeEnd();
+            }
+        }
 
         if(_Stats.health <= 0) { return; }
 
@@ -74,6 +97,7 @@ public class Enemy : Character
     {
         isDead = true;
         if (isLockedOn) onDeath.Invoke();
+        if (curSaltCrystal) Destroy(curSaltCrystal);
         EnemyActionManager am = (EnemyActionManager)actionManager;
         am.OnDeath();
         gameObject.SetActive(false);
@@ -82,5 +106,45 @@ public class Enemy : Character
     public float GetBounciness()
     {
         return enemyData.bouncinessMod;
+    }
+
+    protected override void ChemicalReactionFreezeStart()
+    {
+        if (curSaltCrystal == null)
+        {
+            curSaltCrystal = Instantiate(SaltCrystalPrefab, transform.position, Quaternion.identity);
+            curSaltCrystalScript = curSaltCrystal.GetComponent<SaltCrystal>();
+            curSaltCrystalScript.SetSender(this);
+        }
+        else
+        {
+            return;
+        }
+
+        base.ChemicalReactionFreezeStart();
+
+        originalMaxSpeed = enemyMovementController.pathfinding.maxSpeed;
+        enemyMovementController.pathfinding.maxSpeed = 0;
+        originalRestraints = enemyMovementController.rb.constraints;
+        enemyMovementController.rb.constraints = RigidbodyConstraints.FreezePositionX |
+                                                 RigidbodyConstraints.FreezePositionZ |
+                                                 RigidbodyConstraints.FreezeRotation;
+
+    }
+    protected override void ChemicalReactionFreezeEnd()
+    {
+        if (curSaltCrystal == null)
+        {
+            return;
+        }
+        else
+        {
+            Destroy(curSaltCrystal);
+        }
+
+        base.ChemicalReactionFreezeEnd();
+        
+        enemyMovementController.pathfinding.maxSpeed = originalMaxSpeed;
+        enemyMovementController.rb.constraints = originalRestraints;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PixelCrushers.DialogueSystem;
 using UnityEngine;
 
 public class SaltCrystal : MonoBehaviour, IHittable
@@ -37,6 +38,8 @@ public class SaltCrystal : MonoBehaviour, IHittable
     [SerializeField]
     private AttackData shardAttackData;
 
+    public Character sender = null;
+
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -47,6 +50,11 @@ public class SaltCrystal : MonoBehaviour, IHittable
         currentHealth -= attack.attackData.damage;
         hitEffect.Play();
 
+        if (sender == null)
+        {
+            sender = attack.character;
+        }
+
         if (currentHealth <= 0)
         {
             breakEffect.Play();
@@ -54,17 +62,17 @@ public class SaltCrystal : MonoBehaviour, IHittable
             {
                 PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
                 
-                Shatter(swordScript.GetAttackingDirection(), attack.character);
+                Shatter(swordScript.GetAttackingDirection(), sender);
             }
             else if (attack is PlayerChargeAttack)
             {
                 PlayerChargeAttack swordScript = (PlayerChargeAttack)attack;
 
-                Shatter(swordScript.GetAttackingDirection(), attack.character);
+                Shatter(swordScript.GetAttackingDirection(), sender);
             }
             else
             {
-                Shatter(transform.position - hitPoint, attack.character);
+                Shatter(transform.position - hitPoint, sender);
             }
         }
     }
@@ -87,7 +95,7 @@ public class SaltCrystal : MonoBehaviour, IHittable
         for (int i = 0; i < shardCount; i++)
         {
             float angleOffset = 0;
-            if(i > 0)
+            if (i > 0)
             {
                 if (i % 2 == 0) angleOffset = i / 2 * shardAngleOffset;
                 else if (i == 1) angleOffset = -shardAngleOffset;
@@ -98,5 +106,15 @@ public class SaltCrystal : MonoBehaviour, IHittable
             GameObject shard = Instantiate(crystalShardProjectile, transform.position + shardPositionOffset, Quaternion.Euler(offsetDir));
             shard.GetComponent<MyProjectile>().InitProjectile(transform.position + shardPositionOffset, Quaternion.LookRotation(offsetDir, Vector3.up) * Quaternion.Euler(0, angleOffset, 0), sender, shardAttackData);
         }
+    }
+
+    public void SetSender(Character newSender)
+    {
+        sender = newSender;
+    }
+    
+    public float GetHealth()
+    {
+        return currentHealth;
     }
 }

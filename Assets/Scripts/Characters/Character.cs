@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 using Animancer.FSM;
+using Unity.VisualScripting;
 
 public abstract class Character : MonoBehaviour, IHittable
 {
@@ -40,6 +41,7 @@ public abstract class Character : MonoBehaviour, IHittable
     private UnityEvent OnHitByAttack;
 
     public Chemical currentDebuff = Chemical.None;
+    public bool isFrozen = false;
 
     protected void Awake()
     {
@@ -102,6 +104,24 @@ public abstract class Character : MonoBehaviour, IHittable
     {
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
 
+        if (characterData.naturalType == projectile.attackData.type)
+        {
+            // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
+            if (projectile.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )
+            {
+                currentDebuff = projectile.attackData.type;
+                return;
+            }
+            else
+            {
+                // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
+                if (!projectile.triggerReactions)
+                {
+                    return;
+                }
+            }
+        }
+
         if (!isInvincible)
         {
             _Stats.TakeDamage(projectile.attackData.damage);
@@ -117,6 +137,9 @@ public abstract class Character : MonoBehaviour, IHittable
             {
                 _VFXManager.TookDamageVFX(hitPoint, projectile.transform.position);
             }
+
+            ChemicalReaction(projectile.attackData.type, projectile.triggerReactions, projectile.triggerDebuff);
+            
             if(!isHitstunImmune) actionManager.Hitstun();
         }
 
@@ -153,6 +176,7 @@ public abstract class Character : MonoBehaviour, IHittable
             else
             {
                 // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
+                // If it DOES, then continue and deal damage anyway even though its the same element
                 if (!effectField.triggerReactions)
                 {
                     return;
@@ -179,50 +203,7 @@ public abstract class Character : MonoBehaviour, IHittable
             }
 
 
-            if (effectField.triggerReactions)
-            {
-
-                if (currentDebuff == Chemical.None || currentDebuff == effectField.effectType)
-                {
-                    // Ex Acid against a dry or acidified strider = freeze
-                    if (characterData.naturalType != effectField.effectType)
-                    {
-                        Debug.Log("Triggered Reaction: " + characterData.naturalType + " " + effectField.effectType);
-                        StartCoroutine(ChemicalReactionFreeze());
-                    }
-                }
-                else
-                {
-                    // Ex Alkaline against an acidified strider = freeze
-                    if (currentDebuff != effectField.effectType)
-                    {
-                        Debug.Log("Triggered Reaction: " + currentDebuff + " " + effectField.effectType);
-                        StartCoroutine(ChemicalReactionFreeze());
-                    }
-                }
-            }
-
-            if (effectField.triggerDebuff)
-            {
-                if (currentDebuff == Chemical.None)
-                {
-                    currentDebuff = effectField.effectType;
-                }
-                else
-                {
-                    // Leave target dry if a reaction occured, if this cant do reactions replace debuff
-                    if (currentDebuff != effectField.effectType)
-                    {
-                        currentDebuff = Chemical.None;
-                        
-                        if (!effectField.triggerReactions)
-                        {
-                            currentDebuff = effectField.effectType;
-                        }
-                    }
-                }
-                
-            }
+            ChemicalReaction(effectField.effectType, effectField.triggerReactions, effectField.triggerDebuff);
         }
 
         if (!isKnockbackImmune && characterData.knockbackResistance != 0)
@@ -280,21 +261,82 @@ public abstract class Character : MonoBehaviour, IHittable
         gameObject.SetActive(false);
     }
 
+    protected void ChemicalReaction(Chemical attackingChemical, bool triggerReactions, bool triggerDebuff)
+    {
+        if (triggerReactions)
+            {
+
+                if (currentDebuff == Chemical.None || currentDebuff == attackingChemical)
+                {
+                    // Ex Acid against a dry or acidified strider = freeze
+                    if (characterData.naturalType != attackingChemical)
+                    {
+                        Debug.Log("Triggered Reaction: " + characterData.naturalType + " " + attackingChemical);
+                        StartCoroutine(ChemicalReactionFreeze());
+                    }
+                }
+                else
+                {
+                    // Ex Alkaline against an acidified strider = freeze
+                    if (currentDebuff != attackingChemical)
+                    {
+                        Debug.Log("Triggered Reaction: " + currentDebuff + " " + attackingChemical);
+                        StartCoroutine(ChemicalReactionFreeze());
+                    }
+                }
+            }
+
+            if (triggerDebuff)
+            {
+                if (currentDebuff == Chemical.None)
+                {
+                    currentDebuff = attackingChemical;
+                }
+                else
+                {
+                    // Leave target dry if a reaction occured, if this cant do reactions replace debuff
+                    if (currentDebuff != attackingChemical)
+                    {
+                        currentDebuff = Chemical.None;
+                        
+                        if (!triggerReactions)
+                        {
+                            currentDebuff = attackingChemical;
+                        }
+                    }
+                }
+                
+            }
+    }
+
     public IEnumerator ChemicalReactionFreeze()
     {
-        //movementController.SetAllowMovement(false);
-        _ActionManager.Hitstun();
-        Debug.Log("A");
-        movementController.LockVelocity(Vector3.zero);
-        movementController.SetVelocity(Vector3.zero);
+        ChemicalReactionFreezeStart();
 
         yield return new WaitForSeconds(4);
 
-        Debug.Log("E");
+        ChemicalReactionFreezeEnd();
+    }
+
+    protected virtual void ChemicalReactionFreezeStart()
+    {
+        if (isFrozen) return;
+        isFrozen = true;
+        _ActionManager.Hitstun();
+        _ActionManager.anim.Graph.PauseGraph();
+
+        movementController.SetVelocity(Vector3.zero);
+        movementController.SetAllowRotation(false);
+        isKnockbackImmune = true;
+    }
+    
+    protected virtual void ChemicalReactionFreezeEnd()
+    {
+        if (!isFrozen) return;
+        isFrozen = false;
+        _ActionManager.anim.Graph.UnpauseGraph();
         _ActionManager.EndHitStun();
-        Debug.Log("R");
-        movementController.UnlockVelocity();
-        //smovementController.SetAllowMovement(true);
+        isKnockbackImmune = false;
     }
 
 /*#if UNITY_EDITOR

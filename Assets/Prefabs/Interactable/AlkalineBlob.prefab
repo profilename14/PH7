@@ -12042,15 +12042,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectType: 1
-  damageOnEnter: 1
+  damageOnEnter: 0
   applyEffect: 1
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 0
-  causeHit: 0
+  causeHit: 1
   notifyTarget: 1
   cancelTriggeringHits: 1
   useHeightLimit: 0
   height: 0.1
+  generateSaltPlatforms: 0
+  triggerDebuff: 1
+  triggerReactions: 1
 --- !u!136 &8564170569150747795
 CapsuleCollider:
   m_ObjectHideFlags: 0

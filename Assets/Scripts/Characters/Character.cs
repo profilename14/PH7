@@ -168,7 +168,7 @@ public abstract class Character : MonoBehaviour, IHittable
         if (characterData.naturalType == effectField.effectType)
         {
             // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
-            if (effectField.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )
+            if (effectField.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None))
             {
                 currentDebuff = effectField.effectType;
                 return;

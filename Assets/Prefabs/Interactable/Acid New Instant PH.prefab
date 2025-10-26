@@ -71,13 +71,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectType: 2
   damageOnEnter: 0
-  enableDamageOverTime: 0
-  damageOverTime: 0
-  damageTickInterval: 0
+  applyEffect: 0
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 0
   causeHit: 1
   notifyTarget: 0
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0
+  generateSaltPlatforms: 0
   triggerDebuff: 1
   triggerReactions: 1
   lifetime: 1
@@ -179,13 +181,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectType: 2
   damageOnEnter: 1
-  enableDamageOverTime: 0
-  damageOverTime: 0
-  damageTickInterval: 0
+  applyEffect: 0
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 0
-  causeHit: 0
+  causeHit: 1
   notifyTarget: 0
-  triggerDebuff: 0
-  triggerReactions: 0
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0
+  generateSaltPlatforms: 0
+  triggerDebuff: 1
+  triggerReactions: 1
   lifetime: 1

@@ -33,7 +33,8 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     protected bool isHitstunImmune = false;
 
-    protected ColliderEffectField currentPuddle = null; // Can read currentPuddle.effectType
+    [SerializeField]
+    private ColliderEffectField currentPuddle = null; // Can read currentPuddle.effectType
 
     protected bool isDead = false;
 
@@ -42,6 +43,9 @@ public abstract class Character : MonoBehaviour, IHittable
 
     public Chemical currentDebuff = Chemical.None;
     public bool isFrozen = false;
+
+    [SerializeField]
+    private UnityEvent onexitPuddle;
 
     protected void Awake()
     {
@@ -242,11 +246,20 @@ public abstract class Character : MonoBehaviour, IHittable
 
     public virtual void SetCurrentPuddle(ColliderEffectField newPuddle)
     {
+        if (newPuddle == null) onexitPuddle.Invoke();
+
         this.currentPuddle = newPuddle; // set to null on leaving a puddle
-        Debug.Log("Currently in puddle of type " + currentPuddle);
         if (currentPuddle != null)
         {
-            Debug.Log(currentPuddle.effectType);
+            //Debug.Log(currentPuddle.effectType);
+        }
+    }
+
+    public void RemoveCurrentPuddle(ColliderEffectField puddle)
+    {
+        if(puddle == this.currentPuddle)
+        {
+            currentPuddle = null;
         }
     }
 

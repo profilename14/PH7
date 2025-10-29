@@ -36,6 +36,9 @@ public class PlayerChargeAttack : AttackState
 
     private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
 
+    [SerializeField]
+    UnityEvent onChargeRelease;
+
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
@@ -81,6 +84,8 @@ public class PlayerChargeAttack : AttackState
             _ActionManager.SetAllActionPriorityAllowed(false);
 
             AnimancerState currentState = _ActionManager.anim.Play(chargeAttackAnimation);
+
+            onChargeRelease.Invoke();
 
             // Do a charge attack, go back to idle at the end.
             currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;

@@ -7,8 +7,7 @@ public class ChemicalBlobEmitter : MonoBehaviour
     [SerializeField]
     private GameObject chemicalBlob;
 
-    [SerializeField]
-    bool canSpawnBlobs = true;
+    public bool canSpawnBlobs = true;
 
     [SerializeField]
     private float angleRandomSpread;
@@ -92,5 +91,10 @@ public class ChemicalBlobEmitter : MonoBehaviour
             GameObject blob = Instantiate(chemicalBlob, transform.position + offset, blobAngle);
             blob.GetComponent<Rigidbody>().velocity = blob.transform.forward * Random.Range(velocityMin, velocityMax);
         }
+    }
+
+    public void SetCanSpawnBlobs(bool set)
+    {
+        canSpawnBlobs = set;
     }
 }

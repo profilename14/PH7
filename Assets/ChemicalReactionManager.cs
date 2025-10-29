@@ -64,4 +64,17 @@ public class ChemicalReactionManager : MonoBehaviour
 
         Instantiate(saltPlatform, point, Quaternion.identity);
     }
+
+    public void ClearNearbyChemicals(Vector3 point)
+    {
+        Collider[] chemicalsInRadius = Physics.OverlapSphere(point, reactionRadius, chemicalMask, QueryTriggerInteraction.Collide);
+        if (chemicalsInRadius.Length != 0)
+        {
+            for (int i = 0; i < chemicalsInRadius.Length; i++)
+            {
+                Debug.Log("Chemicals to delete: " + chemicalsInRadius[i]);
+                chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
+            }
+        }
+    }
 }

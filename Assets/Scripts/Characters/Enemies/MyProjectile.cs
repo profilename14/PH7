@@ -109,7 +109,7 @@ public class MyProjectile : MonoBehaviour
             sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
         }
 
-        Debug.Log(other);
+        //Debug.Log(other);
 
         projectileDestroyEvent?.Invoke();
         gameObject.SetActive(false);

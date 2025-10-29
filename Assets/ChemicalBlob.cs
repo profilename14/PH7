@@ -42,11 +42,13 @@ public class ChemicalBlob : MonoBehaviour
     [SerializeField]
     float timeUntilCanFlatten;
 
+    private Dictionary<Collider, Character> charactersTouchingBlob = new();
+
     float flattenTimer;
 
     private void Awake()
     {
-        
+        charactersTouchingBlob.Clear();
     }
 
     private void Start()
@@ -54,6 +56,18 @@ public class ChemicalBlob : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
         decaySpeed = Random.Range(minDecaySpeed, maxDecaySpeed);
         flattenTimer = timeUntilCanFlatten;
+    }
+
+    private void OnDisable()
+    {
+        foreach(Collider key in charactersTouchingBlob.Keys)
+        {
+            if(charactersTouchingBlob[key].getCurrentPuddle() == effectField)
+            {
+                charactersTouchingBlob[key].RemoveCurrentPuddle(effectField);
+            }
+        }
+        charactersTouchingBlob.Clear();
     }
 
     private void FixedUpdate()
@@ -73,6 +87,26 @@ public class ChemicalBlob : MonoBehaviour
                 this.gameObject.SetActive(false);
             }
             transform.position -= new Vector3(0, decaySpeed * Time.fixedDeltaTime, 0);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!gameObject.activeInHierarchy) return;
+
+        // If this script is disabled, then the effect field is disabled
+        if (this.enabled == false) return;
+
+        if (other.CompareTag("Hitbox")) return;
+
+        if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
+
+        if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy")) return;
+
+        if (!charactersTouchingBlob.ContainsKey(other))
+        {
+            charactersTouchingBlob.Add(other, other.gameObject.GetComponentInParentOrChildren<Character>());
+            charactersTouchingBlob[other].SetCurrentPuddle(effectField);
         }
     }
 
@@ -96,12 +130,33 @@ public class ChemicalBlob : MonoBehaviour
         }
         else if(other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
-            IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
+            if (!charactersTouchingBlob.ContainsKey(other)) return;
 
-            if (hittableScript != null)
+            if (charactersTouchingBlob[other] != null)
             {
-                Debug.Log("Applying effect on " + hittableScript);
-                if (hittableScript is Character) effectField.ApplyEffectTo((Character)hittableScript); 
+                //Debug.Log("Applying effect on " + charactersTouchingBlob[other].gameObject.name);
+                effectField.ApplyEffectTo(charactersTouchingBlob[other]);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!gameObject.activeInHierarchy) return;
+
+        // If this script is disabled, then the effect field is disabled
+        if (this.enabled == false) return;
+
+        if (other.CompareTag("Hitbox")) return;
+
+        //if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
+
+        else if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        {
+            if (charactersTouchingBlob.ContainsKey(other))
+            {
+                charactersTouchingBlob[other].RemoveCurrentPuddle(effectField);
+                charactersTouchingBlob.Remove(other);
             }
         }
     }

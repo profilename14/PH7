@@ -46,6 +46,7 @@ public class PlayerDash : DashState
 
     private PlayerVFXManager vfx;
 
+    [SerializeField]
     private bool puddleSurfMode = false;
     [SerializeField] private float surfSpeed = 2f;
     private Vector3 surfPosition;
@@ -55,6 +56,12 @@ public class PlayerDash : DashState
     [SerializeField] private float airDashMultiplier = 1.5f;
 
     private LayerMask stopDashLayerMask;
+
+    [SerializeField]
+    private UnityEvent onDashStart;
+
+    [SerializeField]
+    private UnityEvent onDashEnd;
 
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.High] && actionManager.dashTimer <= 0;
@@ -84,6 +91,8 @@ public class PlayerDash : DashState
         airDash = !movementController.IsGrounded();
 
         startingPoint = movementController.gameObject.transform.position;
+
+        onDashStart.Invoke();
 
         if (airDash)
         {
@@ -149,6 +158,7 @@ public class PlayerDash : DashState
                     if (actionManager.character.getCurrentPuddle().effectType == Chemical.Alkaline && !surfDisable)
                     {
                         puddleSurfMode = true;
+
                         surfPosition = movementController.transform.position;
                     }
                 }
@@ -164,16 +174,19 @@ public class PlayerDash : DashState
 
                 movementController.SetPosition(surfPosition);
 
-                if (actionManager.character.getCurrentPuddle() == null)
+                if (actionManager.character.getCurrentPuddle() == null || actionManager.character.getCurrentPuddle().effectType != Chemical.Alkaline)
                 {
                     puddleSurfMode = false;
-                    dashTimer = 0;
 
                     Vector3 tempDirection = (destination - startingPoint).normalized;
                     startingPoint = surfPosition;
                     destination = new Vector3(startingPoint.x + tempDirection.x * distance * 0.2f, 
                                               startingPoint.y,
                                               startingPoint.z + tempDirection.z * distance * 0.2f);
+                }
+                else if (actionManager.character.getCurrentPuddle() == null && actionManager.character.getCurrentPuddle().effectType == Chemical.Alkaline)
+                {
+                    dashTimer = 0;
                 }
             }
         
@@ -212,6 +225,7 @@ public class PlayerDash : DashState
         movementController.SetVelocity(new Vector3(0, 10f, 0)); // Effectively very slightly reduces gravity for a moment
         _ActionManager.SetAllActionPriorityAllowed(true, 0);
         _ActionManager.StateMachine.ForceSetDefaultState();
+        onDashEnd.Invoke();
     }
 
 
@@ -241,6 +255,11 @@ public class PlayerDash : DashState
         {
             Destroy(instantiatedVFX, 0.3f); // Give the vfx time to catch up to the player
         }
+    }
+
+    public void ExitPuddle()
+    {
+
     }
 
 #if UNITY_EDITOR

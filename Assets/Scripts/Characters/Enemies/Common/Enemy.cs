@@ -20,6 +20,7 @@ public class Enemy : Character
 
     private RigidbodyConstraints originalRestraints;
     protected GameObject SaltCrystalPrefab;
+    [SerializeField]
     protected GameObject curSaltCrystal = null;
     protected SaltCrystal curSaltCrystalScript = null;
 
@@ -115,6 +116,13 @@ public class Enemy : Character
             curSaltCrystal = Instantiate(SaltCrystalPrefab, transform.position, Quaternion.identity);
             curSaltCrystalScript = curSaltCrystal.GetComponent<SaltCrystal>();
             curSaltCrystalScript.SetSender(this);
+            ChemicalReactionManager.instance.ClearNearbyChemicals(transform.position);
+            movementController.SetAllowRotation(false);
+            if(movementController is EnemyMovementController e)
+            {
+                e.SetForceLookAtPlayer(false);
+                e.SetForceManualRotation(false);
+            }
         }
         else
         {

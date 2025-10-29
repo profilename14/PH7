@@ -103,7 +103,7 @@ public class ColliderEffectField : MonoBehaviour
     {
         if (doTEntities.Contains(character)) return;
 
-        Debug.Log("Hit something" + character);
+       // Debug.Log("Hit something" + character);
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
@@ -114,7 +114,7 @@ public class ColliderEffectField : MonoBehaviour
 
         if (applyEffect && character != null)
         {
-            Debug.Log("Applying effect to " + character);
+            //Debug.Log("Applying effect to " + character);
             //character.ApplyEffect()
         }
 

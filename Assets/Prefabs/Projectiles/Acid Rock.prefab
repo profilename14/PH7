@@ -51,9 +51,9 @@ MonoBehaviour:
   velocityMax: 40
   spawnRepeating: 0
   spawnDelay: 0
-  blobCountPerInterval: 12
+  blobCountPerInterval: 8
   useGlobalEmitAngle: 1
-  globalEmitVector: {x: -90, y: 0, z: 0}
+  globalEmitAngle: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 6, z: 0}
 --- !u!1 &5338533814694487321
 GameObject:
@@ -390,6 +390,8 @@ MonoBehaviour:
   registerCollisionsDelay: 0.2
   rb: {fileID: 2741029149713521921}
   ignoreOtherProjectiles: 0
+  triggerDebuff: 1
+  triggerReactions: 1
 --- !u!114 &875555941549182893
 MonoBehaviour:
   m_ObjectHideFlags: 0

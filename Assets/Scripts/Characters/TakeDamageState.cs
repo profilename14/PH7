@@ -24,6 +24,12 @@ public class TakeDamageState : CharacterState
     {
         _MovementController.SetAllowMovement(canMoveWhileStunned);
         _MovementController.SetAllowRotation(canRotateWhileStunned);
+        if(_MovementController is EnemyMovementController e)
+        {
+            e.SetForceManualRotation(false);
+            e.SetForceLookAtPlayer(false);
+            e.SetAIEnabled(false);
+        }
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
         _ActionManager.SetAllStatesAllowed(false);
 
@@ -42,6 +48,10 @@ public class TakeDamageState : CharacterState
         _MovementController.SetAllowRotation(true);
         _ActionManager.EndHitStun();
         _ActionManager.SetAllActionPriorityAllowed(true);
+        if (_MovementController is EnemyMovementController e)
+        {
+            e.SetAIEnabled(true);
+        }
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
 

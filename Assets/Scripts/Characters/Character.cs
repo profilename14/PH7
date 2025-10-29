@@ -32,6 +32,8 @@ public abstract class Character : MonoBehaviour, IHittable
 
     [SerializeField]
     protected bool isHitstunImmune = false;
+    [SerializeField]
+    protected bool isReactionImmune = false;
 
     [SerializeField]
     private ColliderEffectField currentPuddle = null; // Can read currentPuddle.effectType
@@ -113,13 +115,16 @@ public abstract class Character : MonoBehaviour, IHittable
             // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
             if (projectile.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )
             {
-                currentDebuff = projectile.attackData.type;
+                if (!isReactionImmune)
+                {
+                    currentDebuff = projectile.attackData.type;
+                }
                 return;
             }
             else
             {
                 // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
-                if (!projectile.triggerReactions)
+                if (!projectile.triggerReactions || isReactionImmune)
                 {
                     return;
                 }
@@ -142,7 +147,7 @@ public abstract class Character : MonoBehaviour, IHittable
                 _VFXManager.TookDamageVFX(hitPoint, projectile.transform.position);
             }
 
-            ChemicalReaction(projectile.attackData.type, projectile.triggerReactions, projectile.triggerDebuff);
+            if (!isReactionImmune) ChemicalReaction(projectile.attackData.type, projectile.triggerReactions, projectile.triggerDebuff);
             
             if(!isHitstunImmune) actionManager.Hitstun();
         }
@@ -276,7 +281,7 @@ public abstract class Character : MonoBehaviour, IHittable
 
     protected void ChemicalReaction(Chemical attackingChemical, bool triggerReactions, bool triggerDebuff)
     {
-        if (triggerReactions)
+        if (triggerReactions && !isReactionImmune)
             {
 
                 if (currentDebuff == Chemical.None || currentDebuff == attackingChemical)

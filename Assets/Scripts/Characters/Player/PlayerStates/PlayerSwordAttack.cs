@@ -334,7 +334,7 @@ public class PlayerSwordAttack : AttackState
         }
         else
         {
-            return directionalInput.lookDir;
+            return movementController.GetCameraPlanarRotation() * directionalInput.lookDir;
         }
     }
 

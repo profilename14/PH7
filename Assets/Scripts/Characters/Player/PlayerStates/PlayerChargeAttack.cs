@@ -110,7 +110,7 @@ public class PlayerChargeAttack : AttackState
 
     public Vector3 GetAttackingDirection()
     {
-        return directionalInput.lookDir;
+        return movementController.GetCameraPlanarRotation() * directionalInput.lookDir;
     }
 
     public override void OnAttackHit(Vector3 position, Collider other)

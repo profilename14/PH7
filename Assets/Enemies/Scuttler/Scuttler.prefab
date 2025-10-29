@@ -330,12 +330,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
   _ActionManager: {fileID: 8489805586315357941}
-  movementController: {fileID: 0}
+  movementController: {fileID: 3175265939646523873}
   _Stats: {fileID: 6778341233954487993}
   _VFXManager: {fileID: 5967026036674942662}
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  currentDebuff: 0
+  isFrozen: 0
 --- !u!114 &6778341233954487993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 8288573742154440887}
   pathfinding: {fileID: 2576367018769746851}
+  seeker: {fileID: 0}
   rb: {fileID: 8100329641564207091}
   enemyData: {fileID: 11400000, guid: 30b10ac29a78bc04ab0b393fae80cc77, type: 2}
   isGrounded: 0
@@ -387,7 +393,7 @@ MonoBehaviour:
   damageFlashIntensity: 1
   damageFlashTime: 0.2
   bloodParticles: {fileID: 3522182581256663300, guid: a85c5065fe5db6549ba396aac140fc2b, type: 3}
-  clawVFX: {fileID: 5525030789179456169}
+  slashVFX: {fileID: 0}
 --- !u!1 &48106960790662633
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,7 +2765,7 @@ GameObject:
   - component: {fileID: 6048392739649620309}
   m_Layer: 16
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3042,7 +3048,7 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: a48523ff1d6149341b179bd00058168e, type: 2}
     _NormalizedStartTime: NaN
   clawForwardForce: 33
-  playerTargetDistance: 0
+  playerTrackingDistance: 0
   drag: 6
   references:
     version: 2
@@ -3456,8 +3462,20 @@ MonoBehaviour:
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 3175265939646523873}
+  deathAnimation:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 0}
+    _NormalizedStartTime: NaN
   _Aggro: {fileID: 898727676511315704}
   isAggro: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &6738063041000158410
 MonoBehaviour:
   m_ObjectHideFlags: 0

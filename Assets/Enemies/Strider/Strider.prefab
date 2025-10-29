@@ -708,8 +708,20 @@ MonoBehaviour:
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 8955503680403876498}
+  deathAnimation:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 0}
+    _NormalizedStartTime: NaN
   _Aggro: {fileID: 473879448141724443}
   isAggro: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &715456513316347987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1116,12 +1128,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CharacterData: {fileID: 11400000, guid: 91a5dde2371112c439863686f1c0eac0, type: 2}
   _ActionManager: {fileID: 5619194082928224367}
-  movementController: {fileID: 0}
+  movementController: {fileID: 8955503680403876498}
   _Stats: {fileID: 3564450361393284608}
   _VFXManager: {fileID: 3248603864096777124}
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  currentDebuff: 0
+  isFrozen: 0
 --- !u!114 &3564450361393284608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1152,6 +1169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 2898020883842843761}
   pathfinding: {fileID: 4159427908813979764}
+  seeker: {fileID: 6937470109990394526}
   rb: {fileID: 4699728478831517558}
   enemyData: {fileID: 11400000, guid: 91a5dde2371112c439863686f1c0eac0, type: 2}
   isGrounded: 0
@@ -2893,7 +2911,7 @@ MonoBehaviour:
     _Clip: {fileID: 7400000, guid: c2932aef4886df446bd0ae205799190d, type: 2}
     _NormalizedStartTime: NaN
   clawForwardForce: 65
-  playerTargetDistance: 10
+  playerTrackingDistance: 0
   drag: 7
   references:
     version: 2
@@ -3655,8 +3673,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 1.5, z: 4}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 4, y: 3, z: 4}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &8818756476971564227
 GameObject:
   m_ObjectHideFlags: 0

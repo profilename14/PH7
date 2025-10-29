@@ -10,6 +10,11 @@ public class TestCheckpoint : MonoBehaviour
     [SerializeField]
     Transform spawnPoint;
 
+    private void Awake()
+    {
+        if (spawnPoint == null) spawnPoint = this.transform;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Player"))

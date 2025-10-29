@@ -28,7 +28,7 @@ public class Pogoable : MonoBehaviour, IHittable
             Die();
         }
 
-        if (attack is PlayerSwordAttack)
+        if (attack is PlayerSwordAttack && applyForceOnHit)
         {
             Debug.Log("hit by " + attack);
             PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;

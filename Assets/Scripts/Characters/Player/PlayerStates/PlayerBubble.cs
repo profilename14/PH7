@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 using Animancer.FSM;
+using Unity.Mathematics;
 
 public class PlayerBubble : CharacterSpell
 {
@@ -29,6 +30,7 @@ public class PlayerBubble : CharacterSpell
     Vector3 spawnOffset;
 
 
+
     private AnimancerState currentState;
 
     PlayerDirectionalInput directionalInput;
@@ -40,7 +42,7 @@ public class PlayerBubble : CharacterSpell
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.alkaline >= alkalineCost;
 
     private void Awake()
     {
@@ -86,6 +88,7 @@ public class PlayerBubble : CharacterSpell
     }
 
     public void OnFinishCast() {
+        playerStats.ModifyAlkaline(-alkalineCost);
 
         Vector3 ArrowLocation = transform.position + transform.forward + transform.up * 0.5f;
 

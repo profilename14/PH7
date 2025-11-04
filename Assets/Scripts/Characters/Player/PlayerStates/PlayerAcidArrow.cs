@@ -34,7 +34,7 @@ public class PlayerAcidArrow : CharacterSpell
 
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.acid >= acidCost;
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.alkaline >= alkalineCost;
 
     private void Awake()
     {
@@ -76,7 +76,7 @@ public class PlayerAcidArrow : CharacterSpell
             projectileScript.InitProjectile(ArrowLocation, new Vector3(0, angle, 0), character, acidArrowStats);
         }
 
-        playerStats.ModifyAcid(-acidCost);
+        playerStats.ModifyAlkaline(-alkalineCost);
 
         
         movementController.SetAllowRotation(true);

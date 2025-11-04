@@ -63,6 +63,8 @@ public class PlayerSwordAttack : AttackState
 
     private PlayerActionManager actionManager;
 
+    private PlayerStats playerStats;
+
     private SwordSwingType currentSwordSwing;
 
     private PlayerDirectionalInput directionalInput = new PlayerDirectionalInput();
@@ -87,6 +89,8 @@ public class PlayerSwordAttack : AttackState
         gameObject.GetComponentInParentOrChildren(ref movementController);
         gameObject.GetComponentInParentOrChildren(ref rotationController);
         gameObject.GetComponentInParentOrChildren(ref actionManager);
+        gameObject.GetComponentInParentOrChildren(ref playerStats);
+
 
         player = (Player)_Character;
         vfx = (PlayerVFXManager)player.VFXManager;
@@ -225,7 +229,7 @@ public class PlayerSwordAttack : AttackState
         {
             cinemachineManager.ScreenShake();
         }
-
+        
         vfx.PauseSwordSwingVFX(currentSwordSwing, hitStopTime);
 
         if(currentSwordSwing == SwordSwingType.SwingDown)

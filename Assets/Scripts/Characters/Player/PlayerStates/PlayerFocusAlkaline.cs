@@ -63,7 +63,7 @@ public class PlayerFocusAlkaline : CharacterFocus
             return;
         }
         
-        playerStats.SetHealth(playerStats.health + 1); // Will ask about how to formally set health during the meeting, playerstats just changed recently.
+        playerStats.SetHealth(playerStats.health + 2); // Will ask about how to formally set health during the meeting, playerstats just changed recently.
         Debug.Log("Player health is now: " + playerStats.health);
 
         

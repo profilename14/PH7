@@ -31,12 +31,33 @@ public class Player : Character
 
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)
     {
-        if(hit is Enemy)
+        if (hit is Enemy)
         {
             Enemy enemy = (Enemy)hit;
 
-            playerStats.ModifyAcid(enemy.GetAcidOnHit());
-            playerStats.ModifyAlkaline(enemy.GetAlkalineOnHit());
+            //playerStats.ModifyAcid(enemy.GetAcidOnHit());
+            //playerStats.ModifyAlkaline(enemy.GetAlkalineOnHit());
+
+            if (enemy.characterData.naturalType == Chemical.Alkaline)
+            {
+                playerStats.ModifyAlkaline(1.5f);
+            }
+            else if (enemy.currentDebuff == Chemical.Alkaline)
+            {
+                playerStats.ModifyAlkaline(1.25f);
+            }
+            else
+            {
+                playerStats.ModifyAlkaline(1f);
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (playerStats.alkaline < 2f)
+        {
+            playerStats.ModifyAlkaline(0.33f * Time.deltaTime);
         }
     }
 

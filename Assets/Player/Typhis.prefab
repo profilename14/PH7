@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -7608,7 +7608,7 @@ GameObject:
   - component: {fileID: 5748897887505716782}
   - component: {fileID: 3290169058645161264}
   m_Layer: 5
-  m_Name: LeftAcid 4
+  m_Name: LeftAcid 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7697,7 +7697,7 @@ RectTransform:
   m_GameObject: {fileID: 3135128501680643527}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 0, z: 4}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6924254229489201860}
@@ -8449,7 +8449,7 @@ RectTransform:
   m_GameObject: {fileID: 4011427732889500766}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 0, z: 4}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5272072696214260434}
@@ -8507,7 +8507,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10220,7 +10220,7 @@ RectTransform:
   m_GameObject: {fileID: 5202297888214584694}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 0, z: 4}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9104021978456617250}
@@ -10278,7 +10278,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10382,7 +10382,7 @@ MonoBehaviour:
   hasBubbledInAir: 0
   cameraAngle: {x: 0, y: -45, z: 0}
   isDashHeld: 0
-  DEBUG_HASDASH: 1
+  DEBUG_HASDASH: 0
   DEBUG_HASBUBBLE: 0
 --- !u!114 &559858547552153946
 MonoBehaviour:
@@ -10522,7 +10522,25 @@ MonoBehaviour:
     m_RotationOrder: 4
   sprintJumpGravityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0038022813
+      value: -0.015197569
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.99999636
+      value: 0.6576122
+      inSlope: -0.03232694
+      outSlope: -0.03232694
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.9581721
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -10602,8 +10620,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
-  _AcidCost: 1
-  _AlkalineCost: 0
+  _AcidCost: 0
+  _AlkalineCost: 3
   playerStats: {fileID: 280165432961842639}
   movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
@@ -10678,7 +10696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
   _AcidCost: 0
-  _AlkalineCost: 0
+  _AlkalineCost: 2
   playerStats: {fileID: 280165432961842639}
   movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
@@ -10809,7 +10827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
   _AcidCost: 0
-  _AlkalineCost: 1
+  _AlkalineCost: 7
   playerStats: {fileID: 280165432961842639}
   rotationController: {fileID: 7370340048861875037}
   focusAnimation:
@@ -17274,7 +17292,7 @@ RectTransform:
   m_GameObject: {fileID: 6867715311926551577}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 0, z: 4}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2448571570530612945}
@@ -17332,7 +17350,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -17620,7 +17638,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7202028986291168097}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -17912,7 +17930,7 @@ GameObject:
   - component: {fileID: 653398014816244841}
   - component: {fileID: 2523651964087076056}
   m_Layer: 5
-  m_Name: Right Acid 3
+  m_Name: Right Acid 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17970,7 +17988,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -18403,7 +18421,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

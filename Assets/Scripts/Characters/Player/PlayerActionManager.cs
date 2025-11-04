@@ -146,7 +146,7 @@ public class PlayerActionManager : CharacterActionManager
         controls.Typhis.Bubble.started += context => OnBubbleStarted(context);
         controls.Typhis.Bubble.performed += context => OnBubblePerformed(context);
 
-        controls.Typhis.CoreMagic.Disable();
+        controls.Typhis.CoreMagic.Enable();
         controls.Typhis.CoreMagic.started += context => OnCoreMagicStarted(context);
         controls.Typhis.CoreMagic.performed += context => OnCoreMagicPerformed(context);
 

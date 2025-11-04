@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BreakablePot : MonoBehaviour, IHittable, ICanPickup
 {
     
     [SerializeField] public GameObject splashEffectPrefab;
     [SerializeField] public GameObject puddlePrefab;
+    [SerializeField] private UnityEvent onShatter;
 
     private Rigidbody rigid;
     private bool pickedUp = false;
@@ -34,6 +36,7 @@ public class BreakablePot : MonoBehaviour, IHittable, ICanPickup
 
     public void Shattered()
     {
+        onShatter.Invoke();
         if (splashEffectPrefab != null)
         {
             Instantiate(splashEffectPrefab, transform.position, Quaternion.identity);

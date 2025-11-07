@@ -9674,9 +9674,9 @@ GameObject:
   - component: {fileID: -8140826435473126232}
   - component: {fileID: 2282942844003458187}
   - component: {fileID: 732972033639051154}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: StriderVenom
-  m_TagString: AllowsBubble
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9819,6 +9819,9 @@ MonoBehaviour:
       m_Calls: []
   registerCollisionsDelay: 0
   rb: {fileID: -8140826435473126232}
+  ignoreOtherProjectiles: 0
+  triggerDebuff: 0
+  triggerReactions: 0
 --- !u!1 &5722001939916543356
 GameObject:
   m_ObjectHideFlags: 0

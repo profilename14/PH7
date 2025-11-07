@@ -19,12 +19,18 @@ public class WarStriderSpitAttack : CharacterState
 
     private EnemyMovementController movementController;
 
+    private EnemyMovementControllerFlying flyingMovementController;
+
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
+
+    [SerializeField]
+    bool isFlying;
 
     private void Awake()
     {
         base.Awake();
-        gameObject.GetComponentInParentOrChildren(ref movementController);
+        if (!isFlying) gameObject.GetComponentInParentOrChildren(ref movementController);
+        else gameObject.GetComponentInParentOrChildren(ref flyingMovementController);
     }
 
     protected override void OnEnable()
@@ -34,9 +40,17 @@ public class WarStriderSpitAttack : CharacterState
         _ActionManager.SetAllActionPriorityAllowed(false);
         _Character.SetIsKnockbackImmune(false);
 
-        movementController.SetAllowMovement(false);
-        movementController.SetAllowRotation(true);
-        movementController.SetForceManualRotation(true);
+        if (!isFlying)
+        {
+            movementController.SetAllowMovement(false);
+            movementController.SetAllowRotation(true);
+            movementController.SetForceManualRotation(true);
+        }
+        else
+        {
+            flyingMovementController.SetAllowMovement(false);
+            flyingMovementController.SetAllowRotation(true);
+        }
 
         AnimancerState currentState = _ActionManager.anim.Play(spitAnimation);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
@@ -57,7 +71,8 @@ public class WarStriderSpitAttack : CharacterState
 
     protected void Update()
     {
-        movementController.SetPathfindingDestination(Player.instance.transform.position);
+        if (!isFlying) movementController.SetPathfindingDestination(Player.instance.transform.position);
+        else flyingMovementController.SetPathfindingDestination(Player.instance.transform.position);
     }
 
     protected override void OnDisable()

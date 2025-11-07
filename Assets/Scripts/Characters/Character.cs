@@ -119,14 +119,14 @@ public abstract class Character : MonoBehaviour, IHittable
                 {
                     currentDebuff = projectile.attackData.type;
                 }
-                return;
+                //return;
             }
             else
             {
                 // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
                 if (!projectile.triggerReactions || isReactionImmune)
                 {
-                    return;
+                    //return;
                 }
             }
         }

@@ -19,6 +19,9 @@ public class StriderDashAttack : AttackState
 
     private float defaultDrag;
 
+    [SerializeField]
+    private bool allowRotationDuringChargeup;
+
     public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     private void Awake()
@@ -37,8 +40,16 @@ public class StriderDashAttack : AttackState
         _Character.SetIsKnockbackImmune(false);
 
         movementController.SetAllowMovement(false);
-        movementController.SetAllowRotation(false);
-        movementController.SetForceManualRotation(false);
+        if (!allowRotationDuringChargeup)
+        {
+            movementController.SetForceManualRotation(false);
+            movementController.SetAllowRotation(false);
+        }
+        else
+        {
+            movementController.SetAllowRotation(true);
+            movementController.SetForceManualRotation(true);
+        }
 
         AnimancerState currentState = _ActionManager.anim.Play(dashAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;

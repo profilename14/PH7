@@ -169,9 +169,10 @@ public class EnemyArenaManager : MonoBehaviour
             Vector3 location = new Vector3 (enemy.gameObject.transform.position.x, 0, enemy.gameObject.transform.position.z);
             enemy.gameObject.transform.position = spawnPoints[waveNumber].spawnPoints[i].transform.position;
             aliveEnemies.Add(enemy);
-            if(enemyPatrol.gameObject.GetComponent<RoamingEnemyActionManager>() != null)
+            if(enemy.gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>() != null)
             {
-                enemyPatrol.gameObject.GetComponent<RoamingEnemyActionManager>().SpottedPlayer();
+                Debug.Log("Spotted Player!");
+                enemy.gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>().SpottedPlayer();
             }
 
         }

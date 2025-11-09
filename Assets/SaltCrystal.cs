@@ -70,6 +70,10 @@ public class SaltCrystal : MonoBehaviour, IHittable
 
                 Shatter(swordScript.GetAttackingDirection(), sender);
             }
+            else if(attack.character is Enemy)
+            {
+                Shatter((Player.instance.transform.position - this.transform.position).normalized, sender);
+            }
             else
             {
                 Shatter(transform.position - hitPoint, sender);
@@ -79,7 +83,17 @@ public class SaltCrystal : MonoBehaviour, IHittable
 
     public void Hit(MyProjectile projectile, Vector3 hitPoint)
     {
-        return;
+        currentHealth -= projectile.attackData.damage;
+
+        if (currentHealth <= 0)
+        {
+            breakEffect.Play();
+
+            Vector3 dir = transform.position - hitPoint;
+            dir.y = 0;
+
+            Shatter(dir.normalized, sender);
+        }
     }
 
     public void Hit(ColliderEffectField colliderEffectField, float damage)

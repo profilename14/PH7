@@ -2205,6 +2205,7 @@ MonoBehaviour:
     _NormalizedStartTime: NaN
   dashForce: 230
   dashDrag: 8
+  allowRotationDuringChargeup: 1
   references:
     version: 2
     RefIds:
@@ -2458,8 +2459,20 @@ MonoBehaviour:
   noAttacksTimer: 0
   isStunned: 0
   movementController: {fileID: 2867091574096948909}
+  deathAnimation:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 0}
+    _NormalizedStartTime: NaN
   _Aggro: {fileID: 3668094322336968099}
   isAggro: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &8558879010831082561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2694,6 +2707,7 @@ MonoBehaviour:
   projectileSpawnLocation: {fileID: 2153858547969508598}
   projectilePrefab: {fileID: 5028151487594542329, guid: 94d08b8151db00743ab72608156a4b81, type: 3}
   projectileStats: {fileID: 11400000, guid: b55c5328650a1c24daaf9f5c924a3bb2, type: 2}
+  isFlying: 0
   references:
     version: 2
     RefIds:
@@ -3195,7 +3209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7456621047263475880
 Transform:
   m_ObjectHideFlags: 0
@@ -3655,14 +3669,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7266080481912337341}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1972597328418957982}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6587063216273684115
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3899,6 +3913,17 @@ MonoBehaviour:
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  isReactionImmune: 0
+  currentPuddle: {fileID: 0}
+  OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  currentDebuff: 0
+  isFrozen: 0
+  onexitPuddle:
+    m_PersistentCalls:
+      m_Calls: []
+  curSaltCrystal: {fileID: 0}
 --- !u!114 &3468308793884632597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3929,6 +3954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemy: {fileID: 828172722948533280}
   pathfinding: {fileID: 25783334420274582}
+  seeker: {fileID: 0}
   rb: {fileID: 6587063216273684115}
   enemyData: {fileID: 11400000, guid: 8ee1d1d6cf7dc6d4c8a476074a2c1a8a, type: 2}
   isGrounded: 0

@@ -1,7 +1,9 @@
+using Animancer;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Animancer;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class MyProjectile : MonoBehaviour
 {
@@ -32,6 +34,8 @@ public class MyProjectile : MonoBehaviour
     [SerializeField] public bool triggerDebuff = true;
     
     [SerializeField] public bool triggerReactions = true;
+
+    [SerializeField] LayerMask projectileCollMask;
 
     void Update()
     {
@@ -93,6 +97,13 @@ public class MyProjectile : MonoBehaviour
         if (other.CompareTag("Trigger")) return;
 
         if (ignoreOtherProjectiles && other.CompareTag("Projectile")) return;
+
+        if ((projectileCollMask & (1 << other.gameObject.layer)) == 0)
+        {
+            return;
+        }
+
+        Debug.Log("Projectile hit layer " + other.gameObject.layer);
 
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();

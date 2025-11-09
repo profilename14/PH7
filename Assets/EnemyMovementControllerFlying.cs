@@ -44,6 +44,9 @@ public class EnemyMovementControllerFlying : CharacterMovementController
 
     private bool forceLookAtPlayer = false;
 
+    [SerializeField]
+    private float maxXRotation;
+
     private void Awake()
     {
         gameObject.GetComponentInParentOrChildren(ref rb);
@@ -67,6 +70,8 @@ public class EnemyMovementControllerFlying : CharacterMovementController
     {
         if (rotationEnabled)
         {
+            //enemy.gameObject.transform.eulerAngles = new Vector3(Mathf.Clamp(enemy.gameObject.transform.eulerAngles.x, -maxXRotation, maxXRotation), enemy.gameObject.transform.eulerAngles.y, enemy.gameObject.transform.eulerAngles.z);
+
             Vector3 targetDirection;
             float degrees;
             if (!forceLookAtPlayer)
@@ -80,9 +85,12 @@ public class EnemyMovementControllerFlying : CharacterMovementController
 
             degrees = enemyData.rotationSpeed * Time.fixedDeltaTime;
 
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+            Vector3 targetRotation = Quaternion.RotateTowards(enemy.gameObject.transform.rotation, Quaternion.LookRotation(targetDirection), degrees).eulerAngles;
 
-            enemy.gameObject.transform.rotation = Quaternion.RotateTowards(enemy.gameObject.transform.rotation, targetRotation, degrees);
+            if (targetRotation.x > 180) targetRotation.x -= 360;
+            targetRotation.x = Mathf.Clamp(targetRotation.x, -maxXRotation, maxXRotation);
+
+            enemy.gameObject.transform.eulerAngles = targetRotation;
         }
 
         Debug.DrawRay(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0));
@@ -151,6 +159,11 @@ public class EnemyMovementControllerFlying : CharacterMovementController
     public override void SetAllowRotation(bool isAllowed)
     {
         rotationEnabled = isAllowed;
+    }
+
+    public void SetForceLookRotation(bool isAllowed)
+    {
+        forceLookAtPlayer = isAllowed;
     }
 
     public override void SetGroundDrag(float drag)

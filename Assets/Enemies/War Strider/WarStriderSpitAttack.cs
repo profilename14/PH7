@@ -61,7 +61,7 @@ public class WarStriderSpitAttack : CharacterState
         GameObject projectile = Instantiate(projectilePrefab, projectileSpawnLocation.position, Quaternion.identity);
         MyProjectile projectileScript = projectile.GetComponent<MyProjectile>();
 
-        Vector3 shotDirection = (Player.instance.transform.position - projectileSpawnLocation.position + Vector3.up).normalized;
+        Vector3 shotDirection = ((Player.instance.transform.position + Vector3.up * 2) - projectileSpawnLocation.position + Vector3.up).normalized;
 
         if(projectileScript != null)
         {

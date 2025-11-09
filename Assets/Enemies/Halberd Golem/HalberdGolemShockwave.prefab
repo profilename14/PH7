@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9040697708205598023}
   - component: {fileID: 3502034580618653564}
   - component: {fileID: 5030397200343345210}
-  - component: {fileID: 17575679502101704}
   - component: {fileID: 8962797381077099381}
   - component: {fileID: 6894113301331064404}
   m_Layer: 0
@@ -4925,13 +4924,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectType: 3
   damageOnEnter: 1
-  enableDamageOverTime: 0
-  damageOverTime: 0
-  damageTickInterval: 0
+  applyEffect: 0
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 2
   causeHit: 1
   notifyTarget: 0
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0
+  generateSaltPlatforms: 0
+  triggerDebuff: 0
+  triggerReactions: 0
+  canHitPlayer: 1
 --- !u!65 &5030397200343345210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4953,27 +4957,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 1.25, z: 1.5}
---- !u!114 &17575679502101704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012174368309445488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e3cc857441d2a2409956f2804b4954a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectType: 3
-  damageOnEnter: 1
-  enableDamageOverTime: 0
-  damageOverTime: 0
-  damageTickInterval: 0
-  staticKnockback: {x: 0, y: 0}
-  dynamicKnockback: 6
-  causeHit: 1
-  notifyTarget: 0
 --- !u!54 &8962797381077099381
 Rigidbody:
   m_ObjectHideFlags: 0

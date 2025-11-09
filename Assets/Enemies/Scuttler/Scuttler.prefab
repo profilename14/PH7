@@ -336,11 +336,17 @@ MonoBehaviour:
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  isReactionImmune: 0
+  currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
   isFrozen: 0
+  onexitPuddle:
+    m_PersistentCalls:
+      m_Calls: []
+  curSaltCrystal: {fileID: 0}
 --- !u!114 &6778341233954487993
 MonoBehaviour:
   m_ObjectHideFlags: 0

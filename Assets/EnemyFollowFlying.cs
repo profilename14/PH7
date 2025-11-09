@@ -18,6 +18,12 @@ public class EnemyFollowFlying : CharacterState
 
     private Vector3 playerPosition;
 
+    [SerializeField]
+    private bool allowBackingUp;
+
+    [SerializeField]
+    private float maxYDiffHeight;
+
     private void Awake()
     {
         base.Awake();
@@ -30,20 +36,27 @@ public class EnemyFollowFlying : CharacterState
         _ActionManager.anim.Play(MoveAnimation);
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
+        movementController.SetForceLookRotation(true);
     }
 
     private void Update()
     {
         playerPosition = Player.instance.transform.position;
-        movementController.SetPathfindingDestination(playerPosition);
 
         if (Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)
         {
-            movementController.SetAllowMovement(false);
+            if(!allowBackingUp) movementController.SetAllowMovement(false);
+            else
+            {
+                Vector3 followTarget = playerPosition + ((_Character.transform.position - playerPosition).normalized * followDistance);
+                if(followTarget.y - playerPosition.y > maxYDiffHeight) followTarget.y = playerPosition.y + maxYDiffHeight;
+                movementController.SetPathfindingDestination(followTarget);
+            }
         }
         else
         {
             movementController.SetAllowMovement(true);
+            movementController.SetPathfindingDestination(playerPosition);
         }
     }
 }

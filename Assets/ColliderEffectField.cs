@@ -103,7 +103,7 @@ public class ColliderEffectField : MonoBehaviour
 
     public void ApplyEffectTo(Character character)
     {
-        if (doTEntities.Contains(character)) return;
+        //if (doTEntities.Contains(character)) return;
 
        Debug.Log("Hit something" + character);
 

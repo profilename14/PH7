@@ -12052,6 +12052,9 @@ MonoBehaviour:
   useHeightLimit: 0
   height: 0.1
   generateSaltPlatforms: 0
+  triggerDebuff: 1
+  triggerReactions: 1
+  canHitPlayer: 1
 --- !u!136 &8564170569150747795
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12172,7 +12175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 3726355195129428958}
   rb: {fileID: 5450130328826533136}
-  fallSpeed: 1
+  fallSpeed: 1.6
   minDecaySpeed: 0.03
   maxDecaySpeed: 0.05
   decaySpeed: 0
@@ -12182,4 +12185,4 @@ MonoBehaviour:
   effectField: {fileID: 3271573664056977087}
   useHeightLimit: 1
   height: 0.35
-  timeUntilCanFlatten: 0.5
+  timeUntilCanFlatten: 0.25

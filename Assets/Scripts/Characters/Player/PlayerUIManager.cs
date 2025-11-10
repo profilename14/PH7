@@ -62,40 +62,40 @@ public class PlayerUIManager : MonoBehaviour
     if (playerStats.alkaline >= 7)
     {
       AlkalineIndicator.enabled = true;
-      PHBar.value = 7;
-      PHBar2.value = ((float)playerStats.alkaline - 7) / 7;
+      //PHBar.value = 7;
+      PHBar2.value = ((float)playerStats.alkaline) / 14;
     }
     else
     {
       AlkalineIndicator.enabled = false;
-      PHBar.value = (((float)playerStats.alkaline) / 7);
-      PHBar2.value = 0;
-
+      PHBar2.value = ((float)playerStats.alkaline) / 14;
+      //PHBar.value = (((float)playerStats.alkaline) / 7);
+      //PHBar2.value = 0;
     }
 
-    /*if (playerStats.alkaline > 7) {
-      AlkalineIndicator.enabled = true;
-      PHBar.value = 7;
-      PHBar2.value = ((float)playerStats.alkaline-7) / 7;
-    } else {
-      AlkalineIndicator.enabled = false;
-      PHBar.value = (((float)playerStats.alkaline) / 7);
-      PHBar2.value = 0;
+        /*if (playerStats.alkaline > 7) {
+          AlkalineIndicator.enabled = true;
+          PHBar.value = 7;
+          PHBar2.value = ((float)playerStats.alkaline-7) / 7;
+        } else {
+          AlkalineIndicator.enabled = false;
+          PHBar.value = (((float)playerStats.alkaline) / 7);
+          PHBar2.value = 0;
 
-    }*/
+        }*/
 
-    /*if (playerStats.acid > 7) {
-      AcidIndicator.enabled = true;
-      AcidBar.value = 7;
-      AcidBar2.value = ((float)playerStats.acid-7) / 7;
-    } else {
-      AcidIndicator.enabled = false;
-      AcidBar.value = (((float)playerStats.acid) / 7);
-      AcidBar2.value = 0;
+        /*if (playerStats.acid > 7) {
+          AcidIndicator.enabled = true;
+          AcidBar.value = 7;
+          AcidBar2.value = ((float)playerStats.acid-7) / 7;
+        } else {
+          AcidIndicator.enabled = false;
+          AcidBar.value = (((float)playerStats.acid) / 7);
+          AcidBar2.value = 0;
 
-    }*/
+        }*/
 
 
 
-  }
+    }
 }

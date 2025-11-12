@@ -9860,7 +9860,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &2282942844003458187
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9880,7 +9880,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &732972033639051154
 MonoBehaviour:
@@ -9896,7 +9896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileIsActive: 0
   lifespan: 8
-  forwardSpeed: 50
+  forwardSpeed: 30
   fallSpeed: 0
   initialForce: 0
   projectileDestroyEvent:
@@ -9937,13 +9937,13 @@ MonoBehaviour:
   chemicalBlob: {fileID: 8302372839395969698, guid: 53c69a2be227e3f4ba920cde0e954395, type: 3}
   canSpawnBlobs: 0
   angleRandomSpread: 0
-  velocityMin: 0
-  velocityMax: 0
+  velocityMin: 50
+  velocityMax: 60
   spawnRepeating: 0
   spawnDelay: 0
   blobCountPerInterval: 1
-  useGlobalEmitAngle: 0
-  globalEmitAngle: {x: 0, y: 0, z: 0}
+  useGlobalEmitAngle: 1
+  globalEmitAngle: {x: -90, y: 0, z: 0}
   offset: {x: 0, y: 5, z: 0}
 --- !u!1 &5722001939916543356
 GameObject:

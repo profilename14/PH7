@@ -101,6 +101,11 @@ public class MyProjectile : MonoBehaviour
         {
             return;
         }
+        else
+        {
+            projectileDestroyEvent?.Invoke();
+            gameObject.SetActive(false);
+        }
 
         Debug.Log("Projectile hit layer " + other.gameObject.layer);
 

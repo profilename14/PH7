@@ -139,12 +139,19 @@ public class Enemy : Character
 
         base.ChemicalReactionFreezeStart();
 
-        originalMaxSpeed = enemyMovementController.pathfinding.maxSpeed;
-        enemyMovementController.pathfinding.maxSpeed = 0;
-        originalRestraints = enemyMovementController.rb.constraints;
-        enemyMovementController.rb.constraints = RigidbodyConstraints.FreezePositionX |
-                                                 RigidbodyConstraints.FreezePositionZ |
-                                                 RigidbodyConstraints.FreezeRotation;
+        if(movementController is EnemyMovementControllerFlying)
+        {
+
+        }
+        else
+        {
+            originalMaxSpeed = enemyMovementController.pathfinding.maxSpeed;
+            enemyMovementController.pathfinding.maxSpeed = 0;
+            originalRestraints = enemyMovementController.rb.constraints;
+            enemyMovementController.rb.constraints = RigidbodyConstraints.FreezePositionX |
+                                                     RigidbodyConstraints.FreezePositionZ |
+                                                     RigidbodyConstraints.FreezeRotation;
+        }
 
     }
     protected override void ChemicalReactionFreezeEnd()
@@ -159,8 +166,15 @@ public class Enemy : Character
         }
 
         base.ChemicalReactionFreezeEnd();
-        
-        enemyMovementController.pathfinding.maxSpeed = originalMaxSpeed;
-        enemyMovementController.rb.constraints = originalRestraints;
+
+        if (movementController is EnemyMovementControllerFlying)
+        {
+
+        }
+        else
+        {
+            enemyMovementController.pathfinding.maxSpeed = originalMaxSpeed;
+            enemyMovementController.rb.constraints = originalRestraints;
+        }
     }
 }

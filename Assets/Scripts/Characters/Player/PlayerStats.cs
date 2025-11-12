@@ -25,7 +25,7 @@ public class PlayerStats : CharacterStats
     {
         
         this.alkaline += alkaline;
-        if (alkaline > 10)
+        if (this.alkaline > 10)
         {
             this.alkaline = 10;
         }
@@ -37,7 +37,8 @@ public class PlayerStats : CharacterStats
 
     public void ModifyAcid(double acid)
     {
-        _AcidResource += acid;
+        return;
+        /*_AcidResource += acid;
         if (_AcidResource > 14)
         {
             _AcidResource = 14;
@@ -45,6 +46,6 @@ public class PlayerStats : CharacterStats
         else if (_AcidResource + alkaline > 14)
         {
             alkaline = 14 - _AcidResource;
-        }
+        }*/
     }
 }

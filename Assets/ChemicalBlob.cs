@@ -46,6 +46,10 @@ public class ChemicalBlob : MonoBehaviour
 
     float flattenTimer;
 
+    float yToFallTo;
+
+    bool closeToGround;
+
     private void Awake()
     {
         charactersTouchingBlob.Clear();
@@ -90,6 +94,20 @@ public class ChemicalBlob : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(closeToGround && !isDecaying)
+        {
+            if(transform.position.y <= yToFallTo)
+            {
+                closeToGround = false;
+                anim.Play("BlobFlatten");
+                rb.isKinematic = true;
+                isDecaying = true;
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!gameObject.activeInHierarchy) return;
@@ -120,11 +138,10 @@ public class ChemicalBlob : MonoBehaviour
         if (other.CompareTag("Hitbox")) return;
 
         int collLayer = other.gameObject.layer;
-        if(collLayer == 18 || collLayer == 10 && (flattenTimer <= 0 && rb.velocity.y >= 0))
+        if((!closeToGround) && (collLayer == 18 || collLayer == 10) && (flattenTimer <= 0 && rb.velocity.y >= 0))
         {
-            anim.Play("BlobFlatten");
-            rb.isKinematic = true;
-            isDecaying = true;
+            yToFallTo = other.ClosestPoint(this.transform.position).y;
+;           closeToGround = true;
         }
         else if(other.CompareTag("Player") || other.CompareTag("Enemy"))
         {

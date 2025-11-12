@@ -117,12 +117,14 @@ public class MyProjectile : MonoBehaviour
             hittableScript.Hit(this, attackHitPosition);
             OnAttackHit(attackHitPosition, other);
             sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
+
+            projectileDestroyEvent?.Invoke();
+            gameObject.SetActive(false);
         }
 
         //Debug.Log(other);
 
-        projectileDestroyEvent?.Invoke();
-        gameObject.SetActive(false);
+        
     }
 
     protected virtual void OnAttackHit(Vector3 position, Collider other)

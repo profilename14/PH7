@@ -40,6 +40,15 @@ public class Enemy : Character
         {
             // the reaction salt crystal lacks collision, and instead has the enemy collider redirect damage to it
             curSaltCrystalScript.Hit(attack, hitPoint); 
+
+            if(_Stats.health <= 0)
+            {
+                while (curSaltCrystalScript.GetHealth() > 0)
+                {
+                    curSaltCrystalScript.Hit(attack, hitPoint);
+                }
+            }
+
             if (curSaltCrystalScript.GetHealth() <= 0)
             {
                 ChemicalReactionFreezeEnd();

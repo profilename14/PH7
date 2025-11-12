@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3663705483445444058}
   - component: {fileID: 7779032372407444218}
-  - component: {fileID: 4031820219239180361}
+  - component: {fileID: 5249125633562998132}
   - component: {fileID: 8332453367805486412}
   m_Layer: 9
   m_Name: Collision
@@ -62,7 +62,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4031820219239180361
+--- !u!114 &5249125633562998132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,18 +71,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 443149006427201019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 371a582d78f69ad439a772d85ba57840, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e3cc857441d2a2409956f2804b4954a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeInPH: 10
-  damage: 0
-  maxLifespan: 0
-  curLifespan: 0
-  permanent: 1
-  shrinks: 0
-  damageSourceType: 3
-  damagesAlkaline: 0
-  damagesPlayer: 0
+  effectType: 1
+  damageOnEnter: 0
+  applyEffect: 0
+  staticKnockback: {x: 0, y: 0}
+  dynamicKnockback: 0
+  causeHit: 0
+  notifyTarget: 1
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0
+  generateSaltPlatforms: 0
+  triggerDebuff: 1
+  triggerReactions: 1
+  canHitPlayer: 0
+  disableInteractionsWithOtherEffectFields: 0
+  enableDamageOnEnemies: 0
+  reactionPower: 0.0001
 --- !u!64 &8332453367805486412
 MeshCollider:
   m_ObjectHideFlags: 0

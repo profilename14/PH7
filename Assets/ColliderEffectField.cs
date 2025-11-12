@@ -42,6 +42,7 @@ public class ColliderEffectField : MonoBehaviour
     public bool disableInteractionsWithOtherEffectFields;
 
     public bool enableDamageOnEnemies;
+    public float reactionPower = 1;
 
     private void OnDisable()
     {

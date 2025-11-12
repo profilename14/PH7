@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 325295570858379116}
   - component: {fileID: 6825730462856707818}
   - component: {fileID: 6036377273113409628}
+  - component: {fileID: 4706186712351610598}
   m_Layer: 2
   m_Name: Blob
   m_TagString: Untagged
@@ -12050,6 +12051,35 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &4706186712351610598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7504339222716359321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3cc857441d2a2409956f2804b4954a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 2
+  damageOnEnter: 0
+  applyEffect: 1
+  staticKnockback: {x: 0, y: 0}
+  dynamicKnockback: 0
+  causeHit: 1
+  notifyTarget: 1
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0.1
+  generateSaltPlatforms: 0
+  triggerDebuff: 1
+  triggerReactions: 1
+  canHitPlayer: 0
+  disableInteractionsWithOtherEffectFields: 0
+  enableDamageOnEnemies: 0
+  reactionPower: 0.002
 --- !u!1 &8302372839395969698
 GameObject:
   m_ObjectHideFlags: 0

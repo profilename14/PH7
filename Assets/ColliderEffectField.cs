@@ -41,6 +41,8 @@ public class ColliderEffectField : MonoBehaviour
 
     public bool disableInteractionsWithOtherEffectFields;
 
+    public bool enableDamageOnEnemies;
+
     private void OnDisable()
     {
         doTEntities.Clear();
@@ -90,7 +92,7 @@ public class ColliderEffectField : MonoBehaviour
         else if ((canHitPlayer && other.CompareTag("Player")) ||  other.CompareTag("Enemy"))
         {
             // Should only need to get hittable if this is a new character to apply an effect to
-            //Debug.Log(other);
+            Debug.Log(other);
             if (cancelTriggeringHits) return;
 
             if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
@@ -109,13 +111,21 @@ public class ColliderEffectField : MonoBehaviour
     {
         //if (doTEntities.Contains(character)) return;
 
-       Debug.Log("Hit something" + character);
+       //Debug.Log("Hit something" + character);
 
         //Debug.Log("Hittable: " + other.gameObject.name);
 
         if (causeHit && character != null)
         {
-            character.Hit(this, damageOnEnter);
+            if(character is Enemy && !enableDamageOnEnemies)
+            {
+                character.Hit(this, 0);
+            }
+            else
+            {
+                character.Hit(this, damageOnEnter);
+            }
+
         }
 
         if (applyEffect && character != null)

@@ -48,12 +48,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectType: 2
   damageOnEnter: 1
-  enableDamageOverTime: 0
-  damageOverTime: 0
-  damageTickInterval: 0
+  applyEffect: 0
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 50
   causeHit: 1
+  notifyTarget: 1
+  cancelTriggeringHits: 0
+  useHeightLimit: 0
+  height: 0
+  generateSaltPlatforms: 0
+  triggerDebuff: 0
+  triggerReactions: 0
+  canHitPlayer: 1
+  disableInteractionsWithOtherEffectFields: 1
 --- !u!65 &1118707570142235652
 BoxCollider:
   m_ObjectHideFlags: 0

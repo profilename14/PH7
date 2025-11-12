@@ -52,20 +52,23 @@ public class FloatingBubble : MonoBehaviour
 
   private void OnTriggerEnter(Collider other)
   {
-    if (isSentOut && other.gameObject.layer == 10 || other.gameObject.layer == 18 || other.gameObject.CompareTag("PhaseableWallController"))
-    {
-      onPop.Invoke();
-      gameObject.SetActive(false);
-    }
+        if (isSentOut && (other.gameObject.layer == 10 || other.gameObject.layer == 18 || other.gameObject.CompareTag("PhaseableWallController")))
+        {
+            onPop.Invoke();
+            gameObject.SetActive(false);
+            if(item is BreakablePot b)
+            {
+                b.Shattered();
+            }
+        }
 
-    ICanPickup newItem = other.GetComponent<ICanPickup>();
+        ICanPickup newItem = other.GetComponent<ICanPickup>();
 
-    if (newItem != null && item == null)
-    {
-      newItem.Pickup(this);
-      item = newItem;
-    }
-
+        if (newItem != null && item == null)
+        {
+            newItem.Pickup(this);
+            item = newItem;
+        }
   }
 
   public Vector3 getCurSpeed()

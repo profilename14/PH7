@@ -99,7 +99,7 @@ public class ChemicalBlob : MonoBehaviour
 
         if (other.CompareTag("Hitbox")) return;
 
-        if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
+        if (useHeightLimit && Mathf.Abs(transform.position.y - other.transform.position.y) > height) return;
 
         if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy")) return;
 
@@ -119,8 +119,6 @@ public class ChemicalBlob : MonoBehaviour
 
         if (other.CompareTag("Hitbox")) return;
 
-        if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
-
         int collLayer = other.gameObject.layer;
         if(collLayer == 18 || collLayer == 10 && (flattenTimer <= 0 && rb.velocity.y >= 0))
         {
@@ -130,6 +128,8 @@ public class ChemicalBlob : MonoBehaviour
         }
         else if(other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
+            if (useHeightLimit && Mathf.Abs(transform.position.y - other.transform.position.y) > height) return;
+
             if (!charactersTouchingBlob.ContainsKey(other)) return;
 
             if (charactersTouchingBlob[other] != null)

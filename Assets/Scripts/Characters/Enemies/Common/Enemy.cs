@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
-using UnityEditor.Callbacks;
 
 public class Enemy : Character
 {

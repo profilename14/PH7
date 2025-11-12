@@ -528,11 +528,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5138795949073662581}
+  IdleAnimation: {fileID: 11400000, guid: c2a50d4a06eafe740a9ef0f566be2506, type: 2}
   MoveAnimation: {fileID: 11400000, guid: bda463c5a497acd4b94044464371cc13, type: 2}
   followDistance: 15
   rotateToFaceMovementDirection: 1
   allowBackingUp: 1
   maxYDiffHeight: 8
+  hasSpottedPlayer: 0
+  eyeOffset: {x: 0, y: 1, z: 0}
+  sightDistance: 20
+  viewConeAngle: 90
+  patrolPauseTime: 2
+  randomlyChooseTargets: 0
+  patrolTargets: []
+  patrolTargetReachedDistance: 0.5
+  isPatrolling: 1
 --- !u!114 &666344485833236547
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -62,7 +62,7 @@ public class SaltCrystal : MonoBehaviour, IHittable
             {
                 PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
                 
-                Shatter(swordScript.GetAttackingDirection(), sender);
+                Shatter(swordScript.GetSaltShatterDirection(), sender);
             }
             else if (attack is PlayerChargeAttack)
             {

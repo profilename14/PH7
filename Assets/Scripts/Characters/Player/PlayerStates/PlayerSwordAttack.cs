@@ -334,12 +334,17 @@ public class PlayerSwordAttack : AttackState
     {
         if (currentSwordSwing == SwordSwingType.SwingDown)
         {
-            return Vector3.down;//directionalInput.lookDir;
+            return Vector3.down;
         }
         else
         {
             return movementController.GetCameraPlanarRotation() * directionalInput.lookDir;
         }
+    }
+
+    public Vector3 GetSaltShatterDirection()
+    {
+        return movementController.GetCameraPlanarRotation() * directionalInput.lookDir;
     }
 
     private IEnumerator HitStop(float duration)

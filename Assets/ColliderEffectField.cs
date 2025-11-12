@@ -93,7 +93,7 @@ public class ColliderEffectField : MonoBehaviour
         else if ((canHitPlayer && other.CompareTag("Player")) ||  other.CompareTag("Enemy"))
         {
             // Should only need to get hittable if this is a new character to apply an effect to
-            Debug.Log(other);
+            //Debug.Log(other);
             if (cancelTriggeringHits) return;
 
             if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;

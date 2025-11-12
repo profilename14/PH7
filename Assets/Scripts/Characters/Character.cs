@@ -348,8 +348,7 @@ public abstract class Character : MonoBehaviour, IHittable
             yield break;
         }
 
-        freezeReactionsTriggered += (int)reactionPower;
-        freezeSubReactionsTriggered += reactionPower - (int)reactionPower;
+
         if (reactionPower < 1)
         {
             freezeSubReactionsTriggered += reactionPower;

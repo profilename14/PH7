@@ -389,10 +389,6 @@ public class PlayerActionManager : CharacterActionManager
             StateMachine.TrySetState(dashState);
 
         }
-        
-        character.SetIsInvincible(true);
-        character.SetIsKnockbackImmune(true);
-        character.SetIsHitstunImmune(true);
     }
 
     void OnBubbleStarted(InputAction.CallbackContext context)

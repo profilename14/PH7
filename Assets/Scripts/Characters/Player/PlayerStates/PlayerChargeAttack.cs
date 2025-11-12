@@ -39,9 +39,15 @@ public class PlayerChargeAttack : AttackState
     [SerializeField]
     UnityEvent onChargeRelease;
 
+    [SerializeField]
+    private PlayerStats playerStats;
+
+    [SerializeField]
+    float alkalineCost;
+
     // Uses allowedActions to control if entering this state is allowed.
     public override bool CanEnterState 
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low];
+        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Low] && playerStats.alkaline >= alkalineCost;
 
     protected virtual void Awake()
     {
@@ -84,6 +90,8 @@ public class PlayerChargeAttack : AttackState
             _ActionManager.SetAllActionPriorityAllowed(false);
 
             AnimancerState currentState = _ActionManager.anim.Play(chargeAttackAnimation);
+
+            playerStats.ModifyAlkaline(-alkalineCost);
 
             onChargeRelease.Invoke();
 

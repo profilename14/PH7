@@ -436,17 +436,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b8846efe-568d-4b74-b310-e257f1886921"",
-                    ""path"": ""<SwitchProControllerHID>/rightStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Lock On"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1d47be98-730f-4930-9c17-9375c9844d05"",
                     ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",

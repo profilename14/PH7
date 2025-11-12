@@ -72,7 +72,9 @@ public class SaltCrystal : MonoBehaviour, IHittable
             }
             else if(attack.character is Enemy)
             {
-                Shatter((Player.instance.transform.position - this.transform.position).normalized, sender);
+                Vector3 dir = (Player.instance.transform.position - this.transform.position);
+                dir.y = 0;
+                Shatter(dir.normalized, sender);
             }
             else
             {

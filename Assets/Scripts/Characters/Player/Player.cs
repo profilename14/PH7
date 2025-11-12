@@ -38,7 +38,9 @@ public class Player : Character
             //playerStats.ModifyAcid(enemy.GetAcidOnHit());
             //playerStats.ModifyAlkaline(enemy.GetAlkalineOnHit());
 
-            if (enemy.characterData.naturalType == Chemical.Alkaline)
+            playerStats.ModifyAlkaline(0.6f);
+
+            /*if (enemy.characterData.naturalType == Chemical.Alkaline)
             {
                 playerStats.ModifyAlkaline(1.5f);
             }
@@ -49,13 +51,13 @@ public class Player : Character
             else
             {
                 playerStats.ModifyAlkaline(1f);
-            }
+            }*/
         }
     }
 
     void FixedUpdate()
     {
-        if (playerStats.alkaline < 2f)
+        if (playerStats.alkaline <= 1.7f)
         {
             playerStats.ModifyAlkaline(0.33f * Time.deltaTime);
         }

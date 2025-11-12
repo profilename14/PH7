@@ -198,7 +198,7 @@ public class PlayerDash : DashState
             endDash();
         }
 
-        if (actionManager.GetBufferedState() && actionManager.GetBufferedState().StateName == "PlayerDashAttack")
+        /*if (actionManager.GetBufferedState() && actionManager.GetBufferedState().StateName == "PlayerDashAttack")
         {
             if (dashProgress < 0.5f)
             {
@@ -210,8 +210,15 @@ public class PlayerDash : DashState
                 _ActionManager.SetAllActionPriorityAllowed(true, 0);
                 actionManager.ForceDashAttackState();
             }
-        }
+        }*/
         
+    }
+
+    public void InvincibilityStart()
+    {
+        character.SetIsInvincible(true);
+        character.SetIsKnockbackImmune(true);
+        character.SetIsHitstunImmune(true);
     }
 
     public override void endDash()
@@ -223,7 +230,7 @@ public class PlayerDash : DashState
         puddleSurfMode = false;
         movementController.SetAllowRotation(true);
         movementController.SetVelocity(new Vector3(0, 10f, 0)); // Effectively very slightly reduces gravity for a moment
-        _ActionManager.SetAllActionPriorityAllowed(true, 0);
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Move, true);
         _ActionManager.StateMachine.ForceSetDefaultState();
         onDashEnd.Invoke();
     }
@@ -250,6 +257,8 @@ public class PlayerDash : DashState
     {
         //PlayerCharacterInputs input = new();
         //movementController.SetInputs(ref input);
+
+        _ActionManager.SetAllActionPriorityAllowed(true);
 
         if (instantiatedVFX)
         {

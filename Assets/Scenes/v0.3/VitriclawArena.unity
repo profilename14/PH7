@@ -3254,6 +3254,9 @@ MonoBehaviour:
   useHeightLimit: 0
   height: 0
   generateSaltPlatforms: 0
+  triggerDebuff: 0
+  triggerReactions: 0
+  canHitPlayer: 0
 --- !u!114 &74679026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19878,7 +19881,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.75, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 656685648}
@@ -19934,8 +19937,8 @@ VisualEffect:
   m_GameObject: {fileID: 577922481}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 20048181223541d48b9bd64840646187, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -21799,8 +21802,8 @@ VisualEffect:
   m_GameObject: {fileID: 656685647}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 20048181223541d48b9bd64840646187, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -50660,8 +50663,8 @@ VisualEffect:
   m_GameObject: {fileID: 1403833734}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 20048181223541d48b9bd64840646187, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: 
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -50766,7 +50769,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.00000065565104, y: -0.0000014603136, z: -0.000004857778, w: -1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 577922482}
@@ -71459,8 +71462,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakePower: 0.125
   shakeDuration: 0.15
-  curAngle: 0
+  yaw: 0
+  pitch: 0
+  roll: 0
   zoomOutMultiplier: 1
+  transposeVector: {x: 0, y: 0, z: 0}
 --- !u!114 &1981627206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75050,6 +75056,9 @@ MonoBehaviour:
   useHeightLimit: 0
   height: 0
   generateSaltPlatforms: 0
+  triggerDebuff: 0
+  triggerReactions: 0
+  canHitPlayer: 0
 --- !u!1001 &2085018064
 PrefabInstance:
   m_ObjectHideFlags: 0

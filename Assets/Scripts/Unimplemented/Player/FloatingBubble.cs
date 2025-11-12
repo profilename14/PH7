@@ -19,31 +19,40 @@ public class FloatingBubble : MonoBehaviour
 
     public ICanPickup item;
 
+    public bool isSentOut;
+
     void Start() {
       bubbleRigidbody = GetComponent<Rigidbody>();
-
-      bubbleRigidbody.AddForce((direction).normalized * force, ForceMode.Impulse);
 
       lifespanTimer = lifespan;
     }
 
     void Update()
     {
-      lifespanTimer -= Time.deltaTime;
-      if (lifespanTimer <= 0)
-      {
-        Pop();
-      }
+        if(isSentOut)
+        {
+            lifespanTimer -= Time.deltaTime;
+            if (lifespanTimer <= 0)
+            {
+                Pop();
+            }
+        }
+    }
+
+    public void SendOut()
+    {
+        bubbleRigidbody.AddForce((direction).normalized * force, ForceMode.Impulse);
+        isSentOut = true;
     }
 
     private void FixedUpdate()
     {
-        if(bubbleRigidbody.velocity.magnitude > 0) bubbleRigidbody.velocity *= slowdownRate;
+        if(bubbleRigidbody.velocity.magnitude > 0 && isSentOut) bubbleRigidbody.velocity *= slowdownRate;
     }
 
   private void OnTriggerEnter(Collider other)
   {
-    if (other.gameObject.layer == 10 || /*other.gameObject.layer == 17 ||*/ other.gameObject.layer == 18 || other.gameObject.CompareTag("PhaseableWallController"))
+    if (isSentOut && other.gameObject.layer == 10 || other.gameObject.layer == 18 || other.gameObject.CompareTag("PhaseableWallController"))
     {
       onPop.Invoke();
       gameObject.SetActive(false);

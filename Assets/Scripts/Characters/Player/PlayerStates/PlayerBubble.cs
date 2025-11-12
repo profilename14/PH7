@@ -29,7 +29,7 @@ public class PlayerBubble : CharacterSpell
     [SerializeField]
     Vector3 spawnOffset;
 
-
+    private GameObject bubbleObject;
 
     private AnimancerState currentState;
 
@@ -58,18 +58,27 @@ public class PlayerBubble : CharacterSpell
 
         directionalInput = actionManager.GetDirectionalInput();
 
-        movementController.RotateToDir(directionalInput.lookDir);
-
+        movementController.SetAllowRotation(true);
 
         charging = true;
         chargeTimer = 0f;
 
+        playerStats.ModifyAlkaline(-alkalineCost);
+
+        Vector3 ArrowLocation = transform.position + transform.forward * 5;
+
+        Vector3 curRotation = directionalInput.lookDir;
+        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
+
+        bubbleObject = Instantiate(bubblePrefab, ArrowLocation + spawnOffset, Quaternion.Euler(0, angle, 0));
     }
 
     private void Update()
     {
         if (charging)
         {
+            movementController.RotateToDir(directionalInput.lookDir);
+            bubbleObject.transform.position = transform.position + transform.forward * 5 + spawnOffset;
             chargeTimer += Time.deltaTime;
         }
     }
@@ -88,23 +97,18 @@ public class PlayerBubble : CharacterSpell
     }
 
     public void OnFinishCast() {
-        playerStats.ModifyAlkaline(-alkalineCost);
 
-        Vector3 ArrowLocation = transform.position + transform.forward + transform.up * 0.5f;
+        charging = false;
 
-        Vector3 curRotation = directionalInput.lookDir;
-        float angle = -Mathf.Atan2(curRotation.z, curRotation.x) * Mathf.Rad2Deg + 90;
-
-        GameObject bubbleObject = Instantiate(bubblePrefab, ArrowLocation + spawnOffset, Quaternion.Euler(0, angle, 0) );
-        
         FloatingBubble bubble = bubbleObject.GetComponent<FloatingBubble>();
 
         if (bubble != null)
         {
             bubble.force = getBubbleForce();
             bubble.direction = transform.forward;
+            bubble.SendOut();
         }
-        Debug.Log(getBubbleForce());
+        //Debug.Log(getBubbleForce());
 
         chargeTimer = 0;
 

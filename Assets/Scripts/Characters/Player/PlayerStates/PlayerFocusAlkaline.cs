@@ -51,6 +51,12 @@ public class PlayerFocusAlkaline : CharacterFocus
 
         focusCharged = false;
 
+        _MovementController.SetAllowMovement(false);
+    }
+
+    protected override void OnDisable()
+    {
+        _MovementController.SetAllowMovement(true);
     }
 
     public void OnFinishFocus() {
@@ -73,22 +79,20 @@ public class PlayerFocusAlkaline : CharacterFocus
     }
 
     public void FocusDone() {
-        focusCharged = true;
+        OnFinishFocus();
     }
 
     public override void ReleaseFocus()
     {
-        if (focusCharged)
+        /*if (focusCharged)
         {
             //_ActionManager.SetAllActionPriorityAllowed(false);
             // Do a charge attack, go back to idle at the end.
             _ActionManager.anim.Play(focusCastAnimation).Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
-        }
-        else
-        {
-            _ActionManager.StateMachine.ForceSetDefaultState();
-            _ActionManager.SetAllActionPriorityAllowed(true, 0);
-        }
+        }*/
+
+        _ActionManager.StateMachine.ForceSetDefaultState();
+        _ActionManager.SetAllActionPriorityAllowed(true, 0);
     }
 
 

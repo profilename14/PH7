@@ -1,11 +1,8 @@
 using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Events;
 
 
 
@@ -14,19 +11,41 @@ public class Switch2 : MonoBehaviour, IHittable
     public bool isToggled = false;
     [SerializeField] ActivatedObject objectToActivate;
 
+    [SerializeField] UnityEvent onToggleOn;
+
+    [SerializeField] UnityEvent onToggleOff;
+
+    [SerializeField]
+    Animator anim;
+
+    [SerializeField]
+    bool allowToggleBack;
+
     public void Toggle()
     {
         if (isToggled == false)
         {
             isToggled = true;
+            anim.Play("Lever Pull");
+
+            onToggleOn.Invoke();
+
+            if (objectToActivate)
+            {
+                objectToActivate.Activate();
+            }
         }
-        if (objectToActivate)
+        else if(allowToggleBack)
         {
-            objectToActivate.Activate();
+            isToggled = false;
+            anim.Play("Lever Unpull");
+
+            onToggleOff.Invoke();
         }
 
 
-        Debug.Log("Activated object!");
+
+        //Debug.Log("Activated object!");
     }
 
     public void Hit(AttackState attack, Vector3 hitPoint)

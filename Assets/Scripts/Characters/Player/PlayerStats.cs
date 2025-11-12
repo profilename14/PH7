@@ -18,21 +18,21 @@ public class PlayerStats : CharacterStats
     private double _AcidResource = 0;
     public double acid => _AcidResource;
     
-    private double _AlkalineResource = 0;
-    public double alkaline => _AlkalineResource;
+    [SerializeField]
+    public double alkaline = 0;
 
     public void ModifyAlkaline(double alkaline)
     {
         
-        _AlkalineResource += alkaline;
-        if (_AlkalineResource > 14)
+        this.alkaline += alkaline;
+        if (alkaline > 10)
         {
-            _AlkalineResource = 14;
+            this.alkaline = 10;
         }
-        else if (_AlkalineResource + _AcidResource > 14)
+        /*else if (alkaline + _AcidResource > 14)
         {
-            _AcidResource = 14 - _AlkalineResource;
-        }
+            _AcidResource = 14 - alkaline;
+        }*/
     }
 
     public void ModifyAcid(double acid)
@@ -42,9 +42,9 @@ public class PlayerStats : CharacterStats
         {
             _AcidResource = 14;
         }
-        else if (_AcidResource + _AlkalineResource > 14)
+        else if (_AcidResource + alkaline > 14)
         {
-            _AlkalineResource = 14 - _AcidResource;
+            alkaline = 14 - _AcidResource;
         }
     }
 }

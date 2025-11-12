@@ -59,16 +59,16 @@ public class PlayerUIManager : MonoBehaviour
       previousAlkaline = (float)playerStats.alkaline;
     }
 
-    if (playerStats.alkaline >= 7)
+    if (playerStats.alkaline >= 5.8)
     {
       AlkalineIndicator.enabled = true;
       //PHBar.value = 7;
-      PHBar2.value = ((float)playerStats.alkaline) / 14;
+      PHBar2.value = ((float)playerStats.alkaline) / 10;
     }
     else
     {
       AlkalineIndicator.enabled = false;
-      PHBar2.value = ((float)playerStats.alkaline) / 14;
+      PHBar2.value = ((float)playerStats.alkaline) / 10;
       //PHBar.value = (((float)playerStats.alkaline) / 7);
       //PHBar2.value = 0;
     }

@@ -39,6 +39,8 @@ public class ColliderEffectField : MonoBehaviour
 
     public bool canHitPlayer;
 
+    public bool disableInteractionsWithOtherEffectFields;
+
     private void OnDisable()
     {
         doTEntities.Clear();
@@ -60,6 +62,8 @@ public class ColliderEffectField : MonoBehaviour
         int collLayer = other.gameObject.layer;
         if (collLayer == 17)
         {
+            if (disableInteractionsWithOtherEffectFields) return;
+
             if (!generateSaltPlatforms)
             {
                 ColliderEffectField effectField = other.gameObject.GetComponentInParentOrChildren<ColliderEffectField>();

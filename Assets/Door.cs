@@ -14,6 +14,8 @@ public class Door : MonoBehaviour
 
     public GameObject tooltip;
 
+    bool canSwitchScene = true;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -34,6 +36,10 @@ public class Door : MonoBehaviour
 
     public void SwitchScene()
     {
+        if (!canSwitchScene) return;
+
         GameManager.instance.LoadNewScene(sceneToLoad, destinationDoorId);
+
+        canSwitchScene = false;
     }
 }

@@ -124,7 +124,7 @@ public abstract class Character : MonoBehaviour, IHittable
     {
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
 
-        if (characterData.naturalType == projectile.attackData.type)
+        if (!isReactionImmune && characterData.naturalType == projectile.attackData.type)
         {
             // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
             if (projectile.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )

@@ -117,7 +117,7 @@ public class ChemicalBlob : MonoBehaviour
 
         if (other.CompareTag("Hitbox")) return;
 
-        if (useHeightLimit && Mathf.Abs(transform.position.y - other.transform.position.y) > height) return;
+        if (useHeightLimit && Mathf.Abs(gameObject.transform.position.y - other.gameObject.transform.position.y) > height) return;
 
         if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy")) return;
 
@@ -138,14 +138,18 @@ public class ChemicalBlob : MonoBehaviour
         if (other.CompareTag("Hitbox")) return;
 
         int collLayer = other.gameObject.layer;
-        if((!closeToGround) && (collLayer == 18 || collLayer == 10) && (flattenTimer <= 0 && rb.velocity.y >= 0))
+        if((!closeToGround && !isDecaying) && (collLayer == 18 || collLayer == 10) && (flattenTimer <= 0 && rb.velocity.y >= 0))
         {
             yToFallTo = other.ClosestPoint(this.transform.position).y;
 ;           closeToGround = true;
         }
         else if(other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
-            if (useHeightLimit && Mathf.Abs(transform.position.y - other.transform.position.y) > height) return;
+            if (useHeightLimit && Mathf.Abs(gameObject.transform.position.y - other.gameObject.transform.position.y) > height)
+            {
+                //Debug.Log(other.gameObject.name + " is outside of height, " + gameObject.transform.position.y + " " + other.gameObject.transform.position.y);
+                return;
+            }
 
             if (!charactersTouchingBlob.ContainsKey(other)) return;
 
@@ -168,13 +172,17 @@ public class ChemicalBlob : MonoBehaviour
 
         //if (useHeightLimit && Mathf.Abs(transform.position.y - other.ClosestPointOnBounds(transform.position).y) > height) return;
 
-        else if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
             if (charactersTouchingBlob.ContainsKey(other))
             {
                 charactersTouchingBlob[other].RemoveCurrentPuddle(effectField);
                 charactersTouchingBlob.Remove(other);
             }
+            else
+            {
+                Debug.Log("Character is not in dictionary");
+            }    
         }
     }
 }

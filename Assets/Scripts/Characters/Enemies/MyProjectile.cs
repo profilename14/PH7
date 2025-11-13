@@ -101,11 +101,6 @@ public class MyProjectile : MonoBehaviour
         {
             return;
         }
-        else
-        {
-            projectileDestroyEvent?.Invoke();
-            gameObject.SetActive(false);
-        }
 
         Debug.Log("Projectile hit layer " + other.gameObject.layer);
 
@@ -113,20 +108,21 @@ public class MyProjectile : MonoBehaviour
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();
         if (hittableScript != null)
         {
+            Debug.Log(_Sender);
             // In the case of the player, you are hitting your own hitbox.
             // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
-            if (_Sender.GetType() == hittableScript.GetType()) return;
+            if(_Sender.GetType() == hittableScript.GetType()) return;
 
             Vector3 attackHitPosition = other.ClosestPointOnBounds(transform.position);
 
             hittableScript.Hit(this, attackHitPosition);
             OnAttackHit(attackHitPosition, other);
-            sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
+            if(_Sender != null) _Sender.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
 
+            
+        }
             projectileDestroyEvent?.Invoke();
             gameObject.SetActive(false);
-        }
-
         //Debug.Log(other);
 
         

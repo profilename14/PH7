@@ -6830,6 +6830,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1240534943}
+    - target: {fileID: 1418427775412936689, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 1826987087665944775, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6842,6 +6846,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1397119412}
+    - target: {fileID: 2888775525111222493, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 3083713407666594440, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6854,6 +6862,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2081781258}
+    - target: {fileID: 3410011988390462634, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627578277793808571, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 5171507127710587801, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6906,6 +6922,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 855370364}
+    - target: {fileID: 5410848661693763591, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 5575856744031274518, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6930,6 +6950,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stairs
       objectReference: {fileID: 0}
+    - target: {fileID: 6810110594792632120, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 6911365891278806778, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -6942,6 +6966,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 92221397}
+    - target: {fileID: 8888855116316566314, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8913516660297792901, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8946856060684237315, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8984054221660748261, guid: cfbe90d2cb5d7b340b9001c6d6f908e7, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10535,7 +10575,7 @@ GameObject:
   - component: {fileID: 999234367}
   - component: {fileID: 999234372}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Kill Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10637,7 +10677,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 67.4859, y: -21, z: 140.8515}
-  m_LocalScale: {x: 43.12314, y: 1, z: 45.233845}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10659,7 +10699,7 @@ MonoBehaviour:
   applyEffect: 0
   staticKnockback: {x: 0, y: 0}
   dynamicKnockback: 0
-  causeHit: 0
+  causeHit: 1
   notifyTarget: 0
   cancelTriggeringHits: 0
   useHeightLimit: 0
@@ -10667,10 +10707,10 @@ MonoBehaviour:
   generateSaltPlatforms: 0
   triggerDebuff: 0
   triggerReactions: 0
-  canHitPlayer: 0
+  canHitPlayer: 1
   disableInteractionsWithOtherEffectFields: 1
   enableDamageOnEnemies: 0
-  reactionPower: 1
+  reactionPower: 0
 --- !u!1001 &1009811503
 PrefabInstance:
   m_ObjectHideFlags: 0

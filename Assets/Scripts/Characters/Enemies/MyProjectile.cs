@@ -111,7 +111,7 @@ public class MyProjectile : MonoBehaviour
             Debug.Log(_Sender);
             // In the case of the player, you are hitting your own hitbox.
             // In the case of an Enemy, they are either hitting their own hitbox, or a hitbox of an ally Enemy.
-            if(_Sender.GetType() == hittableScript.GetType()) return;
+            if(_Sender != null && _Sender.GetType() == hittableScript.GetType()) return;
 
             Vector3 attackHitPosition = other.ClosestPointOnBounds(transform.position);
 

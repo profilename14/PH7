@@ -2258,10 +2258,21 @@ MonoBehaviour:
   _VFXManager: {fileID: 9111469660060195370}
   isInvincible: 0
   isKnockbackImmune: 0
-  isHitstunImmune: 0
+  isHitstunImmune: 1
+  isReactionImmune: 1
+  reactionResistance: 1
+  currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
+  currentDebuff: 0
+  isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
+  onexitPuddle:
+    m_PersistentCalls:
+      m_Calls: []
+  curSaltCrystal: {fileID: 0}
 --- !u!114 &4856611634706026665
 MonoBehaviour:
   m_ObjectHideFlags: 0

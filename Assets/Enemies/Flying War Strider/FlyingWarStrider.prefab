@@ -531,7 +531,6 @@ MonoBehaviour:
   IdleAnimation: {fileID: 11400000, guid: c2a50d4a06eafe740a9ef0f566be2506, type: 2}
   MoveAnimation: {fileID: 11400000, guid: bda463c5a497acd4b94044464371cc13, type: 2}
   followDistance: 15
-  rotateToFaceMovementDirection: 1
   allowBackingUp: 1
   maxYDiffHeight: 8
   hasSpottedPlayer: 0
@@ -599,7 +598,7 @@ MonoBehaviour:
       _NormalizedTimes: []
       _Callbacks: []
       _Names: []
-    _Clip: {fileID: 0}
+    _Clip: {fileID: 7400000, guid: bac02eeac31919d4b8aa5c66990cbc06, type: 2}
     _NormalizedStartTime: NaN
   canMoveWhileStunned: 0
   canRotateWhileStunned: 0
@@ -2820,12 +2819,15 @@ MonoBehaviour:
   isKnockbackImmune: 0
   isHitstunImmune: 1
   isReactionImmune: 0
+  reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
   isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
   onexitPuddle:
     m_PersistentCalls:
       m_Calls: []

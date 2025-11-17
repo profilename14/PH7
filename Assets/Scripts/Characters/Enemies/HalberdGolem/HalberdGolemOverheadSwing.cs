@@ -13,7 +13,7 @@ public class HalberdGolemOverheadSwing : AttackState
 
     private EnemyMovementController movementController;
     private SlashAttackVFXManager vfx;
-    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
+    public override bool CanEnterState => _ActionManager.allowedStates[this];
 
     [SerializeField]
     private float drag = 8;
@@ -49,6 +49,12 @@ public class HalberdGolemOverheadSwing : AttackState
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        _ActionManager.SetAllActionPriorityAllowed(true);
+    }
+
     private void Update()
     {
         Vector3 dirToPlayer = (Player.instance.transform.position - _Character.transform.position).normalized;
@@ -58,11 +64,15 @@ public class HalberdGolemOverheadSwing : AttackState
     public void SwingStart()
     {
         movementController.SetGroundDrag(drag);
-        movementController.SetAllowRotation(false);
-        movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
         vfx.PlaySlashVFX();
+    }
+
+    public void StopTracking()
+    {
+        movementController.SetAllowRotation(false);
+        movementController.SetAllowMovement(false);
     }
 
     public void SpawnSaltShockwave()

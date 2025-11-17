@@ -36,7 +36,10 @@ public class EnemyArenaManager : MonoBehaviour
 
     public bool spawnOnStart;
 
-    public bool spawnOnPlayerEnter;
+    public bool triggerOnPlayerEnter;
+
+    // enemiesToSpawn uses enemies already in the room and does not spawn them, only using them to check if they are alive or not
+    public bool usePreExistingEnemies;
 
     public int waves;
 
@@ -69,7 +72,7 @@ public class EnemyArenaManager : MonoBehaviour
             Debug.Log("Checking: " + isCleared);
             if (isCleared == true)
             {
-                spawnOnPlayerEnter = false;
+                triggerOnPlayerEnter = false;
                 spawnOnStart = false;
             }
         }
@@ -84,7 +87,13 @@ public class EnemyArenaManager : MonoBehaviour
             activated = true;
             spawningEnemies = true;
             StartCoroutine(EnableObjectSet(0, 0));
-            StartCoroutine(SpawnEnemyWave(0, 0));
+            if(!usePreExistingEnemies) StartCoroutine(SpawnEnemyWave(0, 0));
+            else
+            {
+                aliveEnemies.AddRange(enemiesToSpawn[0].enemies);
+                spawningEnemies = false;
+                currentWave = 1;
+            }
             foreach (GameObject g in wallsToEnable)
             {
                 g.SetActive(true);
@@ -171,7 +180,7 @@ public class EnemyArenaManager : MonoBehaviour
             aliveEnemies.Add(enemy);
             if(enemy.gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>() != null)
             {
-                Debug.Log("Spotted Player!");
+                //Debug.Log("Spotted Player!");
                 enemy.gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>().SpottedPlayer();
             }
 
@@ -196,13 +205,19 @@ public class EnemyArenaManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player") && spawnOnPlayerEnter)
+        if(other.gameObject.CompareTag("Player") && triggerOnPlayerEnter)
         {
             activated = true;
             GetComponent<BoxCollider>().enabled = false;
             spawningEnemies = true;
-            StartCoroutine(SpawnEnemyWave(currentWave, waveDelay));
-            foreach(GameObject g in wallsToEnable)
+            if (!usePreExistingEnemies) StartCoroutine(SpawnEnemyWave(0, 0));
+            else
+            {
+                aliveEnemies.AddRange(enemiesToSpawn[0].enemies);
+                spawningEnemies = false;
+                currentWave = 1;
+            }
+            foreach (GameObject g in wallsToEnable)
             {
                 g.SetActive(true);
             }

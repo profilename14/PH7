@@ -77,9 +77,18 @@ public class PlayerVFXManager : CharacterVFXManager
     float swordGlowIntensity;
 
     [SerializeField]
-    float hitEffectIntensity = 3; // lower is stronger
+    float hitEffectFlashTime;
+
+    [SerializeField]
+    float hitEffectIntensity = 2.5f; // lower is stronger
+    [SerializeField]
+    float hitEffectLowHealthIntensity = 3;
+    [SerializeField]
+    float hitEffectInactiveIntensity = 7.5f;
     [SerializeField]
     Material hitEffect;
+
+    bool isLowHealth;
 
     protected override void Awake()
     {
@@ -97,10 +106,11 @@ public class PlayerVFXManager : CharacterVFXManager
 
     public override void TookDamageVFX(Vector3 collisionPoint, Vector3 sourcePos)
     {
+        //StopAllCoroutines();
         ResetEmissionColors(swordRenderers);
         StartCoroutine(FlashEmissionColor(damageFlashTime, damageFlashColor, baseRenderers));
         StartCoroutine(FlashBodyColor(damageFlashTime, damageFlashColor));
-        StartCoroutine(FlashHitVignette(damageFlashTime * 3, hitEffectIntensity));
+        StartCoroutine(FlashHitVignette(hitEffectFlashTime, hitEffectIntensity));
         //Instantiate(bloodParticles, collisionPoint + Vector3.up, Quaternion.identity).transform.up = collisionPoint - sourcePos;
 
 
@@ -255,15 +265,39 @@ public class PlayerVFXManager : CharacterVFXManager
     {
         float elapsedSeconds = 0f;
 
+        float intensityToFadeTo = isLowHealth ? hitEffectLowHealthIntensity : hitEffectInactiveIntensity;
+
         while (elapsedSeconds < seconds)
         {
             elapsedSeconds += Time.deltaTime;
-            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(intensity, 7.5f, elapsedSeconds/seconds));
+            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(intensity, intensityToFadeTo, elapsedSeconds/seconds));
             yield return null;
         }
+    }
 
-        
-            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(intensity, 30, elapsedSeconds/seconds));
+    public void SetIsLowHealth(bool isLowHealth)
+    {
+        if (!isLowHealth)
+        {
+            if (this.isLowHealth) StartCoroutine(FadeOutLowHealthVignette(hitEffectFlashTime));
+            this.isLowHealth = false;
+        }
+        else
+        {
+            this.isLowHealth = true;
+        }
+    }
+
+    public IEnumerator FadeOutLowHealthVignette(float seconds)
+    {
+        float elapsedSeconds = 0f;
+
+        while (elapsedSeconds < seconds)
+        {
+            elapsedSeconds += Time.deltaTime;
+            hitEffect.SetFloat("_VignettePower", Mathf.Lerp(hitEffectLowHealthIntensity, hitEffectInactiveIntensity, elapsedSeconds / seconds));
+            yield return null;
+        }
     }
 
     public void SetBodyEmissionColor(Color color)

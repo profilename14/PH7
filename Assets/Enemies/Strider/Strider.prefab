@@ -1134,11 +1134,20 @@ MonoBehaviour:
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  isReactionImmune: 0
+  reactionResistance: 1
+  currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
   isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
+  onexitPuddle:
+    m_PersistentCalls:
+      m_Calls: []
+  curSaltCrystal: {fileID: 0}
 --- !u!114 &3564450361393284608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2417,7 +2426,7 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   dashAttack:
     _FadeDuration: 0.041666668
-    _Speed: 1.15
+    _Speed: 1
     _Events:
       _NormalizedTimes:
       - 0.53333336
@@ -2431,8 +2440,9 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 7400000, guid: e4ea67807e3eb85449bb527a1d8dab8b, type: 2}
     _NormalizedStartTime: NaN
-  dashForce: 130
+  dashForce: 140
   dashDrag: 8
+  allowRotationDuringChargeup: 1
   references:
     version: 2
     RefIds:
@@ -2898,7 +2908,7 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   clawAttack:
     _FadeDuration: 0.125
-    _Speed: 0.45
+    _Speed: 0.4
     _Events:
       _NormalizedTimes:
       - 0.45

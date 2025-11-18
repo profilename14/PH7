@@ -86,6 +86,16 @@ public class MyProjectile : MonoBehaviour
         projectileIsActive = true;
     }
 
+    public void DoScreenShake()
+    {
+        Player.instance.cinemachineManager.ScreenShake();
+    }
+
+    public void DoBigScreenShake()
+    {
+        Player.instance.cinemachineManager.ScreenShake(2, 2);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (!projectileIsActive) return;
@@ -102,7 +112,7 @@ public class MyProjectile : MonoBehaviour
             return;
         }
 
-        Debug.Log("Projectile hit layer " + other.gameObject.layer);
+        //Debug.Log("Projectile hit layer " + other.gameObject.layer);
 
         // Check if we have collided with a hittable object.
         IHittable hittableScript = other.gameObject.GetComponentInParentOrChildren<IHittable>();

@@ -12255,6 +12255,18 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 2856566124358256931}
+            m_TargetAssemblyTypeName: AttackState, Assembly-CSharp
+            m_MethodName: DoScreenShake
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - rid: 8949802890535370755
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -14127,15 +14139,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chemicalBlob: {fileID: 8302372839395969698, guid: 53c69a2be227e3f4ba920cde0e954395, type: 3}
   canSpawnBlobs: 0
-  angleRandomSpread: 180
-  velocityMin: 15
-  velocityMax: 20
+  angleRandomSpread: 90
+  velocityMin: 20
+  velocityMax: 30
   spawnRepeating: 0
   spawnDelay: 0
   blobCountPerInterval: 6
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
-  offset: {x: 0, y: 5, z: 0}
+  offset: {x: 0, y: 6, z: 0}
 --- !u!1 &2972386549531960418
 GameObject:
   m_ObjectHideFlags: 0
@@ -15586,6 +15598,18 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 6593272394048187389}
+            m_TargetAssemblyTypeName: AttackState, Assembly-CSharp
+            m_MethodName: DoBigScreenShake
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!114 &5021163570722914429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15601,14 +15625,14 @@ MonoBehaviour:
   chemicalBlob: {fileID: 8302372839395969698, guid: 53c69a2be227e3f4ba920cde0e954395, type: 3}
   canSpawnBlobs: 0
   angleRandomSpread: 90
-  velocityMin: 20
-  velocityMax: 30
+  velocityMin: 30
+  velocityMax: 40
   spawnRepeating: 0
   spawnDelay: 0
   blobCountPerInterval: 8
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
-  offset: {x: 0, y: 4, z: 0}
+  offset: {x: 0, y: 5, z: 0}
 --- !u!1 &3340110682004048632
 GameObject:
   m_ObjectHideFlags: 0
@@ -16645,9 +16669,20 @@ MonoBehaviour:
   isInvincible: 0
   isKnockbackImmune: 0
   isHitstunImmune: 1
+  isReactionImmune: 0
+  reactionResistance: 1
+  currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
+  currentDebuff: 0
+  isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
+  onexitPuddle:
+    m_PersistentCalls:
+      m_Calls: []
+  curSaltCrystal: {fileID: 0}
 --- !u!114 &6349101746786464862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18535,6 +18570,18 @@ MonoBehaviour:
           - m_Target: {fileID: 5500795557497174511}
             m_TargetAssemblyTypeName: VFXDecalSpawner, Assembly-CSharp
             m_MethodName: SpawnDecal
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 5632901089157670259}
+            m_TargetAssemblyTypeName: AttackState, Assembly-CSharp
+            m_MethodName: DoBigScreenShake
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -29849,6 +29896,18 @@ MonoBehaviour:
           - m_Target: {fileID: 4904744365567909437}
             m_TargetAssemblyTypeName: ChemicalBlobEmitter, Assembly-CSharp
             m_MethodName: SpawnBlobs
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 2189040372371941194}
+            m_TargetAssemblyTypeName: AttackState, Assembly-CSharp
+            m_MethodName: DoBigScreenShake
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}

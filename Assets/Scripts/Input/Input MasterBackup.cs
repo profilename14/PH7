@@ -96,7 +96,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""id"": ""3b0e8193-36de-4727-8f61-885ddc7344bd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""SlowTap(duration=0.2),Tap"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -121,6 +121,15 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Quick Map"",
                     ""type"": ""Button"",
                     ""id"": ""b41232c7-9d70-4413-9e53-db3a2ef50946"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1e3858b-355a-421c-b343-d865d42917a4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -523,6 +532,17 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b015b3b-9656-47b2-a486-63e0506dae3d"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -581,6 +601,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         m_Typhis_OpenInventory = m_Typhis.FindAction("Open Inventory", throwIfNotFound: true);
         m_Typhis_Pause = m_Typhis.FindAction("Pause", throwIfNotFound: true);
         m_Typhis_QuickMap = m_Typhis.FindAction("Quick Map", throwIfNotFound: true);
+        m_Typhis_LockOn = m_Typhis.FindAction("LockOn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -653,6 +674,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
     private readonly InputAction m_Typhis_OpenInventory;
     private readonly InputAction m_Typhis_Pause;
     private readonly InputAction m_Typhis_QuickMap;
+    private readonly InputAction m_Typhis_LockOn;
     public struct TyphisActions
     {
         private @InputMasterBackup m_Wrapper;
@@ -668,6 +690,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         public InputAction @OpenInventory => m_Wrapper.m_Typhis_OpenInventory;
         public InputAction @Pause => m_Wrapper.m_Typhis_Pause;
         public InputAction @QuickMap => m_Wrapper.m_Typhis_QuickMap;
+        public InputAction @LockOn => m_Wrapper.m_Typhis_LockOn;
         public InputActionMap Get() { return m_Wrapper.m_Typhis; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -710,6 +733,9 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
             @QuickMap.started += instance.OnQuickMap;
             @QuickMap.performed += instance.OnQuickMap;
             @QuickMap.canceled += instance.OnQuickMap;
+            @LockOn.started += instance.OnLockOn;
+            @LockOn.performed += instance.OnLockOn;
+            @LockOn.canceled += instance.OnLockOn;
         }
 
         private void UnregisterCallbacks(ITyphisActions instance)
@@ -747,6 +773,9 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
             @QuickMap.started -= instance.OnQuickMap;
             @QuickMap.performed -= instance.OnQuickMap;
             @QuickMap.canceled -= instance.OnQuickMap;
+            @LockOn.started -= instance.OnLockOn;
+            @LockOn.performed -= instance.OnLockOn;
+            @LockOn.canceled -= instance.OnLockOn;
         }
 
         public void RemoveCallbacks(ITyphisActions instance)
@@ -804,5 +833,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         void OnOpenInventory(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnQuickMap(InputAction.CallbackContext context);
+        void OnLockOn(InputAction.CallbackContext context);
     }
 }

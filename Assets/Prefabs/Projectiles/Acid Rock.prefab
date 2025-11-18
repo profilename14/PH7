@@ -46,12 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chemicalBlob: {fileID: 8302372839395969698, guid: 53c69a2be227e3f4ba920cde0e954395, type: 3}
   canSpawnBlobs: 0
-  angleRandomSpread: 180
-  velocityMin: 20
-  velocityMax: 40
+  angleRandomSpread: 90
+  velocityMin: 30
+  velocityMax: 35
   spawnRepeating: 0
   spawnDelay: 0
-  blobCountPerInterval: 8
+  blobCountPerInterval: 6
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 6, z: 0}
@@ -378,6 +378,18 @@ MonoBehaviour:
       - m_Target: {fileID: 6819742104865417835}
         m_TargetAssemblyTypeName: PrefabSpawner, Assembly-CSharp
         m_MethodName: SpawnPrefab
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3603626044720011427}
+        m_TargetAssemblyTypeName: MyProjectile, Assembly-CSharp
+        m_MethodName: DoScreenShake
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

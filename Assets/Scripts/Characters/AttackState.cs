@@ -33,6 +33,21 @@ public abstract class AttackState : CharacterState
         return;
     }
 
+    public void ClearHitEntities()
+    {
+        hitEntities.Clear();
+    }
+
+    public void DoScreenShake()
+    {
+        Player.instance.cinemachineManager.ScreenShake();
+    }
+
+    public void DoBigScreenShake()
+    {
+        Player.instance.cinemachineManager.ScreenShake(2, 2);
+    }
+
     protected void OnTriggerEnter(Collider other)
     {
         // If this script is disabled, then the player is not in this attack state and nothing should happen.

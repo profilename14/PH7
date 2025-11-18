@@ -113,6 +113,10 @@ public class PlayerChargeAttack : AttackState
     void StartSwordSwing()
     {
         vfx.SwordSwingVFX(SwordSwingType.ChargedSwing);
+        if (Player.instance.cinemachineManager)
+        {
+            Player.instance.cinemachineManager.ScreenShake(1f, 2f);
+        }
     }
 
     void EndSwordSwing()
@@ -128,11 +132,13 @@ public class PlayerChargeAttack : AttackState
 
     public override void OnAttackHit(Vector3 position, Collider other)
     {
+        Debug.Log("Hit enemy with charge attack");
+
         vfx.SwordHitVFX(position);
 
-        if (movementController.cinemachineManager)
+        if (Player.instance.cinemachineManager)
         {
-            movementController.cinemachineManager.ScreenShake();
+            Player.instance.cinemachineManager.ScreenShake(2f, 1.25f);
         }
 
         vfx.PauseSwordSwingVFX(SwordSwingType.ChargedSwing, 0.25f);

@@ -13,6 +13,9 @@ public class Player : Character
 
     public PlayerActionManager playerActionManager;
 
+    [SerializeField]
+    public CinemachineManager cinemachineManager;
+
     private void Awake()
     {
         base.Awake();

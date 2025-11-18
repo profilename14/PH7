@@ -23,6 +23,7 @@ public class EnemyVFXManager : CharacterVFXManager
 
     public override void TookDamageVFX(Vector3 collisionPoint, Vector3 sourcePos)
     {
+        StopAllCoroutines();
         StartCoroutine(FlashEmissionColor(damageFlashTime, damageFlashColor * damageFlashIntensity));
         Instantiate(bloodParticles, collisionPoint + Vector3.up, Quaternion.identity).transform.up = collisionPoint - sourcePos;
     }

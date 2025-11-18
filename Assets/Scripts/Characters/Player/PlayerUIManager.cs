@@ -33,7 +33,7 @@ public class PlayerUIManager : MonoBehaviour
       PHBar = PHUI.transform.GetChild(2).GetComponent<Slider>();
       PHBar2 = PHUI.transform.GetChild(3).GetComponent<Slider>();
 
-      healthBar.maxValue = playerStats.healthMax;
+        healthBar.maxValue = 10; //playerStats.healthMax;
       previousAlkaline = (float)playerStats.alkaline;
 
     }

@@ -13,7 +13,7 @@ public class HalberdSwing : AttackState
 
     private EnemyMovementController movementController;
     private SlashAttackVFXManager vfx;
-    public override bool CanEnterState => _ActionManager.allowedStates[this];
+    public override bool CanEnterState => _ActionManager.allowedStates[this] && _ActionManager.allowedActionPriorities[CharacterActionPriority.Medium];
 
     [SerializeField]
     private float drag = 8;
@@ -30,9 +30,11 @@ public class HalberdSwing : AttackState
 
     protected override void OnEnable()
     {
+        _ActionManager.SetAllActionPriorityAllowed(false);
+
         base.OnEnable();
 
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        //Debug.Log("Entering horizontal swing");
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
@@ -45,8 +47,9 @@ public class HalberdSwing : AttackState
 
     protected override void OnDisable()
     {
-        base.OnDisable();
         _ActionManager.SetAllActionPriorityAllowed(true);
+        base.OnDisable();
+        //Debug.Log("Exiting horizontal swing");
     }
 
     private void Update()

@@ -27,6 +27,7 @@ public class EnemyFollow : CharacterState
 
     protected override void OnEnable()
     {
+        Debug.Log("Entering follow");
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.anim.Play(MoveAnimation);
         movementController.SetAllowMovement(true);
@@ -36,6 +37,7 @@ public class EnemyFollow : CharacterState
 
     private void Update()
     {
+        _ActionManager.SetAllActionPriorityAllowed(true);
         playerPosition = Player.instance.transform.position;
         movementController.SetPathfindingDestination(playerPosition);
 

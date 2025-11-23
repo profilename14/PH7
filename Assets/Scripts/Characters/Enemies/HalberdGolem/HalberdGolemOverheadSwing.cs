@@ -36,9 +36,11 @@ public class HalberdGolemOverheadSwing : AttackState
 
     protected override void OnEnable()
     {
+        _ActionManager.SetAllActionPriorityAllowed(false);
+
         base.OnEnable();
 
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        //Debug.Log("Entering overhead swing");
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
@@ -47,6 +49,14 @@ public class HalberdGolemOverheadSwing : AttackState
 
         AnimancerState currentState = _ActionManager.anim.Play(swingAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
+    }
+
+    protected override void OnDisable()
+    {
+        _ActionManager.SetAllActionPriorityAllowed(true);
+
+        base.OnDisable();
+        //Debug.Log("Exiting overhead swing");
     }
 
     private void Update()
@@ -58,11 +68,15 @@ public class HalberdGolemOverheadSwing : AttackState
     public void SwingStart()
     {
         movementController.SetGroundDrag(drag);
-        movementController.SetAllowRotation(false);
-        movementController.SetAllowMovement(false);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
         vfx.PlaySlashVFX();
+    }
+
+    public void StopTracking()
+    {
+        movementController.SetAllowRotation(false);
+        movementController.SetAllowMovement(false);
     }
 
     public void SpawnSaltShockwave()

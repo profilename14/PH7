@@ -41,9 +41,10 @@ public class VitriclawHeavyAttack : AttackState
 
     protected override void OnEnable()
     {
-        base.OnEnable();
-
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+
+
+        base.OnEnable();
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
@@ -59,6 +60,7 @@ public class VitriclawHeavyAttack : AttackState
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
         movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;
         movementController.SetAllowRotation(true);

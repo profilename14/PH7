@@ -1,5 +1,5 @@
 {
-    "name": "Input Master",
+    "name": "Input MasterBackup",
     "maps": [
         {
             "name": "Typhis",
@@ -74,7 +74,7 @@
                     "id": "3b0e8193-36de-4727-8f61-885ddc7344bd",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "SlowTap(duration=0.2),Tap",
                     "initialStateCheck": false
                 },
                 {
@@ -99,6 +99,15 @@
                     "name": "Quick Map",
                     "type": "Button",
                     "id": "b41232c7-9d70-4413-9e53-db3a2ef50946",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LockOn",
+                    "type": "Button",
+                    "id": "a1e3858b-355a-421c-b343-d865d42917a4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -499,6 +508,17 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b015b3b-9656-47b2-a486-63e0506dae3d",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "LockOn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

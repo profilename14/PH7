@@ -30,9 +30,11 @@ public class HalberdSwing : AttackState
 
     protected override void OnEnable()
     {
+        _ActionManager.SetAllActionPriorityAllowed(false);
+
         base.OnEnable();
 
-        _ActionManager.SetAllActionPriorityAllowed(false);
+        //Debug.Log("Entering horizontal swing");
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
@@ -41,6 +43,13 @@ public class HalberdSwing : AttackState
 
         AnimancerState currentState = _ActionManager.anim.Play(swingAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;
+    }
+
+    protected override void OnDisable()
+    {
+        _ActionManager.SetAllActionPriorityAllowed(true);
+        base.OnDisable();
+        //Debug.Log("Exiting horizontal swing");
     }
 
     private void Update()

@@ -986,7 +986,7 @@ Transform:
   m_Children:
   - {fileID: 8256642501631432550}
   m_Father: {fileID: 6780814238316054337}
-  m_LocalEulerAnglesHint: {x: 6.446167, y: 75.72407, z: 23.808367}
+  m_LocalEulerAnglesHint: {x: -47.0449, y: -145.49017, z: -43.342384}
 --- !u!1 &1068941995728340563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,6 +1831,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 5932011651591045120
       type: {class: ClipTransition, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -1853,11 +1855,15 @@ MonoBehaviour:
         _Events:
           _NormalizedTimes:
           - 0.06666667
+          - 0.26666668
           - 0.33333334
           - NaN
-          _Callbacks: []
+          _Callbacks:
+          - rid: -2
+          - rid: 6690891482921697283
           _Names:
           - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
+          - {fileID: 0}
           - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
         _Clip: {fileID: 7400000, guid: 207e31014397a0941aaee5991d40a570, type: 2}
         _NormalizedStartTime: NaN
@@ -1869,6 +1875,23 @@ MonoBehaviour:
           - m_Target: {fileID: 5129742808374406057}
             m_TargetAssemblyTypeName: PlayerChargeAttack, Assembly-CSharp
             m_MethodName: ChargingDone
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 6690891482921697283
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5129742808374406057}
+            m_TargetAssemblyTypeName: AttackState, Assembly-CSharp
+            m_MethodName: ClearHitEntities
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -9031,6 +9054,7 @@ MonoBehaviour:
   isKnockbackImmune: 0
   isHitstunImmune: 0
   isReactionImmune: 1
+  reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
@@ -9049,11 +9073,14 @@ MonoBehaviour:
         m_CallState: 2
   currentDebuff: 0
   isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
   onexitPuddle:
     m_PersistentCalls:
       m_Calls: []
   playerStats: {fileID: 280165432961842639}
   playerActionManager: {fileID: 3473925023760633006}
+  cinemachineManager: {fileID: 0}
 --- !u!114 &280165432961842639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9072,6 +9099,7 @@ MonoBehaviour:
   _Armor: 0
   _HealthMax: 10
   alkaline: 0
+  lowHealth: 1
 --- !u!114 &4630855019977460999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9103,7 +9131,6 @@ MonoBehaviour:
   CameraFollowPoint: {fileID: 0}
   moveInputVector: {x: 0, y: 0, z: 0}
   rotationRoot: {fileID: 9165681918186698072}
-  cinemachineManager: {fileID: 0}
   isDashing: 0
   canMove: 1
   canRotate: 1
@@ -9216,7 +9243,10 @@ MonoBehaviour:
   algaeGlowIntensity: 3
   swordGlowColor: {r: 1, g: 1, b: 1, a: 0}
   swordGlowIntensity: 4
-  hitEffectIntensity: 3
+  hitEffectFlashTime: 1.5
+  hitEffectIntensity: 2
+  hitEffectLowHealthIntensity: 4
+  hitEffectInactiveIntensity: 15
   hitEffect: {fileID: 2100000, guid: ce4ebef1a7400094f9b03dc7dab2fcf2, type: 2}
 --- !u!1 &4383613561033077319
 GameObject:
@@ -10981,8 +11011,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5594428598334958641}
-  _AcidCost: 0
-  _AlkalineCost: 3
+  _AcidCost: 1000
+  _AlkalineCost: 1000
   playerStats: {fileID: 280165432961842639}
   movementController: {fileID: 4630855019977460999}
   rotationController: {fileID: 7370340048861875037}
@@ -11881,7 +11911,7 @@ Transform:
   - {fileID: 3907156750274459635}
   - {fileID: 3826248489875199350}
   m_Father: {fileID: 5998578133465816929}
-  m_LocalEulerAnglesHint: {x: -0.017632008, y: -156.35236, z: -11.415938}
+  m_LocalEulerAnglesHint: {x: -8.680036, y: -31.32146, z: 3.396991}
 --- !u!1 &6007556264847991348
 GameObject:
   m_ObjectHideFlags: 0
@@ -17569,7 +17599,7 @@ Transform:
   - {fileID: 1826527888188617891}
   - {fileID: 2820683938217188339}
   m_Father: {fileID: 6780814238316054337}
-  m_LocalEulerAnglesHint: {x: -10.640406, y: -68.837204, z: 156.93394}
+  m_LocalEulerAnglesHint: {x: -87.76383, y: 99.999954, z: 180}
 --- !u!1 &6557673858332398570
 GameObject:
   m_ObjectHideFlags: 0
@@ -18404,7 +18434,7 @@ Transform:
   m_Children:
   - {fileID: 1458201089986337053}
   m_Father: {fileID: 8795197427221599801}
-  m_LocalEulerAnglesHint: {x: -0.00000034071314, y: -94.75159, z: 0.000000019196406}
+  m_LocalEulerAnglesHint: {x: -0.00000029503929, y: 95.88905, z: 0.000000035518827}
 --- !u!1 &7561135536213783222
 GameObject:
   m_ObjectHideFlags: 0
@@ -18748,7 +18778,7 @@ Transform:
   - {fileID: 8889970281351745006}
   - {fileID: 1669984617755628041}
   m_Father: {fileID: 1400260880121998171}
-  m_LocalEulerAnglesHint: {x: 2.3524852, y: -135.06883, z: -6.36901}
+  m_LocalEulerAnglesHint: {x: -9.891434, y: 17.779823, z: -1.9973143}
 --- !u!1 &7628965742685932136
 GameObject:
   m_ObjectHideFlags: 0

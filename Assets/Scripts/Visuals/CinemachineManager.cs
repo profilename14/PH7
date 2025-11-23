@@ -43,11 +43,13 @@ public class CinemachineManager : MonoBehaviour
 
     public void ScreenShake(float intensityMult, float durationMult)
     {
+        StopAllCoroutines();
         StartCoroutine(ShakeRoutine(shakePower * intensityMult, shakeDuration * durationMult));
     }
 
     public void ScreenShake()
     {
+        StopAllCoroutines();
         StartCoroutine(ShakeRoutine(shakePower, shakeDuration));
     }
 

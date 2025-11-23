@@ -75,9 +75,6 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     [SerializeField]
     private GameObject rotationRoot;
 
-    [SerializeField]
-    public CinemachineManager cinemachineManager;
-
     // Custom Variables Below:
     public bool isDashing = false;
 
@@ -508,9 +505,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     protected void OnLanded()
     {
         playerVFXManager.StartLandVFX(transform.position - Vector3.up / 2);
-        if (cinemachineManager)
+        if (Player.instance.cinemachineManager)
         {
-            cinemachineManager.ScreenShake(0.25f, 1.5f);
+            Player.instance.cinemachineManager.ScreenShake(0.25f, 1.5f);
         }
     }
 
@@ -607,9 +604,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
         jumpHeld = true;
         jumpPressedThisFrame = true;
         playerVFXManager.StartJumpVFX(transform.position - Vector3.up / 2);
-        if (cinemachineManager)
+        if (Player.instance.cinemachineManager)
         {
-            cinemachineManager.ScreenShake(0.5f, 1.25f);
+            Player.instance.cinemachineManager.ScreenShake(0.5f, 1.25f);
         }
     }
 

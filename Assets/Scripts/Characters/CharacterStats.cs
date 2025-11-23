@@ -48,7 +48,7 @@ public abstract class CharacterStats : MonoBehaviour
         }
         else
         {
-            _Health -= damage;
+            SetHealth(_Health - damage);
         }
 
         

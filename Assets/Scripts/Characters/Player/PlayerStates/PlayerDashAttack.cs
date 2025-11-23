@@ -160,9 +160,9 @@ public class PlayerDashAttack : AttackState
     {
         vfx.SwordHitVFX(position);
 
-        if (movementController.cinemachineManager)
+        if (Player.instance.cinemachineManager)
         {
-            movementController.cinemachineManager.ScreenShake();
+            Player.instance.cinemachineManager.ScreenShake();
         }
 
         vfx.PauseSwordSwingVFX(SwordSwingType.DashSwing, hitStopTime);

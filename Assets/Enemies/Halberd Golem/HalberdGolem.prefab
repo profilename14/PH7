@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 757586021202792585}
-  m_LocalEulerAnglesHint: {x: 33.105797, y: -179.99986, z: -0.000055046916}
+  m_LocalEulerAnglesHint: {x: 33.10608, y: 179.99994, z: -0.000055046916}
 --- !u!1 &87209475701274814
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +2080,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7595528799325379520}
-  m_LocalEulerAnglesHint: {x: -44.98203, y: 88.5654, z: -87.97091}
+  m_LocalEulerAnglesHint: {x: -44.982018, y: 88.565414, z: -87.97091}
 --- !u!1 &963573838342767231
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2269,7 @@ Transform:
   m_Children:
   - {fileID: 8655691155030577566}
   m_Father: {fileID: 3488833560989453582}
-  m_LocalEulerAnglesHint: {x: -44.98204, y: -88.56516, z: 87.970924}
+  m_LocalEulerAnglesHint: {x: -44.98204, y: -88.565186, z: 87.97093}
 --- !u!1 &1110901199754094051
 GameObject:
   m_ObjectHideFlags: 0
@@ -2539,7 +2539,7 @@ Transform:
   - {fileID: 894321528816888613}
   - {fileID: 5553623584074257732}
   m_Father: {fileID: 7759153038061401255}
-  m_LocalEulerAnglesHint: {x: 46.706974, y: -67.63639, z: -85.97651}
+  m_LocalEulerAnglesHint: {x: 46.706985, y: -67.63638, z: -85.97651}
 --- !u!1 &1212701294621115518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3513,18 +3513,22 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   swingAttack:
     _FadeDuration: 0.25
-    _Speed: 1.6
+    _Speed: 1.4
     _Events:
       _NormalizedTimes:
-      - 0.4637681
+      - 0.4057971
+      - 0.46376812
       - 0.5217391
+      - 0.5507246
+      - 0.7246377
       - 0.7826087
-      - 0.9855072
       - NaN
       _Callbacks:
+      - rid: 2930954216546500609
       - rid: 3289629181476077569
       - rid: 3289629181476077575
       - rid: 3289629181476077571
+      - rid: 2930954216546500619
       - rid: 3289629181476077573
       _Names: []
     _Clip: {fileID: 7400000, guid: 2ad6ac01b7f92dd4aa3c81e0d36f3866, type: 2}
@@ -3537,6 +3541,40 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 2930954216546500609
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2154605517236171664}
+            m_TargetAssemblyTypeName: HalberdGolemOverheadSwing, Assembly-CSharp
+            m_MethodName: StopTracking
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - rid: 2930954216546500619
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2663232536773472602}
+            m_TargetAssemblyTypeName: AttackCombo, Assembly-CSharp
+            m_MethodName: SetAllowFollowup
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
     - rid: 3289629181476077569
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -3570,18 +3608,6 @@ MonoBehaviour:
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
-            m_CallState: 2
-          - m_Target: {fileID: 2663232536773472602}
-            m_TargetAssemblyTypeName: AttackCombo, Assembly-CSharp
-            m_MethodName: SetAllowFollowup
-            m_Mode: 6
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 1
             m_CallState: 2
     - rid: 3289629181476077573
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
@@ -3684,12 +3710,12 @@ MonoBehaviour:
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   swingAttack:
     _FadeDuration: 0.06666667
-    _Speed: 1.5
+    _Speed: 1.4
     _Events:
       _NormalizedTimes:
-      - 0.5714286
+      - 0.6031746
+      - 0.6666667
       - 0.85714287
-      - 0.95238096
       - NaN
       _Callbacks:
       - rid: 8535668606405967875
@@ -3698,7 +3724,7 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 7400000, guid: 055b2204bda4bbf42bcd1029cad1744d, type: 2}
     _NormalizedStartTime: NaN
-  swingForwardForce: 30
+  swingForwardForce: 50
   drag: 4
   preferredRange: 10
   references:
@@ -3795,12 +3821,14 @@ MonoBehaviour:
     _Speed: 1.6
     _Events:
       _NormalizedTimes:
+      - 0.4057971
       - 0.4637681
       - 0.5217391
+      - 0.5507246
       - 0.7826087
-      - 0.9855072
       - NaN
       _Callbacks:
+      - rid: 2930954216546500617
       - rid: 3289629181476077569
       - rid: 3289629181476077575
       - rid: 3289629181476077571
@@ -3816,6 +3844,23 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 2930954216546500617
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5544028093659778007}
+            m_TargetAssemblyTypeName: HalberdGolemOverheadSwing, Assembly-CSharp
+            m_MethodName: StopTracking
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - rid: 3289629181476077569
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -4375,7 +4420,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742136822412107222}
-  m_LocalEulerAnglesHint: {x: -6.0828106e-14, y: -0.000005336086, z: -0.0000002134434}
+  m_LocalEulerAnglesHint: {x: 0.0000008537738, y: -0.000005549529, z: 0.0000012806606}
 --- !u!1 &2226119927854609654
 GameObject:
   m_ObjectHideFlags: 0
@@ -6710,7 +6755,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 894321528816888613}
-  m_LocalEulerAnglesHint: {x: -2.8624987e-14, y: 0.0000038419807, z: 0.0000008537736}
+  m_LocalEulerAnglesHint: {x: -0.00000042688674, y: 0.0000038419807, z: -1.4312494e-14}
 --- !u!1 &4451296724910745108
 GameObject:
   m_ObjectHideFlags: 0
@@ -6773,7 +6818,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3488833560989453582}
-  m_LocalEulerAnglesHint: {x: -44.98204, y: -88.56516, z: 87.970924}
+  m_LocalEulerAnglesHint: {x: -44.98204, y: -88.565186, z: 87.97093}
 --- !u!1 &4480662965367239556
 GameObject:
   m_ObjectHideFlags: 0
@@ -7151,7 +7196,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7759153038061401255}
-  m_LocalEulerAnglesHint: {x: 46.706974, y: -67.63639, z: -85.97651}
+  m_LocalEulerAnglesHint: {x: 46.706985, y: -67.63638, z: -85.97651}
 --- !u!1 &4743481043994261557
 GameObject:
   m_ObjectHideFlags: 0
@@ -7371,7 +7416,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742136822412107222}
-  m_LocalEulerAnglesHint: {x: -6.0828106e-14, y: -0.000005336086, z: -0.0000002134434}
+  m_LocalEulerAnglesHint: {x: 0.0000008537738, y: -0.000005549529, z: 0.0000012806606}
 --- !u!1 &4865896400595949358
 GameObject:
   m_ObjectHideFlags: 0
@@ -8864,7 +8909,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 990789910688882229}
-  m_LocalEulerAnglesHint: {x: 33.105907, y: -179.97629, z: 0.012752756}
+  m_LocalEulerAnglesHint: {x: 33.10573, y: -179.97644, z: 0.012752756}
 --- !u!1 &6499109205133408695
 GameObject:
   m_ObjectHideFlags: 0
@@ -9022,7 +9067,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8902705794328171789}
-  m_LocalEulerAnglesHint: {x: 33.1061, y: 179.99988, z: -0.000082962}
+  m_LocalEulerAnglesHint: {x: 33.10627, y: 179.99994, z: -0.000082962}
 --- !u!1 &6633387007946641157
 GameObject:
   m_ObjectHideFlags: 0
@@ -10061,12 +10106,15 @@ MonoBehaviour:
   isKnockbackImmune: 0
   isHitstunImmune: 1
   isReactionImmune: 0
+  reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
   isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
   onexitPuddle:
     m_PersistentCalls:
       m_Calls: []
@@ -10313,7 +10361,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5553623584074257732}
-  m_LocalEulerAnglesHint: {x: 0.00000085377354, y: 0.0000008537736, z: 0.0000008537736}
+  m_LocalEulerAnglesHint: {x: -0.00000085377354, y: 0.0000008537736, z: -6.3611086e-15}
 --- !u!1 &7604096913051898642
 GameObject:
   m_ObjectHideFlags: 0
@@ -11041,7 +11089,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4981773233814556393}
-  m_LocalEulerAnglesHint: {x: 33.105892, y: -179.99997, z: -0.000052111536}
+  m_LocalEulerAnglesHint: {x: 33.105957, y: 179.99998, z: -0.000052111536}
 --- !u!1 &7872169058842559912
 GameObject:
   m_ObjectHideFlags: 0
@@ -11975,7 +12023,7 @@ Transform:
   m_Children:
   - {fileID: 1480679651221533970}
   m_Father: {fileID: 4742136822412107222}
-  m_LocalEulerAnglesHint: {x: -6.0828106e-14, y: -0.000005336086, z: -0.0000002134434}
+  m_LocalEulerAnglesHint: {x: 0.0000008537738, y: -0.000005549529, z: 0.0000012806606}
 --- !u!1 &8589207687942640769
 GameObject:
   m_ObjectHideFlags: 0
@@ -12253,7 +12301,7 @@ Transform:
   m_Children:
   - {fileID: 6240480236740025145}
   m_Father: {fileID: 4742136822412107222}
-  m_LocalEulerAnglesHint: {x: 0.00000085377064, y: -179.99957, z: 0.0000008537768}
+  m_LocalEulerAnglesHint: {x: 2.332746e-12, y: -179.99957, z: -0.0000006403303}
 --- !u!1 &8805762145787313856
 GameObject:
   m_ObjectHideFlags: 0
@@ -12316,7 +12364,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4742136822412107222}
-  m_LocalEulerAnglesHint: {x: 0.00000085377064, y: -179.99957, z: 0.0000008537768}
+  m_LocalEulerAnglesHint: {x: 2.332746e-12, y: -179.99957, z: -0.0000006403303}
 --- !u!1 &8861173222972877242
 GameObject:
   m_ObjectHideFlags: 0
@@ -12892,7 +12940,7 @@ Transform:
   m_Children:
   - {fileID: 8725615098137058304}
   m_Father: {fileID: 7595528799325379520}
-  m_LocalEulerAnglesHint: {x: -44.98203, y: 88.5654, z: -87.97091}
+  m_LocalEulerAnglesHint: {x: -44.982018, y: 88.565414, z: -87.97091}
 --- !u!1 &9153205488170113317
 GameObject:
   m_ObjectHideFlags: 0

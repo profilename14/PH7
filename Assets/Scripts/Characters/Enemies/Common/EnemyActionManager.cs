@@ -149,8 +149,18 @@ public class EnemyActionManager : CharacterActionManager
             {
                 if (randomNum <= attackCandidates[i].behaviorData.frequency)
                 {
-                    if (StateMachine.TrySetState(attackCandidates[i].stateScript)) ResetCooldown(attackCandidates[i]);
-                    //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                    if (StateMachine.TrySetState(attackCandidates[i].stateScript))
+                    {
+                        //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                        //Debug.Log(allowedStates[attackCandidates[i].stateScript]);
+                        //Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
+                        ResetCooldown(attackCandidates[i]);
+                    }
+                    else
+                    {
+                        //Debug.Log("failed entering state");
+                    }
+                    
                     break;
                 }
 

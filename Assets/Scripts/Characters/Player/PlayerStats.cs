@@ -6,7 +6,7 @@ public class PlayerStats : CharacterStats
 {
     
     [SerializeField]
-    private int _HealthMax = 10;
+    private int _HealthMax;
     public int healthMax => _HealthMax;
 
     private int _ArmorMax = 5;
@@ -20,6 +20,16 @@ public class PlayerStats : CharacterStats
     
     [SerializeField]
     public double alkaline = 0;
+
+    [SerializeField]
+    public int lowHealth = 1;
+
+    PlayerVFXManager vfxManager;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     public void ModifyAlkaline(double alkaline)
     {
@@ -47,5 +57,22 @@ public class PlayerStats : CharacterStats
         {
             alkaline = 14 - _AcidResource;
         }*/
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+
+        Player.instance.cinemachineManager.ScreenShake(2f, 2f);
+    }
+
+    public override void SetHealth(float newHealth)
+    {
+        base.SetHealth(newHealth);
+
+        if (vfxManager == null) vfxManager = (PlayerVFXManager)Player.instance.VFXManager;
+
+        if (health <= lowHealth) vfxManager.SetIsLowHealth(true);
+        else vfxManager.SetIsLowHealth(false);
     }
 }

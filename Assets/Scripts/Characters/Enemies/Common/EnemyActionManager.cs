@@ -205,12 +205,12 @@ public class EnemyActionManager : CharacterActionManager
 
     public void OnDeath()
     {
-        /*if (deathAnimation != null)
+        if (deathAnimation != null)
         {
-            StateMachine.SetAllowNullStates(true);
-            StateMachine.ForceSetState(null);
-            anim.Play(deathAnimation);
-        }*/
+            //StateMachine.SetAllowNullStates(true);
+            //StateMachine.ForceSetState(null);
+            //anim.Play(deathAnimation);
+        }
     }
 
 #if UNITY_EDITOR

@@ -120,8 +120,9 @@ public class EnemyFollowFlying : CharacterState
             {
                 if (Vector3.Angle(_Character.transform.forward, toPlayer) < viewConeAngle / 2)
                 {
-                    StopAllCoroutines();
                     hasSpottedPlayer = true;
+                    Debug.Log("Spotted player!");
+                    StopAllCoroutines();
                     movementController.SetForceLookRotation(true);
                     movementController.SetAllowMovement(true);
                     movementController.SetAllowRotation(true);

@@ -69,10 +69,12 @@ public class PlayerChargeAttack : AttackState
         directionalInput = actionManager.GetDirectionalInput();
 
         _ActionManager.SetAllActionPriorityAllowed(false);
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.High, true);
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Jump, true);
 
         rotationController.snapToCurrentMouseAngle();
 
-        movementController.SetAllowMovement(false);
+        movementController.SetAllowMovement(true);
 
         _ActionManager.anim.Play(chargingAnimation);
     }
@@ -88,6 +90,7 @@ public class PlayerChargeAttack : AttackState
         if (attackCharged)
         {
             _ActionManager.SetAllActionPriorityAllowed(false);
+            movementController.SetAllowMovement(false);
 
             AnimancerState currentState = _ActionManager.anim.Play(chargeAttackAnimation);
 

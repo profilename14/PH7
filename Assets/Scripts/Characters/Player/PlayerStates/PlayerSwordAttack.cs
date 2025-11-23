@@ -121,6 +121,7 @@ public class PlayerSwordAttack : AttackState
         // Fully committed to an attack once you start it.
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Medium, false);
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.High, true);
 
         canDashAttack = true;
 
@@ -267,6 +268,7 @@ public class PlayerSwordAttack : AttackState
         vfx.SwordSwingVFX(currentSwordSwing);
 
         canDashAttack = false;
+        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.High, false);
     }
 
     public void EndSwordSwing()

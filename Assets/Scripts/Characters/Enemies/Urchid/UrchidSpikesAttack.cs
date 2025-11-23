@@ -21,10 +21,10 @@ public class UrchidSpikesAttack : AttackState
 
     protected override void OnEnable()
     {
+        _ActionManager.SetAllActionPriorityAllowed(false);
+
         base.OnEnable();
         if(movementController == null) gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
-
-        _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(false);
         movementController.SetAllowRotation(false);
@@ -42,7 +42,7 @@ public class UrchidSpikesAttack : AttackState
     public void SpikesEnd()
     {
         //_Character.SetIsKnockbackImmune(false);
-        _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.Hitstun, true);
+        _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
 using Animancer.FSM;
-using Unity.VisualScripting;
 
 public abstract class Character : MonoBehaviour, IHittable
 {

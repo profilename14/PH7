@@ -260,7 +260,7 @@ public class PlayerActionManager : CharacterActionManager
 
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
 
-        if (movementController.IsGrounded())
+        if (movementController.IsAbleToJump())
         {
             hasDashedInAir = false;
             hasBubbledInAir = false;
@@ -273,8 +273,6 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnJumpStarted(InputAction.CallbackContext context)
     {
-        hasDashedInAir = false;
-        hasBubbledInAir = false;
         // Jump button is held
         jumpHeld = true;
         if (!StateMachine.TrySetState(jumpState)) inputBuffer.Buffer(jumpState, inputTimeOut);

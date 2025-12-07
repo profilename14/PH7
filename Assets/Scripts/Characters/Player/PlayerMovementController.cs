@@ -72,6 +72,8 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     private GameObject CharacterCamera;
 
+    private PlayerActionManager playerActionManager;
+
     [SerializeField]
     private GameObject rotationRoot;
 
@@ -107,6 +109,8 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     [SerializeField]
     private bool isSprintJump = false;
 
+    private float OnLandTimer = 0f;
+
 
     private void Awake()
     {
@@ -116,6 +120,8 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
         CharacterCamera = GameObject.FindGameObjectWithTag("MainCamera");
 
         playerVFXManager = gameObject.GetComponent<PlayerVFXManager>();
+
+        playerActionManager = gameObject.GetComponentInChildren<PlayerActionManager>();
 
         camForward = CharacterCamera.transform.forward;
         camRight = CharacterCamera.transform.right;
@@ -135,6 +141,8 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
         {
             moveInputVector = new Vector3(0, 0, 0);
         }
+
+        OnLandTimer -= Time.deltaTime;
     }
 
     public void ProcessMoveInput(Vector3 moveDir)
@@ -504,6 +512,13 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     protected void OnLanded()
     {
+
+        if (OnLandTimer > 0) // On landed can only be called every 0.2 seconds
+        {
+            OnLandTimer = 0.2f;
+            return;
+        }
+        OnLandTimer = 0.2f;
         playerVFXManager.StartLandVFX(transform.position - Vector3.up / 2);
         if (Player.instance.cinemachineManager)
         {

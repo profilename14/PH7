@@ -35,6 +35,12 @@ public class FloatingBubble : MonoBehaviour
             if (lifespanTimer <= 0)
             {
                 Pop();
+                if(item is BreakablePot b)
+                {
+                    b.Pickup(null);
+                }
+                Destroy(gameObject);
+
             }
         }
     }

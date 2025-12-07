@@ -383,7 +383,7 @@ public abstract class Character : MonoBehaviour, IHittable
         
         ChemicalReactionFreezeStart();
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(4 + (reactionResistance-1)); // 4-6 seconds
 
         ChemicalReactionFreezeEnd();
     }

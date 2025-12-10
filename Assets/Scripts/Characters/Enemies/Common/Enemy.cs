@@ -51,6 +51,10 @@ public class Enemy : Character
 
             if (curSaltCrystalScript.GetHealth() <= 0)
             {
+                if (reactionResistance <= 1) // 1 reaction resistance enemies are instantly killed if hit frozen
+                {
+                    _Stats.SetHealth(0);
+                }
                 ChemicalReactionFreezeEnd();
             }
         }
@@ -126,6 +130,15 @@ public class Enemy : Character
             curSaltCrystalScript.SetSender(this);
             ChemicalReactionManager.instance.ClearNearbyChemicals(transform.position);
             movementController.SetAllowRotation(false);
+            if (reactionResistance == 2)
+            {
+                curSaltCrystalScript.SetHealth(3);
+            }
+            else if (reactionResistance == 1)
+            {
+                curSaltCrystalScript.SetHealth(1);
+            }
+            
             if(movementController is EnemyMovementController e)
             {
                 e.SetForceLookAtPlayer(false);

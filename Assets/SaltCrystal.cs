@@ -133,4 +133,8 @@ public class SaltCrystal : MonoBehaviour, IHittable
     {
         return currentHealth;
     }
+    public void SetHealth(float amount)
+    {
+        currentHealth = amount;
+    }
 }

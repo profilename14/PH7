@@ -49,6 +49,8 @@ public class PlayerBubble : CharacterSpell
         base.Awake();
         gameObject.GetComponentInParentOrChildren(ref playerStats);
         gameObject.GetComponentInParentOrChildren(ref rotationController);
+
+
     }
 
     protected override void OnEnable()
@@ -80,6 +82,12 @@ public class PlayerBubble : CharacterSpell
             movementController.RotateToDir(directionalInput.lookDir);
             bubbleObject.transform.position = transform.position + transform.forward * 5 + spawnOffset;
             chargeTimer += Time.deltaTime;
+
+            
+            actionManager.SetActionPriorityAllowed(CharacterActionPriority.Jump, movementController.IsAbleToJump());
+
+            directionalInput = actionManager.GetDirectionalInput();
+
         }
     }
 

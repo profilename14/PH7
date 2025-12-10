@@ -12,6 +12,12 @@ public abstract class AttackState : CharacterState
 
     private List<IHittable> hitEntities = new List<IHittable>();
 
+    [SerializeField] public bool triggerDebuff = false;
+    
+    [SerializeField] public bool triggerReactions = false;
+    
+    [SerializeField] public bool ignoredBySameElement = false;
+
     protected void Awake()
     {
         base.Awake();

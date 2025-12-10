@@ -33,6 +33,9 @@ public class MyProjectile : MonoBehaviour
     [SerializeField] public bool triggerDebuff = true;
     
     [SerializeField] public bool triggerReactions = true;
+    
+    // If true does no damage against enemies of the same type on hits that dont trigger a reaction    
+    [SerializeField] public bool ignoredBySameElement = true; 
 
     [SerializeField] LayerMask projectileCollMask;
 

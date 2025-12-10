@@ -81,13 +81,32 @@ public abstract class Character : MonoBehaviour, IHittable
 
         if (movementController == null) gameObject.GetComponentInParentOrChildren(ref movementController);
 
-        
+        if (!isReactionImmune && characterData.naturalType == attack.attackData.type)
+        {
+            // Ex Acid Applied to dry or acidfied vitriclaw = acified and no damage
+            if (attack.triggerDebuff == true && (currentDebuff == characterData.naturalType || currentDebuff == Chemical.None) )
+            {
+                if (!isReactionImmune)
+                {
+                    currentDebuff = attack.attackData.type;
+                }
+                if (attack.ignoredBySameElement) return;
+            }
+            else
+            {
+                // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
+                if (!attack.triggerReactions || isReactionImmune)
+                {
+                    if(attack.ignoredBySameElement) return;
+                }
+            }
+        }
 
         if (!isInvincible)
         {
             if (isFrozen)
             {
-                _Stats.TakeDamage(attack.attackData.damage * 1.5f);
+                _Stats.TakeDamage(attack.attackData.damage * 1.75f);
             }
             else
             {
@@ -116,6 +135,8 @@ public abstract class Character : MonoBehaviour, IHittable
             Vector3 knockbackDir = new Vector3(-(hitPoint.x - transform.position.x), 0, -(hitPoint.z - transform.position.z));
             movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback / characterData.knockbackResistance);
         }
+
+        if (!isReactionImmune) ChemicalReaction(attack.attackData.type, attack.triggerReactions, attack.triggerDebuff, 1);
         
         if(!isHitstunImmune) actionManager.Hitstun();
     }
@@ -133,14 +154,14 @@ public abstract class Character : MonoBehaviour, IHittable
                 {
                     currentDebuff = projectile.attackData.type;
                 }
-                return;
+                if (projectile.ignoredBySameElement) return;
             }
             else
             {
                 // Ex Acid applied to vitriclaw that has a different debuff. Do nothing if this hit doesn't deal reactions
                 if (!projectile.triggerReactions || isReactionImmune)
                 {
-                    return;
+                    if (projectile.ignoredBySameElement) return;
                 }
             }
         }

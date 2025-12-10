@@ -34,7 +34,7 @@ public class PlayerJump : CharacterState
     private bool canJump = true;
 
     public override bool CanEnterState
-        => _ActionManager.allowedActionPriorities[CharacterActionPriority.Jump];
+        => movementController.IsAbleToJump();
 
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class PlayerJump : CharacterState
             return;
         }*/
 
-        //Debug.Log(movementController.IsGrounded());
+        //Debug.Log(movementController.IsAbleToJump());
         _ActionManager.anim.Play(jumpAnimation);
         movementController.StartJump();
         jumpTimer = 0;

@@ -104,7 +104,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
     [SerializeField]
     private float sprintSpeedMult = 2f;
     [SerializeField]
-    private float sprintSharpnessMult = 0.3f; // Lower numbers make movement slippier and more acceleration based
+    private float sprintSharpnessMult = 0.6f; // Lower numbers make movement slippier and more acceleration based
 
     [SerializeField]
     private bool isSprintJump = false;

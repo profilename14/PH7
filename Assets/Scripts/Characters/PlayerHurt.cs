@@ -18,6 +18,7 @@ public class PlayerHurt : TakeDamageState
     {
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
         _ActionManager.SetAllStatesAllowed(false);
+        Player.instance.SetIsKnockbackImmune(true);
 
         currentState = _ActionManager.anim.Play(takeDamageAnimation);
         currentState.Time = 0;
@@ -27,6 +28,8 @@ public class PlayerHurt : TakeDamageState
     private void EndHitStun()
     {
         //Debug.Log("Ending hitstun");
+        
+        Player.instance.SetIsKnockbackImmune(false);
         _ActionManager.EndHitStun();
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.StateMachine.ForceSetDefaultState();

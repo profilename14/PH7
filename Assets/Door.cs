@@ -14,7 +14,27 @@ public class Door : MonoBehaviour
 
     public GameObject tooltip;
 
-    bool canSwitchScene = true;
+    bool canSwitchScene = false;
+
+    private float startTimer = 1f;
+
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        if (startTimer > 0)
+        {
+            startTimer -= Time.deltaTime;
+            if (startTimer <= 0)
+            {
+                canSwitchScene = true;
+            }
+        }
+        
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,6 +57,8 @@ public class Door : MonoBehaviour
     public void SwitchScene()
     {
         if (!canSwitchScene) return;
+
+        Player.instance.playerActionManager.UIManager.loadingScreen.fadeToBlackDoor();
 
         GameManager.instance.LoadNewScene(sceneToLoad, destinationDoorId);
 

@@ -81,6 +81,8 @@ public class PlayerActionManager : CharacterActionManager
     private GameObject lockOnIcon;
 
     private LayerMask enemyLayerMask;
+
+    [HideInInspector] public PlayerUIManager UIManager;
     
     public float dashTimer = 0f;
     public float pogoTimer = 0f;
@@ -108,6 +110,7 @@ public class PlayerActionManager : CharacterActionManager
         gameObject.GetComponentInParentOrChildren(ref attackState);
         gameObject.GetComponentInParentOrChildren(ref chargeAttackState);
         gameObject.GetComponentInParentOrChildren(ref takeDamageState);
+        UIManager = gameObject.transform.parent.parent.GetComponentInChildren<PlayerUIManager>();
         moveState = (PlayerMove) defaultState;
         controls = new InputMaster();
         playerInput = GetComponent<PlayerInput>();

@@ -18,6 +18,7 @@ public class PlayerUIManager : MonoBehaviour
     private Slider AcidBar2;
     public Image AlkalineIndicator;
     public Image AcidIndicator;
+    public loadingFadeToBlack loadingScreen;
 
     private float previousAlkaline = 0;
 
@@ -31,6 +32,7 @@ public class PlayerUIManager : MonoBehaviour
       AcidBar2 = PHUI.transform.GetChild(1).GetComponent<Slider>();
       PHBar = PHUI.transform.GetChild(2).GetComponent<Slider>();
       PHBar2 = PHUI.transform.GetChild(3).GetComponent<Slider>();
+      loadingScreen = GetComponentInChildren<loadingFadeToBlack>();
 
         healthBar.maxValue = 10; //playerStats.healthMax;
       previousAlkaline = (float)playerStats.alkaline;

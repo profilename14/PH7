@@ -11,7 +11,8 @@ public class loadingFadeToBlack : MonoBehaviour
 
     float fadeTimer = 0.5f;
 
-    bool fading = false;
+    bool fadingFall = false;
+    bool fadingFallPart2 = false;
 
 
     // Start is called before the first frame update
@@ -23,9 +24,37 @@ public class loadingFadeToBlack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (fading && fadeTimer > 0.2f)
+        Debug.Log(fadeTimer);
+        if (fadingFall)
         {
-            fadeTimer -= Time.deltaTime;
+            if (!fadingFallPart2)
+            {
+                fadeTimer += Time.deltaTime * 2;
+                if (fadeTimer >= 1f)
+                {
+                    fadeTimer = 1f;
+                    fadingFallPart2 = true;
+                }
+                SetAlpha(fadeTimer);
+            }
+            else
+            {
+                fadeTimer -= Time.deltaTime * 3;
+                if (fadeTimer <= 0)
+                {
+                    fadeTimer = 0;
+                }
+                SetAlpha(fadeTimer);
+                if (fadeTimer == 0)
+                {
+                    fadingFall = false;
+                    fadingFallPart2 = false;
+                    fadeTimer = 0.5f;
+                    
+                    image.enabled = false;
+                }
+            }
+
         }
         
     }
@@ -37,6 +66,12 @@ public class loadingFadeToBlack : MonoBehaviour
         SetAlpha(0.5f);
     }
 
+    public void fadeToBlackFall()
+    {
+        fadingFall = true;
+        image.enabled = true;
+        //SetAlpha(0.5f);
+    }
 
     public void SetAlpha(float alpha)
     {

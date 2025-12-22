@@ -73,6 +73,7 @@ public class Player : Character
 
     public override void Die()
     {
+        playerActionManager.UIManager.loadingScreen.fadeToBlackDoor();
         GameManager.instance.PlayerRespawn();
         _Stats.SetHealth(characterData.maxHealth);
     }

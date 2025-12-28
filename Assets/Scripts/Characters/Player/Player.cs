@@ -16,6 +16,8 @@ public class Player : Character
     [SerializeField]
     public CinemachineManager cinemachineManager;
 
+    public PlayerVFXManager playerVFXManager;
+
     private void Awake()
     {
         base.Awake();
@@ -30,6 +32,7 @@ public class Player : Character
 
         playerStats = (PlayerStats)stats;
         playerActionManager = (PlayerActionManager)actionManager;
+        playerVFXManager = (PlayerVFXManager)VFXManager;
     }
 
     public override void OnCharacterAttackHit(IHittable hit, AttackState attack, Vector3 hitPosition)

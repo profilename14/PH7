@@ -32,5 +32,16 @@ public class RespawnFountain : MonoBehaviour
         GameManager.instance.respawnPosition = typhisRespawnPosition.position;
         Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
         GameManager.instance.sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
+        StartCoroutine(fountainVFX());
+    }
+
+    private IEnumerator fountainVFX()
+    {
+        Player.instance.playerVFXManager.FullyChargedVFX();
+
+        yield return new WaitForSeconds(0.8f);
+
+        Player.instance.playerVFXManager.EndChargeVFX();
+        
     }
 }

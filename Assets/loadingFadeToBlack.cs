@@ -24,7 +24,7 @@ public class loadingFadeToBlack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(fadeTimer);
+        //Debug.Log(fadeTimer);
         if (fadingFall)
         {
             if (!fadingFallPart2)

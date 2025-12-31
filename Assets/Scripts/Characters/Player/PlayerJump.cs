@@ -44,6 +44,8 @@ public class PlayerJump : CharacterState
         movementController.PassJumpData(jumpUpSpeed, jumpPreGroundingGraceTime, jumpPostGroundingGraceTime);
         jumpPreGroundingGraceTime = 0.1f;
         jumpPostGroundingGraceTime = 0.1f;
+
+        movementController.onLandDelegate += ResetJumpTimer;
     }
 
     protected override void OnEnable()
@@ -61,6 +63,7 @@ public class PlayerJump : CharacterState
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
         _ActionManager.SetAllActionPriorityAllowed(true);
+        //Debug.Log("Enter jump!");
     }
 
     protected void Update()
@@ -83,9 +86,16 @@ public class PlayerJump : CharacterState
 
         if (!actionManager.IsJumpHeld() || jumpTimer > maxJumpTime)
         {
+            //Debug.Log("Exit jump! IsJumpHeld: " + actionManager.IsJumpHeld() + " jumpTimer: " + jumpTimer);
             movementController.StopJump();
             _ActionManager.StateMachine.ForceSetDefaultState();
         }
+    }
+
+    public void ResetJumpTimer()
+    {
+        //Debug.Log("Reset jump timer");
+        jumpTimer = 0;
     }
 
     protected override void OnDisable()

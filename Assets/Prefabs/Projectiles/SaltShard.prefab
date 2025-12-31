@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a7ca52bcb825d7044a8afdfd569507c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -170,6 +170,7 @@ MonoBehaviour:
   ignoreOtherProjectiles: 1
   triggerDebuff: 0
   triggerReactions: 0
+  ignoredBySameElement: 1
   projectileCollMask:
     serializedVersion: 2
     m_Bits: 329153
@@ -192,8 +193,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 1.2
+  m_Radius: 0.06
+  m_Height: 1
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!54 &5483538860570345988

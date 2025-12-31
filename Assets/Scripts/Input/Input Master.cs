@@ -134,6 +134,15 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""347d8935-92e8-4203-aa78-ce2b9a754a58"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone(max=1)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -444,6 +453,17 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
                     ""action"": ""Lock On"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e990ca61-90d5-497e-bb61-32be1ddd9c28"",
+                    ""path"": ""<SwitchProControllerHID>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Switch Pro Controller"",
+                    ""action"": ""Camera Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -492,6 +512,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         m_Typhis_Pause = m_Typhis.FindAction("Pause", throwIfNotFound: true);
         m_Typhis_QuickMap = m_Typhis.FindAction("Quick Map", throwIfNotFound: true);
         m_Typhis_LockOn = m_Typhis.FindAction("Lock On", throwIfNotFound: true);
+        m_Typhis_CameraLook = m_Typhis.FindAction("Camera Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -565,6 +586,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
     private readonly InputAction m_Typhis_Pause;
     private readonly InputAction m_Typhis_QuickMap;
     private readonly InputAction m_Typhis_LockOn;
+    private readonly InputAction m_Typhis_CameraLook;
     public struct TyphisActions
     {
         private @InputMaster m_Wrapper;
@@ -581,6 +603,7 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Typhis_Pause;
         public InputAction @QuickMap => m_Wrapper.m_Typhis_QuickMap;
         public InputAction @LockOn => m_Wrapper.m_Typhis_LockOn;
+        public InputAction @CameraLook => m_Wrapper.m_Typhis_CameraLook;
         public InputActionMap Get() { return m_Wrapper.m_Typhis; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -626,6 +649,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @LockOn.started += instance.OnLockOn;
             @LockOn.performed += instance.OnLockOn;
             @LockOn.canceled += instance.OnLockOn;
+            @CameraLook.started += instance.OnCameraLook;
+            @CameraLook.performed += instance.OnCameraLook;
+            @CameraLook.canceled += instance.OnCameraLook;
         }
 
         private void UnregisterCallbacks(ITyphisActions instance)
@@ -666,6 +692,9 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
             @LockOn.started -= instance.OnLockOn;
             @LockOn.performed -= instance.OnLockOn;
             @LockOn.canceled -= instance.OnLockOn;
+            @CameraLook.started -= instance.OnCameraLook;
+            @CameraLook.performed -= instance.OnCameraLook;
+            @CameraLook.canceled -= instance.OnCameraLook;
         }
 
         public void RemoveCallbacks(ITyphisActions instance)
@@ -715,5 +744,6 @@ public partial class @InputMaster: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnQuickMap(InputAction.CallbackContext context);
         void OnLockOn(InputAction.CallbackContext context);
+        void OnCameraLook(InputAction.CallbackContext context);
     }
 }

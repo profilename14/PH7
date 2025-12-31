@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Animancer;
 
 
 public class FloatingBubble : MonoBehaviour
@@ -15,11 +16,15 @@ public class FloatingBubble : MonoBehaviour
 
     [SerializeField] float slowdownRate = 0.9f;
 
-    [SerializeField] UnityEvent onPop;
+    [SerializeField] UnityEngine.Events.UnityEvent onPop;
 
     public ICanPickup item;
 
     public bool isSentOut;
+
+    [SerializeField] AnimancerComponent anim;
+
+    [SerializeField] ClipTransition popWarning;
 
     void Start() {
       bubbleRigidbody = GetComponent<Rigidbody>();
@@ -34,13 +39,7 @@ public class FloatingBubble : MonoBehaviour
             lifespanTimer -= Time.deltaTime;
             if (lifespanTimer <= 0)
             {
-                Pop();
-                if(item is BreakablePot b)
-                {
-                    b.Pickup(null);
-                }
-                Destroy(gameObject);
-
+                StartPop();
             }
         }
     }
@@ -81,10 +80,19 @@ public class FloatingBubble : MonoBehaviour
   {
     return bubbleRigidbody.velocity;
   }
+
+    public void StartPop()
+    {
+        anim.Play(popWarning);
+    }
     
   public void Pop()
   {
-    onPop.Invoke();
-    gameObject.SetActive(false);
+        if (item is BreakablePot b)
+        {
+            b.Pickup(null);
+        }
+        onPop.Invoke();
+        gameObject.SetActive(false);
   }
 }

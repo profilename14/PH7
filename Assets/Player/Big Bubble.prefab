@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 3350112447646034703}
   - component: {fileID: 8456625775441057015}
   - component: {fileID: 6646698885359556450}
-  - component: {fileID: 3087539450877617812}
+  - component: {fileID: 1911863830588950554}
+  - component: {fileID: 3753903133353530572}
   m_Layer: 13
   m_Name: Big Bubble
   m_TagString: Bubble
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 611a3a5bd3fd0df488c9648f5b9423f9, type: 2}
+  - {fileID: 2100000, guid: 4b0380534f2979c4b9cff03aa35d9cb2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,6 +171,39 @@ MonoBehaviour:
   onPop:
     m_PersistentCalls:
       m_Calls: []
+  isSentOut: 1
+  anim: {fileID: 1911863830588950554}
+  popWarning:
+    _FadeDuration: 0.25
+    _Speed: 1
+    _Events:
+      _NormalizedTimes:
+      - NaN
+      _Callbacks:
+      - rid: 898905246592139265
+      _Names: []
+    _Clip: {fileID: 7400000, guid: 7fb0a7d705fc08c4c8cefb13e14049cc, type: 2}
+    _NormalizedStartTime: NaN
+  references:
+    version: 2
+    RefIds:
+    - rid: 898905246592139265
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8456625775441057015}
+            m_TargetAssemblyTypeName: FloatingBubble, Assembly-CSharp
+            m_MethodName: Pop
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!114 &6646698885359556450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,8 +220,8 @@ MonoBehaviour:
   bouncinessMod: 1.5
   rb: {fileID: 3656549914451551735}
   applyForceOnHit: 1
-  forceMultiplier: 80
---- !u!114 &3087539450877617812
+  forceMultiplier: 120
+--- !u!114 &1911863830588950554
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,17 +230,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 7014600148762342256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fbb7f906d40114da36d871da071617, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ad50f81b1d25c441943c37a89ba23f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chemicalBlob: {fileID: 8302372839395969698, guid: 496077ebd69e55c4e9076ef335b622d7, type: 3}
-  canSpawnBlobs: 0
-  angleRandomSpread: 45
-  velocityMin: 10
-  velocityMax: 30
-  spawnRepeating: 0
-  spawnDelay: 0
-  blobCountPerInterval: 8
-  useGlobalEmitAngle: 1
-  globalEmitAngle: {x: -90, y: 0, z: 0}
-  offset: {x: 0, y: 6, z: 0}
+  _Animator: {fileID: 3753903133353530572}
+  _Transitions: {fileID: 0}
+  _ActionOnDisable: 0
+--- !u!95 &3753903133353530572
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7014600148762342256}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

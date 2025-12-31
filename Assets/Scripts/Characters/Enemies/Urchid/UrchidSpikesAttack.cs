@@ -11,6 +11,7 @@ public class UrchidSpikesAttack : AttackState
     private EnemyMovementController movementController;
     private EnemyVFXManager vfx;
     public override bool CanEnterState => _ActionManager.allowedStates[this];
+    [SerializeField] EnemyPatrol patrolScript;
 
     private void Awake()
     {
@@ -21,10 +22,11 @@ public class UrchidSpikesAttack : AttackState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+        patrolScript.StopAllCoroutines();
         _ActionManager.SetAllActionPriorityAllowed(false);
 
-        base.OnEnable();
-        if(movementController == null) gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
+        if (movementController == null) gameObject.GetComponentInParentOrChildren<EnemyMovementController>(ref movementController);
 
         movementController.SetAllowMovement(false);
         movementController.SetAllowRotation(false);

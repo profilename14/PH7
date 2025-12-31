@@ -54,6 +54,7 @@ public class EnemyFollowFlying : CharacterState
     [SerializeField]
     public float patrolTargetReachedDistance;
 
+    [SerializeField]
     public bool isPatrolling = true;
 
     private int currentPatrolIndex;
@@ -68,6 +69,8 @@ public class EnemyFollowFlying : CharacterState
 
     protected override void OnEnable()
     {
+        Debug.Log("Entered enemy follow flying!");
+        base.OnEnable();
         _ActionManager.SetAllActionPriorityAllowed(true);
         _ActionManager.anim.Play(MoveAnimation);
         movementController.SetAllowMovement(true);
@@ -120,12 +123,14 @@ public class EnemyFollowFlying : CharacterState
             {
                 if (Vector3.Angle(_Character.transform.forward, toPlayer) < viewConeAngle / 2)
                 {
+                    isPatrolling = false;
                     hasSpottedPlayer = true;
                     Debug.Log("Spotted player!");
                     StopAllCoroutines();
                     movementController.SetForceLookRotation(true);
                     movementController.SetAllowMovement(true);
                     movementController.SetAllowRotation(true);
+                    _ActionManager.StartCoroutine("UpdateAttackStates");
                 }
             }
         }
@@ -135,7 +140,7 @@ public class EnemyFollowFlying : CharacterState
     {
         yield return null;
 
-        //Debug.Log("Patrolling, destination " + currentPatrolIndex);
+        Debug.Log("Patrolling, destination " + currentPatrolIndex);
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);

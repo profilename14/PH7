@@ -78,6 +78,8 @@ public class PlayerSwordAttack : AttackState
 
     private bool isDone;
 
+    public AudioSource audioSource;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
@@ -114,6 +116,8 @@ public class PlayerSwordAttack : AttackState
     protected override void OnEnable()
     {
         base.OnEnable();
+
+        audioSource.PlayOneShot(swordSwingSFX);
         directionalInput = actionManager.GetDirectionalInput();
 
         moveDirAtStart = directionalInput.lookDir;
@@ -269,6 +273,8 @@ public class PlayerSwordAttack : AttackState
 
         canDashAttack = false;
         _ActionManager.SetActionPriorityAllowed(CharacterActionPriority.High, false);
+
+        
     }
 
     public void EndSwordSwing()

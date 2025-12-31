@@ -23,6 +23,8 @@ public class CinemachineManager : MonoBehaviour
     [SerializeField] float zoomOutMultiplier = 1;
     [SerializeField] Vector3 transposeVector = Vector3.zero;
 
+    [SerializeField] float debugPanCameraSpeed = 10;
+
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +40,27 @@ public class CinemachineManager : MonoBehaviour
     void Update()
     {
 
-        rotateCamera(yaw);
+        rotateCameraYaw(yaw);
+
+        rotateCameraPitch(pitch);
+
+        /*if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            yaw -= 1 * Time.deltaTime;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            yaw += 1 * Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            pitch -= 1 * Time.deltaTime;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            pitch += 1 * Time.deltaTime;
+        }*/
     }
 
     public void ScreenShake(float intensityMult, float durationMult)
@@ -60,13 +82,28 @@ public class CinemachineManager : MonoBehaviour
         perlinNoise.m_AmplitudeGain = 0f;  // Reset shake
     }
 
-    public void rotateCamera(float yaw)
+    public void rotateCameraYaw(float yaw)
     {
 
         transposer.m_FollowOffset = GetCameraPosition(yaw, pitch, zoomOutMultiplier);
 
         virtualCamera.transform.rotation = GetCameraRotation(yaw, pitch, roll);
 
+    }
+
+    public void rotateCameraPitch(float pitch)
+    {
+
+        transposer.m_FollowOffset = GetCameraPosition(yaw, pitch, zoomOutMultiplier);
+
+        virtualCamera.transform.rotation = GetCameraRotation(yaw, pitch, roll);
+
+    }
+
+    public void DebugPanCamera(Vector2 rotation)
+    {
+        yaw -= rotation.x * debugPanCameraSpeed;
+        pitch += rotation.y * debugPanCameraSpeed;
     }
 
 

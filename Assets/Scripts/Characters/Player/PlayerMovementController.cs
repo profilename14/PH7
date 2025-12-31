@@ -111,6 +111,9 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
 
     private float OnLandTimer = 0f;
 
+    public delegate void OnLand();
+
+    public OnLand onLandDelegate;
 
     private void Awake()
     {
@@ -518,6 +521,7 @@ public class PlayerMovementController : CharacterMovementController, ICharacterC
             OnLandTimer = 0.2f;
             return;
         }
+        onLandDelegate();
         OnLandTimer = 0.2f;
         playerVFXManager.StartLandVFX(transform.position - Vector3.up / 2);
         if (Player.instance.cinemachineManager)

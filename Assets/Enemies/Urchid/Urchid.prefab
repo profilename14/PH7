@@ -965,6 +965,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 8443472634582701643}
   _AttackData: {fileID: 11400000, guid: a345a38af30b6be468dc765aa865c22a, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   spikesAttack:
     _FadeDuration: 0.16666667
     _Speed: 1
@@ -974,6 +977,7 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 7400000, guid: 4e6d7b0e34c27194f93accb3863da335, type: 2}
     _NormalizedStartTime: NaN
+  patrolScript: {fileID: 1599064009919363821}
   references:
     version: 2
     RefIds: []
@@ -2233,7 +2237,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5837296576551316179}

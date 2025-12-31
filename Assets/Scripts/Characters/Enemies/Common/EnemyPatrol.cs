@@ -38,6 +38,8 @@ public class EnemyPatrol : CharacterState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         gameObject.GetComponentInParentOrChildren(ref _Character);
         gameObject.GetComponentInParentOrChildren(ref movementController);
         _ActionManager = _Character.actionManager;

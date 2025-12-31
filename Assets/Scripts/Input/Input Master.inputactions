@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Camera Look",
+                    "type": "Value",
+                    "id": "347d8935-92e8-4203-aa78-ce2b9a754a58",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(max=1)",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -420,6 +429,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Lock On",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e990ca61-90d5-497e-bb61-32be1ddd9c28",
+                    "path": "<SwitchProControllerHID>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Switch Pro Controller",
+                    "action": "Camera Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

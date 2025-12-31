@@ -51,6 +51,7 @@ public class PlayerActionManager : CharacterActionManager
     // Need InputAction ref to use ReadValue for any continuous polling
     private InputAction movementAction;
     private InputAction lookAction;
+    private InputAction cameraLookAction;
 
     private Vector3 moveDir;
     private Vector3 lookDir;
@@ -129,6 +130,8 @@ public class PlayerActionManager : CharacterActionManager
         movementAction.Enable();
         lookAction = controls.Typhis.Look;
         lookAction.Enable();
+        cameraLookAction = controls.Typhis.CameraLook;
+        cameraLookAction.Enable();
 
         // Discrete inputs
         controls.Typhis.Attack.Enable();
@@ -171,6 +174,8 @@ public class PlayerActionManager : CharacterActionManager
         movementAction.Disable();
         lookAction = controls.Typhis.Look;
         lookAction.Disable();
+        cameraLookAction = controls.Typhis.CameraLook;
+        cameraLookAction.Disable();
 
         // Discrete inputs
         controls.Typhis.Attack.Disable();
@@ -221,6 +226,14 @@ public class PlayerActionManager : CharacterActionManager
 
         dashTimer -= Time.deltaTime;
         pogoTimer -= Time.deltaTime;
+
+        Vector2 cameraLook = cameraLookAction.ReadValue<Vector2>();
+
+        if(cameraLook != Vector2.zero)
+        {
+            //Debug.Log(cameraLook);
+            Player.instance.cinemachineManager.DebugPanCamera(cameraLook * Time.deltaTime);
+        }
     }
 
     private void FixedUpdate()
@@ -283,6 +296,7 @@ public class PlayerActionManager : CharacterActionManager
 
     void OnJumpPerformed(InputAction.CallbackContext context)
     {
+        //Debug.Log("Jump action performed!");
         // Jump button is released
         jumpHeld = false;
     }
@@ -509,6 +523,7 @@ public class PlayerActionManager : CharacterActionManager
         movementController.ProcessMoveInput(playerDirectionalInput.moveDir);
         StateMachine.ForceSetState(takeDamageState);
         character.SetIsInvincible(true);
+        character.SetIsKnockbackImmune(true);
     }
 
     public void ForceDashAttackState()
@@ -537,6 +552,7 @@ public class PlayerActionManager : CharacterActionManager
     {
         yield return new WaitForSeconds(invincibilityTime);
         character.SetIsInvincible(false);
+        character.SetIsKnockbackImmune(false);
         //Debug.Log("Is end invincibility");
     }
 

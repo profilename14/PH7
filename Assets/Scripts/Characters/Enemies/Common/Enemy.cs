@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Animancer;
+using UnityEngine.UIElements;
 
 public class Enemy : Character
 {
@@ -22,6 +23,8 @@ public class Enemy : Character
     [SerializeField]
     protected GameObject curSaltCrystal = null;
     protected SaltCrystal curSaltCrystalScript = null;
+    [SerializeField] GameObject droppedObject = null;
+
 
 
     private void Awake()
@@ -188,6 +191,16 @@ public class Enemy : Character
         {
             enemyMovementController.pathfinding.maxSpeed = originalMaxSpeed;
             enemyMovementController.rb.constraints = originalRestraints;
+        }
+    }
+
+
+    public void dropObject()
+    {
+        Debug.Log("drop object was ran");
+        if (droppedObject)
+        {
+            Instantiate(droppedObject, transform.position + new Vector3 (0,1,0), Quaternion.identity);
         }
     }
 }

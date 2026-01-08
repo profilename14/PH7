@@ -44,6 +44,9 @@ public abstract class Character : MonoBehaviour, IHittable
     [SerializeField]
     private UnityEvent OnHitByAttack;
 
+    [SerializeField]
+    private UnityEvent OnDeath;
+
     public Chemical currentDebuff = Chemical.None;
     public bool isFrozen = false;
     public int freezeReactionsTriggered = 0;
@@ -118,6 +121,8 @@ public abstract class Character : MonoBehaviour, IHittable
 
             if (isDead)
             {
+
+                OnDeath?.Invoke();
                 _VFXManager.DeathVFX();
                 return;
             }

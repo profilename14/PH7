@@ -39,6 +39,8 @@ public class MyProjectile : MonoBehaviour
 
     [SerializeField] LayerMask projectileCollMask;
 
+    [SerializeField] float hittableCheckRadius = 2f; // seperate from ontrigger enter, ignores map collision
+
     void Update()
     {
         if (projectileIsActive)
@@ -55,6 +57,19 @@ public class MyProjectile : MonoBehaviour
     private void FixedUpdate()
     {
         if(fallSpeed > 0) rb.velocity -= new Vector3(0, fallSpeed, 0);
+
+        int playerEnemyLayer = (1 << 6) | (1 << 7);
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, hittableCheckRadius, projectileCollMask);
+        
+        foreach (Collider target in hits)
+        {
+            if (target.CompareTag("Player") || target.CompareTag("Enemy"))
+            {
+                Debug.Log(target);
+                OnTriggerEnter(target);
+            }
+        }
     }
 
     public void InitProjectile(Vector3 position, Vector3 rotation, Character sender, AttackData data)

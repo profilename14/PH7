@@ -30,6 +30,9 @@ public abstract class Character : MonoBehaviour, IHittable
     protected bool isKnockbackImmune = false;
 
     [SerializeField]
+    float knockbackMultiplier = 1;
+
+    [SerializeField]
     protected bool isHitstunImmune = false;
     [SerializeField]
     protected bool isReactionImmune = false;
@@ -122,7 +125,6 @@ public abstract class Character : MonoBehaviour, IHittable
             if (isDead)
             {
 
-                OnDeath?.Invoke();
                 _VFXManager.DeathVFX();
                 return;
             }
@@ -136,8 +138,18 @@ public abstract class Character : MonoBehaviour, IHittable
 
         if (!isKnockbackImmune && characterData.knockbackResistance != 0)
         {
-            Vector3 knockbackDir = new Vector3(-(hitPoint.x - transform.position.x), 0, -(hitPoint.z - transform.position.z));
-            movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback / characterData.knockbackResistance);
+            Vector3 knockbackDir;
+            if (attack is PlayerSwordAttack)
+            {
+                PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
+                knockbackDir = swordScript.GetAttackingDirection();
+            }
+            else
+            {
+                knockbackDir = new Vector3(-(hitPoint.x - transform.position.x), 0, -(hitPoint.z - transform.position.z));
+            }
+
+            movementController.ApplyImpulseForce(knockbackDir, attack.attackData.knockback / characterData.knockbackResistance * knockbackMultiplier);
         }
 
         if (!isReactionImmune) ChemicalReaction(attack.attackData.type, attack.triggerReactions, attack.triggerDebuff, 1);
@@ -317,6 +329,7 @@ public abstract class Character : MonoBehaviour, IHittable
     public virtual void Die()
     {
         isDead = true;
+        OnDeath?.Invoke();
         gameObject.SetActive(false);
     }
 

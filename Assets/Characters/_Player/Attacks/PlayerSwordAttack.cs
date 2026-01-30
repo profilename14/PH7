@@ -117,7 +117,8 @@ public class PlayerSwordAttack : AttackState
     {
         base.OnEnable();
 
-        audioSource.PlayOneShot(swordSwingSFX);
+        if(swordSwingSFX) audioSource.PlayOneShot(swordSwingSFX);
+
         directionalInput = actionManager.GetDirectionalInput();
 
         moveDirAtStart = directionalInput.lookDir;

@@ -64,6 +64,8 @@ public class EnemyMovementControllerFlying : CharacterMovementController
 #endif
 
         groundMask = LayerMask.GetMask("Default", "Obstacles");
+
+        SetPathfindingDestination(transform.position);
     }
 
     private void FixedUpdate()

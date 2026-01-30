@@ -19,6 +19,9 @@ public class EnemyFollowFlying : CharacterState
     private Vector3 playerPosition;
 
     [SerializeField]
+    private Vector3 playerTargetOffset;
+
+    [SerializeField]
     private bool allowBackingUp;
 
     [SerializeField]
@@ -99,15 +102,15 @@ public class EnemyFollowFlying : CharacterState
                 if (!allowBackingUp) movementController.SetAllowMovement(false);
                 else
                 {
-                    Vector3 followTarget = playerPosition + ((_Character.transform.position - playerPosition).normalized * followDistance);
-                    if (followTarget.y - playerPosition.y > maxYDiffHeight) followTarget.y = playerPosition.y + maxYDiffHeight;
+                    Vector3 followTarget = playerPosition + ((_Character.transform.position - playerPosition).normalized * followDistance) + playerTargetOffset;
+                    if (followTarget.y - playerPosition.y > maxYDiffHeight) followTarget.y = playerPosition.y + maxYDiffHeight + playerTargetOffset.y;
                     movementController.SetPathfindingDestination(followTarget);
                 }
             }
             else
             {
                 movementController.SetAllowMovement(true);
-                movementController.SetPathfindingDestination(playerPosition);
+                movementController.SetPathfindingDestination(playerPosition + playerTargetOffset);
             }
         }
         else

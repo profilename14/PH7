@@ -10,14 +10,14 @@ public class Enemy : Character
 
     private bool isLockedOn;
 
-    public delegate void OnDeathDelegate();
+    public delegate void OnLockOnDeathDelegate();
 
-    public OnDeathDelegate onDeath;
+    private OnLockOnDeathDelegate onLockOnDeath;
 
     EnemyMovementController enemyMovementController;
 
     private float originalMaxSpeed = 0;
-
+    
     private RigidbodyConstraints originalRestraints;
     protected GameObject SaltCrystalPrefab;
     [SerializeField]
@@ -97,26 +97,25 @@ public class Enemy : Character
         return enemyData.acidOnHit;
     }
 
-    public void LockOn(OnDeathDelegate disableLockOn)
+    public void LockOn(OnLockOnDeathDelegate disableLockOn)
     {
         isLockedOn = true;
-        onDeath += disableLockOn;
+        onLockOnDeath += disableLockOn;
     }
 
     public void DisableLockOn()
     {
         isLockedOn = false;
-        onDeath = null;
+        onLockOnDeath = null;
     }
 
     public override void Die()
     {
-        isDead = true;
-        if (isLockedOn) onDeath.Invoke();
+        if (isLockedOn) onLockOnDeath.Invoke();
         if (curSaltCrystal) Destroy(curSaltCrystal);
         EnemyActionManager am = (EnemyActionManager)actionManager;
         am.OnDeath();
-        gameObject.SetActive(false);
+        base.Die();
     }
 
     public float GetBounciness()

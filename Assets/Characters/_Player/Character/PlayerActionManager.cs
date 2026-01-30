@@ -386,6 +386,8 @@ public class PlayerActionManager : CharacterActionManager
                 return;*/
             }
 
+        movementController.SetSprinting(true);
+
         if (dashTimer > 0 || hasDashedInAir)
         {
             return;

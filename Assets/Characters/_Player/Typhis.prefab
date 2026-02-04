@@ -1982,7 +1982,7 @@ MonoBehaviour:
           - {fileID: 11400000, guid: 73c7dbc39830bb14dbbd92df39171dab, type: 2}
           - {fileID: 11400000, guid: 1cd8f5d0c0f782a4a828f53be9944be6, type: 2}
           - {fileID: 11400000, guid: 26d1afd76f856e244a2b045428d64ebe, type: 2}
-        _Clip: {fileID: 7400000, guid: ceb4103fc5a585b4a99a92ea455648f0, type: 2}
+        _Clip: {fileID: 7400000, guid: 2c9a7d77fc5e5e74fa13a2745ee25fae, type: 2}
         _NormalizedStartTime: NaN
 --- !u!1 &1507217829476250764
 GameObject:
@@ -9153,7 +9153,7 @@ MonoBehaviour:
   canMove: 1
   canRotate: 1
   isSprinting: 0
-  sprintSpeedMult: 2
+  sprintSpeedMult: 1.8
   sprintSharpnessMult: 0.3
   isSprintJump: 0
 --- !u!114 &7001688360752234840
@@ -11203,6 +11203,7 @@ MonoBehaviour:
   puddleSurfMode: 0
   surfSpeed: 1
   airDashMultiplier: 1.5
+  startSprintVelocityBoost: 35
   onDashStart:
     m_PersistentCalls:
       m_Calls: []
@@ -11212,6 +11213,23 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 3673592665657835523
+      type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4310338966683291600}
+            m_TargetAssemblyTypeName: PlayerDash, Assembly-CSharp
+            m_MethodName: CheckForSprinting
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     - rid: 6690891368541192193
       type: {class: UnityEvent, ns: Animancer, asm: Kybernetik.Animancer}
       data:
@@ -11237,9 +11255,11 @@ MonoBehaviour:
         _Events:
           _NormalizedTimes:
           - 0.25
+          - 0.4375
           - NaN
           _Callbacks:
           - rid: 6690891368541192193
+          - rid: 3673592665657835523
           _Names: []
         _Clip: {fileID: 7400000, guid: 4ce1c0582bde4d8459144aabb571a3c7, type: 2}
         _NormalizedStartTime: NaN

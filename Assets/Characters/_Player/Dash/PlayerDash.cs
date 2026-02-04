@@ -33,6 +33,7 @@ public class PlayerDash : DashState
     [SerializeField]
     public AnimationCurve movementCurve;
 
+
     public bool isDashing = false;
     
 
@@ -54,6 +55,9 @@ public class PlayerDash : DashState
 
     private bool airDash = false;
     [SerializeField] private float airDashMultiplier = 1.5f;
+
+    [SerializeField]
+    private float startSprintVelocityBoost = 30;
 
     private LayerMask stopDashLayerMask;
 
@@ -149,7 +153,8 @@ public class PlayerDash : DashState
         {
             if (!puddleSurfMode)
             {
-                Vector3 newPos = Vector3.Lerp(startingPoint, destination, movementCurve.Evaluate(dashProgress));
+                Vector3 newPos;
+                newPos = Vector3.Lerp(startingPoint, destination, movementCurve.Evaluate(dashProgress));
 
                 movementController.SetPosition(newPos);
 
@@ -249,6 +254,19 @@ public class PlayerDash : DashState
             destination = new Vector3(startingPoint.x + tempDirection.x * distance * 0.4f, 
                                       startingPoint.y,
                                       startingPoint.z + tempDirection.z * distance * 0.4f);
+        }
+    }
+
+    public void CheckForSprinting()
+    {
+        Debug.Log("checking sprint");
+
+        if (actionManager.isDashHeld)
+        {
+            Debug.Log("Doing sprint boost");
+            endDash();
+            movementController.SetSprinting(true);
+            movementController.AddVelocity(character.transform.forward * startSprintVelocityBoost);
         }
     }
 

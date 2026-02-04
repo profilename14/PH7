@@ -565,11 +565,6 @@ public class PlayerActionManager : CharacterActionManager
         character.SetIsKnockbackImmune(false);
         //Debug.Log("Is end dash");
         character.SetIsInvincible(false);
-
-        if (isDashHeld)
-        {
-            movementController.SetSprinting(true);
-        }
     }
 
     public void PogoCooldown()

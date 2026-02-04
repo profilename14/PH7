@@ -45,13 +45,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DistanceFogIntensity: 0
+    - _DistanceFogIntensity: 1
     - _DistanceHeightBlend: 0.5
-    - _Far: 500
+    - _Far: 1000
     - _HeightFogIntensity: 1
     - _HighWorldY: 250
     - _LowWorldY: 0
-    - _Near: -300
+    - _Near: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &11400000
@@ -69,8 +69,8 @@ MonoBehaviour:
   useDistance: 0
   distanceGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 0.09803922}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.10196079, g: 0.27450982, b: 0.23529413, a: 0.09803922}
+    key1: {r: 0.10196079, g: 0.27450982, b: 0.23529413, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -78,15 +78,15 @@ MonoBehaviour:
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 64379
+    ctime1: 65535
     ctime2: 0
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 12722
-    atime1: 31380
+    atime0: 0
+    atime1: 65535
     atime2: 65535
     atime3: 0
     atime4: 0
@@ -96,10 +96,10 @@ MonoBehaviour:
     m_Mode: 0
     m_ColorSpace: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
-  near: -300
-  far: 500
-  distanceFogIntensity: 0
+    m_NumAlphaKeys: 2
+  near: 0
+  far: 1000
+  distanceFogIntensity: 1
   useHeight: 0
   heightGradient:
     serializedVersion: 2

@@ -335,18 +335,26 @@ MonoBehaviour:
   _VFXManager: {fileID: 5967026036674942662}
   isInvincible: 0
   isKnockbackImmune: 0
+  knockbackMultiplier: 1
   isHitstunImmune: 1
   isReactionImmune: 0
+  reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
     m_PersistentCalls:
       m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
   currentDebuff: 0
   isFrozen: 0
+  freezeReactionsTriggered: 0
+  freezeSubReactionsTriggered: 0
   onexitPuddle:
     m_PersistentCalls:
       m_Calls: []
   curSaltCrystal: {fileID: 0}
+  droppedObject: {fileID: 0}
 --- !u!114 &6778341233954487993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3039,6 +3047,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 8288573742154440887}
   _AttackData: {fileID: 11400000, guid: d59e63bae0bf97b4291a258614976d24, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   clawAttack:
     _FadeDuration: 0.083333336
     _Speed: 0.85
@@ -3538,8 +3549,8 @@ MonoBehaviour:
   patrolTargets: []
   isPatrolling: 1
   eyeOffset: {x: 0, y: 1, z: 0}
-  sightDistance: 20
-  viewConeAngle: 90
+  sightDistance: 30
+  viewConeAngle: 120
 --- !u!114 &898727676511315704
 MonoBehaviour:
   m_ObjectHideFlags: 0

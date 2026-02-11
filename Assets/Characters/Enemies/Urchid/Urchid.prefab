@@ -2237,8 +2237,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5837296576551316179}
   m_Father: {fileID: 0}
@@ -2262,11 +2262,15 @@ MonoBehaviour:
   _VFXManager: {fileID: 9111469660060195370}
   isInvincible: 0
   isKnockbackImmune: 0
+  knockbackMultiplier: 1
   isHitstunImmune: 1
   isReactionImmune: 1
   reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
@@ -2277,6 +2281,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   curSaltCrystal: {fileID: 0}
+  droppedObject: {fileID: 0}
 --- !u!114 &4856611634706026665
 MonoBehaviour:
   m_ObjectHideFlags: 0

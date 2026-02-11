@@ -743,8 +743,8 @@ MonoBehaviour:
   - {fileID: 0}
   isPatrolling: 1
   eyeOffset: {x: 0, y: 1, z: 0}
-  sightDistance: 20
-  viewConeAngle: 90
+  sightDistance: 30
+  viewConeAngle: 120
 --- !u!114 &473879448141724443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,11 +1133,15 @@ MonoBehaviour:
   _VFXManager: {fileID: 3248603864096777124}
   isInvincible: 0
   isKnockbackImmune: 0
+  knockbackMultiplier: 1
   isHitstunImmune: 1
   isReactionImmune: 0
   reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
@@ -1148,6 +1152,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   curSaltCrystal: {fileID: 0}
+  droppedObject: {fileID: 0}
 --- !u!114 &3564450361393284608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2424,6 +2429,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   dashAttack:
     _FadeDuration: 0.041666668
     _Speed: 1
@@ -2906,6 +2914,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   clawAttack:
     _FadeDuration: 0.125
     _Speed: 0.4

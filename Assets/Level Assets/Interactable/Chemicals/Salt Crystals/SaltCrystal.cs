@@ -40,6 +40,8 @@ public class SaltCrystal : MonoBehaviour, IHittable
 
     public Character sender = null;
 
+    bool senderIsPlayer;
+
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -61,7 +63,9 @@ public class SaltCrystal : MonoBehaviour, IHittable
             if (attack is PlayerSwordAttack)
             {
                 PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
-                
+
+                senderIsPlayer = true;
+
                 Shatter(swordScript.GetSaltShatterDirection(), sender);
             }
             else if (attack is PlayerChargeAttack)

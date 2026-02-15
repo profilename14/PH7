@@ -10,15 +10,6 @@ inline half NdotLTransition(half3 normal, half3 lightDir, half selfShadingSize, 
     return lerp(angleDiff, angleDiffTransition, flatness);
 }
 
-/*
-inline half NdotLTransition(half3 normal, half3 lightDir, half selfShadingSize, half edgeSize, half flatness) {
-    const half NdotL = dot(normal, lightDir);
-    const half angleDiff = saturate((NdotL * 0.5 + 0.5) - (selfShadingSize - .5));
-    const half angleDiffTransition = smoothstep(.5 - edgeSize * 0.5, .5 + edgeSize * 0.5, angleDiff);
-    return lerp(angleDiff, angleDiffTransition, flatness);
-}
-*/
-
 inline half NdotLTransitionPrimary(half3 normal, half3 lightDir) { 
     return NdotLTransition(normal, lightDir, _SelfShadingSize, _ShadowEdgeSize, _Flatness);
 }
@@ -131,11 +122,15 @@ void StylizeLight(inout Light light)
     const float distanceAttenuation = smoothstep(0, _LightFalloffSize + 0.001, light.distanceAttenuation);
     light.distanceAttenuation = distanceAttenuation;
 
+    /*
     #if LIGHTMAP_ON
     const half3 lightColor = 0;
     #else
+    */
     const half3 lightColor = lerp(half3(1, 1, 1), light.color, _LightContribution);
+    /*
     #endif
+    */
     light.color = lightColor;
 }
 
@@ -149,7 +144,7 @@ half4 UniversalFragment_DSTRM(InputData inputData, SurfaceData surfaceData, floa
     Light mainLight = GetMainLight(inputData.shadowCoord);
     #endif
 
-	#if UNITY_VERSION >= 202220
+    #if UNITY_VERSION >= 202220
     uint meshRenderingLayers = GetMeshRenderingLayer();
     #elif VERSION_GREATER_EQUAL(12, 0)
     uint meshRenderingLayers = GetMeshRenderingLightLayer();
@@ -158,6 +153,7 @@ half4 UniversalFragment_DSTRM(InputData inputData, SurfaceData surfaceData, floa
 #if LIGHTMAP_ON
     mainLight.distanceAttenuation = 1.0;
 #endif
+
     StylizeLight(mainLight);
 
     #if defined(_SCREEN_SPACE_OCCLUSION)
@@ -172,8 +168,10 @@ half4 UniversalFragment_DSTRM(InputData inputData, SurfaceData surfaceData, floa
 #if LIGHTMAP_ON
     // Apply cel shading. Can also separate modes by `#if defined(_CELPRIMARYMODE_SINGLE)` etc.
     // length(inputData.bakedGI) can be replaced with inputData.bakedGI to use light map color more directly.
+    /* 
+    float lighmapEdgeSize = saturate(_ShadowEdgeSize * 10.0);
     inputData.bakedGI = lerp(_ColorDim.rgb, _BaseColor.rgb,
-        smoothstep(_SelfShadingSize - _ShadowEdgeSize, _SelfShadingSize + _ShadowEdgeSize, length(inputData.bakedGI)));
+        smoothstep(_SelfShadingSize - lighmapEdgeSize, _SelfShadingSize + lighmapEdgeSize, length(inputData.bakedGI)));
 
     // Apply shadow modes
     #if defined(_UNITYSHADOWMODE_MULTIPLY)
@@ -182,6 +180,7 @@ half4 UniversalFragment_DSTRM(InputData inputData, SurfaceData surfaceData, floa
     #if defined(_UNITYSHADOWMODE_COLOR)
         inputData.bakedGI = lerp(inputData.bakedGI, _UnityShadowColor.rgb, _UnityShadowColor.a * inputData.bakedGI);
     #endif
+    */
 #endif
 
     const half4 albedo = half4(surfaceData.albedo + surfaceData.emission, surfaceData.alpha);
@@ -199,9 +198,9 @@ half4 UniversalFragment_DSTRM(InputData inputData, SurfaceData surfaceData, floa
     InitializeBRDFData(brdf, 1.0 - 1.0 / kDielectricSpec.a, 0, 0, surfaceData.alpha, brdfData);
     half3 color = GlobalIllumination(brdfData, inputData.bakedGI, 1.0, inputData.normalWS, inputData.viewDirectionWS);
     #if VERSION_GREATER_EQUAL(12, 0)
-	#ifdef _LIGHT_LAYERS
+    #ifdef _LIGHT_LAYERS
     if (IsMatchingLightLayer(mainLight.layerMask, meshRenderingLayers))
-	#endif
+    #endif
     #endif
     color += LightingPhysicallyBased_DSTRM(mainLight, inputData);
 

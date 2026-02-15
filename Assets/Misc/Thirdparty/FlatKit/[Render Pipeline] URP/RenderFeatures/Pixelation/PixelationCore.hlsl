@@ -1,12 +1,13 @@
 ﻿#ifndef FLAT_KIT_PIXELATION_INCLUDED
 #define FLAT_KIT_PIXELATION_INCLUDED
 
-TEXTURE2D_X (_EffectTexture);
-SAMPLER (sampler_EffectTexture);
+TEXTURE2D_X (_BlitTexture);
+SAMPLER (sampler_BlitTexture);
 
 float4 SampleCameraColor(float2 uv)
 {
-    return SAMPLE_TEXTURE2D_X(_EffectTexture, sampler_EffectTexture, UnityStereoTransformScreenSpaceTex(uv));
+    // Using sampler_PointClamp instead of sampler_BlitTexture to avoid bilinear filtering.
+    return SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_PointClamp, UnityStereoTransformScreenSpaceTex(uv));
 }
 
 void Pixelation_float(float2 UV, out float4 Out)

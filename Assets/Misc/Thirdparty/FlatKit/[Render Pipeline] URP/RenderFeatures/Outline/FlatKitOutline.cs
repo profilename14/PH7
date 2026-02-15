@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 #if UNITY_2022_3_OR_NEWER
@@ -12,7 +11,7 @@ public class FlatKitOutline : ScriptableRendererFeature {
     public OutlineSettings settings;
 
     private Material _effectMaterial;
-    private DustyroomRenderPass _fullScreenPass;
+    private ScreenRenderPass _fullScreenPass;
     private bool _requiresColor;
     private bool _injectedBeforeTransparents;
     private ScriptableRenderPassInput _requirements = ScriptableRenderPassInput.Color;
@@ -28,6 +27,23 @@ public class FlatKitOutline : ScriptableRendererFeature {
     private static int colorThresholdMax => Shader.PropertyToID("_ColorThresholdMax");
     private static int fadeRangeStart => Shader.PropertyToID("_FadeRangeStart");
     private static int fadeRangeEnd => Shader.PropertyToID("_FadeRangeEnd");
+
+    /// <summary>
+    /// Access the runtime effect material to override outline parameters at runtime
+    /// without mutating the Settings asset.
+    ///
+    /// Shader (2022.3+ path): "Hidden/FlatKit/OutlineWrap"
+    ///
+    /// Common shader properties/keywords:
+    /// - Floats: _Thickness, _DepthThresholdMin/_Max, _NormalThresholdMin/_Max, _ColorThresholdMin/_Max,
+    ///           _FadeRangeStart, _FadeRangeEnd
+    /// - Colors: _EdgeColor
+    /// - Keywords: OUTLINE_USE_DEPTH, OUTLINE_USE_NORMALS, OUTLINE_USE_COLOR,
+    ///             OUTLINE_ONLY, RESOLUTION_INVARIANT_THICKNESS, OUTLINE_FADE_OUT
+    ///
+    /// Note: Inspector changes on the Settings asset may overwrite your values if applied later.
+    /// </summary>
+    public Material EffectMaterial => _effectMaterial;
 
     public override void Create() {
         // Settings.
@@ -50,7 +66,7 @@ public class FlatKitOutline : ScriptableRendererFeature {
         }
 
         {
-            _fullScreenPass = new DustyroomRenderPass {
+            _fullScreenPass = new ScreenRenderPass {
                 renderPassEvent = settings.renderEvent,
             };
 
@@ -89,22 +105,22 @@ public class FlatKitOutline : ScriptableRendererFeature {
         if (_effectMaterial == null) return;
 
         const string depthKeyword = "OUTLINE_USE_DEPTH";
-        SetKeyword(_effectMaterial, depthKeyword, settings.useDepth);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, depthKeyword, settings.useDepth);
 
         const string normalsKeyword = "OUTLINE_USE_NORMALS";
-        SetKeyword(_effectMaterial, normalsKeyword, settings.useNormals);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, normalsKeyword, settings.useNormals);
 
         const string colorKeyword = "OUTLINE_USE_COLOR";
-        SetKeyword(_effectMaterial, colorKeyword, settings.useColor);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, colorKeyword, settings.useColor);
 
         const string outlineOnlyKeyword = "OUTLINE_ONLY";
-        SetKeyword(_effectMaterial, outlineOnlyKeyword, settings.outlineOnly);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, outlineOnlyKeyword, settings.outlineOnly);
 
         const string resolutionInvariantKeyword = "RESOLUTION_INVARIANT_THICKNESS";
-        SetKeyword(_effectMaterial, resolutionInvariantKeyword, settings.resolutionInvariant);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, resolutionInvariantKeyword, settings.resolutionInvariant);
 
         const string fadeWithDistanceKeyword = "OUTLINE_FADE_OUT";
-        SetKeyword(_effectMaterial, fadeWithDistanceKeyword, settings.fadeWithDistance);
+        RendererFeatureUtils.SetKeyword(_effectMaterial, fadeWithDistanceKeyword, settings.fadeWithDistance);
 
         _effectMaterial.SetColor(edgeColor, settings.edgeColor);
         _effectMaterial.SetFloat(thickness, settings.thickness);
@@ -120,18 +136,6 @@ public class FlatKitOutline : ScriptableRendererFeature {
 
         _effectMaterial.SetFloat(fadeRangeStart, settings.fadeRangeStart);
         _effectMaterial.SetFloat(fadeRangeEnd, settings.fadeRangeEnd);
-    }
-
-    private static void SetKeyword(Material material, string keyword, bool enabled) {
-        if (material.shader != null) {
-            material.SetKeyword(new LocalKeyword(material.shader, keyword), enabled);
-        } else {
-            if (enabled) {
-                material.EnableKeyword(keyword);
-            } else {
-                material.DisableKeyword(keyword);
-            }
-        }
     }
 }
 }
@@ -155,6 +159,22 @@ public class FlatKitOutline : ScriptableRendererFeature {
     private static readonly int NormalThresholdMax = Shader.PropertyToID("_NormalThresholdMax");
     private static readonly int ColorThresholdMin = Shader.PropertyToID("_ColorThresholdMin");
     private static readonly int ColorThresholdMax = Shader.PropertyToID("_ColorThresholdMax");
+
+    /// <summary>
+    /// Access the runtime effect material to override outline parameters at runtime
+    /// without mutating the Settings asset.
+    ///
+    /// Shader (legacy path): "Hidden/FlatKit/OutlineFilter"
+    ///
+    /// Common shader properties/keywords:
+    /// - Floats: _Thickness, _DepthThresholdMin/_Max, _NormalThresholdMin/_Max, _ColorThresholdMin/_Max
+    /// - Colors: _EdgeColor
+    /// - Keywords: OUTLINE_USE_DEPTH, OUTLINE_USE_NORMALS, OUTLINE_USE_COLOR,
+    ///             OUTLINE_ONLY, RESOLUTION_INVARIANT_THICKNESS
+    ///
+    /// Note: Inspector changes on the Settings asset may overwrite your values if applied later.
+    /// </summary>
+    public Material EffectMaterial => _effectMaterial;
 
     public override void Create() {
 #if UNITY_EDITOR

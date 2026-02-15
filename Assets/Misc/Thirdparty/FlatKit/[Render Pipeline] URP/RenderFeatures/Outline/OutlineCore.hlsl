@@ -1,8 +1,8 @@
 ﻿#ifndef FLAT_KIT_OUTLINE_INCLUDED
 #define FLAT_KIT_OUTLINE_INCLUDED
 
-TEXTURE2D_X (_EffectTexture);
-SAMPLER (sampler_EffectTexture);
+TEXTURE2D_X (_BlitTexture);
+SAMPLER (sampler_BlitTexture);
 
 float Linear01Depth(float z)
 {
@@ -20,7 +20,7 @@ float SampleDepth(float2 uv)
 
 float4 SampleCameraColor(float2 uv)
 {
-    return SAMPLE_TEXTURE2D_X(_EffectTexture, sampler_EffectTexture, UnityStereoTransformScreenSpaceTex(uv));
+    return SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_BlitTexture, UnityStereoTransformScreenSpaceTex(uv));
 }
 
 void Outline_float(float2 UV, out float4 Out)

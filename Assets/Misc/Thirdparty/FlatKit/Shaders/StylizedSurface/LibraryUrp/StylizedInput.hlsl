@@ -7,7 +7,7 @@
 // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
 
 #ifndef FLATKIT_TERRAIN
-#if _FORWARD_PLUS
+#if _FORWARD_PLUS && UNITY_VERSION < 600000
 CBUFFER_START(UnityPerMaterialNoBatching)
 #else
 CBUFFER_START(UnityPerMaterial)

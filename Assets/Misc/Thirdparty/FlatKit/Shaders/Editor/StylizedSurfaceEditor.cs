@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using FlatKit;
 using FlatKit.StylizedSurface;
+using FlatKit.Editor;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -20,8 +23,9 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
     private AnimationCurve _gradient = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
     private bool? _smoothNormalsEnabled;
 
-    private GUIStyle _foldoutStyle;
-    private GUIStyle _boxStyle;
+    private static GUIStyle _boxStyle;
+    private static GUIStyle _richHelpBoxStyle;
+    private static GUIStyle _foldoutStyle;
     private static readonly Dictionary<string, bool> FoldoutStates = new() { { RenderingOptionsName, false } };
 
     private static readonly Color HashColor = new Color(0.85023f, 0.85034f, 0.85045f, 0.85056f);
@@ -42,7 +46,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
         }
 
         var guiContent = new GUIContent(cleanName, tooltip);
-        if (property.type == MaterialProperty.PropType.Texture) {
+        if (property.GetShaderPropertyType() == ShaderPropertyType.Texture) {
             if (!property.name.Contains("_BaseMap")) {
                 EditorGUILayout.Space(10);
             }
@@ -80,7 +84,8 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
 
         if (!Application.unityVersion.Contains(Rev(UnityVersion)) &&
             !Application.unityVersion.Contains('b') &&
-            !Application.unityVersion.Contains('a')) {
+            !Application.unityVersion.Contains('a') &&
+            !Application.unityVersion.Replace('.', '^').Contains("23^2")) {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.BeginHorizontal();
 
@@ -95,7 +100,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
                     imagePosition = ImagePosition.ImageLeft,
                     fixedWidth = iconSize,
                     fixedHeight = iconSize,
-                    padding = new RectOffset(0, 0, 10, 10),
+                    padding = new RectOffset(0, 0, 5, 5),
                     margin = new RectOffset(0, 0, 0, 0),
                 });
                 GUILayout.FlexibleSpace();
@@ -106,11 +111,12 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
             var m = $"This version of <b>Flat Kit</b> is designed for <b>Unity {Rev(UnityVersion)}</b>. " +
                     $"You are currently using <b>Unity {unityMajorVersion}</b>.\n" +
                     "<i>The shader and the UI below may not work correctly.</i>\n" +
-                    "Please <b>re-download Flat Kit from the Asset Store</b> to get the correct version.";
+                    "Please <b>re-download Flat Kit</b> to get the compatible version.";
             var style = new GUIStyle(EditorStyles.wordWrappedLabel) {
+                alignment = TextAnchor.MiddleLeft,
                 richText = true,
                 fontSize = 12,
-                padding = new RectOffset(0, 10, 10, 10),
+                padding = new RectOffset(0, 5, 5, 5),
                 margin = new RectOffset(0, 0, 0, 0),
             };
             EditorGUILayout.LabelField(m, style);
@@ -126,8 +132,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
                     const string packageName = "Flat Kit: Toon Shading and Water";
 
                     var type = typeof(UnityEditor.PackageManager.UI.Window);
-                    var method = type.GetMethod("OpenFilter",
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                    var method = type.GetMethod("OpenFilter", BindingFlags.NonPublic | BindingFlags.Static);
                     if (method != null) {
                         method.Invoke(null, new object[] { $"AssetStore/{packageName}" });
                     } else {
@@ -179,6 +184,9 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
             },
         };
         _boxStyle ??= new GUIStyle(EditorStyles.helpBox);
+        _richHelpBoxStyle ??= new GUIStyle(EditorStyles.helpBox) {
+            richText = true
+        };
         bool vGroupStarted = false;
 
         foreach (MaterialProperty property in properties) {
@@ -220,8 +228,26 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
             skipProperty |= displayName.Contains("[_OUTLINESPACE_SCREEN]") &&
                             !_target.IsKeywordEnabled("_OUTLINESPACE_SCREEN");
 
-            if (_target.IsKeywordEnabled("DR_ENABLE_LIGHTMAP_DIR") &&
-                displayName.Contains("Override light direction")) {
+            bool isOverrideLightDirectionToggle = displayName.ToLower().Contains("override light direction");
+            if (Lightmapping.lightingDataAsset != null) {
+                // Lightmapping is enabled.
+                _target.EnableKeyword("DR_ENABLE_LIGHTMAP_DIR");
+                if (isOverrideLightDirectionToggle) {
+                    skipProperty = true;
+
+                    if (latestFoldoutState && foldoutName.Contains("Advanced Lighting")) {
+                        const string m =
+                            "<b>Lightmap Direction Override</b> is required because the scene is using baked lighting.";
+                        EditorGUILayout.LabelField(m, new GUIStyle(EditorStyles.label) {
+                            richText = true,
+                            wordWrap = true,
+                            padding = new RectOffset(16, 0, 8, 0)
+                        });
+                    }
+                }
+            }
+
+            if (_target.IsKeywordEnabled("DR_ENABLE_LIGHTMAP_DIR") && isOverrideLightDirectionToggle) {
                 var dirPitch = _target.GetFloat(LightmapDirectionPitch);
                 var dirYaw = _target.GetFloat(LightmapDirectionYaw);
 
@@ -295,7 +321,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
             }
 
             if (!skipProperty &&
-                property.type == MaterialProperty.PropType.Color &&
+                property.GetShaderPropertyType() == ShaderPropertyType.Color &&
                 property.colorValue == HashColor) {
                 property.colorValue = _target.GetColor(ColorPropertyName);
             }
@@ -316,9 +342,58 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
                 EditorGUI.indentLevel += 1;
             }
 
-            bool hideInInspector = (property.flags & MaterialProperty.PropFlags.HideInInspector) != 0;
+            bool hideInInspector = (property.GetShaderPropertyFlags() & ShaderPropertyFlags.HideInInspector) != 0;
             if (!hideInInspector && !skipProperty) {
+                EditorGUI.BeginChangeCheck();
                 DrawStandard(property);
+
+                // Toggle per-object outlines.
+                if (property.name.Equals("_OutlineEnabled")) {
+                    var outlineEnabled = _target.IsKeywordEnabled("DR_OUTLINE_ON");
+
+                    if (_target.GetShaderPassEnabled("SRPDEFAULTUNLIT")) {
+                        // Legacy per-object outlines.
+                        const string m = "Using legacy per-object outlines. Please update to Unity 2022.3+ to use " +
+                                         "the new Renderer Feature outlines.";
+                        EditorGUILayout.HelpBox(m, MessageType.Info);
+                    } else {
+                        // Per-object outlines are now handled by a Renderer Feature.
+                        var renderer = ObjectOutlineEditorUtils.GetRendererData();
+                        if (renderer != null) {
+                            GUILayout.Space(-EditorGUIUtility.standardVerticalSpacing -
+                                            EditorGUIUtility.singleLineHeight);
+                            GUILayout.BeginHorizontal();
+                            GUILayout.FlexibleSpace();
+                            if (GUILayout.Button("Select Renderer Feature", EditorStyles.miniButtonRight)) {
+                                Selection.activeObject = renderer;
+                            }
+
+                            GUILayout.EndHorizontal();
+                        }
+                    }
+
+                    if (EditorGUI.EndChangeCheck()) {
+                        // Outline toggle changed state.
+#if UNITY_2022_3_OR_NEWER
+                        ObjectOutlineEditorUtils.SetActive(_target, outlineEnabled);
+#else
+                        _target.SetShaderPassEnabled("SRPDEFAULTUNLIT", outlineEnabled);
+#endif
+                    }
+
+#if UNITY_2022_3_OR_NEWER
+                    // Switch from legacy shader pass per-object outlines (pre-4.7.0) to new Renderer Feature outlines.
+                    const string legacyPassName = "SRPDEFAULTUNLIT";
+                    if (_target.GetShaderPassEnabled(legacyPassName) && outlineEnabled) {
+                        _target.SetShaderPassEnabled(legacyPassName, false);
+                        var m = $"<color=grey>[Flat Kit]</color> <b>Per-object outlines</b> are now handled by a " +
+                                $"<b>Renderer Feature</b>. The material <color=green><b>{_target.name}</b></color> " +
+                                $"and the <b>URP Renderer</b> currently in use will be updated now.";
+                        Debug.Log(m);
+                        ObjectOutlineEditorUtils.SetActive(_target, true);
+                    }
+#endif
+                }
             }
 
             if (!skipProperty && displayName.Contains("Detail Impact")) {
@@ -359,12 +434,9 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
                 EndBox();
                 latestFoldoutState = false;
                 if (foldoutName.Contains("Advanced Lighting")) {
-                    EditorGUILayout.LabelField(
-                        "<b>Advanced Lighting</b> features are only applicable to real-time lighting. When using baked " +
-                        "lighting the data is immutable because it is included in the lightmap and/or light probes.",
-                        new GUIStyle(EditorStyles.helpBox) {
-                            richText = true
-                        });
+                    const string m =
+                        "<b>Advanced Lighting</b> features have significantly different impact in real-time and baked lighting.";
+                    EditorGUILayout.LabelField(m, _richHelpBoxStyle);
                 }
             }
         }
@@ -387,7 +459,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
         }
 
         // Toggle the outline pass. Disabling by name `Outline` doesn't work.
-        _target.SetShaderPassEnabled("SRPDEFAULTUNLIT", _target.IsKeywordEnabled("DR_OUTLINE_ON"));
+        // _target.SetShaderPassEnabled("SRPDEFAULTUNLIT", _target.IsKeywordEnabled("DR_OUTLINE_ON"));
 
         /*
         if (HasProperty("_MainTex")) {
@@ -507,7 +579,77 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
                     case 2: {
                         // Save to Assets folder
                         pathSmoothed = $"Assets/{Path.GetFileName(pathSmoothed)}";
-                        AssetDatabase.CreateAsset(newMesh, pathSmoothed);
+
+                        // Make sure the name is a valid file name.
+                        pathSmoothed = Regex.Replace(pathSmoothed, @"[<>:""/\\|?*]", "_");
+
+                        // Re-name if the file already exists.
+                        if (File.Exists(pathSmoothed)) {
+                            var baseName = Path.GetFileNameWithoutExtension(pathSmoothed);
+                            var extension = Path.GetExtension(pathSmoothed);
+                            var directory = Path.GetDirectoryName(pathSmoothed);
+                            int copyIndex = 1;
+                            string newPath;
+                            do {
+                                newPath = $"{directory}\\{baseName} ({copyIndex}){extension}";
+                                copyIndex++;
+
+                                if (copyIndex > 160) {
+                                    Debug.LogError(
+                                        "<b>[Flat Kit]</b> Could not find a valid file name to save the smoothed mesh.");
+                                    _target.DisableKeyword(OutlineSmoothNormalsKeyword);
+
+                                    // Show the user a message.
+                                    EditorUtility.DisplayDialog("Error",
+                                        "Could not find a valid file name to save the smoothed mesh. " +
+                                        "Please try renaming the mesh or saving it to a different folder.",
+                                        "OK");
+
+                                    return;
+                                }
+                            } while (File.Exists(newPath));
+
+                            pathSmoothed = newPath;
+                        }
+
+                        try {
+                            AssetDatabase.CreateAsset(newMesh, pathSmoothed);
+                            Debug.Log($"<b>[Flat Kit]</b> Created asset <i>{pathSmoothed}</i>.");
+                        }
+                        catch (Exception e) {
+                            Debug.LogError($"<b>[Flat Kit]</b> Could not create asset at path '{pathSmoothed}'. " +
+                                           $"Please check the Console for more information.\n{e}");
+
+                            // Show the user a message to select a folder.
+                            var m =
+                                $"Could not create asset at path '{pathSmoothed}'. Please select the folder and file name.";
+                            if (EditorUtility.DisplayDialog("Error", m, "Select Folder", "Cancel")) {
+                                var userPath = EditorUtility.SaveFilePanelInProject("Save Smoothed Mesh",
+                                    Path.GetFileName(pathSmoothed), "asset",
+                                    "Please select a folder and file name to save the smoothed mesh.",
+                                    Path.GetDirectoryName(pathSmoothed));
+                                if (!string.IsNullOrEmpty(userPath)) {
+                                    try {
+                                        AssetDatabase.CreateAsset(newMesh, userPath);
+                                        Debug.Log($"<b>[Flat Kit]</b> Created asset <i>{userPath}</i>.");
+                                    }
+                                    catch (Exception ex) {
+                                        Debug.LogError(
+                                            $"<b>[Flat Kit]</b> Could not create asset at path '{userPath}'. " +
+                                            $"Please check the Console for more information.\n{ex}");
+                                        _target.DisableKeyword(OutlineSmoothNormalsKeyword);
+                                    }
+                                } else {
+                                    _target.DisableKeyword(OutlineSmoothNormalsKeyword);
+                                }
+                            } else {
+                                _target.DisableKeyword(OutlineSmoothNormalsKeyword);
+                            }
+
+                            _target.DisableKeyword(OutlineSmoothNormalsKeyword);
+                            return;
+                        }
+
                         break;
                     }
                 }
@@ -860,6 +1002,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
     }
 #endif
 
+    [UsedImplicitly]
     private void TransferToBaseMap() {
         var baseMapProperty = FindProperty("_MainTex");
         var baseColorProperty = FindProperty("_Color");
@@ -870,6 +1013,7 @@ public class StylizedSurfaceEditor : BaseShaderGUI {
         _target.SetColor("_BaseColor", baseColorProperty.colorValue);
     }
 
+    [UsedImplicitly]
     private void TransferToMainTex() {
         var baseMapProperty = FindProperty("_BaseMap");
         var baseColorProperty = FindProperty("_BaseColor");

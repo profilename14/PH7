@@ -44,7 +44,8 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: _UnityShadowPower
   m_SavedProperties:
     serializedVersion: 3
@@ -157,7 +158,7 @@ Material:
     - _GradientSize: 7.14
     - _GradientSpace: 1
     - _LightContribution: 0.8
-    - _LightFalloffSize: 0.035
+    - _LightFalloffSize: 0.1
     - _LightmapDirectionPitch: 0
     - _LightmapDirectionYaw: 0
     - _Metallic: 0

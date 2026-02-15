@@ -78,7 +78,7 @@ half4 SplatmapFragment_DSTRM(Varyings IN) : SV_TARGET
     SETUP_DEBUG_TEXTURE_DATA(inputData, IN.uvMainAndLM.xy, _BaseMap);
 #endif
 
-    #if defined(_DBUFFER)
+#if defined(_DBUFFER)
     half3 specular = half3(0.0h, 0.0h, 0.0h);
     ApplyDecal(IN.clipPos,
         albedo,
@@ -87,7 +87,11 @@ half4 SplatmapFragment_DSTRM(Varyings IN) : SV_TARGET
         metallic,
         occlusion,
         smoothness);
-    #endif
+#endif
+
+#if UNITY_VERSION > 60000012 // Minor version not precise, somewhere between 6.0.4 and 6.0.23.
+    InitializeBakedGIData(IN, inputData);
+#endif
 
 #ifdef TERRAIN_GBUFFER
 

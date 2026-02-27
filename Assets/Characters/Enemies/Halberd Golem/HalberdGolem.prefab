@@ -3511,6 +3511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   swingAttack:
     _FadeDuration: 0.25
     _Speed: 1.4
@@ -3708,6 +3711,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   swingAttack:
     _FadeDuration: 0.06666667
     _Speed: 1.4
@@ -3816,6 +3822,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
+  triggerDebuff: 0
+  triggerReactions: 0
+  ignoredBySameElement: 0
   swingAttack:
     _FadeDuration: 0.25
     _Speed: 1.6
@@ -9908,7 +9917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  version: 1073741824
   drawGizmos: 1
   detailedGizmos: 0
   startEndModifier:
@@ -9921,7 +9930,40 @@ MonoBehaviour:
       m_Bits: 4294967295
     useGraphRaycasting: 0
   traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  tagCostMultipliers:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  tagEntryCosts: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
 --- !u!114 &4102959570261446446
@@ -9936,7 +9978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b090bec917bbe4c3bbc612ef13f7c4a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  version: 1073741824
   useRaycasting: 0
   mask:
     serializedVersion: 2
@@ -9959,16 +10001,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce11ea984e202491d9271f53021d8b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 1073741824
   radius: 3
   height: 4
-  canMove: 1
+  simulateMovement: 1
   maxSpeed: 6
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
+  endReachedDistance: 1
+  whenCloseToDestination: 0
+  rvoDensityBehavior:
+    enabled: 0
+    densityThreshold: 0.5
+    returnAfterBeingPushedAway: 0
+    progressAverage: 0
+    lastJobDensityResult: 0
   repathRateCompatibility: NaN
   canSearchCompability: 0
   orientation: 0
@@ -9979,16 +10028,14 @@ MonoBehaviour:
     sensitivity: 10
     maximumPeriod: 2
     visualizeSensitivity: 0
-  targetCompatibility: {fileID: 0}
   acceleration: 10
   rotationSpeed: 270
   slowdownTime: 0.5
-  endReachedDistance: 1
   wallForce: 3
   wallDist: 1
   funnelSimplification: 0
   slowWhenNotFacingTarget: 0
-  animCompatibility: {fileID: 0}
+  preventMovingBackwards: 0
 --- !u!82 &9105219479800188026
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10104,11 +10151,15 @@ MonoBehaviour:
   _VFXManager: {fileID: 7669883750393468754}
   isInvincible: 0
   isKnockbackImmune: 0
+  knockbackMultiplier: 1
   isHitstunImmune: 1
   isReactionImmune: 0
   reactionResistance: 1
   currentPuddle: {fileID: 0}
   OnHitByAttack:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
     m_PersistentCalls:
       m_Calls: []
   currentDebuff: 0
@@ -10119,6 +10170,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   curSaltCrystal: {fileID: 0}
+  droppedObject: {fileID: 0}
 --- !u!114 &7080912619551175276
 MonoBehaviour:
   m_ObjectHideFlags: 0

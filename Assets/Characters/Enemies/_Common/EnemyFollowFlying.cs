@@ -126,14 +126,7 @@ public class EnemyFollowFlying : CharacterState
             {
                 if (Vector3.Angle(_Character.transform.forward, toPlayer) < viewConeAngle / 2)
                 {
-                    isPatrolling = false;
-                    hasSpottedPlayer = true;
-                    Debug.Log("Spotted player!");
-                    StopAllCoroutines();
-                    movementController.SetForceLookRotation(true);
-                    movementController.SetAllowMovement(true);
-                    movementController.SetAllowRotation(true);
-                    _ActionManager.StartCoroutine("UpdateAttackStates");
+                    SpottedPlayer();
                 }
             }
         }
@@ -177,5 +170,17 @@ public class EnemyFollowFlying : CharacterState
         }
 
         StartCoroutine(Patrolling());
+    }
+
+    public void SpottedPlayer()
+    {
+        isPatrolling = false;
+        hasSpottedPlayer = true;
+        Debug.Log("Spotted player!");
+        StopAllCoroutines();
+        movementController.SetForceLookRotation(true);
+        movementController.SetAllowMovement(true);
+        movementController.SetAllowRotation(true);
+        _ActionManager.StartCoroutine("UpdateAttackStates");
     }
 }

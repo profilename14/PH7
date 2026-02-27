@@ -183,6 +183,11 @@ public class EnemyArenaManager : MonoBehaviour
                 //Debug.Log("Spotted Player!");
                 enemy.gameObject.GetComponentInParentOrChildren<RoamingEnemyActionManager>().SpottedPlayer();
             }
+            else if (enemy.gameObject.GetComponentInParentOrChildren<EnemyFollowFlying>() != null)
+            {
+                //Debug.Log("Spotted Player!");
+                enemy.gameObject.GetComponentInParentOrChildren<EnemyFollowFlying>().SpottedPlayer();
+            }
 
         }
         spawningEnemies = false;

@@ -159,3 +159,21 @@ Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos 
 Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos - Converter/Tail Animator - V2 Demo Unity 2019+ Examples.unitypackage.meta
 Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos - Converter/Tail Animator - Tails to Use Optimal.unitypackage.meta
 Assets/FImpossible Creations/Plugins - Animating/Tail Animator/Packages - Demos - Converter/FImpossible Assembly Definitions.unitypackage.meta
+
+# Never ignore DLLs in the FMOD subfolder.
+!/[Aa]ssets/Plugins/FMOD/**/lib/*
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor.
+!/[Aa]ssets/Gizmos/FMOD/*
+!/[Aa]ssets/Editor Default Resources/FMOD/*
+
+# Ignore the Cache folder since it is updated locally.
+/[Aa]ssets/Plugins/FMOD/Cache/*
+
+# Ignore bank files in the StreamingAssets folder.
+/[Aa]ssets/StreamingAssets/**/*.bank
+/[Aa]ssets/StreamingAssets/**/*.bank.meta
+
+# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
+# Log files can be ignored.
+fmod_editor.log

@@ -25,8 +25,8 @@ Material:
   m_Parent: {fileID: 2100000, guid: ec9c60c17974e814aa1c9ea6c8d79670, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - DR_OUTLINE_ON
   - DR_RIM_ON
+  - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
   - _DETAILMAPBLENDINGMODE_MULTIPLY
   - _GRADIENTSPACE_WORLD
@@ -40,7 +40,8 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -58,9 +59,11 @@ Material:
     - _LightContribution: 0.8
     - _LightFalloffSize: 0.7
     - _Metallic: 0.883
+    - _OutlineEnabled: 0
+    - _RimEnabled: 1
     - _ShadowEdgeSize: 0.053
     - _Smoothness: 0
-    - _SpecularEnabled: 0
+    - _SpecularEnabled: 1
     m_Colors:
     - _BaseColor: {r: 0.42114633, g: 0.82936025, b: 0.9811321, a: 1}
     - _Color: {r: 0.3410021, g: 0.69927025, b: 0.9150943, a: 1}

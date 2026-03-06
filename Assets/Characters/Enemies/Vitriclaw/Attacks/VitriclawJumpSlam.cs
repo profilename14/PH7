@@ -30,7 +30,7 @@ public class VitriclawJumpSlam : AttackState
 
     [SerializeField] GameObject puddle;
 
-    [SerializeField] float groundY;
+    [SerializeField] float jumpOffsetY;
 
     private void Awake()
     {
@@ -41,12 +41,12 @@ public class VitriclawJumpSlam : AttackState
 
     protected override void OnEnable()
     {
+        _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+
         base.OnEnable();
 
         startJump = false;
         updateEndpoint = true;
-
-        _ActionManager.SetAllActionPriorityAllowed(false);
 
         movementController.SetAllowMovement(false);
         movementController.SetAllowRotation(true);
@@ -71,7 +71,7 @@ public class VitriclawJumpSlam : AttackState
 
     private void Update()
     {
-        if(updateEndpoint) endpoint = new Vector3(Player.instance.transform.position.x, groundY, Player.instance.transform.position.z);
+        if(updateEndpoint) endpoint = new Vector3(Player.instance.transform.position.x, startPoint.y + jumpOffsetY, Player.instance.transform.position.z);
         
         if (startJump)
         {

@@ -101,6 +101,7 @@ public class AcidSprayAttack : AttackState
     public void SetTrackingAtDistance(float targetDistance)
     {
         movementController.SetForceLookAtPlayer(true);
+        movementController.SetForceManualRotation(true);
         movementController.SetPathfindingDestination((Player.instance.transform.position) +
             (character.transform.position - Player.instance.transform.position).normalized * targetDistance);
     }

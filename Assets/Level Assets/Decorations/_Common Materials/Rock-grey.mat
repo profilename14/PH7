@@ -27,7 +27,6 @@ Material:
   m_ValidKeywords:
   - DR_CEL_EXTRA_ON
   - DR_OUTLINE_ON
-  - DR_OUTLINE_SMOOTH_NORMALS
   - DR_RIM_ON
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
@@ -43,7 +42,8 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: _UnityShadowPower
   m_SavedProperties:
     serializedVersion: 3
@@ -191,7 +191,7 @@ Material:
     - _UnityShadowPower: 1
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
-    - _VertexExtrusionSmoothNormals: 1
+    - _VertexExtrusionSmoothNormals: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

@@ -42,7 +42,8 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: _UnityShadowPower
   m_SavedProperties:
     serializedVersion: 3
@@ -163,7 +164,7 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 1
-    - _OutlineScale: 1.025
+    - _OutlineScale: 1
     - _OutlineSpace: 0
     - _OutlineWidth: 1
     - _OverrideLightmapDir: 0
@@ -206,7 +207,7 @@ Material:
     - _FlatRimColor: {r: 0.8, g: 0.10785861, b: 0, a: 1}
     - _FlatSpecularColor: {r: 1, g: 0.21650752, b: 0.0047169924, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 1, g: 0.4931507, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []

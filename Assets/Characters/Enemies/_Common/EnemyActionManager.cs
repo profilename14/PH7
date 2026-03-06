@@ -57,7 +57,7 @@ public class EnemyActionManager : CharacterActionManager
         {
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
-                allowedStates.Add(attacks[i].stateScript, false);
+                if (!allowedStates.ContainsKey(attacks[i].stateScript)) allowedStates.Add(attacks[i].stateScript, false);
                 EnemyActionBehavior attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
@@ -151,14 +151,14 @@ public class EnemyActionManager : CharacterActionManager
                 {
                     if (StateMachine.TrySetState(attackCandidates[i].stateScript))
                     {
-                        //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
-                        //Debug.Log(allowedStates[attackCandidates[i].stateScript]);
-                        //Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
+                        Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                        Debug.Log(allowedStates[attackCandidates[i].stateScript]);
+                        Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
                         ResetCooldown(attackCandidates[i]);
                     }
                     else
                     {
-                        //Debug.Log("failed entering state");
+                        Debug.Log("failed entering state " + attackCandidates[i].stateScript);
                     }
                     
                     break;

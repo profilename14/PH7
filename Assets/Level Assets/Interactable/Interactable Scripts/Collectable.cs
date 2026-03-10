@@ -37,6 +37,7 @@ public class Collectable : MonoBehaviour
             {
                 Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
                 GameManager.instance.soapstones += 1;
+                Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
                 print("Soapstones collected: " + GameManager.instance.soapstones);
             }
             GameManager.instance.collectablesObtained[sceneID][collectableID] = true;

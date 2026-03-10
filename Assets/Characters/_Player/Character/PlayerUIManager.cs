@@ -4,6 +4,7 @@ using KinematicCharacterController.Examples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerUIManager : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class PlayerUIManager : MonoBehaviour
     public Image AlkalineIndicator;
     public Image AcidIndicator;
     public loadingFadeToBlack loadingScreen;
+
+    public TextMeshProUGUI lapisText;
+    public TextMeshProUGUI soapstonesText;
 
     private float previousAlkaline = 0;
 
@@ -98,5 +102,15 @@ public class PlayerUIManager : MonoBehaviour
 
 
 
+    }
+
+    public void UpdateSoapstones(int amount)
+    {
+        soapstonesText.text = "Soapstones: " + amount;
+    }
+
+    public void UpdateLapis(int amount)
+    {
+        lapisText.text = "Lapis: " + amount;
     }
 }

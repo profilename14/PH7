@@ -18,6 +18,8 @@ public class Player : Character
 
     public PlayerVFXManager playerVFXManager;
 
+    public PlayerUIManager uiManager;
+
     private void Awake()
     {
         base.Awake();

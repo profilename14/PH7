@@ -874,6 +874,7 @@ GameObject:
   - component: {fileID: 3564450361393284608}
   - component: {fileID: 8955503680403876498}
   - component: {fileID: 3248603864096777124}
+  - component: {fileID: 605678161864515571}
   m_Layer: 7
   m_Name: Strider
   m_TagString: Enemy
@@ -937,7 +938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  version: 1073741824
   drawGizmos: 1
   detailedGizmos: 0
   startEndModifier:
@@ -950,7 +951,40 @@ MonoBehaviour:
       m_Bits: 4294967295
     useGraphRaycasting: 0
   traversableTags: -1
-  tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  tagCostMultipliers:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  tagEntryCosts: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
 --- !u!114 &2379720879181403961
@@ -965,7 +999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b090bec917bbe4c3bbc612ef13f7c4a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  version: 1073741824
   useRaycasting: 0
   mask:
     serializedVersion: 2
@@ -988,16 +1022,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce11ea984e202491d9271f53021d8b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 5
+  version: 1073741824
   radius: 2.5
   height: 2.5
-  canMove: 1
+  simulateMovement: 1
   maxSpeed: 6
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
+  endReachedDistance: 1
+  whenCloseToDestination: 0
+  rvoDensityBehavior:
+    enabled: 0
+    densityThreshold: 0.5
+    returnAfterBeingPushedAway: 0
+    progressAverage: 0
+    lastJobDensityResult: 0
   repathRateCompatibility: NaN
   canSearchCompability: 0
   orientation: 0
@@ -1008,16 +1049,14 @@ MonoBehaviour:
     sensitivity: 10
     maximumPeriod: 2
     visualizeSensitivity: 0
-  targetCompatibility: {fileID: 0}
   acceleration: 8
   rotationSpeed: 270
   slowdownTime: 0.5
-  endReachedDistance: 1
   wallForce: 3
   wallDist: 1
   funnelSimplification: 0
   slowWhenNotFacingTarget: 0
-  animCompatibility: {fileID: 0}
+  preventMovingBackwards: 0
 --- !u!82 &9119591476608630801
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1143,7 +1182,19 @@ MonoBehaviour:
       m_Calls: []
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 605678161864515571}
+        m_TargetAssemblyTypeName: ChemicalBlobEmitter, Assembly-CSharp
+        m_MethodName: SpawnBlobs
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   currentDebuff: 0
   isFrozen: 0
   freezeReactionsTriggered: 0
@@ -1208,6 +1259,30 @@ MonoBehaviour:
   dashTrail: {fileID: 140901593711039253}
   dashColor: {r: 0, g: 1, b: 0.5759163, a: 1}
   dashColorIntensity: 2
+--- !u!114 &605678161864515571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918809242399246192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fbb7f906d40114da36d871da071617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chemicalBlob: {fileID: 2389763154426069048, guid: 2ed0bdf2a0398dc458d8217f441cdf69, type: 3}
+  canSpawnBlobs: 0
+  angleRandomSpread: 80
+  velocityMin: 5
+  velocityMax: 12
+  spawnRepeating: 0
+  spawnDelay: 0
+  spawnOnAwake: 0
+  blobCountPerInterval: 2
+  useGlobalEmitAngle: 1
+  globalEmitAngle: {x: -90, y: 0, z: 0}
+  offset: {x: 0, y: 2, z: 0}
 --- !u!1 &1933641591904351052
 GameObject:
   m_ObjectHideFlags: 0

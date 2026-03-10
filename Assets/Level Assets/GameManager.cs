@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public List<Dictionary<int, bool>> collectablesDamageObtained;
     public List<Dictionary<int, bool>> clearedCombatRooms;
     public int soapstones = 0;
+    public int lapis = 0;
     public int damageUpgrade = 0; // Each point addes 33% damage rounded up
     public bool dashUnlocked = false;
     public bool bubbleUnlocked = false;

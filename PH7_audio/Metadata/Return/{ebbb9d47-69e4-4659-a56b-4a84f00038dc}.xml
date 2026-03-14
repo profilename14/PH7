@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="MixerReturn" id="{ebbb9d47-69e4-4659-a56b-4a84f00038dc}">
+		<property name="name">
+			<value>Delay</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{027d250c-faf1-4371-ad24-67786489ea00}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{3b97c0dd-aca5-4d54-8a64-8d1531818811}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{9b78bf7f-ba21-4cf0-a700-f87ba903cd8d}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{027d250c-faf1-4371-ad24-67786489ea00}">
+		<relationship name="effects">
+			<destination>{d6ecad17-cc30-4a6d-8a25-af6814edae2a}</destination>
+			<destination>{4ab73fc7-29a5-43a0-be00-00e4f27b986e}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{3b97c0dd-aca5-4d54-8a64-8d1531818811}" />
+	<object class="DelayEffect" id="{d6ecad17-cc30-4a6d-8a25-af6814edae2a}">
+		<property name="delay">
+			<value>592.109985</value>
+		</property>
+		<property name="feedback">
+			<value>21</value>
+		</property>
+		<property name="delayChangeMode">
+			<value>1</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{4ab73fc7-29a5-43a0-be00-00e4f27b986e}" />
+</objects>

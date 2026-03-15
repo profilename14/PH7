@@ -10,6 +10,8 @@ public class CollectableLapis : MonoBehaviour
 
     [SerializeField] float fallSpeed;
 
+    bool closeToGround;
+
     void Start()
     {
         /*sceneID = SceneManager.GetActiveScene().buildIndex;
@@ -30,7 +32,7 @@ public class CollectableLapis : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(fallSpeed > 0) transform.position -= new Vector3(0, fallSpeed, 0);
+        if(fallSpeed > 0 && !closeToGround) transform.position -= new Vector3(0, fallSpeed, 0);
     }
 
     void OnTriggerEnter(Collider other)
@@ -41,6 +43,10 @@ public class CollectableLapis : MonoBehaviour
             Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
             print("Lapis collected: " + GameManager.instance.lapis);
             Destroy(gameObject);
+        }
+        else if(other.gameObject.layer == 18)
+        {
+            closeToGround = true;
         }
     }
 }

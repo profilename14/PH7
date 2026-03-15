@@ -166,6 +166,7 @@ public class EnemyArenaManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         for(int i = 0; i < spawnPoints[waveNumber].spawnPoints.Length; i++)
         {
+            
             if (spawnPoints[waveNumber].spawnPoints[i] == null || enemiesToSpawn[waveNumber].enemies[i] == null) continue;
             yield return new WaitForSeconds(waveSpawnDelay);
 

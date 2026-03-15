@@ -110,7 +110,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -3322,8 +3322,8 @@ MonoBehaviour:
   moveSpeed: 20
   rotationSpeed: 90
   playerTrackingDistance: 22
-  duration: 3
-  startSprayDelay: 2
+  duration: 4
+  startSprayDelay: 1.5
   effectField: {fileID: 2827901823272519701}
   spray: {fileID: 8987709302008954117}
   chargeSpray: {fileID: 8752409196299589437}
@@ -4627,9 +4627,6 @@ MonoBehaviour:
   - cooldown: 0
     stateScript: {fileID: 2351203193021508076}
     behaviorData: {fileID: 11400000, guid: 1481900208ae303498562ea4a1e02896, type: 2}
-  - cooldown: 0
-    stateScript: {fileID: 1684618129090654006}
-    behaviorData: {fileID: 11400000, guid: 9606bfee5b088794d8bc69b916696c8e, type: 2}
   - cooldown: 0
     stateScript: {fileID: 8218619108276464507}
     behaviorData: {fileID: 11400000, guid: fda2889e1773ba546b3259152099a8f4, type: 2}

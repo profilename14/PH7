@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class PlayerStats : CharacterStats
 {
@@ -29,6 +30,12 @@ public class PlayerStats : CharacterStats
     protected override void Awake()
     {
         base.Awake();
+
+    }
+
+    private void Start()
+    {
+
     }
 
     public void ModifyAlkaline(double alkaline)
@@ -74,5 +81,10 @@ public class PlayerStats : CharacterStats
 
         if (health <= lowHealth) vfxManager.SetIsLowHealth(true);
         else vfxManager.SetIsLowHealth(false);
+    }
+
+    public void SetHealthMax(int value)
+    {
+        _HealthMax = value;
     }
 }

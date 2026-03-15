@@ -25,6 +25,9 @@ public class CinemachineManager : MonoBehaviour
 
     [SerializeField] float debugPanCameraSpeed = 10;
 
+    [SerializeField] bool shouldZoomIn;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,8 @@ public class CinemachineManager : MonoBehaviour
         rotateCameraYaw(yaw);
 
         rotateCameraPitch(pitch);
+
+        //virtualCamera.transform.eulerAngles = new Vector3(Mathf.Clamp(virtualCamera.transform.eulerAngles.x, -60f, 86f), virtualCamera.transform.eulerAngles.y, virtualCamera.transform.eulerAngles.z);
 
         /*if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -84,11 +89,9 @@ public class CinemachineManager : MonoBehaviour
 
     public void rotateCameraYaw(float yaw)
     {
-
         transposer.m_FollowOffset = GetCameraPosition(yaw, pitch, zoomOutMultiplier);
 
         virtualCamera.transform.rotation = GetCameraRotation(yaw, pitch, roll);
-
     }
 
     public void rotateCameraPitch(float pitch)
@@ -131,5 +134,31 @@ public class CinemachineManager : MonoBehaviour
         float pitch = basePitch + pitchOffset;
         float roll = baseRoll + rollOffset;
         return Quaternion.Euler(pitch, yaw, roll);
+    }
+
+    private void FixedUpdate()
+    {
+        //if (shouldZoomIn) zoomOutMultiplier = Mathf.Clamp(zoomOutMultiplier - 0.4f * Time.fixedDeltaTime, 0.2f, 0.5f);
+        //else zoomOutMultiplier = Mathf.Clamp( zoomOutMultiplier + 0.4f * Time.fixedDeltaTime, 0.2f, 0.5f);
+    }
+
+    private void LateUpdate()
+    {
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.layer == 0 || other.gameObject.layer == 10 || other.gameObject.layer == 18)
+        {
+            shouldZoomIn = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 0 || other.gameObject.layer == 10 || other.gameObject.layer == 18)
+        {
+            shouldZoomIn = false;
+        }
     }
 }

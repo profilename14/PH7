@@ -151,9 +151,9 @@ public class EnemyActionManager : CharacterActionManager
                 {
                     if (StateMachine.TrySetState(attackCandidates[i].stateScript))
                     {
-                        Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
-                        Debug.Log(allowedStates[attackCandidates[i].stateScript]);
-                        Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
+                        //Debug.Log("Attempting attack: " + attackCandidates[i].stateScript);
+                        //Debug.Log(allowedStates[attackCandidates[i].stateScript]);
+                        //Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
                         ResetCooldown(attackCandidates[i]);
                     }
                     else

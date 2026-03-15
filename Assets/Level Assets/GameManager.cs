@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
         if(defaultSceneRespawn != null) respawnPosition = defaultSceneRespawn.position;
 
         initializeSaveDataLists();
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)
@@ -61,6 +63,10 @@ public class GameManager : MonoBehaviour
                 Player.instance.WarpPlayer(d.typhisEntranceTransform.position);
             }
         }
+
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+
     }
 
     public void PlayerRespawn()
@@ -80,6 +86,8 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         Player.instance.WarpPlayer(respawnPosition);
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
     }
 
     void initializeSaveDataLists()

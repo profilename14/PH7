@@ -31,18 +31,20 @@ Material:
   - _BASEMAP_PREMULTIPLY
   - _CELPRIMARYMODE_SINGLE
   - _DETAILMAPBLENDINGMODE_MULTIPLY
+  - _EMISSION
   - _GRADIENTSPACE_LOCAL
   - _OUTLINESPACE_SCREEN
   - _TEXTUREBLENDINGMODE_MULTIPLY
   - _UNITYSHADOWMODE_MULTIPLY
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: _UnityShadowPower
   m_SavedProperties:
     serializedVersion: 3
@@ -202,7 +204,7 @@ Material:
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.017920531, g: 0, b: 0.019607844, a: 1}
     - _DetailMapColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0.047169805, g: 0, b: 0.03896636, a: 1}
     - _FlatRimColor: {r: 2.6081789, g: 0, b: 2.6806285, a: 1}
     - _FlatSpecularColor: {r: 1.6241438, g: 1.4003987, b: 2.0474796, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}

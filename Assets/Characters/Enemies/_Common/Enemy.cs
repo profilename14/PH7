@@ -130,6 +130,7 @@ public class Enemy : Character
             curSaltCrystal = Instantiate(SaltCrystalPrefab, transform.position, Quaternion.identity);
             curSaltCrystalScript = curSaltCrystal.GetComponent<SaltCrystal>();
             curSaltCrystalScript.SetSender(this);
+            Debug.Log("Triggered reaction");
             ChemicalReactionManager.instance.ClearNearbyChemicals(transform.position);
             movementController.SetAllowRotation(false);
             if (reactionResistance == 2)

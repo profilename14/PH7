@@ -217,25 +217,27 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{9b24b341-a15a-482e-b663-9b8c00f6a43d}">
 		<relationship name="effects">
+			<destination>{efb344b1-e45b-4a93-8e32-ba08ac68c5d8}</destination>
 			<destination>{43cfdee2-6b36-4b38-b66d-ff2f6765b618}</destination>
+			<destination>{babdba0c-ea5f-49db-9ca6-dfd4c67259f1}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f91faf60-074b-429d-a0d1-4817e5b47b89}" />
 	<object class="LimiterEffect" id="{4a394775-6727-4f20-9e37-5f9574fea267}">
 		<property name="ceiling">
-			<value>-7.70000029</value>
+			<value>-9.40000057</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{18cde179-1ea8-48f1-88f2-f5dc591d5d35}" />
 	<object class="ThreeEQEffect" id="{9b12dbf9-b963-467a-b280-ec18d95e0cc2}">
 		<property name="lowGain">
-			<value>-2</value>
+			<value>-1.5</value>
 		</property>
 		<property name="midGain">
-			<value>-1</value>
+			<value>-0.5</value>
 		</property>
 		<property name="highGain">
-			<value>-4</value>
+			<value>-1</value>
 		</property>
 		<property name="highCrossover">
 			<value>3400</value>
@@ -244,5 +246,33 @@
 			<value>0</value>
 		</property>
 	</object>
+	<object class="LimiterEffect" id="{efb344b1-e45b-4a93-8e32-ba08ac68c5d8}">
+		<property name="boost">
+			<value>8.69999981</value>
+		</property>
+		<property name="ceiling">
+			<value>-12</value>
+		</property>
+		<property name="release">
+			<value>9</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{43cfdee2-6b36-4b38-b66d-ff2f6765b618}" />
+	<object class="ThreeEQEffect" id="{babdba0c-ea5f-49db-9ca6-dfd4c67259f1}">
+		<property name="lowGain">
+			<value>-1.5</value>
+		</property>
+		<property name="midGain">
+			<value>-0.5</value>
+		</property>
+		<property name="highGain">
+			<value>-3.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>3400</value>
+		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+	</object>
 </objects>

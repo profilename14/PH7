@@ -75,9 +75,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{be0161e5-1870-4d2b-b0b9-facef31be58f}">
-		<property name="volume">
-			<value>-4</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{5dccf15a-89da-4297-aa74-e0e3c876f8d2}</destination>
 		</relationship>
@@ -109,6 +106,9 @@
 		</property>
 		<property name="name">
 			<value>underwater ambience</value>
+		</property>
+		<property name="pitch">
+			<value>2.79999995</value>
 		</property>
 		<property name="looping">
 			<value>true</value>
@@ -201,6 +201,9 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{82697fa4-5b55-43b2-8228-c2748cb18f27}">
+		<property name="pitch">
+			<value>6</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{adf6c470-4414-48a3-8714-c0bd801eb57b}</destination>
 		</relationship>
@@ -217,17 +220,13 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{9b24b341-a15a-482e-b663-9b8c00f6a43d}">
 		<relationship name="effects">
-			<destination>{efb344b1-e45b-4a93-8e32-ba08ac68c5d8}</destination>
 			<destination>{43cfdee2-6b36-4b38-b66d-ff2f6765b618}</destination>
+			<destination>{89cc4564-2c95-44f5-8532-f2dd1e9fd53b}</destination>
 			<destination>{babdba0c-ea5f-49db-9ca6-dfd4c67259f1}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f91faf60-074b-429d-a0d1-4817e5b47b89}" />
-	<object class="LimiterEffect" id="{4a394775-6727-4f20-9e37-5f9574fea267}">
-		<property name="ceiling">
-			<value>-9.40000057</value>
-		</property>
-	</object>
+	<object class="LimiterEffect" id="{4a394775-6727-4f20-9e37-5f9574fea267}" />
 	<object class="MixerBusFader" id="{18cde179-1ea8-48f1-88f2-f5dc591d5d35}" />
 	<object class="ThreeEQEffect" id="{9b12dbf9-b963-467a-b280-ec18d95e0cc2}">
 		<property name="lowGain">
@@ -246,18 +245,15 @@
 			<value>0</value>
 		</property>
 	</object>
-	<object class="LimiterEffect" id="{efb344b1-e45b-4a93-8e32-ba08ac68c5d8}">
-		<property name="boost">
-			<value>8.69999981</value>
+	<object class="MixerBusFader" id="{43cfdee2-6b36-4b38-b66d-ff2f6765b618}" />
+	<object class="CompressorEffect" id="{89cc4564-2c95-44f5-8532-f2dd1e9fd53b}">
+		<property name="threshold">
+			<value>-35.5</value>
 		</property>
-		<property name="ceiling">
-			<value>-12</value>
-		</property>
-		<property name="release">
-			<value>9</value>
+		<property name="gain">
+			<value>12</value>
 		</property>
 	</object>
-	<object class="MixerBusFader" id="{43cfdee2-6b36-4b38-b66d-ff2f6765b618}" />
 	<object class="ThreeEQEffect" id="{babdba0c-ea5f-49db-9ca6-dfd4c67259f1}">
 		<property name="lowGain">
 			<value>-1.5</value>

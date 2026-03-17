@@ -292,7 +292,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.25
-      minScalar: 0.5
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4945,7 +4945,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1567907486611170402, guid: 4657be5d793b0ad4a9874db97fcc52e8, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1567907486611170402, guid: 4657be5d793b0ad4a9874db97fcc52e8, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1567907486611170402, guid: 4657be5d793b0ad4a9874db97fcc52e8, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar

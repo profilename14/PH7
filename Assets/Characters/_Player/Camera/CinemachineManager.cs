@@ -27,7 +27,7 @@ public class CinemachineManager : MonoBehaviour
 
     [SerializeField] bool shouldZoomIn;
 
-
+    [SerializeField] bool disableManualCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +42,7 @@ public class CinemachineManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(disableManualCamera) return;
 
         rotateCameraYaw(yaw);
 

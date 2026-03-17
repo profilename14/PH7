@@ -14,7 +14,6 @@ Material:
   m_ValidKeywords:
   - DR_OUTLINE_ON
   - DR_RIM_ON
-  - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
   - _DETAILMAPBLENDINGMODE_MULTIPLY
   - _EMISSION
@@ -31,6 +30,7 @@ Material:
     RenderType: Transparent
   disabledShaderPasses:
   - SHADOWCASTER
+  - SRPDEFAULTUNLIT
   m_LockedProperties: _EmissionColor
   m_SavedProperties:
     serializedVersion: 3
@@ -126,9 +126,9 @@ Material:
     - _DstBlend: 1
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlatRimEdgeSmoothness: 0.63
+    - _FlatRimEdgeSmoothness: 0.47
     - _FlatRimLightAlign: 0
-    - _FlatRimSize: 0.52
+    - _FlatRimSize: 0.295
     - _FlatSpecularEdgeSmoothness: 0
     - _FlatSpecularSize: 0.57
     - _Flatness: 1
@@ -158,13 +158,13 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _RimEnabled: 1
-    - _SelfShadingSize: 0.88
+    - _SelfShadingSize: 0.713
     - _SelfShadingSizeExtra: 0.6
-    - _ShadowEdgeSize: 0
+    - _ShadowEdgeSize: 0.147
     - _ShadowEdgeSizeExtra: 0
     - _Smoothness: 0.321
     - _SmoothnessTextureChannel: 0
-    - _SpecularEnabled: 1
+    - _SpecularEnabled: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _SrcBlendAlpha: 1

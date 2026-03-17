@@ -255,6 +255,8 @@ public class PlayerActionManager : CharacterActionManager
         }
         else
         {
+            lockOnIcon.transform.position = Player.instance.transform.position;
+
             if (lockOnIcon)
             {
                 lockOnIcon.SetActive(false);

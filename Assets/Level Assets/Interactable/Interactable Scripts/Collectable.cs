@@ -35,7 +35,9 @@ public class Collectable : MonoBehaviour
         {
             if (healsPlayer)
             {
-                Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
+                PlayerStats stats = (PlayerStats)Player.instance.stats;
+                stats.SetHealth(stats.healthMax);
+                stats.SetHealthMax((int)Mathf.Min(Player.instance.characterData.maxHealth + ((float)GameManager.instance.soapstones / 4), 10f));
                 GameManager.instance.soapstones += 1;
                 Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
                 print("Soapstones collected: " + GameManager.instance.soapstones);

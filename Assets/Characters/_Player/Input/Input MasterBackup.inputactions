@@ -81,7 +81,7 @@
                     "name": "Open Inventory",
                     "type": "Button",
                     "id": "740e3b19-df2f-4fea-b8ea-768a8f80bc5e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -105,13 +105,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LockOn",
+                    "name": "Lock On",
                     "type": "Button",
                     "id": "a1e3858b-355a-421c-b343-d865d42917a4",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Camera Look",
+                    "type": "Value",
+                    "id": "d05b1111-981c-4f06-8033-9a06b65e6a35",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(max=1)",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -518,7 +527,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",
-                    "action": "LockOn",
+                    "action": "Lock On",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "982ed9b0-4a02-4fab-88a0-843492f3b4d7",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Controller",
+                    "action": "Camera Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

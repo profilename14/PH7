@@ -4890,7 +4890,7 @@ MonoBehaviour:
   m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &105488145
@@ -22066,11 +22066,12 @@ MonoBehaviour:
   sceneToLoadOnRespawn: 
   respawnPosition: {x: 0, y: 0, z: 0}
   defaultSceneRespawn: {fileID: 1613267084}
-  soapstones: 0
+  soapstones: 12
   lapis: 0
   damageUpgrade: 0
   dashUnlocked: 0
   bubbleUnlocked: 0
+  currentPlayerHealth: 0
 --- !u!4 &642020691
 Transform:
   m_ObjectHideFlags: 0
@@ -28084,8 +28085,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1134262258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 440, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -38173,9 +38174,9 @@ RectTransform:
   - {fileID: 105488143}
   m_Father: {fileID: 2027729627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -389.1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1134262259
@@ -38235,7 +38236,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 105488143}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 41
   m_WholeNumbers: 0
@@ -71530,10 +71531,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 559858547552153946, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
-      propertyPath: m_Actions
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: b77f73f69d82a064aa23efc1fd96a599, type: 3}
     - target: {fileID: 1721406323613596548, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25

@@ -22,10 +22,16 @@ public class GameManager : MonoBehaviour
     public bool dashUnlocked = false;
     public bool bubbleUnlocked = false;
 
+    public float currentPlayerHealth;
 
     private void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+        {
+            currentPlayerHealth = Player.instance.characterData.maxHealth;
+            Player.instance.playerStats.SetHealth(currentPlayerHealth);
+            instance = this;
+        }
         else if (instance != this) Destroy(this);
 
         DontDestroyOnLoad(this.gameObject);
@@ -44,6 +50,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator SetupScene(string scene, string destinationDoorId)
     {
+        currentPlayerHealth = Player.instance.playerStats.health;
+
         var asyncLoadLevel = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
 
         while (!asyncLoadLevel.isDone)
@@ -52,6 +60,10 @@ public class GameManager : MonoBehaviour
         }
 
         yield return null;
+
+        Player.instance.playerStats.SetHealthMax((int)Mathf.Min(Player.instance.characterData.maxHealth + ((float)GameManager.instance.soapstones / 4), 10f));
+
+        Player.instance.playerStats.SetHealth(currentPlayerHealth);
 
         GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
 

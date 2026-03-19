@@ -167,7 +167,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Open Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""740e3b19-df2f-4fea-b8ea-768a8f80bc5e"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -191,13 +191,22 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LockOn"",
+                    ""name"": ""Lock On"",
                     ""type"": ""Button"",
                     ""id"": ""a1e3858b-355a-421c-b343-d865d42917a4"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""d05b1111-981c-4f06-8033-9a06b65e6a35"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""StickDeadzone(max=1)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -604,7 +613,18 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
-                    ""action"": ""LockOn"",
+                    ""action"": ""Lock On"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""982ed9b0-4a02-4fab-88a0-843492f3b4d7"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Controller"",
+                    ""action"": ""Camera Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -665,7 +685,8 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         m_Typhis_OpenInventory = m_Typhis.FindAction("Open Inventory", throwIfNotFound: true);
         m_Typhis_Pause = m_Typhis.FindAction("Pause", throwIfNotFound: true);
         m_Typhis_QuickMap = m_Typhis.FindAction("Quick Map", throwIfNotFound: true);
-        m_Typhis_LockOn = m_Typhis.FindAction("LockOn", throwIfNotFound: true);
+        m_Typhis_LockOn = m_Typhis.FindAction("Lock On", throwIfNotFound: true);
+        m_Typhis_CameraLook = m_Typhis.FindAction("Camera Look", throwIfNotFound: true);
     }
 
     ~@InputMasterBackup()
@@ -758,6 +779,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
     private readonly InputAction m_Typhis_Pause;
     private readonly InputAction m_Typhis_QuickMap;
     private readonly InputAction m_Typhis_LockOn;
+    private readonly InputAction m_Typhis_CameraLook;
     /// <summary>
     /// Provides access to input actions defined in input action map "Typhis".
     /// </summary>
@@ -817,6 +839,10 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Typhis/LockOn".
         /// </summary>
         public InputAction @LockOn => m_Wrapper.m_Typhis_LockOn;
+        /// <summary>
+        /// Provides access to the underlying input action "Typhis/CameraLook".
+        /// </summary>
+        public InputAction @CameraLook => m_Wrapper.m_Typhis_CameraLook;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -879,6 +905,9 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
             @LockOn.started += instance.OnLockOn;
             @LockOn.performed += instance.OnLockOn;
             @LockOn.canceled += instance.OnLockOn;
+            @CameraLook.started += instance.OnCameraLook;
+            @CameraLook.performed += instance.OnCameraLook;
+            @CameraLook.canceled += instance.OnCameraLook;
         }
 
         /// <summary>
@@ -926,6 +955,9 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
             @LockOn.started -= instance.OnLockOn;
             @LockOn.performed -= instance.OnLockOn;
             @LockOn.canceled -= instance.OnLockOn;
+            @CameraLook.started -= instance.OnCameraLook;
+            @CameraLook.performed -= instance.OnCameraLook;
+            @CameraLook.canceled -= instance.OnCameraLook;
         }
 
         /// <summary>
@@ -1083,11 +1115,18 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnQuickMap(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "LockOn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Lock On" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLockOn(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Camera Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCameraLook(InputAction.CallbackContext context);
     }
 }

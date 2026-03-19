@@ -8,20 +8,20 @@ public enum Chemical {None, Alkaline, Acidic, Salt, Ammonia, Oil };
 public abstract class CharacterStats : MonoBehaviour
 {
     [SerializeField]
-    Character _Character;
+    protected Character _Character;
 
     [SerializeField]
-    CharacterActionManager _ActionManager;
+    protected CharacterActionManager _ActionManager;
 
     [SerializeField]
-    private float _Health;
+    protected float _Health;
     public float health => _Health;
     
     [SerializeField]
     private float _Armor;
     public float armor => _Armor;
 
-    private Chemical _NaturalType;
+    protected Chemical _NaturalType;
     public Chemical naturalType => _NaturalType;
 
     protected virtual void Awake()

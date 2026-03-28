@@ -45,7 +45,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private PlayerMove moveState;
 
-    private InputMaster controls;
+    private InputMasterBackup controls;
     private PlayerInput playerInput;
 
     // Need InputAction ref to use ReadValue for any continuous polling
@@ -113,7 +113,7 @@ public class PlayerActionManager : CharacterActionManager
         gameObject.GetComponentInParentOrChildren(ref takeDamageState);
         UIManager = gameObject.transform.parent.parent.GetComponentInChildren<PlayerUIManager>();
         moveState = (PlayerMove) defaultState;
-        controls = new InputMaster();
+        controls = new InputMasterBackup();
         playerInput = GetComponent<PlayerInput>();
         inputBuffer = new StateMachine<CharacterState>.InputBuffer(StateMachine);
         enemyLayerMask = LayerMask.GetMask("LockOnTarget");
@@ -238,7 +238,7 @@ public class PlayerActionManager : CharacterActionManager
 
     private void FixedUpdate()
     {
-        playerDirectionalInput.usingController = false || (playerInput.currentControlScheme.Equals("Switch Pro Controller") || playerInput.currentControlScheme.Equals("Gamepad"));
+        playerDirectionalInput.usingController = false || (playerInput.currentControlScheme.Equals("Switch Pro Controller") || playerInput.currentControlScheme.Equals("Controller"));
 
         Vector2 moveInput = Vector2.ClampMagnitude(movementAction.ReadValue<Vector2>(), 1f);
 

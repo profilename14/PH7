@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null)
         {
-            currentPlayerHealth = Player.instance.characterData.maxHealth;
-            Player.instance.playerStats.SetHealth(currentPlayerHealth);
             instance = this;
         }
         else if (instance != this) Destroy(this);
@@ -41,6 +39,12 @@ public class GameManager : MonoBehaviour
         initializeSaveDataLists();
         Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
         Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
+    }
+
+    private void Start()
+    {
+        currentPlayerHealth = Player.instance.characterData.maxHealth;
+        Player.instance.playerStats.SetHealth(currentPlayerHealth);
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)

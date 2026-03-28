@@ -113,7 +113,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""d22e0233-3d93-406b-b79f-6a96dcd5d43d"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
@@ -122,18 +122,18 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""409a11d4-5931-4786-bfb4-4ea75df50c63"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Tap(duration=0.2),SlowTap(duration=0.2)"",
+                    ""interactions"": ""Tap(duration=0.35),SlowTap(duration=0.351)"",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""9d455031-8dcc-45bd-930d-40e4570c33a9"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -149,7 +149,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Core / Magic"",
                     ""type"": ""Button"",
                     ""id"": ""49a5dcc7-4153-43ca-99e3-da8c35446bac"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Tap(duration=0.5),SlowTap(duration=0.5)"",
                     ""initialStateCheck"": false
@@ -158,7 +158,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Bubble"",
                     ""type"": ""Button"",
                     ""id"": ""3b0e8193-36de-4727-8f61-885ddc7344bd"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""SlowTap(duration=0.2),Tap"",
                     ""initialStateCheck"": false
@@ -176,7 +176,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""b632797e-f14d-4986-8220-aa35253e80a1"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -185,7 +185,7 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""name"": ""Quick Map"",
                     ""type"": ""Button"",
                     ""id"": ""b41232c7-9d70-4413-9e53-db3a2ef50946"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -278,33 +278,11 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a7980f60-4ebc-4c8b-837a-73a9bd990ab7"",
-                    ""path"": ""<SwitchProControllerHID>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""c5dbc8c0-ba13-4461-9a48-897c0d76b00f"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c329bec6-b872-49ec-ab92-a555021b0814"",
-                    ""path"": ""<SwitchProControllerHID>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -327,17 +305,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""848ffec1-98c0-48e1-aee6-047648dad996"",
-                    ""path"": ""<SwitchProControllerHID>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -377,17 +344,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4120d855-4d0e-42c5-94ba-56135ada0bb6"",
-                    ""path"": ""<SwitchProControllerHID>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2c2b0483-6afc-4d66-a2e1-71e3783b0a04"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
@@ -404,17 +360,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
-                    ""action"": ""Core / Magic"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""499e5e81-6112-4864-9d89-935d01a3c3c5"",
-                    ""path"": ""<SwitchProControllerHID>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
                     ""action"": ""Core / Magic"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -443,17 +388,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4fd2791e-3f53-40f9-a2fb-8bbd2c257c5e"",
-                    ""path"": ""<SwitchProControllerHID>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Bubble"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4b6e7200-ca7b-40b9-bb4a-08ccf0df66fd"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
@@ -470,17 +404,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
-                    ""action"": ""Open Inventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""10a074cd-62d0-4cb7-bf44-76b84744ac98"",
-                    ""path"": ""<SwitchProControllerHID>/select"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
                     ""action"": ""Open Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -509,17 +432,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""94fde4fa-6784-42bd-a68e-37f6f25b21e6"",
-                    ""path"": ""<SwitchProControllerHID>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""86385043-425d-44bb-8d7a-e8bcf689ebc9"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
@@ -542,17 +454,6 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e77bfd27-d88a-405d-8dbf-fd1c31f5db15"",
-                    ""path"": ""<SwitchProControllerHID>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Quick Map"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""86490227-2ce7-415e-8729-d39aec405cfc"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
@@ -564,33 +465,11 @@ public partial class @InputMasterBackup: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a019fd03-820a-4438-96ec-6caaf4849a5f"",
-                    ""path"": ""<SwitchProControllerHID>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a269855f-81b0-4dee-8da8-a0c9bb2271ea"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7ac11745-7176-496e-afc0-7dd58c53ef6f"",
-                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Switch Pro Controller"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

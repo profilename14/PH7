@@ -15,7 +15,7 @@ public class MyProjectile : MonoBehaviour
     public bool projectileIsActive = false;
 
     [SerializeField] private float lifespan = 4.5f;
-    private float lifespanTimer = 0f;
+    public float lifespanTimer = 0f;
     [SerializeField] private float forwardSpeed = 50f;
 
     [SerializeField] private float fallSpeed;
@@ -49,6 +49,7 @@ public class MyProjectile : MonoBehaviour
             if (lifespanTimer > lifespan)
             {
                 gameObject.SetActive(false);
+                Destroy(gameObject);
             }
             transform.position += this.transform.forward * Time.deltaTime * forwardSpeed;
         }

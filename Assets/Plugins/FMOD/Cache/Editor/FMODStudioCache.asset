@@ -1,5 +1,132 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7410940451139910262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Royal Court/Royal Court CALM
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Royal Court/Royal Court CALM
+  Guid:
+    Data1: 2000062429
+    Data2: 1302844707
+    Data3: 1159876250
+    Data4: 1897765036
+  Banks:
+  - {fileID: -6682098521698929800}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 104210
+--- !u!114 &-6682098521698929800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: PH7_audio/Build/Desktop/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 639090337170310437
+  FileSizes:
+  - Name: Desktop
+    Value: 12506432
+  Exists: 1
+--- !u!114 &-6014778159944788052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Aggro
+  m_EditorClassIdentifier: 
+  Name: Aggro
+  StudioPath: parameter:/Aggro
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 3995982696
+    data2: 1229146956
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Fight
+  - Passive
+  Exists: 1
+--- !u!114 &-4741281381663273245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Environment/Underwater Ambience
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/Underwater Ambience
+  Guid:
+    Data1: 1813399178
+    Data2: 1107098555
+    Data3: -2057596756
+    Data4: 221801890
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 88000
+--- !u!114 &-3820875003485676650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Tests/Test action timeline 2d
+  m_EditorClassIdentifier: 
+  Path: event:/Tests/Test action timeline 2d
+  Guid:
+    Data1: -1398418641
+    Data2: 1150159584
+    Data3: 271724477
+    Data4: -1608699348
+  Banks:
+  - {fileID: 8678279492627830867}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 39452
 --- !u!114 &-3733251692019930447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,12 +142,12 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639087084879468632
+  lastModified: 639090337153025618
   FileSizes:
   - Name: Desktop
-    Value: 830
+    Value: 1318
   Exists: 1
---- !u!114 &-734454645772316060
+--- !u!114 &-2297763675290443660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30,9 +157,56 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Test 3d
+  m_Name: event:/Music/Royal Court/Royal Court BATTLE
   m_EditorClassIdentifier: 
-  Path: event:/Test 3d
+  Path: event:/Music/Royal Court/Royal Court BATTLE
+  Guid:
+    Data1: 2032664739
+    Data2: 1213256095
+    Data3: -298071873
+    Data4: 480981590
+  Banks:
+  - {fileID: -6682098521698929800}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 50526
+--- !u!114 &-882143353292737289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: PH7_audio/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 639090337256047407
+  FileSizes:
+  - Name: Desktop
+    Value: 9457184
+  Exists: 1
+--- !u!114 &-748901212548147609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Tests/Test 3d
+  m_EditorClassIdentifier: 
+  Path: event:/Tests/Test 3d
   Guid:
     Data1: 1478503018
     Data2: 1222438114
@@ -47,6 +221,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 39452
+--- !u!114 &-539620932063037810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Attacks/Sword Swings
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Attacks/Sword Swings
+  Guid:
+    Data1: -2086923131
+    Data2: 1267531717
+    Data3: -1965569912
+    Data4: -644662780
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,22 +263,40 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: -3733251692019930447}
   - {fileID: 8678279492627830867}
+  - {fileID: -6682098521698929800}
+  - {fileID: -882143353292737289}
   EditorEvents:
-  - {fileID: 7947215053137095281}
-  - {fileID: -734454645772316060}
-  EditorParameters: []
+  - {fileID: -3820875003485676650}
+  - {fileID: -748901212548147609}
+  - {fileID: -2297763675290443660}
+  - {fileID: -7410940451139910262}
+  - {fileID: -539620932063037810}
+  - {fileID: -4741281381663273245}
+  - {fileID: 5441427591519974431}
+  EditorParameters:
+  - {fileID: -6014778159944788052}
   MasterBanks:
   - {fileID: 8678279492627830867}
   StringsBanks:
   - {fileID: -3733251692019930447}
   cacheVersion: 131858
-  cacheTime: 639087084879468632
+  cacheTime: 639090337256047407
   SerializableEventsDict:
-  - key: event:/Test action timeline 2d
+  - key: event:/Tests/Test action timeline 2d
     index: 0
-  - key: event:/Test 3d
+  - key: event:/Tests/Test 3d
     index: 1
---- !u!114 &7947215053137095281
+  - key: event:/Music/Royal Court/Royal Court BATTLE
+    index: 2
+  - key: event:/Music/Royal Court/Royal Court CALM
+    index: 3
+  - key: event:/Player SFX/Attacks/Sword Swings
+    index: 4
+  - key: event:/Environment/Underwater Ambience
+    index: 5
+  - key: event:/Environment/Acid Bubbling
+    index: 6
+--- !u!114 &5441427591519974431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,23 +306,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Test action timeline 2d
+  m_Name: event:/Environment/Acid Bubbling
   m_EditorClassIdentifier: 
-  Path: event:/Test action timeline 2d
+  Path: event:/Environment/Acid Bubbling
   Guid:
-    Data1: -1398418641
-    Data2: 1150159584
-    Data3: 271724477
-    Data4: -1608699348
+    Data1: 1271116510
+    Data2: 1123742564
+    Data3: -1131132758
+    Data4: 1017164110
   Banks:
-  - {fileID: 8678279492627830867}
+  - {fileID: -882143353292737289}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 39452
+  Length: 32000
 --- !u!114 &8678279492627830867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,8 +338,8 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639087084879456794
+  lastModified: 639090337153015622
   FileSizes:
   - Name: Desktop
-    Value: 492160
+    Value: 492640
   Exists: 1

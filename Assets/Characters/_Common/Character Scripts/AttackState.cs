@@ -82,5 +82,10 @@ public abstract class AttackState : CharacterState
         _Character.OnCharacterAttackHit(hittableScript, this, attackHitPosition);
     }
 
+    public void RedirectedHitbox(Collider other)
+    {
+        OnTriggerEnter(other);
+    }
+
     // A ranged attack should pass _AttackData to the projectile, which will handle OnTriggerEnter when it hits something.
 }

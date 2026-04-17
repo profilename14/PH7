@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: WalkMixer
   m_EditorClassIdentifier: 
   _Transition:
-    rid: 3289629181476077579
+    rid: 6142954168295882752
   references:
     version: 2
     RefIds:
-    - rid: 3289629181476077579
-      type: {class: MixerTransition2D, ns: Animancer, asm: Kybernetik.Animancer}
+    - rid: 6142954168295882752
+      type: {class: LinearMixerTransition, ns: Animancer, asm: Kybernetik.Animancer}
       data:
         _FadeDuration: 0
         _Speed: 1
@@ -27,20 +27,15 @@ MonoBehaviour:
           _Callbacks: []
           _Names: []
         _Animations:
-        - {fileID: 7400000, guid: 9a197307dfad2bd478ea90761f89870f, type: 2}
-        - {fileID: 7400000, guid: ce091b0e3f7638c4a8dc6b25214dc24b, type: 2}
-        - {fileID: 7400000, guid: ce091b0e3f7638c4a8dc6b25214dc24b, type: 2}
-        - {fileID: 7400000, guid: ce091b0e3f7638c4a8dc6b25214dc24b, type: 2}
-        - {fileID: 7400000, guid: ce091b0e3f7638c4a8dc6b25214dc24b, type: 2}
+        - {fileID: 7400000, guid: c78543dc18c5e1349a89ff595ebd0551, type: 2}
+        - {fileID: 7400000, guid: 8a1183743133d7f46b9731d78044e6de, type: 2}
+        - {fileID: 7400000, guid: 708aff8031eacf449823edf7f5e3db7f, type: 2}
         _Speeds: []
         _SynchronizeChildren: 00
         _Thresholds:
-        - {x: 0, y: 0}
-        - {x: 4, y: 0}
-        - {x: -4, y: 0}
-        - {x: 0, y: -4}
-        - {x: 0, y: 4}
-        _DefaultParameter: {x: 0, y: 0}
-        _Type: 1
-        _ParameterNameX: {fileID: 11400000, guid: d02d01f8d491f924daead326dad8ff2e, type: 2}
-        _ParameterNameY: {fileID: 11400000, guid: f152c3df6be94624fbcfa44a40b0c4df, type: 2}
+        - 0
+        - 2
+        - 8
+        _DefaultParameter: 0
+        _ExtrapolateSpeed: 1
+        _ParameterName: {fileID: 0}

@@ -158,7 +158,7 @@ public class EnemyActionManager : CharacterActionManager
                     }
                     else
                     {
-                        Debug.Log("failed entering state " + attackCandidates[i].stateScript);
+                        //Debug.Log("failed entering state " + attackCandidates[i].stateScript);
                     }
                     
                     break;

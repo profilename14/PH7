@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using Animancer;
 
 public class PlayerStats : CharacterStats
 {
@@ -28,7 +30,15 @@ public class PlayerStats : CharacterStats
 
     protected override void Awake()
     {
-        base.Awake();
+        gameObject.GetComponentInParentOrChildren(ref _ActionManager);
+        gameObject.GetComponentInParentOrChildren(ref _Character);
+        //_Health = _Character.characterData.maxHealth;
+        _NaturalType = _Character.characterData.naturalType;
+    }
+
+    private void Start()
+    {
+
     }
 
     public void ModifyAlkaline(double alkaline)
@@ -68,11 +78,16 @@ public class PlayerStats : CharacterStats
 
     public override void SetHealth(float newHealth)
     {
-        base.SetHealth(newHealth);
+        base.SetHealth(Mathf.Clamp(newHealth, 0, healthMax));
 
         if (vfxManager == null) vfxManager = (PlayerVFXManager)Player.instance.VFXManager;
 
         if (health <= lowHealth) vfxManager.SetIsLowHealth(true);
         else vfxManager.SetIsLowHealth(false);
+    }
+
+    public void SetHealthMax(int value)
+    {
+        _HealthMax = value;
     }
 }

@@ -433,6 +433,8 @@ public abstract class Character : MonoBehaviour, IHittable
         _ActionManager.Hitstun();
         _ActionManager.anim.Graph.PauseGraph();
 
+        ChemicalReactionManager.instance.ClearNearbyChemicals(transform.position);
+
         movementController.SetVelocity(Vector3.zero);
         movementController.SetAllowRotation(false);
         isKnockbackImmune = true;

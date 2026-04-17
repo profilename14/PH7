@@ -29,8 +29,10 @@ public class RespawnFountain : MonoBehaviour
 
     private void UseFountain()
     {
+        PlayerStats stats = (PlayerStats)Player.instance.stats;
         GameManager.instance.respawnPosition = typhisRespawnPosition.position;
-        Player.instance.stats.SetHealth(Player.instance.characterData.maxHealth);
+        stats.SetHealthMax((int)Mathf.Min(Player.instance.characterData.maxHealth + ((float)GameManager.instance.soapstones / 4), 10f));
+        stats.SetHealth(Player.instance.playerStats.healthMax);
         GameManager.instance.sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
         StartCoroutine(fountainVFX());
     }

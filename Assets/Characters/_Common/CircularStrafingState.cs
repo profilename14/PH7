@@ -38,6 +38,8 @@ public class CircularStrafingState : CharacterState
     private Vector3 startForward;
     private float startAngle;
 
+    [SerializeField] bool alignRotationToMovement = false;
+
     private void Awake()
     {
         base.Awake();
@@ -111,6 +113,7 @@ public class CircularStrafingState : CharacterState
             movementController.SetPathfindingDestination(movementController.pathfinding.destination + normal * currentCirclingDistance + tangent * -circlingSpeed);
         }
 
-        character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards((Player.instance.transform.position - character.transform.position), rotationSpeed * Time.deltaTime);
+        if(!alignRotationToMovement) character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards((Player.instance.transform.position - character.transform.position), rotationSpeed * Time.deltaTime);
+        else movementController.SetAllowRotation(true);
     }
 }

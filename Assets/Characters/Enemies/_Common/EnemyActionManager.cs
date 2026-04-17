@@ -57,7 +57,7 @@ public class EnemyActionManager : CharacterActionManager
         {
             if (attacks[i].behaviorData.startWithMaxCooldown)
             {
-                allowedStates.Add(attacks[i].stateScript, false);
+                if (!allowedStates.ContainsKey(attacks[i].stateScript)) allowedStates.Add(attacks[i].stateScript, false);
                 EnemyActionBehavior attackTemp = attacks[i];
                 attackTemp.cooldown = attacks[i].behaviorData.cooldown;
                 attacks[i] = attackTemp;
@@ -158,7 +158,7 @@ public class EnemyActionManager : CharacterActionManager
                     }
                     else
                     {
-                        //Debug.Log("failed entering state");
+                        //Debug.Log("failed entering state " + attackCandidates[i].stateScript);
                     }
                     
                     break;

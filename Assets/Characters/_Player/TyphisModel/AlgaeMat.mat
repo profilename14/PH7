@@ -25,7 +25,6 @@ Material:
   m_Parent: {fileID: 2100000, guid: ec9c60c17974e814aa1c9ea6c8d79670, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - DR_OUTLINE_ON
   - DR_RIM_ON
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
@@ -41,7 +40,8 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SRPDEFAULTUNLIT
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -60,7 +60,7 @@ Material:
     - _LightContribution: 0.8
     - _LightFalloffSize: 0.7
     - _Metallic: 0.883
-    - _OutlineEnabled: 1
+    - _OutlineEnabled: 0
     - _RimEnabled: 1
     - _SelfShadingSize: 0.497
     - _ShadowEdgeSize: 0.182

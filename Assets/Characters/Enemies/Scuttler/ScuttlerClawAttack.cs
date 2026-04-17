@@ -30,9 +30,9 @@ public class ScuttlerClawAttack : AttackState
 
     protected override void OnEnable()
     {
-        base.OnEnable();
-
         _ActionManager.SetAllActionPriorityAllowedExceptHitstun(false);
+
+        base.OnEnable();
 
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);

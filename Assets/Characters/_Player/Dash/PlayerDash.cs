@@ -259,11 +259,11 @@ public class PlayerDash : DashState
 
     public void CheckForSprinting()
     {
-        Debug.Log("checking sprint");
+        //Debug.Log("checking sprint");
 
         if (actionManager.isDashHeld)
         {
-            Debug.Log("Doing sprint boost");
+            //Debug.Log("Doing sprint boost");
             endDash();
             movementController.SetSprinting(true);
             movementController.AddVelocity(character.transform.forward * startSprintVelocityBoost);

@@ -27,6 +27,9 @@ public class HalberdGolemOverheadSwing : AttackState
     [SerializeField]
     private Transform saltShockwaveSpawnpoint;
 
+    [SerializeField]
+    private bool useVFXManager;
+
     private void Awake()
     {
         base.Awake();
@@ -70,7 +73,7 @@ public class HalberdGolemOverheadSwing : AttackState
         movementController.SetGroundDrag(drag);
         _Character.SetIsKnockbackImmune(true);
         movementController.ApplyImpulseForce(_Character.transform.forward, swingForwardForce);
-        vfx.PlaySlashVFX();
+        if(useVFXManager) vfx.PlaySlashVFX();
     }
 
     public void StopTracking()

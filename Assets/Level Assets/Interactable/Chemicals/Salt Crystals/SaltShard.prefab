@@ -158,14 +158,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileIsActive: 0
-  lifespan: 4.5
-  forwardSpeed: 75
+  lifespan: 0.5
+  lifespanTimer: 0
+  forwardSpeed: 80
   fallSpeed: 0
   initialForce: 0
   projectileDestroyEvent:
     m_PersistentCalls:
       m_Calls: []
-  registerCollisionsDelay: 0.01
+  registerCollisionsDelay: 0.001
   rb: {fileID: 5483538860570345988}
   ignoreOtherProjectiles: 1
   triggerDebuff: 0

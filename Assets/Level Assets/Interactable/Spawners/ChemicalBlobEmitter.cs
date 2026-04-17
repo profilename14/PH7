@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class ChemicalBlobEmitter : MonoBehaviour
 {
@@ -37,6 +38,9 @@ public class ChemicalBlobEmitter : MonoBehaviour
 
     [SerializeField]
     Vector3 globalEmitAngle;
+
+    [SerializeField]
+    Axis emitAxis;
 
     [SerializeField]
     Vector3 offset;
@@ -85,6 +89,16 @@ public class ChemicalBlobEmitter : MonoBehaviour
 
             if (!useGlobalEmitAngle)
             {
+                /*switch (emitAxis)
+                {
+                    case Axis.Forward:
+                        blobAngle = Quaternion.Euler(transform.forward.z + Random.Range(-angleRandomSpread, angleRandomSpread),
+                        break;
+                    default:
+                        blobAngle = Quaternion.Euler(transform.eulerAngles.x + Random.Range(-angleRandomSpread, angleRandomSpread),
+                        break;
+                }*/
+
                 blobAngle = Quaternion.Euler(transform.eulerAngles.x + Random.Range(-angleRandomSpread, angleRandomSpread),
                 transform.eulerAngles.y + Random.Range(-angleRandomSpread, angleRandomSpread),
                 transform.eulerAngles.z + Random.Range(-angleRandomSpread, angleRandomSpread));
@@ -97,6 +111,23 @@ public class ChemicalBlobEmitter : MonoBehaviour
             }
 
             GameObject blob = Instantiate(chemicalBlob, transform.position + offset, blobAngle);
+
+            if(!useGlobalEmitAngle)
+            {
+                switch (emitAxis)
+                {
+                    case Axis.Forward:
+                        blob.transform.forward = transform.forward;
+                        blob.transform.rotation = Quaternion.Euler(blob.transform.eulerAngles.x + Random.Range(-angleRandomSpread, angleRandomSpread),
+                            blob.transform.eulerAngles.y + Random.Range(-angleRandomSpread, angleRandomSpread),
+                            blob.transform.eulerAngles.z + Random.Range(-angleRandomSpread, angleRandomSpread));
+                        break;
+                    default:
+                        //blobAngle = Quaternion.Euler(transform.eulerAngles.x + Random.Range(-angleRandomSpread, angleRandomSpread),
+                        break;
+                }
+            }
+
             blob.GetComponent<Rigidbody>().velocity = blob.transform.forward * Random.Range(velocityMin, velocityMax);
         }
     }

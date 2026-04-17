@@ -17,14 +17,19 @@ public class GameManager : MonoBehaviour
     public List<Dictionary<int, bool>> collectablesDamageObtained;
     public List<Dictionary<int, bool>> clearedCombatRooms;
     public int soapstones = 0;
+    public int lapis = 0;
     public int damageUpgrade = 0; // Each point addes 33% damage rounded up
     public bool dashUnlocked = false;
     public bool bubbleUnlocked = false;
 
+    public float currentPlayerHealth;
 
     private void Awake()
     {
-        if (instance == null) instance = this;
+        if (instance == null)
+        {
+            instance = this;
+        }
         else if (instance != this) Destroy(this);
 
         DontDestroyOnLoad(this.gameObject);
@@ -32,6 +37,14 @@ public class GameManager : MonoBehaviour
         if(defaultSceneRespawn != null) respawnPosition = defaultSceneRespawn.position;
 
         initializeSaveDataLists();
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
+    }
+
+    private void Start()
+    {
+        currentPlayerHealth = Player.instance.characterData.maxHealth;
+        Player.instance.playerStats.SetHealth(currentPlayerHealth);
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)
@@ -41,6 +54,8 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator SetupScene(string scene, string destinationDoorId)
     {
+        currentPlayerHealth = Player.instance.playerStats.health;
+
         var asyncLoadLevel = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
 
         while (!asyncLoadLevel.isDone)
@@ -49,6 +64,10 @@ public class GameManager : MonoBehaviour
         }
 
         yield return null;
+
+        Player.instance.playerStats.SetHealthMax((int)Mathf.Min(Player.instance.characterData.maxHealth + ((float)GameManager.instance.soapstones / 4), 10f));
+
+        Player.instance.playerStats.SetHealth(currentPlayerHealth);
 
         GameObject[] doors = GameObject.FindGameObjectsWithTag("Door");
 
@@ -60,6 +79,10 @@ public class GameManager : MonoBehaviour
                 Player.instance.WarpPlayer(d.typhisEntranceTransform.position);
             }
         }
+
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+
     }
 
     public void PlayerRespawn()
@@ -79,6 +102,8 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         Player.instance.WarpPlayer(respawnPosition);
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
     }
 
     void initializeSaveDataLists()

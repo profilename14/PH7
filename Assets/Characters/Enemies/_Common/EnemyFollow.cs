@@ -19,17 +19,35 @@ public class EnemyFollow : CharacterState
 
     private Vector3 playerPosition;
 
+    [SerializeField] bool setupLayers;
+
+    private AnimancerLayer bodyLayer;
+
+    EnemyActionManager actionManager;
+
     private void Awake()
     {
         base.Awake();
+        actionManager = (EnemyActionManager)_ActionManager;
         gameObject.GetComponentInParentOrChildren(ref movementController);
     }
 
     protected override void OnEnable()
     {
-        Debug.Log("Entering follow");
+        //Debug.Log("Entering follow");
+
         _ActionManager.SetAllActionPriorityAllowed(true);
-        _ActionManager.anim.Play(MoveAnimation);
+        
+        if (setupLayers)
+        {
+            bodyLayer = actionManager.anim.Layers[0];
+            bodyLayer.Play(MoveAnimation);
+        }
+        else
+        {
+            _ActionManager.anim.Play(MoveAnimation);
+        }
+
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
         movementController.SetForceManualRotation(!rotateToFaceMovementDirection);

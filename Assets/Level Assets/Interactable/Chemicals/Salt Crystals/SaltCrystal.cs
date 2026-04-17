@@ -21,6 +21,9 @@ public class SaltCrystal : MonoBehaviour, IHittable
     private GameObject crystalShardProjectile;
 
     [SerializeField]
+    private GameObject crystalSlashProjectile;
+
+    [SerializeField]
     private float shardAngleOffset;
 
     [SerializeField]
@@ -55,6 +58,27 @@ public class SaltCrystal : MonoBehaviour, IHittable
         if (sender == null)
         {
             sender = attack.character;
+        }
+
+        if (crystalSlashProjectile)
+        {
+            if (attack is PlayerSwordAttack)
+            {
+                PlayerSwordAttack swordScript = (PlayerSwordAttack)attack;
+
+                senderIsPlayer = true;
+
+                Vector3 offsetDir = swordScript.GetSaltShatterDirection();
+                GameObject slash = Instantiate(crystalSlashProjectile, transform.position + shardPositionOffset, Quaternion.Euler(offsetDir));
+                slash.GetComponent<MyProjectile>().InitProjectile(transform.position + shardPositionOffset, Quaternion.LookRotation(offsetDir, Vector3.up), sender, shardAttackData);
+                //Shatter(swordScript.GetSaltShatterDirection(), sender);
+            }
+            else if (attack is PlayerChargeAttack)
+            {
+                PlayerChargeAttack swordScript = (PlayerChargeAttack)attack;
+
+                //Shatter(swordScript.GetAttackingDirection(), sender);
+            }
         }
 
         if (currentHealth <= 0)

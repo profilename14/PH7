@@ -18,9 +18,10 @@ public class Player : Character
 
     public PlayerVFXManager playerVFXManager;
 
+    public PlayerUIManager uiManager;
+
     private void Awake()
     {
-        base.Awake();
         if (instance == null)
         {
             instance = this;
@@ -30,6 +31,8 @@ public class Player : Character
             Destroy(this);
         }
 
+        base.Awake();
+        
         playerStats = (PlayerStats)stats;
         playerActionManager = (PlayerActionManager)actionManager;
         playerVFXManager = (PlayerVFXManager)VFXManager;

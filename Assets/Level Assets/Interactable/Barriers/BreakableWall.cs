@@ -7,14 +7,20 @@ public class BreakableWall : MonoBehaviour, IHittable
     [SerializeField] GameObject wallObject;
     [SerializeField] ParticleSystem breakEffect;
     [SerializeField] Collider coll;
+    [SerializeField] int health = 3;
 
     bool isBroken = false;
 
     public void Hit(AttackState attack, Vector3 hitPoint)
     {
         if (isBroken) return;
-        wallObject.SetActive(false);
+        
         breakEffect.Play();
+
+        health--;
+        if (health > 0) return;
+
+        wallObject.SetActive(false);
         coll.enabled = false;
         isBroken = true;
     }

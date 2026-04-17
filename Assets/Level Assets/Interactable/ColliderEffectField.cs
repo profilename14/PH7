@@ -44,6 +44,8 @@ public class ColliderEffectField : MonoBehaviour
     public bool enableDamageOnEnemies;
     public float reactionPower = 1;
 
+    public bool allowSetCurrentPuddle;
+
     private void OnDisable()
     {
         doTEntities.Clear();
@@ -51,7 +53,18 @@ public class ColliderEffectField : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (allowSetCurrentPuddle && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy")))
+        {
+            other.gameObject.GetComponentInParentOrChildren<Character>().SetCurrentPuddle(this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (allowSetCurrentPuddle && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy")))
+        {
+            other.gameObject.GetComponentInParentOrChildren<Character>().RemoveCurrentPuddle(this);
+        }
     }
 
     private void OnTriggerStay(Collider other)

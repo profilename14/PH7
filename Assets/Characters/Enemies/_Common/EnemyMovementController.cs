@@ -105,7 +105,7 @@ public class EnemyMovementController : CharacterMovementController
             pathfinding.enableRotation = rotationEnabled;
         }
 
-        Debug.DrawRay(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0));
+        /*Debug.DrawRay(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0));
 
         if (Physics.Raycast(actionManager.gameObject.transform.position + 0.2f * Vector3.up, new Vector3(0, -1, 0), out groundHit, 3f, groundMask))
         {
@@ -115,7 +115,7 @@ public class EnemyMovementController : CharacterMovementController
         {
             isGrounded = false;
             rb.velocity += new Vector3(0, -0.4f, 0);
-        }
+        }*/
 
         //actionManager.gameObject.transform.localRotation = Quaternion.FromToRotation(actionManager.gameObject.transform.up, groundHit.normal);
 

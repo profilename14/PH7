@@ -38,7 +38,7 @@ public class TestKillPlane : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            //Player.instance.Hit(effectField, effectField.damageOnEnter);
+            Player.instance.Hit(effectField, effectField.damageOnEnter);
             if (!respawnActive)
             {
                 respawnActive = true;

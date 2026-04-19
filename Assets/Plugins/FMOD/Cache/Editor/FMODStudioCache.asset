@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8571844737973810037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Attacks/charge attack
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Attacks/charge attack
+  Guid:
+    Data1: -1281857760
+    Data2: 1292945652
+    Data3: 61399953
+    Data4: 1458799199
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7410940451139910262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23,10 +50,11 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: -1323900386266555519}
   MinDistance: 1
   MaxDistance: 20
-  Length: 104210
+  Length: 50526
 --- !u!114 &-6682098521698929800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,11 +70,38 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639090337170310437
+  lastModified: 639121379880273455
   FileSizes:
   - Name: Desktop
-    Value: 12506432
+    Value: 12505952
   Exists: 1
+--- !u!114 &-6262762317941748401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Attacks/release superslash
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Attacks/release superslash
+  Guid:
+    Data1: 1274867936
+    Data2: 1220943292
+    Data3: -1612967765
+    Data4: 252287845
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6014778159944788052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,12 +197,12 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639090337153025618
+  lastModified: 639121388974175360
   FileSizes:
   - Name: Desktop
-    Value: 1318
+    Value: 1666
   Exists: 1
---- !u!114 &-2297763675290443660
+--- !u!114 &-1323900386266555519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -156,24 +211,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/Royal Court/Royal Court BATTLE
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Royal Court CALM/intensity
   m_EditorClassIdentifier: 
-  Path: event:/Music/Royal Court/Royal Court BATTLE
-  Guid:
-    Data1: 2032664739
-    Data2: 1213256095
-    Data3: -298071873
-    Data4: 480981590
-  Banks:
-  - {fileID: -6682098521698929800}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 50526
+  Name: intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3803250246
+    data2: 1759914098
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-882143353292737289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,10 +241,10 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639090337256047407
+  lastModified: 639121388974778429
   FileSizes:
   - Name: Desktop
-    Value: 9457184
+    Value: 9607968
   Exists: 1
 --- !u!114 &-748901212548147609
 MonoBehaviour:
@@ -268,34 +320,99 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: -3820875003485676650}
   - {fileID: -748901212548147609}
-  - {fileID: -2297763675290443660}
   - {fileID: -7410940451139910262}
   - {fileID: -539620932063037810}
   - {fileID: -4741281381663273245}
   - {fileID: 5441427591519974431}
+  - {fileID: -8571844737973810037}
+  - {fileID: 9112792872578268933}
+  - {fileID: 8229645734925265075}
+  - {fileID: -6262762317941748401}
+  - {fileID: 5719200530259698248}
+  - {fileID: 5171919892115630867}
   EditorParameters:
   - {fileID: -6014778159944788052}
+  - {fileID: 4288478780421179042}
   MasterBanks:
   - {fileID: 8678279492627830867}
   StringsBanks:
   - {fileID: -3733251692019930447}
   cacheVersion: 131858
-  cacheTime: 639090337256047407
+  cacheTime: 639121388974778429
   SerializableEventsDict:
   - key: event:/Tests/Test action timeline 2d
     index: 0
   - key: event:/Tests/Test 3d
     index: 1
-  - key: event:/Music/Royal Court/Royal Court BATTLE
-    index: 2
   - key: event:/Music/Royal Court/Royal Court CALM
-    index: 3
+    index: 2
   - key: event:/Player SFX/Attacks/Sword Swings
-    index: 4
+    index: 3
   - key: event:/Environment/Underwater Ambience
-    index: 5
+    index: 4
   - key: event:/Environment/Acid Bubbling
+    index: 5
+  - key: event:/Player SFX/Attacks/charge attack
     index: 6
+  - key: event:/Interactables/Coin
+    index: 7
+  - key: event:/Interactables/Collect soapstone
+    index: 8
+  - key: event:/Player SFX/Attacks/release superslash
+    index: 9
+  - key: event:/Player SFX/Movement/Dash
+    index: 10
+--- !u!114 &4288478780421179042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/intensity
+  m_EditorClassIdentifier: 
+  Name: intensity
+  StudioPath: parameter:/intensity
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3803250246
+    data2: 1759914098
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
+--- !u!114 &5171919892115630867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Attacks/airslash
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Attacks/airslash
+  Guid:
+    Data1: 1025864392
+    Data2: 1177627809
+    Data3: -1033332350
+    Data4: -7183579
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5441427591519974431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +440,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 32000
+--- !u!114 &5719200530259698248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Movement/Dash
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Movement/Dash
+  Guid:
+    Data1: -341904912
+    Data2: 1169235439
+    Data3: 1973099905
+    Data4: 134813683
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8229645734925265075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Interactables/Collect soapstone
+  m_EditorClassIdentifier: 
+  Path: event:/Interactables/Collect soapstone
+  Guid:
+    Data1: -47117404
+    Data2: 1158817732
+    Data3: 247524780
+    Data4: -1954215656
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8678279492627830867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,8 +509,35 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639090337153015622
+  lastModified: 639121388974175360
   FileSizes:
   - Name: Desktop
-    Value: 492640
+    Value: 493376
   Exists: 1
+--- !u!114 &9112792872578268933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Interactables/Coin
+  m_EditorClassIdentifier: 
+  Path: event:/Interactables/Coin
+  Guid:
+    Data1: 1035936921
+    Data2: 1182249116
+    Data3: -1152389701
+    Data4: -1777610028
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0

@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7891124496455300732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Movement/Land
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Movement/Land
+  Guid:
+    Data1: -1080180729
+    Data2: 1150912732
+    Data3: 2047206575
+    Data4: 2043787094
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7410940451139910262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,10 +224,10 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639121388974175360
+  lastModified: 639122292515294919
   FileSizes:
   - Name: Desktop
-    Value: 1666
+    Value: 1748
   Exists: 1
 --- !u!114 &-1323900386266555519
 MonoBehaviour:
@@ -241,10 +268,10 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639121388974778429
+  lastModified: 639122298435224995
   FileSizes:
   - Name: Desktop
-    Value: 9607968
+    Value: 9663680
   Exists: 1
 --- !u!114 &-748901212548147609
 MonoBehaviour:
@@ -330,6 +357,8 @@ MonoBehaviour:
   - {fileID: -6262762317941748401}
   - {fileID: 5719200530259698248}
   - {fileID: 5171919892115630867}
+  - {fileID: -7891124496455300732}
+  - {fileID: 5958514491328554419}
   EditorParameters:
   - {fileID: -6014778159944788052}
   - {fileID: 4288478780421179042}
@@ -338,7 +367,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3733251692019930447}
   cacheVersion: 131858
-  cacheTime: 639121388974778429
+  cacheTime: 639122298435224995
   SerializableEventsDict:
   - key: event:/Tests/Test action timeline 2d
     index: 0
@@ -362,6 +391,12 @@ MonoBehaviour:
     index: 9
   - key: event:/Player SFX/Movement/Dash
     index: 10
+  - key: event:/Player SFX/Attacks/airslash
+    index: 11
+  - key: event:/Player SFX/Movement/Land
+    index: 12
+  - key: event:/Player SFX/Movement/Jump
+    index: 13
 --- !u!114 &4288478780421179042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -467,6 +502,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &5958514491328554419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Movement/Jump
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Movement/Jump
+  Guid:
+    Data1: 179866226
+    Data2: 1306226444
+    Data3: 1697137843
+    Data4: 82057734
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &8229645734925265075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,7 +571,7 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639121388974175360
+  lastModified: 639122292515294919
   FileSizes:
   - Name: Desktop
     Value: 493376

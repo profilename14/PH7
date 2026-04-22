@@ -21,6 +21,9 @@ public class HalberdSwing : AttackState
     [SerializeField]
     private float preferredRange = 10;
 
+    [SerializeField]
+    private float moveSpeed;
+
     private void Awake()
     {
         base.Awake();
@@ -40,6 +43,8 @@ public class HalberdSwing : AttackState
         movementController.SetAllowRotation(true);
         movementController.SetForceManualRotation(true);
         movementController.SetForceLookAtPlayer(true);
+
+        movementController.pathfinding.maxSpeed = moveSpeed;
 
         AnimancerState currentState = _ActionManager.anim.Play(swingAttack);
         currentState.Events(this).OnEnd ??= _ActionManager.StateMachine.ForceSetDefaultState;

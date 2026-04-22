@@ -75,6 +75,7 @@ public class CircularStrafingState : CharacterState
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
         movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;
         movementController.SetAllowRotation(true);

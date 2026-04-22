@@ -24,7 +24,12 @@ public abstract class CharacterState : StateBehaviour
     protected static readonly StringReference AllowRotationEvent = "AllowRotation";
 
     public virtual string StateName {get; protected set;} = "Default";
-    
+
+    [SerializeField]
+    public UnityEvent OnEnterEvents;
+
+    [SerializeField]
+    public UnityEvent OnExitEvents;
 
     protected void Awake()
     {
@@ -43,11 +48,13 @@ public abstract class CharacterState : StateBehaviour
 
     protected virtual void OnEnable()
     {
+        OnEnterEvents.Invoke();
         return;
     }
 
     protected virtual void OnDisable()
     {
+        OnExitEvents.Invoke();
         return;
     }
 

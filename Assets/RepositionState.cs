@@ -66,7 +66,7 @@ public class RepositionState : CharacterState
         if (usePresetTransform) endPoint = presetTransform.position;
         else
         {
-            endPoint = character.transform.position + ((character.transform.position - Player.instance.transform.position).normalized * desiredDistanceFromPlayer);
+            endPoint = Player.instance.transform.position + ((character.transform.position - Player.instance.transform.position).normalized * desiredDistanceFromPlayer);
             endPoint = new Vector3(endPoint.x, character.transform.position.y, endPoint.z);
         }
     }

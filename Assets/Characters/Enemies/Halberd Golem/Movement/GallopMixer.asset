@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a8877f26e7a6a43aaf06fade1a064a, type: 3}
+  m_Name: GallopMixer
+  m_EditorClassIdentifier: 
+  _Transition:
+    rid: 6142954168295882752
+  references:
+    version: 2
+    RefIds:
+    - rid: 6142954168295882752
+      type: {class: LinearMixerTransition, ns: Animancer, asm: Kybernetik.Animancer}
+      data:
+        _FadeDuration: 0
+        _Speed: 1
+        _Events:
+          _NormalizedTimes: []
+          _Callbacks: []
+          _Names: []
+        _Animations:
+        - {fileID: 7400000, guid: c78543dc18c5e1349a89ff595ebd0551, type: 2}
+        - {fileID: 7400000, guid: 708aff8031eacf449823edf7f5e3db7f, type: 2}
+        _Speeds: []
+        _SynchronizeChildren: 00
+        _Thresholds:
+        - 0
+        - 4
+        _DefaultParameter: 0
+        _ExtrapolateSpeed: 0
+        _ParameterName: {fileID: 11400000, guid: 2e46e7f3aa874754b8eaed038f2615fb, type: 2}

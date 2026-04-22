@@ -45,7 +45,7 @@ public class AttackCombo : MonoBehaviour
             {
                 if (IsAttackInRange(e.behaviorData))
                 {
-                    Debug.Log("Followup");
+                    //Debug.Log("Followup");
                     actionManager.allowedStates[e.stateScript] = true;
                     movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
                     movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;

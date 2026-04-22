@@ -52,4 +52,14 @@ public class CharacterLegAnimMixer : MonoBehaviour
         if (moveVectorYName) moveVectorY.SetValue(localVelocity.z);
         if (velocityName) velocity.SetValue(localVelocity.magnitude);
     }
+
+    public void StopMixer()
+    {
+        legsLayer.Stop();
+    }
+
+    public void ResumeMixer()
+    {
+        legsLayer.Play(transition);
+    }
 }

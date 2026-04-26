@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 6869501802855362201}
   - component: {fileID: 3707216203960009197}
   - component: {fileID: 824610405430138836}
+  - component: {fileID: 4423927042341263968}
   m_Layer: 0
   m_Name: Salt Crystal Small
   m_TagString: Untagged
@@ -109,8 +110,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.6, z: 0.8}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 0.9000001, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2381913191776675848}
   - {fileID: 2728925720064523080}
@@ -134,9 +135,9 @@ MonoBehaviour:
   breakEffect: {fileID: 2851890503367712551}
   crystalShardProjectile: {fileID: 980401415527210665, guid: 73b9fb5835f1dfc4caf47c0e5aabbd0a, type: 3}
   crystalSlashProjectile: {fileID: 5219611212696439336, guid: fb77989a47e91714599d30d7f48b0feb, type: 3}
-  shardAngleOffset: 7
-  shardPositionOffset: {x: 0, y: 2, z: 0}
-  shardCount: 3
+  shardAngleOffset: 8
+  shardPositionOffset: {x: 0, y: 1, z: 0}
+  shardCount: 5
   crystalObject: {fileID: 1999842255387563432}
   hitTrigger: {fileID: 6869501802855362201}
   shardAttackData: {fileID: 11400000, guid: 68d88630463c7984bb27f054b62937de, type: 2}
@@ -210,6 +211,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &4423927042341263968
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4746518623857078518}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 2.2
+  m_Height: 9
+  m_Direction: 1
+  m_Center: {x: 0, y: 3.3850079, z: 0}
 --- !u!1001 &722199608171045426
 PrefabInstance:
   m_ObjectHideFlags: 0

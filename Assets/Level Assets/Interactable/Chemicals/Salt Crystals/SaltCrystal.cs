@@ -143,7 +143,7 @@ public class SaltCrystal : MonoBehaviour, IHittable
             {
                 if (i % 2 == 0) angleOffset = i / 2 * shardAngleOffset;
                 else if (i == 1) angleOffset = -shardAngleOffset;
-                else angleOffset = -(i - 2) * shardAngleOffset;
+                else angleOffset = -(i + 1) / 2 * shardAngleOffset;
             }
 
             Vector3 offsetDir = new Vector3(targetDir.x, targetDir.y, targetDir.z);

@@ -15,19 +15,48 @@ public class PrefabSpawner : MonoBehaviour
     float makeTimer = 0.0f;
     private GameObject curObject = null;
     [SerializeField] bool spawnOnAwake = false;
+    [SerializeField] float spawnOnAwakeDelay;
     [SerializeField] Vector3 offset;
+
+    [SerializeField]
+    bool useTransformPoints;
+
+    [SerializeField]
+    int numberToSpawn = 1;
+
+    [SerializeField]
+    List<Transform> transformPoints;
 
     void Start() {
       if (spawnOnAwake) {
-        objectIsAlive = true;
-        makeTimer = 0;
-        SpawnPrefab();
+            if(spawnOnAwakeDelay == 0)
+            {
+                objectIsAlive = true;
+                makeTimer = 0;
+                SpawnPrefab();
+            }
+            else
+            {
+                Invoke("SpawnPrefab", spawnOnAwakeDelay);
+            }
       }
     }
 
     public void SpawnPrefab()
     {
-        curObject = Instantiate(objectToMake, transform.position + offset, Quaternion.identity);
+        if (!useTransformPoints)
+        {
+            curObject = Instantiate(objectToMake, transform.position + offset, Quaternion.identity);
+        }
+        else
+        {
+            IListExtensions.Shuffle(transformPoints);
+
+            for (int i = 0; i < numberToSpawn; i++)
+            {
+                Instantiate(objectToMake, transformPoints[i % transformPoints.Count].position + offset, Quaternion.identity);
+            }
+        }
     }
 
     void Update() {

@@ -37,14 +37,14 @@ public class GameManager : MonoBehaviour
         if(defaultSceneRespawn != null) respawnPosition = defaultSceneRespawn.position;
 
         initializeSaveDataLists();
-        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
-        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
     }
 
     private void Start()
     {
         currentPlayerHealth = Player.instance.characterData.maxHealth;
         Player.instance.playerStats.SetHealth(currentPlayerHealth);
+        Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
+        Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)

@@ -27,14 +27,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5219611212696439336}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 106.34, y: 8.186246, z: 48.85257}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6647969849094798108}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4553761454796221445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileIsActive: 0
-  lifespan: 0.5
+  lifespan: 0.15
   lifespanTimer: 0
-  forwardSpeed: 60
+  forwardSpeed: 280
   fallSpeed: 0
   initialForce: 0
   projectileDestroyEvent:
@@ -64,7 +64,7 @@ MonoBehaviour:
   ignoredBySameElement: 1
   projectileCollMask:
     serializedVersion: 2
-    m_Bits: 65728
+    m_Bits: 65665
   hittableCheckRadius: 0
 --- !u!54 &2825729411961494378
 Rigidbody:

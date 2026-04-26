@@ -30,6 +30,9 @@ public class TargetFollowMoveState : CharacterState
 
     [SerializeField] AttackCombo combo;
     [SerializeField] float enableComboAtPercent;
+
+    [SerializeField]
+    bool lockTargetToPlayer;
     
     private float moveTimer;
 
@@ -93,19 +96,27 @@ public class TargetFollowMoveState : CharacterState
             _ActionManager.StateMachine.ForceSetDefaultState();
         }
 
-        //Debug.Log("Strafing progress " + progress);
+        if (lockTargetToPlayer)
+        {
+            movementController.SetAllowRotation(true);
+            movementController.SetPathfindingDestination(Player.instance.transform.position);
+        }
+        else
+        {
+            //Debug.Log("Strafing progress " + progress);
 
-        Vector3 nextTargetPos = startPoint + progress * targetMoveDistanceMultiplier * startDirection; //new Vector3(targetMoveXCurve.Evaluate(progress) * targetMoveDistanceMultiplier, 0, targetMoveYCurve.Evaluate(progress) * targetMoveDistanceMultiplier);
+            Vector3 nextTargetPos = startPoint + progress * targetMoveDistanceMultiplier * startDirection; //new Vector3(targetMoveXCurve.Evaluate(progress) * targetMoveDistanceMultiplier, 0, targetMoveYCurve.Evaluate(progress) * targetMoveDistanceMultiplier);
 
-        //nextTargetPos = Quaternion.Euler(new Vector3(0, startAngle + targetMoveCurveAngleOffset, 0)) * nextTargetPos;
+            //nextTargetPos = Quaternion.Euler(new Vector3(0, startAngle + targetMoveCurveAngleOffset, 0)) * nextTargetPos;
 
-        //Debug.Log(targetMoveXCurve.Evaluate(progress) + " " + targetMoveYCurve.Evaluate(progress));
+            //Debug.Log(targetMoveXCurve.Evaluate(progress) + " " + targetMoveYCurve.Evaluate(progress));
 
-        movementController.SetPathfindingDestination(nextTargetPos);
+            movementController.SetPathfindingDestination(nextTargetPos);
 
-        Vector3 dirToPlayer = (Player.instance.transform.position - character.transform.position).normalized;
+            Vector3 dirToPlayer = (Player.instance.transform.position - character.transform.position).normalized;
 
-        if (Vector3.Angle(startForward, dirToPlayer) < Vector3.Angle(-startForward, dirToPlayer)) character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(startForward, rotationSpeed * Time.deltaTime);
-        else character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(-startForward, rotationSpeed * Time.deltaTime);
+            if (Vector3.Angle(startForward, dirToPlayer) < Vector3.Angle(-startForward, dirToPlayer)) character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(startForward, rotationSpeed * Time.deltaTime);
+            else character.gameObject.transform.rotation = movementController.pathfinding.SimulateRotationTowards(-startForward, rotationSpeed * Time.deltaTime);
+        }
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class AttackCombo : MonoBehaviour
 {
     // Component that allows for follow up attacks
-
     [SerializeField]
     Character character;
 
@@ -22,13 +21,34 @@ public class AttackCombo : MonoBehaviour
 
     public bool allowFollowup;
 
+    [SerializeField]
+    // How often (in seconds) should this Enemy update attack behavior?
+    protected float attackBehaviorUpdateInterval = 0.1f;
+
+    private List<EnemyActionBehavior> attackCandidates = new();
+
     // Start is called before the first frame update
     void Awake()
     {
         for (int i = 0; i < attacks.Count; i++)
         {
-            if (!actionManager.allowedStates.ContainsKey(attacks[i].stateScript)) actionManager.allowedStates.Add(attacks[i].stateScript, true);
+            if (attacks[i].behaviorData.startWithMaxCooldown)
+            {
+                if (!actionManager.allowedStates.ContainsKey(attacks[i].stateScript)) actionManager.allowedStates.Add(attacks[i].stateScript, false);
+                EnemyActionBehavior attackTemp = attacks[i];
+                attackTemp.cooldown = attacks[i].behaviorData.cooldown;
+                attacks[i] = attackTemp;
+            }
+            else
+            {
+                if (!actionManager.allowedStates.ContainsKey(attacks[i].stateScript)) actionManager.allowedStates.Add(attacks[i].stateScript, true);
+            }
         }
+    }
+
+    private void Start()
+    {
+        StartCoroutine(UpdateAttackStates());
     }
 
     public void SetAllowFollowup(bool isAllowed)
@@ -39,21 +59,103 @@ public class AttackCombo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (allowFollowup)
+
+    }
+
+    public IEnumerator UpdateAttackStates()
+    {
+        if (!allowFollowup)
         {
-            foreach (EnemyActionBehavior e in attacks)
+            for (int i = 0; i < attacks.Count; i++)
             {
-                if (IsAttackInRange(e.behaviorData))
+                // Handle decrementing cooldowns.
+                EnemyActionBehavior attackTemp = attacks[i];
+                attackTemp.cooldown -= attackBehaviorUpdateInterval;
+                attacks[i] = attackTemp;
+            }
+
+            yield return new WaitForSeconds(attackBehaviorUpdateInterval);
+
+            StartCoroutine(UpdateAttackStates());
+
+            yield break;
+        }
+
+        Debug.Log("Checking followups");
+
+        float totalFrequencies = 0;
+
+        attackCandidates.Clear();
+
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            EnemyAttackBehaviorData attackData = attacks[i].behaviorData;
+
+            if (attackData.decrementCooldownOnlyWhenAllowed && !actionManager.allowedStates[attacks[i].stateScript]) continue;
+
+            if (attackData.minimumPhase > actionManager.currentPhase) continue;
+
+            if (IsAttackInRange(attackData))
+            {
+                Debug.Log("Within attack range");
+
+                // Within range of the attack.
+                if (attacks[i].cooldown <= 0)
                 {
-                    //Debug.Log("Followup");
-                    actionManager.allowedStates[e.stateScript] = true;
-                    movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
-                    movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;
-                    actionManager.StateMachine.ForceSetState(e.stateScript);
-                    allowFollowup = false;
+                    // This is a possible candidate for an attack.
+                    attackCandidates.Add(attacks[i]);
+                    totalFrequencies += attackData.frequency;
+                    continue;
                 }
             }
+            else
+            {
+                // Out of range of the attack.
+                if (attackData.decrementCooldownOnlyInRange) continue;
+            }
+
+
+            // Handle decrementing cooldowns.
+            EnemyActionBehavior attackTemp = attacks[i];
+            attackTemp.cooldown -= attackBehaviorUpdateInterval;
+            attacks[i] = attackTemp;
+
+            //if (attacks[i].cooldown <= 0) actionManager.allowedStates[attacks[i].stateScript] = true;
+            //else actionManager.allowedStates[attacks[i].stateScript] = false;
         }
+
+        if (!actionManager.isStunned)
+        {
+            float randomNum = Random.Range(0, totalFrequencies);
+
+            IListExtensions.Shuffle(attackCandidates);
+
+            for (int i = 0; i < attackCandidates.Count; i++)
+            {
+                if (randomNum <= attackCandidates[i].behaviorData.frequency)
+                {
+                    actionManager.allowedStates[attackCandidates[i].stateScript] = true;
+                    movementController.pathfinding.maxSpeed = character.characterData.maxBaseMoveSpeed;
+                    movementController.pathfinding.rotationSpeed = character.characterData.rotationSpeed;
+
+                    actionManager.StateMachine.ForceSetState(attackCandidates[i].stateScript);
+
+                    Debug.Log("Attempting followup: " + attackCandidates[i].stateScript);
+                    //Debug.Log(allowedStates[attackCandidates[i].stateScript]);
+                    //Debug.Log(allowedActionPriorities[CharacterActionPriority.Medium]);
+                    ResetCooldown(attackCandidates[i]);
+                    allowFollowup = false;
+
+                    break;
+                }
+
+                randomNum -= attackCandidates[i].behaviorData.frequency;
+            }
+        }
+
+        yield return new WaitForSeconds(attackBehaviorUpdateInterval);
+
+        StartCoroutine(UpdateAttackStates());
     }
 
     public bool IsAttackInRange(EnemyAttackBehaviorData attackData)
@@ -75,5 +177,18 @@ public class AttackCombo : MonoBehaviour
             return true;
         }
         else return false;
+    }
+
+    public void ResetCooldown(EnemyActionBehavior behavior)
+    {
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            if (attacks[i].Equals(behavior))
+            {
+                EnemyActionBehavior attackTemp = attacks[i];
+                attackTemp.cooldown = attacks[i].behaviorData.cooldown;
+                attacks[i] = attackTemp;
+            }
+        }
     }
 }

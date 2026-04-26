@@ -38,4 +38,8 @@ public class EnemyAttackBehaviorData : ScriptableObject
 
     // If true, then this attack cooldown is only decremented when the Enemy is in a state that allows transitioning to it.
     public bool decrementCooldownOnlyWhenAllowed;
+
+    // Required "phase" of an enemy for this attack to be executed (phases are defined in EnemyActionManager). If an enemy is in a phase greater than or equal to this value, the attack is allowed.
+    // Ex. a value of 2 means this attack is only allowed in phase 2 or 3
+    public int minimumPhase = 1;
 }

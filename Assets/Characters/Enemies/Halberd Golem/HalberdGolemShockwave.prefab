@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1415327324160283653}
@@ -114,7 +114,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
   randomSeed: 0
@@ -4937,6 +4937,9 @@ MonoBehaviour:
   triggerReactions: 0
   canHitPlayer: 1
   disableInteractionsWithOtherEffectFields: 1
+  enableDamageOnEnemies: 0
+  reactionPower: 1
+  allowSetCurrentPuddle: 0
 --- !u!65 &5030397200343345210
 BoxCollider:
   m_ObjectHideFlags: 0

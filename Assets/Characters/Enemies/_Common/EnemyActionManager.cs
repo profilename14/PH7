@@ -38,13 +38,19 @@ public class EnemyActionManager : CharacterActionManager
     private List<EnemyActionBehavior> attackCandidates = new();
 
     [SerializeField]
-    protected bool isStunned = false;
+    public bool isStunned = false;
 
     [SerializeField]
     protected CharacterMovementController movementController;
 
     [SerializeField]
     private ClipTransition deathAnimation;
+
+    [SerializeField]
+    public int currentPhase = 1;
+
+    [SerializeField]
+    private float phase2HealthPercent = 0;
 
     protected override void Awake()
     {
@@ -82,6 +88,8 @@ public class EnemyActionManager : CharacterActionManager
 
     public IEnumerator UpdateAttackStates()
     {
+        if (character.stats.health / character.characterData.maxHealth <= phase2HealthPercent) currentPhase = 2;
+
         Vector3 vectorToPlayer = Player.instance.transform.position - character.transform.position;
 
         Vector3 vectorToPlayerSameY = new Vector3(Player.instance.transform.position.x - character.transform.position.x, character.transform.forward.y, Player.instance.transform.position.z - character.transform.position.z);
@@ -100,6 +108,8 @@ public class EnemyActionManager : CharacterActionManager
             EnemyAttackBehaviorData attackData = attacks[i].behaviorData;
 
             if (attackData.decrementCooldownOnlyWhenAllowed && !allowedStates[attacks[i].stateScript]) continue;
+
+            if (attackData.minimumPhase > currentPhase) continue;
 
             //Debug.Log(distanceToPlayer + " : so distance is within range -- " + (distanceToPlayer >= attackData.distance.min && distanceToPlayer < attackData.distance.max));
 
@@ -144,6 +154,8 @@ public class EnemyActionManager : CharacterActionManager
         if (!isStunned)
         {
             float randomNum = Random.Range(0, totalFrequencies);
+
+            IListExtensions.Shuffle(attackCandidates);
 
             for (int i = 0; i < attackCandidates.Count; i++)
             {

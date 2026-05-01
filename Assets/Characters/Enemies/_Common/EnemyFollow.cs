@@ -57,15 +57,15 @@ public class EnemyFollow : CharacterState
     {
         _ActionManager.SetAllActionPriorityAllowed(true);
         playerPosition = Player.instance.transform.position;
-        movementController.SetPathfindingDestination(playerPosition);
+        movementController.SetPathfindingDestination((character.transform.position - playerPosition).normalized * followDistance);
 
-        if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)
+        /* if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)
         {
             movementController.SetAllowMovement(false);
         }
         else
         {
             movementController.SetAllowMovement(true);
-        }
+        }*/
     }
 }

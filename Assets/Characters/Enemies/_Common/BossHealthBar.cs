@@ -40,6 +40,8 @@ public class BossHealthBar : MonoBehaviour
     {
         //transform.LookAt(transform.position + camTransform.forward);
 
+        if (enemy == null) return;
+
         // Kind of unoptimized vs running on the enemy damage function, but I'd like to avoid
         // giving the enemy a reference to this UI (if it gets blanked out it'll be awful).
         if (prevHealth != enemy.stats.health) {

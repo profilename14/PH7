@@ -35,6 +35,9 @@ public class PlayerMove : CharacterState
 
     private bool isLanding;
 
+    [SerializeField]
+    UnityEvent onLand;
+
     public override bool CanEnterState
         => _ActionManager.allowedActionPriorities[CharacterActionPriority.Move];
 
@@ -77,6 +80,7 @@ public class PlayerMove : CharacterState
             if (!wasGrounded)
             {
                 isLanding = true;
+                onLand.Invoke();
                 _ActionManager.anim.Play(landAnimation).Events(this).OnEnd ??= () => { isLanding = false; };
             }
             else if(!isLanding)

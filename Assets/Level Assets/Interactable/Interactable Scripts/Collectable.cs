@@ -11,6 +11,9 @@ public class Collectable : MonoBehaviour
     [SerializeField] int collectableID = 0; // must be unique and manually set, collectables with duplicate ids wont respawn
     private int sceneID = 0;
 
+    [SerializeField]
+    UnityEvent onPickup;
+
     void Start()
     {
         sceneID = SceneManager.GetActiveScene().buildIndex;
@@ -33,6 +36,8 @@ public class Collectable : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
+            onPickup.Invoke();
+
             if (healsPlayer)
             {
                 PlayerStats stats = (PlayerStats)Player.instance.stats;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectableLapis : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class CollectableLapis : MonoBehaviour
     private int sceneID = 0;
 
     [SerializeField] float fallSpeed;
+
+    [SerializeField]
+    UnityEvent onPickup;
 
     bool closeToGround;
 
@@ -39,6 +43,7 @@ public class CollectableLapis : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            onPickup.Invoke();
             GameManager.instance.lapis += 1;
             Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
             print("Lapis collected: " + GameManager.instance.lapis);

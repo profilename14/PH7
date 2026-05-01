@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public static FMOD.Studio.EventInstance Music;
+
     public string sceneToLoadOnRespawn;
 
     public Vector3 respawnPosition;
@@ -45,6 +47,8 @@ public class GameManager : MonoBehaviour
         Player.instance.playerStats.SetHealth(currentPlayerHealth);
         Player.instance.uiManager.UpdateSoapstones(GameManager.instance.soapstones);
         Player.instance.uiManager.UpdateLapis(GameManager.instance.lapis);
+
+        Music = FMODUnity.RuntimeManager.CreateInstance("event:/Music/Royal Court/Royal Court CALM");
     }
 
     public void LoadNewScene(string scene, string destinationDoorId)

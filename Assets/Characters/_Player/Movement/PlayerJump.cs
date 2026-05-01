@@ -50,6 +50,7 @@ public class PlayerJump : CharacterState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
         /*if (!movementController.IsGrounded())
         {
             _ActionManager.StateMachine.ForceSetDefaultState();
@@ -100,6 +101,8 @@ public class PlayerJump : CharacterState
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+
         movementController.SetGravityScale(1);
         movementController.StopJump();
     }

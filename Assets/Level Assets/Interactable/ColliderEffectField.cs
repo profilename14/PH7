@@ -88,7 +88,8 @@ public class ColliderEffectField : MonoBehaviour
                 {
                     Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
                     ChemicalReactionManager.instance.DoReaction(effectType, e.effectType, (transform.position + e.transform.position) / 2);
-                    this.transform.parent.gameObject.SetActive(false);
+                    if(this.transform.parent) this.transform.parent.gameObject.SetActive(false);
+                    else this.gameObject.SetActive(false);
                 }
             }
             else

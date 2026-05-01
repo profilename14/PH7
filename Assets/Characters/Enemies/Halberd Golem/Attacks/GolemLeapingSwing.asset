@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GolemLeapingSwing
   m_EditorClassIdentifier: 
   distance:
-    min: 60
-    max: 70
+    min: 40
+    max: 80
   angleOverrideDistance: 5
   forwardAngle:
     min: 0
@@ -26,8 +26,9 @@ MonoBehaviour:
     min: 0
     max: 180
   frequency: 0.5
-  cooldown: 12
+  cooldown: 10
   enemyCooldown: 0
   startWithMaxCooldown: 0
   decrementCooldownOnlyInRange: 0
   decrementCooldownOnlyWhenAllowed: 0
+  minimumPhase: 1

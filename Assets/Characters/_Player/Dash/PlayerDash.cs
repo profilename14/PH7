@@ -81,6 +81,8 @@ public class PlayerDash : DashState
 
     protected override void OnEnable()
     {
+        base.OnEnable();
+
         directionalInput = actionManager.GetDirectionalInput();
         _ActionManager.SetAllActionPriorityAllowed(false);
 
@@ -125,6 +127,7 @@ public class PlayerDash : DashState
         if (dashVFX)
         {
             instantiatedVFX = Instantiate(dashVFX, transform);
+            instantiatedVFX.transform.forward = character.transform.forward;
             vfx.StartDashVFX();
         }
     }
@@ -273,6 +276,8 @@ public class PlayerDash : DashState
 
     protected override void OnDisable()
     {
+        base.OnDisable();
+
         //PlayerCharacterInputs input = new();
         //movementController.SetInputs(ref input);
 

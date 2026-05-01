@@ -155,6 +155,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a981fa450e2708444b688908c734ec61, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2483704077908466784}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a981fa450e2708444b688908c734ec61, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 444012620624233079}
   m_SourcePrefab: {fileID: 100100000, guid: a981fa450e2708444b688908c734ec61, type: 3}
 --- !u!1 &2389763154426069048 stripped
 GameObject:
@@ -309,6 +312,21 @@ MonoBehaviour:
   healsPlayer: 0
   collectableID: 0
   fallSpeed: 0.3
+  onPickup:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 444012620624233079}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!64 &2483704077908466784
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -331,6 +349,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 5284a8e3be46db94585cc0bc078bcde8, type: 2}
+--- !u!114 &444012620624233079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2389763154426069048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1035936921
+      Data2: 1182249116
+      Data3: -1152389701
+      Data4: -1777610028
+    Path: event:/Interactables/Coin
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!4 &3053990586476550786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a981fa450e2708444b688908c734ec61, type: 3}

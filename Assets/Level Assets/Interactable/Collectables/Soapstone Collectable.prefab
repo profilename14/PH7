@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 4927062330498921506}
   - component: {fileID: 3916747224412620924}
   - component: {fileID: 1427538733158016847}
+  - component: {fileID: 6489762896254493135}
   m_Layer: 0
   m_Name: Soapstone Collectable
   m_TagString: HasPH
@@ -4983,6 +4984,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healsPlayer: 1
   collectableID: 0
+  onPickup:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6489762896254493135}
+        m_TargetAssemblyTypeName: FMODUnity.StudioEventEmitter, FMODUnity
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &1427538733158016847
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5004,6 +5020,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: -0.0000038146973, y: 0, z: -0.0000014305115}
+--- !u!114 &6489762896254493135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483619930120262505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -47117404
+      Data2: 1158817732
+      Data3: 247524780
+      Data4: -1954215656
+    Path: event:/Interactables/Collect soapstone
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &7520297738145493390
 PrefabInstance:
   m_ObjectHideFlags: 0

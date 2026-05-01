@@ -80,6 +80,12 @@ public class PlayerSwordAttack : AttackState
 
     public AudioSource audioSource;
 
+    [SerializeField]
+    UnityEvent onSwing;
+
+    [SerializeField]
+    UnityEvent onAirSwing;
+
     // Uses allowedActions to control if entering this state is allowed.
     // Also must have animations in the array.
     public override bool CanEnterState 
@@ -117,7 +123,7 @@ public class PlayerSwordAttack : AttackState
     {
         base.OnEnable();
 
-        if(swordSwingSFX) audioSource.PlayOneShot(swordSwingSFX);
+        //if(swordSwingSFX) audioSource.PlayOneShot(swordSwingSFX);
 
         directionalInput = actionManager.GetDirectionalInput();
 
@@ -158,7 +164,9 @@ public class PlayerSwordAttack : AttackState
 
             currentState = _ActionManager.anim.Play(attackAnimations[currentSwing]);
 
-            if(currentSwing == 0 || currentSwing == 1) {
+            onSwing.Invoke();
+
+            if (currentSwing == 0 || currentSwing == 1) {
                 _AttackDataClone.knockback = baseKnockback;
             }
 
@@ -185,6 +193,8 @@ public class PlayerSwordAttack : AttackState
 
             // Swinging in the air performs a downwards swing.
             currentState = _ActionManager.anim.Play(downwardsSwingAnimation);
+
+            onAirSwing.Invoke();
 
             _ActionManager.SetAllActionPriorityAllowed(true, currentState.Duration);
 

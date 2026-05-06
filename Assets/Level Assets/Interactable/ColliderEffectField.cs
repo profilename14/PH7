@@ -88,8 +88,8 @@ public class ColliderEffectField : MonoBehaviour
                 {
                     Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
                     ChemicalReactionManager.instance.DoReaction(effectType, e.effectType, (transform.position + e.transform.position) / 2);
-                    if(this.transform.parent) this.transform.parent.gameObject.SetActive(false);
-                    else this.gameObject.SetActive(false);
+                    //if(this.transform.parent) this.transform.parent.gameObject.SetActive(false);
+                    //else this.gameObject.SetActive(false);
                 }
             }
             else
@@ -99,7 +99,7 @@ public class ColliderEffectField : MonoBehaviour
                 if (effectField is ColliderEffectField e && effectType != e.effectType)
                 {
                     Debug.Log("Chemical reaction " + effectType + " with " + e.effectType);
-                    effectField.transform.parent.gameObject.SetActive(false);
+                    //effectField.transform.parent.gameObject.SetActive(false);
                     ChemicalReactionManager.instance.CreateSaltPlatform(effectField.transform.parent.transform.position);
                 }
             }

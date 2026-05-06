@@ -36,7 +36,7 @@ public class ChemicalReactionManager : MonoBehaviour
             for(int i = 0; i < chemicalsInRadius.Length; i++)
             {
                 Debug.Log("Chemicals to delete: " + chemicalsInRadius[i]);
-                chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
+                if (!chemicalsInRadius[i].CompareTag("ChemicalPool")) chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
             }
         }
 
@@ -73,7 +73,7 @@ public class ChemicalReactionManager : MonoBehaviour
             for (int i = 0; i < chemicalsInRadius.Length; i++)
             {
                 Debug.Log("Chemicals to delete: " + chemicalsInRadius[i]);
-                chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
+                if (!chemicalsInRadius[i].CompareTag("ChemicalPool")) chemicalsInRadius[i].gameObject.transform.parent.gameObject.SetActive(false);
             }
         }
     }

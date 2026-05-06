@@ -1,3 +1,4 @@
+using Animancer;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,11 +27,18 @@ public class GameManager : MonoBehaviour
 
     public float currentPlayerHealth;
 
+    FMOD.Studio.Bus masterBus;
+
+    [SerializeField]
+    UnityEvent onInitialLoad;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            FMODUnity.RuntimeManager.StudioSystem.getBus("bus:/", out masterBus);
+            onInitialLoad.Invoke();
         }
         else if (instance != this) Destroy(this);
 

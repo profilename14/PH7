@@ -543,7 +543,7 @@ Transform:
   m_GameObject: {fileID: 6671748499141074180}
   serializedVersion: 2
   m_LocalRotation: {x: 0.29583836, y: 0.6340791, z: -0.28664565, w: 0.654414}
-  m_LocalPosition: {x: 85.67096, y: 30, z: -8.533242}
+  m_LocalPosition: {x: 106.99904, y: 5.751463, z: -7.859878}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -919,6 +919,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3804047497024921134}
     m_Modifications:
+    - target: {fileID: 1246782193136890667, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.67734694
+      objectReference: {fileID: 0}
+    - target: {fileID: 1246782193136890667, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.23870291
+      objectReference: {fileID: 0}
+    - target: {fileID: 1246782193136890667, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6562995
+      objectReference: {fileID: 0}
+    - target: {fileID: 1246782193136890667, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.23128559
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779087629946243426, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.654414
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779087629946243426, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.29583833
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779087629946243426, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.6340791
+      objectReference: {fileID: 0}
+    - target: {fileID: 3779087629946243426, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.28664562
+      objectReference: {fileID: 0}
     - target: {fileID: 3887718583230660389, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
       propertyPath: m_Follow
       value: 
@@ -930,6 +962,22 @@ PrefabInstance:
     - target: {fileID: 5820097712281582978, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
       propertyPath: m_Name
       value: FreeLook Camera Dynamic
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884904746148401278, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6703288
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884904746148401278, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.25775447
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884904746148401278, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.64949936
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884904746148401278, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.24974515
       objectReference: {fileID: 0}
     - target: {fileID: 6298027900393188245, guid: 292e682fddd9f0347b881e6c0a3914b4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1023,11 +1071,11 @@ PrefabInstance:
       objectReference: {fileID: 3954221476277811453}
     - target: {fileID: 5809335053973854910, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5809335053973854910, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6924254229489201860, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1035,6 +1083,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6924254229489201860, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7062355889791579463, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8127060162804576988, guid: fd9385681e8530442832a6ddd77d57bf, type: 3}
@@ -1161,6 +1213,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 116137858139928104}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6343001954752469460}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FMODUnity.StudioEventEmitter, FMODUnity
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147983464206772566, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
+      propertyPath: onInitialLoad.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4140908843315567942, guid: fcc7356996fb4d94ead29f839ae49459, type: 3}
       propertyPath: m_Name
       value: Game Manager
@@ -1202,7 +1306,7 @@ MonoBehaviour:
       Data4: 1897765036
     Path: event:/Music/Royal Court/Royal Court CALM
   Event: 
-  EventPlayTrigger: 1
+  EventPlayTrigger: 0
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
@@ -1233,7 +1337,7 @@ MonoBehaviour:
       Data4: 221801890
     Path: event:/Environment/Underwater Ambience
   Event: 
-  EventPlayTrigger: 1
+  EventPlayTrigger: 0
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0

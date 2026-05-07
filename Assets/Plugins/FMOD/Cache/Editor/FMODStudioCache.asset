@@ -97,7 +97,7 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639131989019788250
+  lastModified: 639136938877872540
   FileSizes:
   - Name: Desktop
     Value: 12505952
@@ -224,10 +224,10 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639131989018541558
+  lastModified: 639136938877101278
   FileSizes:
   - Name: Desktop
-    Value: 1748
+    Value: 1840
   Exists: 1
 --- !u!114 &-1323900386266555519
 MonoBehaviour:
@@ -268,11 +268,38 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639131989020815633
+  lastModified: 639136938878500844
   FileSizes:
   - Name: Desktop
-    Value: 9663680
+    Value: 9704608
   Exists: 1
+--- !u!114 &-789665327429007471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Feedback/Heal
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Feedback/Heal
+  Guid:
+    Data1: 2089536312
+    Data2: 1093762871
+    Data3: 2021541760
+    Data4: -675054388
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-748901212548147609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +386,8 @@ MonoBehaviour:
   - {fileID: 5171919892115630867}
   - {fileID: -7891124496455300732}
   - {fileID: 5958514491328554419}
+  - {fileID: -789665327429007471}
+  - {fileID: 4614127830491205593}
   EditorParameters:
   - {fileID: -6014778159944788052}
   - {fileID: 4288478780421179042}
@@ -367,7 +396,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -3733251692019930447}
   cacheVersion: 131858
-  cacheTime: 639131989020815633
+  cacheTime: 639136938878500844
   SerializableEventsDict:
   - key: event:/Tests/Test action timeline 2d
     index: 0
@@ -397,6 +426,10 @@ MonoBehaviour:
     index: 12
   - key: event:/Player SFX/Movement/Jump
     index: 13
+  - key: event:/Player SFX/Feedback/Heal
+    index: 14
+  - key: event:/Player SFX/Feedback/Ouchie
+    index: 15
 --- !u!114 &4288478780421179042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +454,33 @@ MonoBehaviour:
   IsGlobal: 1
   Labels: []
   Exists: 1
+--- !u!114 &4614127830491205593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player SFX/Feedback/Ouchie
+  m_EditorClassIdentifier: 
+  Path: event:/Player SFX/Feedback/Ouchie
+  Guid:
+    Data1: -845586367
+    Data2: 1320785592
+    Data3: 838365313
+    Data4: 1856795667
+  Banks:
+  - {fileID: -882143353292737289}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5171919892115630867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +631,7 @@ MonoBehaviour:
   Path: PH7_audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639131989018461299
+  lastModified: 639136938877086033
   FileSizes:
   - Name: Desktop
     Value: 493376

@@ -28,6 +28,9 @@ public class CinemachineManager : MonoBehaviour
     [SerializeField] bool shouldZoomIn;
 
     [SerializeField] bool disableManualCamera;
+    [SerializeField] CinemachineTargetGroup targetGroup;
+
+    private Transform lockedEnemy = null;
 
     // Start is called before the first frame update
     void Start()
@@ -162,4 +165,23 @@ public class CinemachineManager : MonoBehaviour
             shouldZoomIn = false;
         }
     }
+
+
+    public void addEnemyToTarget(GameObject gameObject)
+    {
+        if (targetGroup != null)
+        {
+            lockedEnemy = gameObject.transform;
+            targetGroup.AddMember(lockedEnemy, 0.5f, 0);
+        }
+    }
+
+    public void removeEnemyToTarget()
+    {
+        if (targetGroup != null)
+        {
+            targetGroup.RemoveMember(lockedEnemy);
+        }
+    }
+
 }

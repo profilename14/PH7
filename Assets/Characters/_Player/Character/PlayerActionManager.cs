@@ -81,6 +81,8 @@ public class PlayerActionManager : CharacterActionManager
     [SerializeField]
     private GameObject lockOnIcon;
 
+    [SerializeField]
+    private CinemachineManager cinemachineManager;
     private LayerMask enemyLayerMask;
 
     [HideInInspector] public PlayerUIManager UIManager;
@@ -485,6 +487,12 @@ public class PlayerActionManager : CharacterActionManager
         {
             lockedOn = false;
             lockOnTarget.GetComponentInParentOrChildren<Enemy>().DisableLockOn();
+            
+            if (cinemachineManager != null)
+            {
+                cinemachineManager.removeEnemyToTarget();
+            }
+
             return;
         }
 
@@ -509,12 +517,22 @@ public class PlayerActionManager : CharacterActionManager
         lockOnTarget = closestEnemy;
         lockOnTarget.GetComponentInParentOrChildren<Enemy>().LockOn(OnLockOnTargetDie);
         lockedOn = true;
+
+        if (cinemachineManager != null)
+        {
+            cinemachineManager.addEnemyToTarget(closestEnemy);
+        }
     }
 
     void OnLockOnTargetDie()
     {
         lockedOn = false;
         lockOnTarget = null;
+        
+        if (cinemachineManager != null)
+        {
+            cinemachineManager.removeEnemyToTarget();
+        }
     }
 
     //

@@ -463,6 +463,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -2189,6 +2195,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -2474,6 +2486,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  currentPhase: 1
+  phase2HealthPercent: 0
   _Aggro: {fileID: 3668094322336968099}
   isAggro: 0
   references:
@@ -2492,6 +2506,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   IdleAnimation: {fileID: 11400000, guid: be3b4bb118ad9db4b8a8db33cb6a6424, type: 2}
   MoveAnimation: {fileID: 11400000, guid: f84d93e036255bd41bbf61a42d81c2a6, type: 2}
   patrolPauseTime: 2
@@ -2515,9 +2535,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   MoveAnimation: {fileID: 11400000, guid: f84d93e036255bd41bbf61a42d81c2a6, type: 2}
   followDistance: 10
   rotateToFaceMovementDirection: 0
+  setupLayers: 0
+  forceLookAtPlayer: 1
 --- !u!114 &4788809481325146362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2531,6 +2559,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   flinchAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -2698,6 +2732,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 828172722948533280}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   spitAnimation:
     _FadeDuration: 0.25
     _Speed: 0.5
@@ -4072,6 +4112,7 @@ MonoBehaviour:
   blobCountPerInterval: 4
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 2, z: 0}
 --- !u!1 &7610984920353492473
 GameObject:

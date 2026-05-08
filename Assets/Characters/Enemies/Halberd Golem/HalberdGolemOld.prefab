@@ -80,7 +80,11 @@ MonoBehaviour:
   spawnRepeating: 0
   spawnInterval: 0
   spawnOnAwake: 0
+  spawnOnAwakeDelay: 0
   offset: {x: 0, y: 0, z: 0}
+  useTransformPoints: 0
+  numberToSpawn: 1
+  transformPoints: []
 --- !u!1 &93234509864043319
 GameObject:
   m_ObjectHideFlags: 0
@@ -3510,6 +3514,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -3541,6 +3551,7 @@ MonoBehaviour:
   preferredRange: 6
   saltShockwave: {fileID: 1012174368309445488, guid: d727d6fa68e2c7142be9640093f2121f, type: 3}
   saltShockwaveSpawnpoint: {fileID: 6515703263439495905}
+  useVFXManager: 0
   references:
     version: 2
     RefIds:
@@ -3710,6 +3721,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -3733,6 +3750,7 @@ MonoBehaviour:
   swingForwardForce: 50
   drag: 4
   preferredRange: 10
+  moveSpeed: 0
   references:
     version: 2
     RefIds:
@@ -3808,6 +3826,7 @@ MonoBehaviour:
     stateScript: {fileID: 5544028093659778007}
     behaviorData: {fileID: 11400000, guid: e30525708ff6d0742868e6a189184e13, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!114 &5544028093659778007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3821,6 +3840,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 7aa1556bdadf0db4d83385a019c1b680, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -3850,6 +3875,7 @@ MonoBehaviour:
   preferredRange: 6
   saltShockwave: {fileID: 1012174368309445488, guid: d727d6fa68e2c7142be9640093f2121f, type: 3}
   saltShockwaveSpawnpoint: {fileID: 6515703263439495905}
+  useVFXManager: 0
   references:
     version: 2
     RefIds:
@@ -10260,6 +10286,7 @@ MonoBehaviour:
   blobCountPerInterval: 10
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 2, z: 0}
 --- !u!1 &7235385566637930244
 GameObject:
@@ -10738,6 +10765,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  currentPhase: 1
+  phase2HealthPercent: 0
   _Aggro: {fileID: 193658620735304837}
   isAggro: 0
   references:
@@ -10792,6 +10821,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   IdleAnimation: {fileID: 11400000, guid: f899415b3f71a19429b3a550fd38a3b2, type: 2}
   MoveAnimation: {fileID: 11400000, guid: f899415b3f71a19429b3a550fd38a3b2, type: 2}
   patrolPauseTime: 0
@@ -10815,9 +10850,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   MoveAnimation: {fileID: 11400000, guid: f899415b3f71a19429b3a550fd38a3b2, type: 2}
   followDistance: 8
-  rotateToFaceMovementDirection: 0
+  rotateToFaceMovementDirection: 1
+  setupLayers: 0
 --- !u!114 &4383181889540910946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10831,6 +10873,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 5393292168433560818}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   flinchAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -10862,6 +10910,7 @@ MonoBehaviour:
   legsMask: {fileID: 31900000, guid: 3cd9de9810cd6f241934ae3f3c732612, type: 2}
   moveVectorXName: {fileID: 11400000, guid: d02d01f8d491f924daead326dad8ff2e, type: 2}
   moveVectorYName: {fileID: 11400000, guid: f152c3df6be94624fbcfa44a40b0c4df, type: 2}
+  velocityName: {fileID: 0}
 --- !u!1 &7767789333498346063
 GameObject:
   m_ObjectHideFlags: 0

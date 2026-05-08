@@ -18,6 +18,7 @@ public class PlayerUIManager : MonoBehaviour
     private Slider AcidBar;
     private Slider AcidBar2;
     public Image AlkalineIndicator;
+    public Image AlkalineIndicatorGlow;
     public Image AcidIndicator;
     public loadingFadeToBlack loadingScreen;
 
@@ -67,13 +68,15 @@ public class PlayerUIManager : MonoBehaviour
     if (playerStats.alkaline >= 5.8)
     {
       AlkalineIndicator.enabled = true;
-      //PHBar.value = 7;
-      PHBar2.value = ((float)playerStats.alkaline) / 10;
+            AlkalineIndicatorGlow.enabled = true;
+            //PHBar.value = 7;
+            PHBar2.value = ((float)playerStats.alkaline) / 10;
     }
     else
     {
       AlkalineIndicator.enabled = false;
-      PHBar2.value = ((float)playerStats.alkaline) / 10;
+            AlkalineIndicatorGlow.enabled = false;
+            PHBar2.value = ((float)playerStats.alkaline) / 10;
       //PHBar.value = (((float)playerStats.alkaline) / 7);
       //PHBar2.value = 0;
     }

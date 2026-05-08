@@ -717,6 +717,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  currentPhase: 1
+  phase2HealthPercent: 0
   _Aggro: {fileID: 473879448141724443}
   isAggro: 0
   references:
@@ -735,6 +737,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   IdleAnimation: {fileID: 11400000, guid: 9f36c169b6eed06488f383ba047538d6, type: 2}
   MoveAnimation: {fileID: 11400000, guid: 06fd6d6da0770de4083e83641db69a6f, type: 2}
   patrolPauseTime: 2
@@ -758,9 +766,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   MoveAnimation: {fileID: 11400000, guid: 06fd6d6da0770de4083e83641db69a6f, type: 2}
   followDistance: 10
   rotateToFaceMovementDirection: 0
+  setupLayers: 0
+  forceLookAtPlayer: 1
 --- !u!114 &2778420119749201071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,6 +790,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   flinchAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -1282,6 +1304,7 @@ MonoBehaviour:
   blobCountPerInterval: 2
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 2, z: 0}
 --- !u!1 &1933641591904351052
 GameObject:
@@ -2503,6 +2526,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -2988,6 +3017,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 2898020883842843761}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: fadb09042761c9a4eb16a2a29971bbae, type: 2}
   triggerDebuff: 0
   triggerReactions: 0

@@ -47,7 +47,9 @@ public class Player : Character
             //playerStats.ModifyAcid(enemy.GetAcidOnHit());
             //playerStats.ModifyAlkaline(enemy.GetAlkalineOnHit());
 
-            playerStats.ModifyAlkaline(0.6f);
+            EnemyData data = (EnemyData)enemy.characterData;
+
+            playerStats.ModifyAlkaline(0.6f + data.alkalineOnHit);
 
             /*if (enemy.characterData.naturalType == Chemical.Alkaline)
             {

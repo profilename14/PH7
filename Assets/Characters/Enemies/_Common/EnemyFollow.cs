@@ -21,6 +21,8 @@ public class EnemyFollow : CharacterState
 
     [SerializeField] bool setupLayers;
 
+    [SerializeField] bool forceLookAtPlayer;
+
     private AnimancerLayer bodyLayer;
 
     EnemyActionManager actionManager;
@@ -51,13 +53,14 @@ public class EnemyFollow : CharacterState
         movementController.SetAllowMovement(true);
         movementController.SetAllowRotation(true);
         movementController.SetForceManualRotation(!rotateToFaceMovementDirection);
+        if(forceLookAtPlayer) movementController.SetForceLookAtPlayer(true);
     }
 
     private void Update()
     {
         _ActionManager.SetAllActionPriorityAllowed(true);
         playerPosition = Player.instance.transform.position;
-        movementController.SetPathfindingDestination((character.transform.position - playerPosition).normalized * followDistance);
+        movementController.SetPathfindingDestination(playerPosition + (character.transform.position - playerPosition).normalized * followDistance);
 
         /* if(Vector3.Distance(_Character.transform.position, playerPosition) < followDistance)
         {

@@ -206,6 +206,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 9c65190976574bd44b4e3857e0a0a3a8, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -1160,6 +1166,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: f8ab298c85996b34caaf01d1e801186e, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -1311,6 +1323,7 @@ MonoBehaviour:
     stateScript: {fileID: 372925781331855242}
     behaviorData: {fileID: 11400000, guid: 1481900208ae303498562ea4a1e02896, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &268765129139845439
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,6 +1841,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: f8ab298c85996b34caaf01d1e801186e, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -2017,6 +2036,7 @@ MonoBehaviour:
     stateScript: {fileID: 1551765233964058492}
     behaviorData: {fileID: 11400000, guid: 1481900208ae303498562ea4a1e02896, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!114 &5660193880483944190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2038,6 +2058,7 @@ MonoBehaviour:
     stateScript: {fileID: 5632901089157670259}
     behaviorData: {fileID: 11400000, guid: fa3b899060069614ba41815df826f2c6, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &403762418758104974
 GameObject:
   m_ObjectHideFlags: 0
@@ -3916,6 +3937,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -3935,6 +3962,7 @@ MonoBehaviour:
   combo: {fileID: 7593439023795136762}
   enableComboAtPercent: 0.5
   enableOverwritingState: 0
+  alignRotationToMovement: 0
   references:
     version: 2
     RefIds: []
@@ -3965,6 +3993,7 @@ MonoBehaviour:
     stateScript: {fileID: 287037861426945816}
     behaviorData: {fileID: 11400000, guid: 9620b00945ad7c74888dfc59237812ed, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &717909117593544883
 GameObject:
   m_ObjectHideFlags: 0
@@ -8552,6 +8581,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -8570,6 +8605,7 @@ MonoBehaviour:
   targetMoveDistanceMultiplier: 40
   combo: {fileID: 6614626059250712937}
   enableComboAtPercent: 0.7
+  lockTargetToPlayer: 0
   references:
     version: 2
     RefIds: []
@@ -8600,6 +8636,7 @@ MonoBehaviour:
     stateScript: {fileID: 2539762312139778763}
     behaviorData: {fileID: 11400000, guid: da126b854e1872542bfae7bff2bea648, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &1552606861249024887
 GameObject:
   m_ObjectHideFlags: 0
@@ -12207,6 +12244,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: f8ab298c85996b34caaf01d1e801186e, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -14160,6 +14203,7 @@ MonoBehaviour:
   blobCountPerInterval: 6
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 6, z: 0}
 --- !u!1 &2972386549531960418
 GameObject:
@@ -15476,6 +15520,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: f8ab298c85996b34caaf01d1e801186e, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -15649,6 +15699,7 @@ MonoBehaviour:
   blobCountPerInterval: 8
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 5, z: 0}
 --- !u!1 &3340110682004048632
 GameObject:
@@ -16832,6 +16883,7 @@ MonoBehaviour:
   blobCountPerInterval: 25
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 2, z: 0}
 --- !u!1 &3528794342132346953
 GameObject:
@@ -17231,6 +17283,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -17249,6 +17307,7 @@ MonoBehaviour:
   targetMoveDistanceMultiplier: 40
   combo: {fileID: 7218559998801581880}
   enableComboAtPercent: 0.7
+  lockTargetToPlayer: 0
   references:
     version: 2
     RefIds: []
@@ -17279,6 +17338,7 @@ MonoBehaviour:
     stateScript: {fileID: 2856566124358256931}
     behaviorData: {fileID: 11400000, guid: 095883a205a021b4181ca80ca64edf3b, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &3607486607437129732
 GameObject:
   m_ObjectHideFlags: 0
@@ -18535,6 +18595,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: f8ab298c85996b34caaf01d1e801186e, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -18755,6 +18821,7 @@ MonoBehaviour:
     stateScript: {fileID: 5792724781954987712}
     behaviorData: {fileID: 11400000, guid: d8e73b662c4692e41908c4e2588f9920, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &3870315216807369564
 GameObject:
   m_ObjectHideFlags: 0
@@ -21476,6 +21543,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -21495,6 +21568,7 @@ MonoBehaviour:
   combo: {fileID: 4095309578078893979}
   enableComboAtPercent: 0.8
   enableOverwritingState: 0
+  alignRotationToMovement: 0
   references:
     version: 2
     RefIds: []
@@ -21522,6 +21596,7 @@ MonoBehaviour:
     stateScript: {fileID: 372925781331855242}
     behaviorData: {fileID: 11400000, guid: 1481900208ae303498562ea4a1e02896, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &4570116055474820180
 GameObject:
   m_ObjectHideFlags: 0
@@ -22950,6 +23025,7 @@ MonoBehaviour:
   blobCountPerInterval: 15
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: 0, y: 0, z: 0}
+  emitAxis: 0
   offset: {x: 0, y: 0, z: 0}
 --- !u!1 &4881715883647492951
 GameObject:
@@ -24480,6 +24556,8 @@ MonoBehaviour:
       _Names: []
     _Clip: {fileID: 0}
     _NormalizedStartTime: NaN
+  currentPhase: 1
+  phase2HealthPercent: 0
   _Aggro: {fileID: 7126796228039922945}
   isAggro: 0
   references:
@@ -24534,6 +24612,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   IdleAnimation: {fileID: 11400000, guid: 66111de6d7a9467479dee69860985a21, type: 2}
   MoveAnimation: {fileID: 11400000, guid: d46d74c3c4407ec4db1bac0109bb3b81, type: 2}
   patrolPauseTime: 2
@@ -24558,6 +24642,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   flinchAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -24585,6 +24675,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   idle:
     _FadeDuration: 0.13333334
     _Speed: 1
@@ -24613,7 +24709,7 @@ MonoBehaviour:
   midStrafeSpeed: 0
   longStrafeDistance: 0
   longStrafeSpeed: 0
-  rotateToFaceMovementDirection: 0
+  rotateToFaceMovementDirection: 1
   references:
     version: 2
     RefIds: []
@@ -24634,6 +24730,7 @@ MonoBehaviour:
   legsMask: {fileID: 31900000, guid: 4b57a0b99f4627149bbb915f58d4d0e7, type: 2}
   moveVectorXName: {fileID: 11400000, guid: d02d01f8d491f924daead326dad8ff2e, type: 2}
   moveVectorYName: {fileID: 11400000, guid: f152c3df6be94624fbcfa44a40b0c4df, type: 2}
+  velocityName: {fileID: 0}
 --- !u!1 &5300220522962277225
 GameObject:
   m_ObjectHideFlags: 0
@@ -29910,6 +30007,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 9c65190976574bd44b4e3857e0a0a3a8, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -34129,6 +34232,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -34148,6 +34257,7 @@ MonoBehaviour:
   combo: {fileID: 1373014148413950764}
   enableComboAtPercent: 0.5
   enableOverwritingState: 0
+  alignRotationToMovement: 0
   references:
     version: 2
     RefIds: []
@@ -34178,6 +34288,7 @@ MonoBehaviour:
     stateScript: {fileID: 287037861426945816}
     behaviorData: {fileID: 11400000, guid: 9620b00945ad7c74888dfc59237812ed, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &7810542957580654673
 GameObject:
   m_ObjectHideFlags: 0
@@ -35355,6 +35466,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   _AttackData: {fileID: 11400000, guid: 9c65190976574bd44b4e3857e0a0a3a8, type: 2}
   triggerDebuff: 0
   triggerReactions: 0
@@ -35487,6 +35604,7 @@ MonoBehaviour:
     stateScript: {fileID: 2856566124358256931}
     behaviorData: {fileID: 11400000, guid: 095883a205a021b4181ca80ca64edf3b, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!64 &7777461891722714439
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39548,6 +39666,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 7389750308553704556}
+  OnEnterEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitEvents:
+    m_PersistentCalls:
+      m_Calls: []
   followAnimation:
     _FadeDuration: 0.25
     _Speed: 1
@@ -39567,6 +39691,7 @@ MonoBehaviour:
   combo: {fileID: 2403676339960562176}
   enableComboAtPercent: 0.8
   enableOverwritingState: 0
+  alignRotationToMovement: 0
   references:
     version: 2
     RefIds: []
@@ -39594,6 +39719,7 @@ MonoBehaviour:
     stateScript: {fileID: 2539762312139778763}
     behaviorData: {fileID: 11400000, guid: da126b854e1872542bfae7bff2bea648, type: 2}
   allowFollowup: 0
+  attackBehaviorUpdateInterval: 0.1
 --- !u!1 &9100798582068155644
 GameObject:
   m_ObjectHideFlags: 0

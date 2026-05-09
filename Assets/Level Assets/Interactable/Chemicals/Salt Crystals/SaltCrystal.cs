@@ -113,7 +113,8 @@ public class SaltCrystal : MonoBehaviour, IHittable
 
     public void Hit(MyProjectile projectile, Vector3 hitPoint)
     {
-        currentHealth -= projectile.attackData.damage;
+        if (projectile.attackData) currentHealth -= projectile.attackData.damage;
+        else currentHealth--;
 
         if (currentHealth <= 0)
         {

@@ -49,7 +49,7 @@ public class CollectableLapis : MonoBehaviour
             print("Lapis collected: " + GameManager.instance.lapis);
             Destroy(gameObject);
         }
-        else if(other.gameObject.layer == 18)
+        else if(other.gameObject.layer == 18 || other.gameObject.layer == 0)
         {
             closeToGround = true;
         }

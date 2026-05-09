@@ -49,7 +49,11 @@ MonoBehaviour:
   spawnRepeating: 0
   spawnInterval: 0
   spawnOnAwake: 0
+  spawnOnAwakeDelay: 0
   offset: {x: 0, y: 0, z: 0}
+  useTransformPoints: 0
+  numberToSpawn: 1
+  transformPoints: []
 --- !u!1 &2587436840209391629
 GameObject:
   m_ObjectHideFlags: 0
@@ -9816,7 +9820,11 @@ MonoBehaviour:
   spawnRepeating: 0
   spawnInterval: 0
   spawnOnAwake: 0
+  spawnOnAwakeDelay: 0
   offset: {x: 0, y: 0, z: 0}
+  useTransformPoints: 0
+  numberToSpawn: 1
+  transformPoints: []
 --- !u!1001 &3245177779209800712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9974,6 +9982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileIsActive: 1
   lifespan: 10
+  lifespanTimer: 0
   forwardSpeed: 0
   fallSpeed: 1.5
   initialForce: 190
@@ -10036,7 +10045,7 @@ MonoBehaviour:
   ignoredBySameElement: 1
   projectileCollMask:
     serializedVersion: 2
-    m_Bits: 263489
+    m_Bits: 394561
   hittableCheckRadius: 3
 --- !u!114 &875555941549182893
 MonoBehaviour:
@@ -10055,7 +10064,11 @@ MonoBehaviour:
   spawnRepeating: 0
   spawnInterval: 0
   spawnOnAwake: 0
+  spawnOnAwakeDelay: 0
   offset: {x: 0, y: -1, z: 0}
+  useTransformPoints: 0
+  numberToSpawn: 1
+  transformPoints: []
 --- !u!82 &8258856512467092412
 AudioSource:
   m_ObjectHideFlags: 0

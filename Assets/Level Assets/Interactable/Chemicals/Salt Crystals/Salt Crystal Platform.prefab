@@ -67,8 +67,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -623.47, y: 115.95099, z: 280.85}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1378801229567906840}
   - {fileID: 8241338820324704332}
@@ -91,12 +91,14 @@ MonoBehaviour:
   hitEffect: {fileID: 8076073196312519715}
   breakEffect: {fileID: 8076073196312519715}
   crystalShardProjectile: {fileID: 980401415527210665, guid: 73b9fb5835f1dfc4caf47c0e5aabbd0a, type: 3}
+  crystalSlashProjectile: {fileID: 0}
   shardAngleOffset: 10
   shardPositionOffset: {x: 0, y: 2, z: 0}
   shardCount: 3
   crystalObject: {fileID: 3511267219456378260}
   hitTrigger: {fileID: 7726150393406946214}
   shardAttackData: {fileID: 11400000, guid: 68d88630463c7984bb27f054b62937de, type: 2}
+  sender: {fileID: 0}
 --- !u!135 &7726150393406946214
 SphereCollider:
   m_ObjectHideFlags: 0

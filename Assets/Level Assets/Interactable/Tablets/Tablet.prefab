@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2831506351774761343}
   - component: {fileID: 1911450703227779560}
   - component: {fileID: 8142326878468602814}
-  - component: {fileID: 6351429996356054459}
   m_Layer: 0
   m_Name: CanvasForNewEnemyUI
   m_TagString: Untagged
@@ -103,19 +102,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6351429996356054459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220008907054416345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 205080387cce3614ea6d5ec6107480f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startActive: 0
 --- !u!1 &2791226184808661903
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,7 +288,7 @@ GameObject:
   - component: {fileID: 5146003658212603792}
   - component: {fileID: 7831274412197886502}
   - component: {fileID: 3787473672657648982}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Tablet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663b73ae29db3ea4f91504858d0a0a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueSystemTrigger: {fileID: 0}
+  dialogueSystemTrigger: {fileID: 5146003658212603792}
 --- !u!54 &6510339305223212858
 Rigidbody:
   m_ObjectHideFlags: 0

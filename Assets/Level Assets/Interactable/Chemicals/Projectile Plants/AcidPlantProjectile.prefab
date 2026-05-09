@@ -9894,8 +9894,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa71b9c88bd27a34cb3eb4d97ec8c937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileIsActive: 0
+  projectileIsActive: 1
   lifespan: 8
+  lifespanTimer: 0
   forwardSpeed: 40
   fallSpeed: 0
   initialForce: 0
@@ -9947,7 +9948,8 @@ MonoBehaviour:
   blobCountPerInterval: 1
   useGlobalEmitAngle: 1
   globalEmitAngle: {x: -90, y: 0, z: 0}
-  offset: {x: 0, y: 5, z: 0}
+  emitAxis: 0
+  offset: {x: 0, y: 3, z: 0}
 --- !u!1 &5722001939916543356
 GameObject:
   m_ObjectHideFlags: 0

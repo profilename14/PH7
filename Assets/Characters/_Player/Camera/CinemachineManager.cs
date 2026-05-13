@@ -31,6 +31,11 @@ public class CinemachineManager : MonoBehaviour
     [SerializeField] CinemachineTargetGroup targetGroup;
 
     private Transform lockedEnemy = null;
+    private bool lockedOn = false;
+    [SerializeField] CinemachineFreeLook freeLook;
+    
+    Transform playerLoc;
+    Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +45,7 @@ public class CinemachineManager : MonoBehaviour
         perlinNoise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         perlinNoise.m_AmplitudeGain = 0f;  // Reset shake
 
+        playerLoc = freeLook.m_Follow;
     }
 
     // Update is called once per frame
@@ -144,6 +150,16 @@ public class CinemachineManager : MonoBehaviour
     {
         //if (shouldZoomIn) zoomOutMultiplier = Mathf.Clamp(zoomOutMultiplier - 0.4f * Time.fixedDeltaTime, 0.2f, 0.5f);
         //else zoomOutMultiplier = Mathf.Clamp( zoomOutMultiplier + 0.4f * Time.fixedDeltaTime, 0.2f, 0.5f);
+
+        if (lockedOn && (freeLook != null))
+        {
+            direction = lockedEnemy.position - playerLoc.position; 
+            direction.y = 0;
+            float lockAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+            freeLook.m_XAxis.Value = lockAngle % 360f;
+            
+            /*Debug.Log("AAAAAAA" + freeLook.m_XAxis.Value  + " " + lockAngle);*/
+        }
     }
 
     private void LateUpdate()
@@ -173,6 +189,7 @@ public class CinemachineManager : MonoBehaviour
         {
             lockedEnemy = gameObject.transform;
             targetGroup.AddMember(lockedEnemy, 0.5f, 0);
+            lockedOn = true;
         }
     }
 
@@ -181,6 +198,7 @@ public class CinemachineManager : MonoBehaviour
         if (targetGroup != null)
         {
             targetGroup.RemoveMember(lockedEnemy);
+            lockedOn = false;
         }
     }
 

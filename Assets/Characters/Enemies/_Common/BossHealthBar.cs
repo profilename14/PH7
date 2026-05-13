@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BossHealthBar : MonoBehaviour
 {
-    [SerializeField] private Enemy enemy;
+    [SerializeField] public Enemy enemy;
     private Slider enemyHPBar;
     private float prevHealth;
 

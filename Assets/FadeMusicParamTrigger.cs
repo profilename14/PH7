@@ -13,6 +13,9 @@ public class FadeMusicParamTrigger : MonoBehaviour
     [SerializeField]
     bool isTrigger;
 
+    [SerializeField]
+    Enemy enemy;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!isTrigger) return;
@@ -34,5 +37,15 @@ public class FadeMusicParamTrigger : MonoBehaviour
     {
         musicIntensityParam = 1;
         Tween.Custom(musicIntensityParam, endValue: 0, duration: 5, onValueChange: newVal => FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Intensity", newVal));
+    }
+
+    public void ShowSaltBossHealthbar()
+    {
+        Player.instance.uiManager.ShowSaltBossHealthbar(enemy);
+    }
+
+    public void ShowAcidBossHealthbar()
+    {
+        Player.instance.uiManager.ShowAcidBossHealthbar(enemy);
     }
 }

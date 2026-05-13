@@ -25,6 +25,10 @@ public class PlayerUIManager : MonoBehaviour
     public TextMeshProUGUI lapisText;
     public TextMeshProUGUI soapstonesText;
 
+    public GameObject saltBossHealthbar;
+
+    public GameObject acidBossHealthbar;
+
     private float previousAlkaline = 0;
 
     // Start is called before the first frame update
@@ -115,5 +119,17 @@ public class PlayerUIManager : MonoBehaviour
     public void UpdateLapis(int amount)
     {
         lapisText.text = "Lapis: " + amount;
+    }
+
+    public void ShowSaltBossHealthbar(Enemy boss)
+    {
+        saltBossHealthbar.SetActive(true);
+        saltBossHealthbar.GetComponent<BossHealthBar>().enemy = boss;
+    }
+
+    public void ShowAcidBossHealthbar(Enemy boss)
+    {
+        acidBossHealthbar.SetActive(true);
+        acidBossHealthbar.GetComponent<BossHealthBar>().enemy = boss;
     }
 }

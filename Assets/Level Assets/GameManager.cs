@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         }
         else if (instance != this) Destroy(this);
 
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this.transform.parent.gameObject);
         sceneToLoadOnRespawn = SceneManager.GetActiveScene().name;
         if(defaultSceneRespawn != null) respawnPosition = defaultSceneRespawn.position;
 
